@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800416654" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="2ae" sequence="10" unid="79633F808C30A549832575D300649824">
+<created><datetime>20090612T151845,48-03</datetime></created>
+<modified><datetime>20150309T094341,34-03</datetime></modified>
+<revised><datetime>20150309T094341,33-03</datetime></revised>
+<lastaccessed><datetime>20150309T094341,34-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T095422,43-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090612T151845,62-03</datetime><datetime>20090924T100442,89-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime>20080516T144659,98-03</datetime></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>js/Cookie</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+</note>

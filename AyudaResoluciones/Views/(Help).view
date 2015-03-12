@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005ABB51'>
+<noteinfo noteid='192' unid='EC5419CDFEA9D5E6852566CD0023170F' sequence='25'>
+<created><datetime dst='true'>19981201T022316,63-04</datetime></created>
+<modified><datetime>20150311T133102,39-03</datetime></modified>
+<revised><datetime>20150309T094423,27-03</datetime></revised>
+<lastaccessed><datetime>20150311T133102,39-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133102,39-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Lotus Notes Template Development/O=Lotus Notes</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Sandra Sayanes/O=ISA</name><name
+>CN=Administrador/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name
+>CN=Administrador/O=MEC</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060317T103044,23-03</datetime><datetime>20060630T180753,44-03</datetime><datetime
+>20060713T143602,72-03</datetime><datetime>20060802T135149,39-03</datetime><datetime
+>20060802T151926,25-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Index' sign='true'><text/></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+FgABAABECGYAAAAJAEFwcFNwZWNJRA==
+</rawitemdata></item>
+<item name='$Flags'><text/></item>
+<item name='$TITLE'><text>(Help)</text></item>
+<item name='$FormFormula' summary='true' sign='true'><formula>(@V2If(@V3UserName = "HELP_WINDOW"; "Context Help Form"; @V3UserName = "HELP_DOCUMENT"; "Context Help Form"; form))</formula></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+jgAFACgAIwADAAkABwAJAEFwcFNwZWNJRFN1YmplY3QkQ29uZmxpY3QAAgAgAAkAQXBwU3BlY0lE
+MAUACQBBcHBTcGVjSUQAAwACABwABwBTdWJqZWN0AAUABwBTdWJqZWN0AAMABAAEAAAAGgAFAAkA
+QXBwU3BlY0lEAAEAAAALAgMABwAKAAQACUwxUw==
+</formula></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAcACgAAAFZDAQAJAAkAIgAAADgAAQAACgABAAAAAAAAAAAAAAAwVkMAAAcABgAeAAAAIwEB
+AAAKAAAAAAAAAAAAAAIAAABBcHBTcGVjSURBcHBTcGVjSUQiAAIAIAAJAEFwcFNwZWNJRDAFAAkA
+QXBwU3BlY0lEAAMAU3ViamVjdEFzdW50bx4AAgAcAAcAU3ViamVjdAAFAAcAU3ViamVjdAADACYA
+AQAAAAEBAAkBAAAKAQEECgAAAACtKwEAAQABAAAAAAAAAAAAV0MBAQAIAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFdDAQEACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text>2_17*</text></item>
+<item name='$Language' sign='true'><text>es-MX</text></item>
+<item name='$LastBuildTime' sign='true'><datetime>19990412T172342,69+00</datetime></item>
+<item name='$BabelInfo' sign='true'><text>00000166</text></item></note>
+

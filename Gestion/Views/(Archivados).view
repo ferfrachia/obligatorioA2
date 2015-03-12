@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='13c2' unid='07FA80F9DEB2F67383257DC8004FD228' sequence='15'>
+<created><datetime dst='true'>20150109T123151,44-02</datetime></created>
+<modified><datetime>20150311T131047,01-03</datetime></modified>
+<revised><datetime>20150309T094423,45-03</datetime></revised>
+<lastaccessed><datetime>20150311T131047,01-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131047,01-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Archivados)</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+mgACABgAAgAkMQUACABjY05yb0V4cFYBAwAFABgAEwACAAIACQAkMSRDb25mbGljdAAEAAQAAABQ
+AAUABABGb3JtAQAJAEZDYXJhdHVsYQAKAgUACQAkQ29uZmxpY3QAaAEeARwCBQAIAGNjRXN0YWRv
+AQAJAEFyY2hpdmFkbwAKAhwCAwAHABQADgAJTDFTNFM1UzEwUzExUw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEiGYAAAACACQx
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAIACgAAAFZDAQQCAAYAJgAAAJYAAQAACgABAAAAAAAAAAICAAAAJDFOcm9FeHAmAAIAGAAC
+ACQxBQAIAGNjTnJvRXhwVgEDAAcADAAFAAkwUzBFACYAAQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEA
+AQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAA//8AAAAAAAAAAAAAAAAA
+AEIAAAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAICA
+gAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text>Vista utilizada para encontrar documentos de caratula en base al nro exp</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAAJAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemW+
+AQBOfL7/KAAAAAUAAACdAQAADgAAAAAAAABfRWRpdCBEb2N1bWVudAIAAgq+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX1NlbmQgRG9jdW1lbnQDAAMKvv8iAAAABQAAAJ0BAAAIAAAAAAAAAF9Gb3J3YXJk
+BAAECr7/LAAAAAUAAACdAQAAEgAAAAAAAABfTW92ZSBUbyBGb2xkZXIuLi4FAD18vv8uAAAABQAA
+AJ0BAAATAAAAAAAAAF9SZW1vdmUgRnJvbSBGb2xkZXIABgA+fA==
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcgAGAD58
+</rawitemdata></item></note>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E05005A23D7" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="fde" sequence="4" unid="6F1EF97CFCCE135B83257DBF003EF879">
+<created><datetime dst="true">20141231T092748,41-02</datetime></created>
+<modified><datetime>20150311T132452,34-03</datetime></modified>
+<revised><datetime>20150309T094415,12-03</datetime></revised>
+<lastaccessed><datetime>20150311T132452,34-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132452,34-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Administrador/O=MECTest</name><name>CN=Fernando Frachia/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Fernando Frachia/O=ISA</name><name>CN=Fabian Alvariza/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$FileModDT" sign="true"><datetime>20090915T165034,00-03</datetime></item>
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$TITLE" sign="true"><text>PostIt.css</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+
+<item name="$FileNames" sign="true"><text>PostIt.css</text></item></note>

@@ -1,0 +1,70 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library FuncionesAgentes
+	Created Feb 19, 2014 by Catalina Seoane/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+Use "IGDocConfig"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Agentes
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+%REM
+	Class Agente
+	Description: Comments for Class
+%END REM
+Public Class Agentes
+	session As NotesSession
+	
+	Public Sub New ()
+		Set session = New NotesSession
+		
+	End Sub
+	
+	%REM
+		Function CambiarEstadoAgente
+		Description: Comments for Function
+	%END REM
+	Public Function CambiarEstadoAgente(dbString As String, agentString As String, habilitar As boolean)As boolean
+		On Error GoTo handler
+		
+		Dim db As NotesDatabase
+		Dim ag As NotesAgent
+		'Dim conf As New IGDocConfig
+		
+		Set db = session.GetDatabase("","Desarrollo/" + dbString,False)
+		If db Is Nothing Then
+			MsgBox "La base de datos no existe"
+		End If
+		
+		MsgBox(agentString)
+		Set ag = db.GetAgent(agentString)
+		If ag Is Nothing Then
+			MsgBox "El Agente no existe"
+		End If
+		
+		MsgBox "ESTO RECIBO PARA HACER CON EL AGENTE"
+		MsgBox(habilitar)
+		ag.IsEnabled = habilitar
+		ag.Save
+		
+		MsgBox"EL AGENTE QUEDA EN ESTE ESTADO"
+		msgbox(ag.IsEnabled)
+		
+		CambiarEstadoAgente=ag.IsEnabled
+		Exit function
+handler:
+		MsgBox "CambiarEstadoAgente"
+		MsgBox Error
+		MsgBox Err
+		MsgBox Erl
+		Exit function
+		
+	End Function
+	
+End Class

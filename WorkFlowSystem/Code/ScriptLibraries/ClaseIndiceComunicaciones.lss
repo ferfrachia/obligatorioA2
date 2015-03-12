@@ -1,0 +1,119 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+
+
+Option Declare
+
+Use "ClaseIndice"
+Use "Configuracion Comunicaciones"
+Use "UnidadCom Class" 
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class IndiceComunicaciones As Indice
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+ 
+'Private Const CLAVE_DBCOMUNICACIONES						= "COMUNICACIONES"
+Public Class IndiceComunicaciones As Indice
+	Public Sub New(), Indice(Ucase("COMUNICACIONES"), "ConfComunicaciones")
+		
+	End Sub
+	
+	
+	Public Sub ActualizarIndiceComunicaciones(clave As String)
+		On Error Goto HANDLER
+		Dim session As New NotesSession
+		Dim dbComs As NotesDatabase
+		Dim dbAdmin As NotesDatabase
+		Dim dbOrgan As NotesDatabase
+		Dim dbPortal As NotesDatabase
+		Dim vTodos As NotesView
+		Dim vTiposCom As NotesView
+		Dim vUnidades As NotesView
+		Dim docCom As NotesDocument
+		Dim docTipoCom As NotesDocument
+		Dim docIndice As NotesDocument
+		Dim docUnidad As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim vCampos As Vector
+		Dim vCampos2 As Vector
+		Dim unidad As String
+		Dim año As String
+		Dim unid As String
+		'MsgBox "aca 4"
+		'Obtengo el documento con el formulario
+		Set conf = New ConfigComunicaciones 
+		Set dbComs = conf.ReferenciarBaseDeDatos("COMUNICACIONES")
+		Set docCom = dbComs.getDocumentByUNID(clave)
+		
+		If docCom Is Nothing Then
+			MsgBox "Error no se encontro el documento para actualizar el indice!"
+			Exit Sub
+		End If
+		'MsgBox "aca 4.5"
+		'Obtengo la vista con los tipos de formulario
+		Set dbAdmin = conf.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+		Set vTiposCom = dbAdmin.GetView("vDefComxCodigo")
+		Set docTipoCom = vTiposCom.GetDocumentByKey(docCom.GetItemValue("codigo")(0),True)
+		'Cargo los campos necesarios del índice
+		'Los campos para el indice son el nro, el destinatario y alguna otra fruta
+		'						CUIDADO ACA!
+		'clave = docCom.GetItemValue("nNumero")(0)
+		unidad = docCom.GetItemValue("sUnidad")(0)
+		año = Cstr(Year(docCom.Created))
+		'MsgBox "aca 5"
+		'Actualizo el índice
+		Set vCampos = New Vector(0)
+		Call vCampos.insertElement("sEstado", vCampos.CantElem+1)
+		Call vCampos.insertElement("nNumero", vCampos.CantElem+1)
+		Call vCampos.insertElement("destinatarioVis", vCampos.CantElem+1)
+		Call vCampos.insertElement("ccDestinatariosVis", vCampos.CantElem+1)
+		Call vCampos.insertElement("fFinalizacion", vCampos.CantElem+1)
+		Call vCampos.insertElement("asunto", vCampos.CantElem+1)
+		Call vCampos.insertElement("ccfCreacion", vCampos.CantElem+1)
+		Call vCampos.insertElement("sReservadoPor", vCampos.CantElem+1)
+		Call vCampos.insertElement("listaDestinatarios", vCampos.CantElem+1)		
+		Call vCampos.insertElement("listaRecibidos", vCampos.CantElem+1)
+		Call vCampos.insertElement("sNombreCom", vCampos.CantElem+1)
+		Call vCampos.insertElement("codigo", vCampos.CantElem+1)
+		Call vCampos.insertElement("sFirmar", vCampos.CantElem+1)
+		Call vCampos.insertElement("sFirmante", vCampos.CantElem+1)
+		Call vCampos.insertElement("remitente", vCampos.CantElem+1)
+		Call vCampos.insertElement("sUsuario", vCampos.CantElem+1)
+		Set vCampos2 = New Vector(0)
+		'MsgBox vCampos.ToString(" ")
+		'MsgBox "aca 6"
+		'MsgBox clave & " clave"
+		'MsgBox unidad & " unidad"
+		'MsgBox año & " año"
+		'Call vCampos2.insertElement("sNombre", vCampos2.CantElem+1)
+		Dim ounidad As UnidadCom
+		Set ounidad = New UnidadCom(unidad)
+		unid = ActualizarIndiceDocs(clave, unidad, ounidad.NombreActual, año, docCom, vCampos, docTipoCom, vCampos2)
+		'MsgBox "pase !"
+		'Actualizo los nombres de unidades
+		Set dbPortal = conf.ReferenciarBaseDeDatos(CLAVE_DBPORTAL)
+		Set docIndice = dbPortal.GetDocumentByUNID(unid)
+		Set dbOrgan = conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Call docIndice.ReplaceItemValue("tipoCom",docTipoCom.GetItemValue("sDestinatarios")(0))
+		Call docIndice.ReplaceItemValue("fechaCreacion",docCom.Created)
+		'MsgBox "aca 7"
+%REM
+		Set vUnidades = dbOrgan.GetView("BusquedaUnixNro")
+		Set docUnidad = vUnidades.GetDocumentByKey(docCom.GetItemValue("UnidadAnterior")(0))
+		If Not docUnidad Is Nothing Then
+			Call docIndice.ReplaceItemValue("nombreUnidadAnterior", docUnidad.GetItemValue("sUnidad")(0))
+		End If
+		Set docUnidad = vUnidades.GetDocumentByKey(docCom.GetItemValue("UnidadActual")(0))
+		If Not docUnidad Is Nothing Then
+			Call docIndice.ReplaceItemValue("nombreUnidadActual", docUnidad.GetItemValue("sUnidad")(0))
+		End If
+%END REM
+		Call docIndice.Save(False, False)
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndiceComunicaciones: " & Erl & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método ActualizarIndice","")
+		Exit Sub
+	End Sub
+End Class

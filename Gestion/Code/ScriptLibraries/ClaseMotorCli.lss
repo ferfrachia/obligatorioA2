@@ -1,0 +1,1219 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+'*******************************************************************************************************************
+'*    
+'*                                               CLASS <MOTORCLI>
+'*
+'*******************************************************************************************************************
+
+Use "Errores Generales"
+Use "VectorClass 2.05"
+Use "ConstantesMotor"
+Use "ConstantesSistema"
+Use "ClaseSolicitud"
+Use "ConfEE 1.0"
+Use "FuncionesGenerales"
+Use "IGDocConfig"
+Use "WSConsumer"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class MotorCli
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+%REM
+	Esta clase sería un Stub de la clase CartaEspediente.
+	Para cada operación de negocios de la clase Expediente, tiene una operación correspondiente
+	que genera una solicitud, llama al motor, y devuelve el mismo resultado que devolvió la operación 
+	correspondiente en la clase Expediente.
+	El motor es quien realmente se encarga de ejecutar dicha operación.
+%END REM
+
+
+'Diseño
+Public Const AGENTE_MOTOR					= "Motor"
+
+'Errores 10200-10299
+
+
+Public Class MotorCli
+	Private db As notesDatabase 
+	Private oSol As Solicitud
+	
+	'******************************************************************************************************************	
+	'******************************************************************************************************************		
+	'Privadas	
+	
+	Private Sub runMotor()	
+		On Error GoTo handler
+		Dim config As IGDocConfig
+		Dim resp As String
+		Dim indice As Integer
+		Dim serverName As String
+		Dim wsdlURL As String
+		Dim wsConsumer As WSServidores
+		Set config = New IGDocConfig
+		Dim session As New NotesSession
+
+		
+		indice = 1
+		resp = ""
+		If(config.enCluster = "Si")Then
+			'Para cada servidor en la configuracion se checkea conectividad
+			While indice <= config.UrlServidores.cantElem And resp = ""
+				If (UCase(config.NombreServidores.getElement(indice)) <> UCase(session.Currentdatabase.Server))Then
+					'No es el servidor local
+					wsdlURL = config.UrlServidores.getElement(indice) & config.WSServidores.getElement(indice) 
+					Set wsConsumer = New WSServidores
+					wsConsumer.Setendpoint(wsdlURL)
+					serverName = CStr(config.NombreServidores.getElement(indice))
+					resp = wsConsumer.TESTSERVER(serverName)
+				Else
+					'Es el local
+					indice = config.UrlServidores.cantElem
+				End If
+				indice = indice + 1
+			Wend
+		End If
+		
+		
+		
+		
+		If(resp <> "")Then
+		
+			'En caso de que algun servidor este disponible se invoca al motor correspondiente
+			If (wsConsumer.Runmotor = 0 ) Then
+				
+				oSol.refresh
+				
+			End If
+		Else
+			'Al no haber servidor externo disponible se corre de forma local
+			
+			runMotorLocal
+		End If
+
+		Exit Sub
+handler:
+		MsgBox "Clase MotorCli - Método RunMotor - " + Error$ +" - "+ Erl        
+		Exit Sub
+	End Sub	
+	
+	Private Sub runMotorLocal()
+		On Error GoTo errorHandler
+		Dim agMotor As NotesAgent
+		
+		Set agMotor=db.getAgent(AGENTE_MOTOR)
+		If Not agMotor Is Nothing Then
+			agMotor.run
+			oSol.refresh
+		Else
+			Error ERROR_AGENTE_NOT_FOUND,MSG_ERROR_AGENTE_NOT_FOUND
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método RunMotorLocal", ""
+		MsgBox "Clase MotorCli - Método RunMotorLocal - " + Error$ +" - "+ Erl   
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	'******************************************************************************************************************	
+	'Publicas
+	
+	Public Sub new(Byval sNroExpediente_ As String,Byval sUsuario_ As String)
+		On Error Goto errorHandler
+		Dim c As New Configuracion, srv As String, path As String
+		If db Is Nothing Then
+			srv = c.ServidorDomino(CLAVE_DBMOTORDOC)
+			path = c.BaseDeDatos(CLAVE_DBMOTORDOC)
+
+			Set db = New NotesDataBase ("","")
+			Call db.Open (srv,path)			
+			If Not db.isOpen Then
+				Error ERROR_DB_NOT_OPEN,MSG_ERROR_DB_NOT_OPEN & " Motor Documental"
+			End If			
+		End If		
+		Set oSol=New Solicitud(Nothing,sNroExpediente_,sUsuario_)
+		
+		Exit Sub
+errorHandler:
+		MsgBox "Clase MotorCli - Método new " & Error$ & " - " & Erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método New", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Function Creacion(universalID As String) As String
+		On Error Goto errorHandler
+		'Borrador, puede que se llame fuera de esta clase y no desde aqui
+		oSol.setOperacion ACCION_CREAR
+		oSol.setParameter ACCION_CREAR,1,universalID		
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Creacion=oSol.getNroExpediente()
+		
+		Exit Function
+errorHandler:
+		MsgBox "Clase MotorCli - Método Creacion " & Error$ & "-" & Erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Creacion", ""
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************	
+	
+	Public Sub EditarCaratula()
+		On Error Goto errorHandler
+		oSol.setOperacion ACCION_EDITAR_CARAT
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método EditarCaratula", ""
+		MsgBox "Clase MotorCli - Método EditarCaratula " & Error$ & "-" & Erl
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	'La idea es que no haga nada en el motor mas que actualizar el indice de las bandejas
+	Public Sub GuardarCaratula()
+		On Error Goto errorHandler
+		
+		oSol.setOperacion ACCION_GUARDAR_CARAT
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método GuardarCaratula", ""
+		MsgBox "Clase MotorCli - Método guardarCaratula " & Error$ & "-" & Erl
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	
+	Public Sub Reservar ()
+		'Agrega al usuario al campo autores
+		On Error Goto errorHandler
+		oSol.setOperacion ACCION_RESERVAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Reservar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	%REM
+		Sub EnviarAviso
+		Description: Comments for Sub
+	%END REM
+	Public Sub EnviarAviso(destinatarios As String, asunto As String, cuerpo As string)
+		On Error GoTo errorHandler
+		
+		oSol.setOperacion ACCION_ENVIAR_AVISO_EXPEDIENTE	
+		Call oSol.setParameter(ACCION_ENVIAR_AVISO_EXPEDIENTE, 1, destinatarios)
+		Call oSol.setParameter(ACCION_ENVIAR_AVISO_EXPEDIENTE, 2, asunto)
+		Call oSol.setParameter(ACCION_ENVIAR_AVISO_EXPEDIENTE, 3, cuerpo)
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método EnviarAviso", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	
+	Public Sub Liberar ()
+		'Quita al usuario del campo autores
+		On Error Goto errorHandler
+		
+		oSol.setOperacion ACCION_LIBERAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Liberar", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************		
+	%REM
+		Sub MotivoDePase
+		Description: Comments for Sub
+	%END REM
+
+	Public Sub Pase(Byval unidadDestino As String, Byval procedimiento As String,listaUniNotificar As Variant,urgente As Integer, notifPaq As String,motivo As String, plazo As Integer)   
+		'realiza el pase a la unidadDestino
+		'antes de realizar el pase el usuario debe reservar el exp
+		'Si el estado es en generacion, genera el nro de exp y lo pone en curso
+		
+		'carga nro exp, unidad actual, fecha inicio, estado y cant actuaciones
+		'chequear que el usuario tenga el rol [Crear]
+		On Error Goto errorHandler
+		
+		oSol.setParameter ACCION_PASE,1,unidadDestino
+		oSol.setParameter ACCION_PASE,2,procedimiento
+		oSol.setParameter ACCION_PASE,3,listaUniNotificar
+		If urgente Then
+			oSol.setParameter ACCION_PASE,4,"1" 
+		Else
+			oSol.setParameter ACCION_PASE,4,"0"
+		End If
+		oSol.setParameter ACCION_PASE,5,notifPaq
+		
+		If motivo <> "" then
+			oSol.setParameter ACCION_PASE,6,motivo
+			oSol.setParameter ACCION_PASE,7,plazo
+		End if
+		
+		oSol.setOperacion ACCION_PASE
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If		
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Pase", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	%REM
+		Sub setMotivoDePase
+		Description: accion para setear un motivo al dar pase y junto a este motivo un plazo
+	%END REM
+	Public Sub setMotivoDePase(motivo As String, plazo As Integer)
+		On Error goTo errorHandler
+		oSol.setParameter ACCION_MOTIVO_DE_PASE,1,motivo
+		oSol.setParameter ACCION_MOTIVO_DE_PASE,2,plazo
+		
+		oSol.setOperacion ACCION_MOTIVO_DE_PASE
+		
+		oSol.save
+
+		runMotor
+
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit sub
+errorHandler:
+		MsgBox "Clase MotorCli - Método setMotivoDePase: " & Error & " - " & erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método setMotivoDePase", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	
+	Public Sub AddUsersCopiaExp(vOficinas As Vector, texto As String)
+		On Error Goto errorHandler
+		oSol.setParameter ACCION_COPIAR_EXP,1,vOficinas.values
+		oSol.setParameter ACCION_COPIAR_EXP,2,texto
+		oSol.setOperacion ACCION_COPIAR_EXP
+		
+		oSol.save
+		
+		runMotor
+		
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If		
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AddUsersCopiaExp", ""
+		Exit Sub
+		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub RemoveUserCopiaExp(oficina As Variant, user As String)
+		On Error Goto errorHandler
+		
+		oSol.setParameter ACCION_QUITAR_COPIA,1,oficina
+		oSol.setParameter ACCION_QUITAR_COPIA,2,user
+		oSol.setOperacion ACCION_QUITAR_COPIA
+		oSol.save
+		
+		runMotor
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método RemoveUserCopiaExp", ""
+		Exit Sub
+		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Rutear(Byval unidadDestino As String, Byval procedimiento As String,listaUniNotificar As Variant,urgente As Integer, notifPaq As String,Paso As Integer)   
+		
+		On Error Goto errorHandler
+		
+		oSol.setParameter ACCION_RUTEAR,1,unidadDestino
+		oSol.setParameter ACCION_RUTEAR,2,procedimiento
+		oSol.setParameter ACCION_RUTEAR,3,listaUniNotificar
+		
+		If urgente Then
+			oSol.setParameter ACCION_RUTEAR,4,"1" 
+		Else
+			oSol.setParameter ACCION_RUTEAR,4,"0"
+		End If
+		oSol.setParameter ACCION_RUTEAR,5,notifPaq
+		oSol.setParameter ACCION_RUTEAR,6,Paso
+		oSol.setOperacion ACCION_RUTEAR
+		oSol.save
+		
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If		
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Rutear", ""
+		Exit Sub
+	End Sub	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Agregar (vNrosExpAgregar As Vector)
+		'Agrega el expediente de número nroExpAgregado al actual
+		On Error Goto errorHandler
+		
+		oSol.setParameter ACCION_AGREGAR,1,vNrosExpAgregar.values
+		oSol.setOperacion ACCION_AGREGAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Agregar", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Desagregar(vNrosExpDesa As Vector)
+		'Desagrega el expediente de número nroExpAgregado al actual
+		'Si no se ingresa ningún número se desagregan todos los que tenga agregados
+		On Error Goto errorHandler
+		
+		oSol.setParameter ACCION_DESAGREGAR,1,vNrosExpDesa.values
+		oSol.setOperacion ACCION_DESAGREGAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If				
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Desagregar", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Devolver(Byval motivo As String)
+		'Devuelve el exp a la unidad anterior
+		On Error Goto errorHandler
+		
+		oSol.setParameter ACCION_DEVOLVER,1,motivo 
+		oSol.setOperacion ACCION_DEVOLVER
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Devolver", ""
+		Exit Sub
+	End Sub
+	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub MarcarConfidencial(lectores As Vector)
+		'Marca el exp como confidencial habilitando solo a los lectores indicados
+		'Envía una notificación al usuario que hizo la solicitud
+		On Error Goto errorHandler
+		
+		oSol.setParameter ACCION_MARCAR_CONFIDENCIAL,1,lectores.values
+		oSol.setOperacion ACCION_MARCAR_CONFIDENCIAL
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If		
+		Exit Sub
+		
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método MarcarConfidencial", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Archivar ()
+		'Marca el expediente como archivado y lo almacena en un repositorio secundario
+		On Error Goto errorHandler
+		oSol.setOperacion ACCION_ARCHIVAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+		
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Archivar", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Firmar(sFirma As String,fFechaFirma As Variant)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_FIRMAR,1,sFirma
+		oSol.setParameter ACCION_FIRMAR,2,fFechaFirma
+		oSol.setOperacion ACCION_FIRMAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método Firmar","")
+		Exit Sub	
+		
+	End Sub
+	'******************************************************************************************************************		
+	Public Sub FirmarDestino(sFirma As String,fFechaFirma As Variant)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_FIRMAR,1,sFirma
+		oSol.setParameter ACCION_FIRMAR,2,fFechaFirma
+		oSol.setOperacion ACCION_FIRMAR_DESTINO_CS
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método Firmar","")
+		Exit Sub	
+		
+	End Sub
+	'ARREGLARRRRRRRRRRRRRRRRRRRRR
+	'******************************************************************************************************************	
+	
+	Public Sub Firmar2(sFirma As String,fFechaFirma As Variant,aFirmar As String)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_FIRMAR,1,sFirma
+		oSol.setParameter ACCION_FIRMAR,2,fFechaFirma
+		oSol.setParameter ACCION_FIRMAR,3,aFirmar
+		oSol.setOperacion ACCION_FIRMAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método Firmar","")
+		Exit Sub	
+		
+	End Sub	
+	'******************************************************************************************************************	
+	
+	Public Sub Asignar(sEditor As String)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_ASIGNAR,1,sEditor
+		oSol.setOperacion ACCION_ASIGNAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método Asignar","")
+		Exit Sub	
+		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub EnviarPase()
+		On Error Goto HANDLER
+		
+		oSol.setOperacion ACCION_ENVIAR_PASE
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método EnviarPase","")
+		Exit Sub	
+		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub ParaFirmar()
+		On Error Goto HANDLER
+		
+		oSol.setOperacion ACCION_PARA_FIRMAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método ParaFirmar","")
+		Exit Sub	
+		
+	End Sub
+	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub ParaFirmar2(vFirmantes As Vector)
+		On Error Goto HANDLER
+		
+		oSol.setOperacion ACCION_PARA_FIRMAR
+		oSol.setParameter ACCION_PARA_FIRMAR,1,vFirmantes.values
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método ParaFirmar","")
+		Exit Sub	
+		
+	End Sub
+	
+'******************************************************************************************************************		
+	Public Sub PaseSinFirma(ByVal unidadDestino As String, ByVal procedimiento As String,listaUniNotificar As Variant,urgente As Integer, notifPaq As String)   
+		'realiza el pase a la unidadDestino
+		'antes de realizar el pase el usuario debe reservar el exp
+		'Si el estado es en generacion, genera el nro de exp y lo pone en curso
+		
+		'carga nro exp, unidad actual, fecha inicio, estado y cant actuaciones
+		'chequear que el usuario tenga el rol [Crear]
+		On Error GoTo errorHandler
+		oSol.setParameter ACCION_PASE_SIN_VALIDAR,1,unidadDestino
+		oSol.setParameter ACCION_PASE_SIN_VALIDAR,2,procedimiento
+		oSol.setParameter ACCION_PASE_SIN_VALIDAR,3,listaUniNotificar
+		If urgente Then
+			oSol.setParameter ACCION_PASE_SIN_VALIDAR,4,"1" 
+		Else
+			oSol.setParameter ACCION_PASE_SIN_VALIDAR,4,"0"
+		End If
+		oSol.setParameter ACCION_PASE_SIN_VALIDAR,5,notifPaq
+		oSol.setOperacion ACCION_PASE_SIN_VALIDAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If		
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Pase", ""
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************
+	
+	'******************************************************************************************************************		
+	
+	Public Sub AnularPase()
+		On Error Goto HANDLER
+		
+		oSol.setOperacion ACCION_ANULAR_PASE
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método AnularPase","")
+		Exit Sub	
+		
+	End Sub
+	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Recibir()
+		On Error Goto HANDLER
+		
+		oSol.setOperacion ACCION_RECIBIR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método Recibir","")
+		Exit Sub	
+		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub RecibirExterno()
+		On Error GoTo HANDLER
+		
+		oSol.setOperacion ACCION_RECIBIR_EXTERNO
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método Recibir externo","")
+		Exit Sub	
+		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub ObtenerExterno(ByVal unidadDestino As String, ByVal procedimiento As String,listaUniNotificar As Variant,urgente As Integer, notifPaq As String,motivo As String, plazo As Integer)
+		On Error GoTo HANDLER
+		
+		oSol.setParameter ACCION_PASE,1,unidadDestino
+		oSol.setParameter ACCION_PASE,2,procedimiento
+		oSol.setParameter ACCION_PASE,3,listaUniNotificar
+		If urgente Then
+			oSol.setParameter ACCION_PASE,4,"1" 
+		Else
+			oSol.setParameter ACCION_PASE,4,"0"
+		End If
+		oSol.setParameter ACCION_PASE,5,notifPaq
+		
+		If motivo <> "" Then
+			oSol.setParameter ACCION_PASE,6,motivo
+			oSol.setParameter ACCION_PASE,7,plazo
+		End If
+		
+		oSol.setOperacion ACCION_OBTENER_EXTERNO
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método Obtener externo","")
+		Exit Sub	
+		
+	End Sub
+	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub ModificarPlazo(nDias As Integer)
+		On Error Goto HANDLER
+		oSol.setOperacion ACCION_MODIFICAR_PLAZO
+		oSol.setParameter ACCION_MODIFICAR_PLAZO,1,nDias
+		oSol.save
+		runMotor
+	
+		If oSol.hayError() Then
+			
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método ModificarPlazo","")
+		Exit Sub	
+		
+	End Sub	
+	
+	'******************************************************************************************************************
+%REM
+	Sub QuitarDatoPrivado
+	Description: Comments for Sub
+%END REM
+Public Sub QuitarDatoPrivado()		
+	On error GoTo HANDLER:
+	oSol.setOperacion "acc_Quitar_Datosprivados"
+	oSol.save
+	runMotor
+	If oSol.hayError() Then
+		Error oSol.getErrorCode(),oSol.getErrorMsg()
+	End If	
+	
+	Exit Sub	
+HANDLER:
+	Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método QuitarDatoPrivado","")
+	Exit Sub
+End Sub
+	'******************************************************************************************************************
+	Public Sub QuitarConfidencialidad()
+		On Error Goto HANDLER
+		
+		oSol.setOperacion ACCION_QUITAR_CONFIDENCIALIDAD
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método QuitarConfidencialidad","")
+		Exit Sub	
+		
+	End Sub	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub SacarDeArchivado
+		On Error Goto HANDLER
+		
+		oSol.setOperacion ACCION_SACAR_ARCHIVO
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método SacarDeArchivado","")
+		Exit Sub		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub AddLectoresConfidencial(Lectores As Vector)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_ADD_LECT_CONFIDENCIAL,1,lectores.values
+		oSol.setOperacion ACCION_ADD_LECT_CONFIDENCIAL
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método AddLectoresConfidencial","")
+		Exit Sub			
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub DeleteLectoresConfidencial(lectores As Vector)
+		On Error Goto HANDLER
+		
+		
+		
+		oSol.setParameter ACCION_DEL_LECT_CONFIDENCIAL,1,lectores.values
+		oSol.setOperacion ACCION_DEL_LECT_CONFIDENCIAL
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método DeleteLectoresConfidencial","")
+		Exit Sub			
+	End Sub	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub setPaquete(fFechaRecibido As Variant,sLugar As String,sResponsable As String)
+		On Error Goto HANDLER
+		
+		
+		
+		oSol.setParameter ACCION_SET_PAQUETE,1,fFechaRecibido
+		oSol.setParameter ACCION_SET_PAQUETE,2,sLugar
+		oSol.setParameter ACCION_SET_PAQUETE,3,sResponsable
+		oSol.setOperacion ACCION_SET_PAQUETE
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método setPaquete","")
+		Exit Sub				
+	End Sub
+	
+	
+	
+	Public Sub FirmaryPasar(Byval unidadDestino As String,Byval procedimiento As String,_
+		Byval sFirma As String,Byval fFechaFirma As Variant,listaUniNotificar As Variant,urgente As Integer,_
+		ByVal motivoDePase As String, ByVal plazoDelMotivo As integer)
+		On Error Goto HANDLER
+		
+		
+		oSol.setParameter ACCION_FIRMAR_PASAR,1,unidadDestino
+		oSol.setParameter ACCION_FIRMAR_PASAR,2,procedimiento
+		oSol.setParameter ACCION_FIRMAR_PASAR,3,sFirma
+		oSol.setParameter ACCION_FIRMAR_PASAR,4,fFechaFirma
+		oSol.setParameter ACCION_FIRMAR_PASAR,5,listaUniNotificar
+		If urgente Then
+			oSol.setParameter ACCION_FIRMAR_PASAR,6,"1"
+		Else
+			oSol.setParameter ACCION_FIRMAR_PASAR,6,"0"
+		End If
+		oSol.setParameter ACCION_FIRMAR_PASAR,7,motivoDePase
+		oSol.setParameter ACCION_FIRMAR_PASAR,8,plazoDelMotivo
+		oSol.setOperacion ACCION_FIRMAR_PASAR
+		oSol.save
+		
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método FirmaryPasar","")
+		Exit Sub					
+	End Sub
+	
+	Public Sub TomarConocimiento(Byval unidad As Variant)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_TOMAR_CONOCIMIENTO,1,unidad
+		oSol.setOperacion ACCION_TOMAR_CONOCIMIENTO
+		oSol.save
+		
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método TomarConocimiento","")
+		Exit Sub					
+	End Sub
+	
+	
+	Public Sub MarcarExpediente(nroExp As String,idMarca As Long,usuario As String,fRecordar As Variant,msgRecordar As Variant,flagRecordar As String)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_MARCAR_EXPEDIENTE,1,nroExp
+		oSol.setParameter ACCION_MARCAR_EXPEDIENTE,2,idMarca
+		oSol.setParameter ACCION_MARCAR_EXPEDIENTE,3,usuario
+		oSol.setParameter ACCION_MARCAR_EXPEDIENTE,4,fRecordar
+		oSol.setParameter ACCION_MARCAR_EXPEDIENTE,5,msgRecordar
+		oSol.setParameter ACCION_MARCAR_EXPEDIENTE,6,flagRecordar
+		oSol.setOperacion ACCION_MARCAR_EXPEDIENTE
+		
+		oSol.save
+		
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método MarcarExpediente","")
+		Exit Sub					
+	End Sub
+	'******************************************************************************************************************		
+	Public Sub ExportarMarcas(vUsuarios As Vector,vMarcas As Vector)
+		On Error Goto HANDLER
+		
+		oSol.setParameter ACCION_EXPORTAR_MARCAS,1,vUsuarios.values
+		oSol.setParameter ACCION_EXPORTAR_MARCAS,2,vMarcas.values
+		oSol.setOperacion ACCION_EXPORTAR_MARCAS
+		oSol.save
+		
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método MarcarExpediente","")
+		Exit Sub					
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub CancelarDocumento (nroexp As String,nroAct As String, numDocs As string, tipoDocs As string, uniDocs As string)
+		On Error GoTo handler
+		
+		oSol.setParameter ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE,1,CStr(nroexp)
+		oSol.setParameter ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE,2,CStr(nroact)
+		oSol.setParameter ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE,3,CStr(numDocs)
+		oSol.setParameter ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE,4,CStr(tipoDocs)
+		oSol.setParameter ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE,5,CStr(uniDocs)
+		oSol.setOperacion ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método GenerarDocumento","")
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub GenerarDocumento (nroexp As String,nroAct As String, mensaje As String, tipoDoc As String, unidad As String, fecha As String)
+		On Error GoTo handler
+		
+		oSol.setParameter ACCION_GENERAR_DOCUMENTO_EXPEDIENTE,1,CStr(nroexp)
+		oSol.setParameter ACCION_GENERAR_DOCUMENTO_EXPEDIENTE,2,CStr(nroact)
+		oSol.setParameter ACCION_GENERAR_DOCUMENTO_EXPEDIENTE,3,CStr(mensaje)
+		oSol.setParameter ACCION_GENERAR_DOCUMENTO_EXPEDIENTE,4,CStr(tipoDoc)
+		oSol.setParameter ACCION_GENERAR_DOCUMENTO_EXPEDIENTE,5,CStr(unidad)
+		oSol.setParameter ACCION_GENERAR_DOCUMENTO_EXPEDIENTE,6,CStr(fecha)
+		oSol.setOperacion ACCION_GENERAR_DOCUMENTO_EXPEDIENTE
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método GenerarDocumento","")
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub CrearPostit (nroexp As String,nroAct As String, usr As String, coloresWeb As String, titulosWeb As String, textosWeb As String)
+		On Error Goto handler
+		
+		oSol.setParameter ACCION_POSTIT_CREAR,1,Cstr(nroexp)
+		oSol.setParameter ACCION_POSTIT_CREAR,2,Cstr(nroact)
+		oSol.setParameter ACCION_POSTIT_CREAR,3,Cstr(usr)
+		oSol.setParameter ACCION_POSTIT_CREAR,4,Cstr(coloresWeb)
+		oSol.setParameter ACCION_POSTIT_CREAR,5,Cstr(titulosWeb)
+		oSol.setParameter ACCION_POSTIT_CREAR,6,Cstr(textosWeb)
+		oSol.setOperacion ACCION_POSTIT_CREAR
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método CrearPostit","")
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub ModificarPostit (nroExp As String,nroAct As String, usr As String, coloresWeb As String, titulosWeb As String, textosWeb As String)
+		On Error Goto handler
+		oSol.setParameter ACCION_POSTIT_MODIF,1,Cstr(nroExp)
+		oSol.setParameter ACCION_POSTIT_MODIF,2,Cstr(nroAct)
+		oSol.setParameter ACCION_POSTIT_MODIF,3,Cstr(usr)
+		oSol.setParameter ACCION_POSTIT_MODIF,4,Cstr(coloresWeb)
+		oSol.setParameter ACCION_POSTIT_MODIF,5,Cstr(titulosWeb)
+		oSol.setParameter ACCION_POSTIT_MODIF,6,Cstr(textosWeb)
+		oSol.setOperacion ACCION_POSTIT_MODIF
+		oSol.save	
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método ModificarPostit","")
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub BorrarPostit (nroExp As String,nroAct As String, usr As String, coloresWeb As String, titulosWeb As String, textosWeb As String)
+		On Error Goto handler
+		oSol.setParameter ACCION_POSTIT_BORRAR,1,Cstr(nroExp)
+		oSol.setParameter ACCION_POSTIT_BORRAR,2,Cstr(nroAct)
+		oSol.setParameter ACCION_POSTIT_BORRAR,3,Cstr(usr)
+		oSol.setParameter ACCION_POSTIT_BORRAR,4,Cstr(coloresWeb)
+		oSol.setParameter ACCION_POSTIT_BORRAR,5,Cstr(titulosWeb)
+		oSol.setParameter ACCION_POSTIT_BORRAR,6,Cstr(textosWeb)
+		oSol.setOperacion ACCION_POSTIT_BORRAR
+		oSol.save	
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método BorrarPostit","")
+		Exit Sub
+	End Sub	
+	'*********************************************************************************************************************************
+	Public Sub NotificarExpediente(nroExp As String,nroAct As String,unidades As String,usuario As String)
+		On Error Goto handler
+		oSol.setParameter ACCION_NOTIFICAR_EXPEDIENTE,1,Cstr(nroExp)
+		oSol.setParameter ACCION_NOTIFICAR_EXPEDIENTE,2,Cstr(nroAct)
+		oSol.setParameter ACCION_NOTIFICAR_EXPEDIENTE,3,Cstr(unidades)
+		oSol.setParameter ACCION_NOTIFICAR_EXPEDIENTE,4,Cstr(usuario)
+		oSol.setOperacion ACCION_NOTIFICAR_EXPEDIENTE
+		oSol.save	
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+handler:
+		Exit Sub
+	End Sub
+	
+	'*********************************************************************************************************************************
+	%REM
+		Sub NuevoDatoPrivado
+		Description: Comments for Sub
+	%END REM
+	Public Sub NuevoDatoPrivado(nroExp As string,idDatoPrivado As string)
+		On Error GoTo Handler
+		Call osol.setNroExpediente(nroExp)
+		Call oSol.setParameter("acc_NuevoDatoPrivado", 1, idDatoPrivado)		
+		Call oSol.setOperacion("acc_NuevoDatoPrivado")
+		oSol.save	
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		End If	
+		Exit Sub
+Handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método NuevoDatoPrivado","")
+		Exit sub
+	End Sub
+	'*********************************************************************************************************************************
+	Public Function GenerarAsunto(nroExp As String,nroAct As String,nombreUsuario As String) As String
+		On Error GoTo handler
+
+		GenerarAsunto = ""
+		
+		oSol.setParameter ACCION_GENERAR_ASUNTO_EXPEDIENTE,1,CStr(nroExp)
+		oSol.setParameter ACCION_GENERAR_ASUNTO_EXPEDIENTE,2,CStr(nroAct)
+		oSol.setParameter ACCION_GENERAR_ASUNTO_EXPEDIENTE,4,""
+		oSol.setOperacion ACCION_GENERAR_ASUNTO_EXPEDIENTE
+		oSol.save	
+		runMotor
+		If oSol.hayError() Then
+			Error oSol.getErrorCode(),oSol.getErrorMsg()
+		Else
+			oSol.refresh
+			GenerarAsunto = osol.getParameter(ACCION_GENERAR_ASUNTO_EXPEDIENTE, 3)
+		End If	
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase MotorCli - Método GenerarAsunto","")
+		Exit Function
+	End Function
+	
+	'*********************************************************************************************************************************
+	
+	'Public Sub CrearEvento(destinatarios As String, asunto As String, cuerpo As String)
+	Public Function CrearEvento(usuario As String, fechaInicio As String, fechaFin As String, horaInicio As String, horaFin As String, detalles As String, descripcion As String, personal As String, notificar As String, aviso As String, usuarios As String, minutos As String, unidad As String, nroUnidad As String, nroExpediente As String)As String
+		On Error GoTo errorHandler
+		oSol.setOperacion ACCION_CREAR_EVENTO
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 1, usuario)
+		
+		Dim horaI As NotesDateTime
+		Set horaI = New NotesDateTime(horaInicio)
+		Dim horaInicio2 As String
+		horaInicio2 = horaI.Timeonly
+		
+		Dim horaF As NotesDateTime
+		Set horaF = New NotesDateTime(horaFin)
+		Dim horaFin2 As String
+		horaFin2 = horaF.Timeonly
+		
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 2, fechaInicio)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 3, fechaFin)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 4, horaInicio2)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 5, horaFin2)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 6, detalles)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 7, descripcion)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 8, personal)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 9, notificar)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 10, aviso)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 11, usuarios)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 12, minutos)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 13, unidad)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 14, nroUnidad)
+		Call oSol.setParameter(ACCION_CREAR_EVENTO, 15, nroExpediente)
+		
+		oSol.save
+		runMotor
+		If oSol.hayError() Then
+			CrearEvento = |{"error":"| & "002" & |","mensaje":"| & "No se pudo procesar la solicitud para guardar el evento. Si el error persiste, comuniquese con el administrador." &|"}|
+		End If
+
+		CrearEvento = |{"error":"| & "001" & |","mensaje":"| & "Evento guardado exitosamente." &|"}|
+		
+		Exit Function
+errorHandler:
+
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método CrearEvento", ""
+		Exit Function
+	End Function
+End Class

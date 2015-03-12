@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="a42" sequence="31" unid="07CC2C9A8867077C032574A30034EF92">
+<created><datetime>20080812T063812,02-03</datetime></created>
+<modified><datetime>20150311T130916,89-03</datetime></modified>
+<revised><datetime>20150309T094508,56-03</datetime></revised>
+<lastaccessed><datetime>20150311T130916,89-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130916,89-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20080812T080900,54-03</datetime><datetime>20080818T085455,11-03</datetime><datetime>20080818T085455,30-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$TITLE" sign="true"><text>js/MenuBandejas</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$POID"><datetime>20150309T094508,56-03</datetime></item></note>

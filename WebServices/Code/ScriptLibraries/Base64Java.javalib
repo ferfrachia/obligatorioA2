@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500599B47'>
+<noteinfo noteid='3de' unid='895AEF32F2FE018483257A1D0050ACA9' sequence='9'>
+<created><datetime>20120614T114110,81-03</datetime></created>
+<modified><datetime>20150311T131848,12-03</datetime></modified>
+<revised><datetime>20150309T094510,26-03</datetime></revised>
+<lastaccessed><datetime>20150311T131848,12-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131848,12-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Julian Robichaux/O=nsftools</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Base64Java</text></item>
+<item name='$Flags'><text>sj34Q</text></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item>
+<item name='$AssistAction' sign='true'>
+<rawitemdata type='10'>
+k/9VABAAFAAfAAAAAAAAAAAAQmFzZTY0SmF2YS5jbGFzc0M6XExvdHVzXG5vdGVzN1xkYXRhJSVz
+b3VyY2UlJS5qYXIAJSVvYmplY3QlJS5qYXIAAAA=
+</rawitemdata></item>
+<item name='$FILE' summary='true' sign='true' seal='true'><object><file hosttype='msdos'
+ compression='none' flags='sign' encoding='none' name='%%source%%.jar' size='610'>
+<created><datetime>20060909T235049,07-03</datetime></created>
+<modified><datetime>20100617T144005,53-03</datetime></modified><filedata>
+UEsDBBQACAAIAAKN0TwAAAAAAAAAAAAAAAAPAAAAQmFzZTY0SmF2YS5qYXZhtVRNi9swED37oP8w
++KQNi0JLyCXsYUNTSA9NIfkDijzZqNiSkeVkS9n/3tGHt0nXtHTZBYM/3pt5b0YP66a1zkPXG9Ho
+Tonl/XY1n62MshW6BdOj8Ce8hr/LkxTaismCsemE7Y66A7okqFp2Hfij9KCkgb3scD4DjN3BuuFD
+FfsxCQ/6hAYOukYBaw9nXddQWWqAqUibh2kk0wOU2kBbS4XlLRlURxZ1Ajc0SMV7kjmhOzvtPRrB
+JlPG2n5fa5W9LaODLzQA/GQFKzJ4srrKtj6HZnzrXdAMnb9Jf7w31VfZ4A3JOXvuYL1ZPSpsvbYm
+9CmW/eGADqu1aXtPtSgbILt3YPAMIyAHKiqKgAa9S+SF5M2CuHRFYx6bNj7cxUKhqMbjLn/lZZov
+vNOWSrGfz8pYH9BN73+7s73P9v6E+KAxCF+FIG/JDbNdYjxWZIJI9zQ81+Y2SEaCNkLVtsNEp6+X
+r8Og1DzPOXh8sZlAzzQSq9HnFoN/4dAQb2d5ZgX0KZz69bmnfL7q3Lc/OlITYYaWCn1t+Ifo4d0D
+MaL88fmkXx2Ty+2llW7M6lF7/kYhyj+avPLrEGXsOQaZI9J9JEd/j9J/BWk0Sf+I0pClJ8Z+AVBL
+BwgOfwkM0gEAAFYFAABQSwECFAAUAAgACAACjdE8Dn8JDNIBAABWBQAADwAAAAAAAAAAAAAAAAAA
+AAAAQmFzZTY0SmF2YS5qYXZhUEsFBgAAAAABAAEAPQAAAA8CAAAAAA==
+</filedata></file></object></item>
+<item name='$FILE' summary='true' sign='true' seal='true'><object><file hosttype='msdos'
+ compression='none' flags='sign' encoding='none' name='%%object%%.jar' size='883'>
+<created><datetime>20100617T144005,53-03</datetime></created>
+<modified><datetime>20100617T144005,53-03</datetime></modified><filedata>
+UEsDBBQACAAIAAKN0TwAAAAAAAAAAAAAAAAQAAAAQmFzZTY0SmF2YS5jbGFzc41Ta1NSQRh+ltvB
+48kLikiWpZUiCpgSFWolCoUhWDAZfmiGy+ocBw4MHBr7H/2R/ABNzPQD+lFN73I9OH6IM7y7++57
+eZ5nd//8/fUbgB8ZGQtYleCRsCbDDK8ME9bt2LDDJ2MKfgkBGWPYlPBUxjhWhdkSQdvCvS0hKMK8
+wjwTJjSG53gh4yXCYrkjYVeGS+S5sCfhlYTXDLZdVVP1Vwxmz9onBstBpcgZJhOqxpONcp7XMrl8
+iTxykRdoK6aKhdOTuMx9zQVKOe0ikNZrqnaxI7Ll6FWBV3W1otUlvKE114ZJcrrSqBV6i8lIrs5D
+wSOq4helFNzDfYaFTlm1Eog0zs95jRfjWrWhUweeKzO4+ruihmFHJC8Js09duoUzvFwlNv58KKgg
+ggOGeWNyqqGPZB8yzNUbWqCs1guByH46GgoedvjWFEQRU/BWoFOMJRS8Q1zBEd5LSCg4RlJCSsEJ
+Pij4KKJvFoxqvYJpxAY4hQAMU0M1U/lLXtAZZvq94qmBqESiJ7zwD/l3tJ8o0FTngnhX4uAth3TL
+sSWMpHYYpj2jHlFb6R5+91AY/LejGDiN6nbyrYVSpU6QbEVe4jrvXLYzBnuNa7kyz1Ru6Xo2okr6
+W13ndAPMlQZp4xzEnhCHfiODZgY3g1QVqxKpZ/HEe2wEipQWvVKpmtK9pF1yWMJdeobiZwYTl5Ls
+Iq3EyGi0eltgP2jC8ICsreMcJ/uQUk2d0O+wQqIx04Yp24Y5u96CpQXrscPmkH7CnmxjLOtrQQ5b
+2hjPtqCErW7rhtvSxJ2NJibEZLKNKZE3Hba5bU04Tn1imDkddvZTV2CCHvY05uHAMmaxDie2MUfP
+3oVduBEjMgmikyYiyxRtodxH9H88wHrdw3p+jVlq67wJmdxWcveR+5qYM6J3Efr5AXr3/6MPE3KQ
+ZhIhcRGmRcK0Qp8XqwhiDXvEJQof4sQziU18xha+0A5HaITJE5qbsPIPUEsHCAq6z0fhAgAARQUA
+AFBLAQIUABQACAAIAAKN0TwKus9H4QIAAEUFAAAQAAAAAAAAAAAAAAAAAAAAAABCYXNlNjRKYXZh
+LmNsYXNzUEsFBgAAAAABAAEAPgAAAB8DAAAAAA==
+</filedata></file></object></item>
+<item name='$POID'><datetime>20150309T094510,26-03</datetime></item></note>
+

@@ -1,0 +1,385 @@
+.fileinputs {
+	position: relative;
+}
+
+input.fakefile { 
+	FONT-WEIGHT: NORMAL; 
+	FONT-FAMILY: Arial, Tahoma, Verdana 
+	FONT-SIZE: 8pt; 
+	MARGIN: 1px 0px 1px 1px;
+/* 
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	BORDER-LEFT: gray 1px solid; 
+	BORDER-BOTTOM: gray 1px solid; 
+*/
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}   
+
+input.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+}
+
+
+.TablaContenedorEncabezadoAct 
+{
+  
+}
+
+.TablaEncabezadoAct{
+	margin-top:15px;
+	margin-left:15px;
+	font-family: Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color:black;
+	background-color :#3399CC;
+}
+
+.TituloFormulario {
+	margin-top:9px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 19pt;
+	color: #346985;
+}
+
+.SubTituloFormulario {
+	margin-top:15px;
+	margin-left:15px;
+	font-family: Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color:#ffffff;
+}
+
+.FondoDatosEncabezadoAct
+{
+	background-color: #F2F5F7;
+}
+
+Table.TablaDatosEncabezadoAct td
+{
+	border: solid #E1E1E1;
+	border-width: 0px 0px 1px 0px;
+}
+
+
+.LeyendaEncabezadoAct
+{
+	font-family: Arial,  Verdana ; 
+	font-size: 11px;
+	color : black;
+}
+
+.CampoEncabezadoAct  {
+	font-family: Arial, Verdana , Helvetica, sans-serif;
+	font-size: 11px;
+	color:#3781A5;
+}
+
+
+.TablaAct , .TablaMsgAct {
+	height:5px;
+	width:755px;
+
+	margin:6px 0px 6px 6px;
+}
+
+
+.TablaMsgActContenido {
+	background-color: #F1F5F8;
+}
+
+.TablaActContenido {
+	background-color: #F1F5F8;
+	padding:2px;
+	
+}
+
+
+.TablaActEsquina {
+	width:3px;
+	height:3px;
+	font-size:1px;
+}
+
+.TablaActBordeHoriz {
+	height:3px;
+	font-size:1px;
+}
+
+.TablaActBordeVert {
+	width:3px;
+	font-size:1px;
+}
+
+
+.TablaActEtiquetaH
+{
+	padding: 2px 2px 2px 4px;
+	width: 90px;
+	height: 21px;
+	font-size:9pt;
+	font-family: Tahoma, Verdana, Arial;
+	
+	color: #FFFFFF;
+	background-color: #80BAE4;  
+	
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+}
+
+
+
+.TablaActRestoEtiqH
+{
+	font-size:9pt;
+	font-family: Tahoma, Verdana, Arial;	
+	
+	background-color: #80BAE4;  
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+}
+
+
+.TablaActEtiqueta
+{
+	padding: 2px 2px 2px 4px;
+	width: 90px;
+	height: 21px;
+	font-size:9pt;
+	font-family: Tahoma, Verdana, Arial;
+
+
+	vertical-align: top;
+
+	color: #FFFFFF;
+	background-color: #80BAE4; 
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+	
+	
+}
+
+.TablaActContenedorCampo
+{
+	padding:2px;
+	font-size:10pt;
+	background-color: white;
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+}
+
+.TablaActContenedorGral 
+{
+	padding:2px;
+	/* background-color: white; */
+	
+	border-color:#80BAE4;
+	border-width:0px 1px 1px 1px;	
+	border-style:solid;
+}
+
+.TablaActIconoChico
+{
+	padding:1px;
+	vertical-align: top;
+	font-size:1pt;
+}
+
+
+
+.BarraNavegacionActSup {	
+	margin-top: 5px;
+	margin-bottom: 0px; 
+	height:30px;
+	font-size:1px;
+}
+
+.BarraNavegacionActInf {	
+	margin-top: 0px;
+	margin-bottom: 5px; 
+	height:30px;
+	font-size:1px;
+}
+
+
+.BordeNavInf {
+	height:5px;
+	vertical-align:top;
+	background-color:white;
+	padding:0px;
+	font-size:1px;
+}
+
+.ImagenBarraNavegacion {
+	height:1px;
+	font-size:1px;
+}
+
+
+.TextoMotivoDevolucion
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #2E7BBD;
+}
+
+.DescripcionMotivoDevolucion
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	color: red;
+}
+
+
+.TextoFirmaOK {
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #2E7BBD;
+}
+
+.TextoFirmaSinValidar {
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #2E7BBD;
+}
+
+
+.BotonAccionAct 
+{
+	width: 96px;
+	height: 23px;
+	align: center;
+	border: 0px;
+	padding:1px;
+	cursor: pointer;
+	font-size:10pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #666666;
+}
+
+
+.TablaActContenedorGrupo 
+{
+	background-color:#C2DCEF;
+	padding: 4px; 2px; 2px; 4px;
+}
+
+.TituloSeccionFormulario
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #346985;
+}
+
+
+.SubtituloSeccionFormulario
+{
+	padding-left:15px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #346985;
+}
+
+.BarraAccionesAct
+{
+	font-size:2pt;
+	font-family: Tahoma, Verdana, Arial;
+}
+.TablaDatosFormulario{
+	background-color: #F2F5F7;
+	border: solid #E1E1E1;
+	border-width: 0px 0px 1px 0px;
+}
+.TituloEncabezadoFormulario
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color:black;
+}
+.ValorEncabezadoFormulario
+{
+	font-size:9pt;
+	font-family:Tahoma,Verdana,Arial;
+	color : #999999;
+}
+.CampoCabezalFormulario{
+	font-size=8pt;
+	font-family:Tahoma,Verdana,Arial;
+	color : #999999;
+	border-bottom : solid 1px #00649F;
+	border-left : solid 1px #00649F;
+	border-right : solid 1px #00649F;
+	border-top : solid 1px #00649F;
+	background-color: #F8F7FC;
+}
+
+
+.TablaActuacion{
+border-bottom-width :  1px;
+border-left-width : 1px;
+border-right-width : 1px;
+border-top-width : 1px;
+border-top : none;
+border: solid 1px #02468D;
+}
+
+.TablaActuacionExterna{
+border-bottom-width :  1px;
+border-left-width : 1px;
+border-right-width : 1px;
+border-top-width : 1px;
+border-top : none;
+border: solid 1px #006800;
+}
+.TituloFormularioExterno {
+	margin-top:9px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 19pt;
+	color: #000000;
+}
+.TituloSeccionFormularioExterno
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #000000;
+}
+
+.TablaCompleta{
+border: solid 1px #02468D;
+}
+
+.TablaEstadoForm{background-color: #FFFFFF;}  
+ .CeldaTituloEstadoForm{border-bottom :  solid 1px #ffffff;border-left-width : 0px;border-right-width : 0px;border-top-width : 0px;border-top : none;font-family:Tahoma,Arial;font-size:9pt;background-color: #FFFFFF; color:black;}  
+ .CeldaValorEstadoForm{border-bottom :  solid 1px #ffffff;border-left-width : 0px;border-right-width : 0px;border-top-width : 0px;border-top : none;font-family:Tahoma,Arial;font-size:9pt;background-color: #FFFFFF; color:black;}  

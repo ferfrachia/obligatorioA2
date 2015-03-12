@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF80042C028'>
+<noteinfo noteid='776' unid='7554F3AFA1AC45788325753D006A65EA' sequence='26'>
+<created><datetime dst='true'>20090113T172209,06-02</datetime></created>
+<modified><datetime>20150309T094400,28-03</datetime></modified>
+<revised><datetime>20150309T094400,27-03</datetime></revised>
+<lastaccessed><datetime>20150309T094400,28-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T100913,47-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name
+>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>cambiarEstado</text></item>
+<item name='$AssistType' sign='true'><number>65412</number></item>
+<item name='$AssistLastRun' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$AssistDocCount' sign='true'><number>0</number></item>
+<item name='$FlagsExt' sign='true'><text/></item>
+<item name='$AssistFlags' sign='true'><text>Es</text></item>
+<item name='$AssistTrigger' sign='true'><text>4</text></item>
+<item name='$AssistInfo' sign='true'>
+<rawitemdata type='11'>
+AQAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</rawitemdata></item>
+<item name='$AssistQuery' sign='true'>
+<rawitemdata type='f'>
+gQYAAAAA
+</rawitemdata></item>
+<item name='$AssistAction' sign='true'>
+<rawitemdata type='10'>
+gQKE/0gAAAAAAD4APgADAB4ABwBzRXN0YWRvAAEACQBSZXNlcnZhZG8AAwAHAAoAAwAJMVMAAAAI
+AGYAAwAHAAwABgAJMFJMMVM=
+</rawitemdata></item>
+<item name='$AssistAction_Ex' sign='true'>
+<rawitemdata type='14'>
+gQI=
+</rawitemdata></item>
+<item name='$Restricted' sign='true'><number>1</number></item>
+<item name='$Flags'><text>f3</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$AssistRunInfo' summary='true'>
+<rawitemdata type='3'>
+BgAAAgAACAByBwAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAABgEAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAfpVnAIB1JYMBAAAADJxnAIB1JYNdjmkAv3MlgwAAAAAAAAAAAAAAAAAAAAAAAAAAU3RhcnRl
+ZCBydW5uaW5nIGFnZW50ICdjYW1iaWFyRXN0YWRvJyBvbiAyMS8wMy8yMDA5IDAzOjUxOjI0IHAu
+bS4NClJ1bm5pbmcgb24gc2VsZWN0ZWQgZG9jdW1lbnRzOiAxIHRvdGFsDQpGb3VuZCAxIGRvY3Vt
+ZW50KHMpIHRoYXQgbWF0Y2ggc2VhcmNoIGNyaXRlcmlhDQoxIGRvY3VtZW50KHMpIHdlcmUgbW9k
+aWZpZWQgYnkgZm9ybXVsYQ0KRG9uZSBydW5uaW5nIGFnZW50ICdjYW1iaWFyRXN0YWRvJyBvbiAy
+MS8wMy8yMDA5IDAzOjUxOjI0IHAubS4NCgANCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqq
+</rawitemdata></item>
+<item name='$POID'><datetime>20130923T103123,92-03</datetime></item>
+<item name='$AssistVersion'><datetime>20150309T094355,80-03</datetime></item></note>
+

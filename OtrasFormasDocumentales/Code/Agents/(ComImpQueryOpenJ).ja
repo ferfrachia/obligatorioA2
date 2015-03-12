@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF80042C028'>
+<noteinfo noteid='79e' unid='1954741A17E0FA388325755400604442' sequence='27'>
+<created><datetime dst='true'>20090205T153129,30-02</datetime></created>
+<modified><datetime>20150309T094400,40-03</datetime></modified>
+<revised><datetime>20150309T094400,39-03</datetime></revised>
+<lastaccessed><datetime>20150309T094400,40-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T100913,59-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FILE' summary='true' sign='true' seal='true'><object><file hosttype='msdos'
+ compression='none' flags='sign' encoding='none' name='%%source%%.jar' size='948'>
+<created><datetime>20030815T105220,69-03</datetime></created>
+<modified><datetime dst='true'>20131129T165938,84-02</datetime></modified><filedata
+>
+UEsDBBQACAAIAHKHfUMAAAAAAAAAAAAAAAAOAAAASmF2YUFnZW50LmphdmF9VVFv0zAQfg7S/oPJ
+k8OmiBeeSiQ6OqQhVkCDvUx7cOxb5+LYwXYGBe2/c3biJF3HorZpzt9957vvzpFNa6wnyvjOlcI0
+Upvy1eLoheztW3bPys5LdWCUhzgHvLPS7+YLrtNPQUfKoxdtVyvJCVfMOfIRF5cb0J7Abw9aOBKf
+TpkD8jegswF+b6Qga+PBXTCpaTGsZt7uwt8syy7BOWk0ccO9Ihvwg5EWi4iJ5O+N9hiNsPlDlfxK
+9JrDBleCV7qvmGd12KGo0W9OE5zfd9aiJYFS6JXhXRMSFYZPQR87J9R+8HD1OXor9YY4b792gJlX
+M7bgfu6huWKqgx5IcynygeLRJoJrPY94uvu+Pl/RRD33ugLujSX3H4xtZoWCe4zEPND83dJ7xu8C
+zZo14PITIgaCtGNX5XlvkbeEvoxcJSgIPktPXxcl/OyYcjTPi2JQNPtcbzE00aapLbjrGwzeO3qz
+tJbtxvLEJ1c67Dc6oIvFWLUec2sslZi6rF4v5Nuex8k/QSB5fDzGzM6aGoQAMQQHE0oVu2JMMsW4
+lje4laHWxahVyBBMVelOqYJc7hyqUprOly0CvdI0P/tM1t8/fcpHl3Pddh6JgDVEhohgop6TOeZK
+xmsII58Ng0xhMT9wrXcesJx1peEXiQ84sziKUrFaYUVuFnvw7HFkU+KWBK3H/V9gT2Avr+QGnCdN
+aK89U5+M80xz7JeL1Zsp9UaUXStCH010w/445xWSlSJy0F7SUdYoKYmablHT7VuElwr0xt8ttqho
+lhTNMueOK1y93t6kCA9zHsyHKxNnNdgGK4Qs+Y6r3j6AH/r7w9RZouSm3S2VCtPn6DSRJ8TbDnrO
+wwk0/EvX+qB1mESOBfWQVlNjH1JHnxNyi6MCCTQdARZaxTiMxwDN+6bFicQSiCePCIGllRpPKyvN
+lXR5cUz2gefIvQFLc85XM6yLYPJftF5jKtY8AUmRGb4s/HMAt7bmDN8LViNq0mAozSROKkMszoG9
+fgI5FWxvZe84frSWjr1980N8K3Dm+R09+82h9eHdA+k4gX4YL1GEH98sSpPc8Ae/+Dn6B1BLBwhd
+tJ3JJgMAAJIHAABQSwECFAAUAAgACAByh31DXbSdySYDAACSBwAADgAAAAAAAAAAAAAAAAAAAAAA
+SmF2YUFnZW50LmphdmFQSwUGAAAAAAEAAQA8AAAAYgMAAAAA
+</filedata></file></object></item>
+<item name='$FILE' summary='true' sign='true' seal='true'><object><file hosttype='msdos'
+ compression='none' flags='sign' encoding='none' name='%%object%%.jar' size='1582'>
+<created><datetime dst='true'>20090210T165745,07-02</datetime></created>
+<modified><datetime dst='true'>20131129T165938,85-02</datetime></modified><filedata
+>
+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
+</filedata></file></object></item>
+<item name='$JavaCompilerSource' sign='true'><text>1.3</text></item>
+<item name='$JavaCompilerTarget' sign='true'><text>1.2</text></item>
+<item name='$TITLE' sign='true'><text>(ComImpQueryOpenJ)</text></item>
+<item name='$AssistType' sign='true'><number>65427</number></item>
+<item name='$AssistLastRun' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$AssistDocCount' sign='true'><number>0</number></item>
+<item name='$FlagsExt' sign='true'><text/></item>
+<item name='$AssistFlags' sign='true'><text>EHs</text></item>
+<item name='$AssistTrigger' sign='true'><text>4</text></item>
+<item name='$AssistInfo' sign='true'>
+<rawitemdata type='11'>
+AQAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</rawitemdata></item>
+<item name='$AssistQuery' sign='true'>
+<rawitemdata type='f'>
+gQYAAAAA
+</rawitemdata></item>
+<item name='$AssistAction' sign='true'>
+<rawitemdata type='10'>
+gQKT/1gADwAXAB8AAQAAAAAAAABKYXZhQWdlbnQuY2xhc3NDOlxJQk1cTG90dXNcTm90ZXNcRGF0
+YSUlc291cmNlJSUuamFyACUlb2JqZWN0JSUuamFyAAAA
+</rawitemdata></item>
+<item name='$AssistAction_Ex' sign='true'>
+<rawitemdata type='14'>
+gQI=
+</rawitemdata></item>
+<item name='$Restricted' sign='true'><number>2</number></item>
+<item name='$Flags'><text>fJj3</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item>
+<item name='$AssistRunInfo' summary='true'>
+<rawitemdata type='3'>
+BgAAAgAACACaBwAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAmAAAAAAAAAAAAAAAAAAAABAAAAAA
+AAAAyepGAL59JYMAAAAAwJ1IAI59JYM1EHIAjH0lgwAAAAAAAAAAAAAAAAAAAAAAAAAAU3RhcnRl
+ZCBydW5uaW5nIGFnZW50ICdDb21JbXBRdWVyeU9wZW5KJyBvbiAzMC8xMi8yMDE0IDEwOjU0OjM2
+DQpSYW4gSmF2YSBBZ2VudCBDbGFzcw0KRG9uZSBydW5uaW5nIGFnZW50ICdDb21JbXBRdWVyeU9w
+ZW5KJyBvbiAzMC8xMi8yMDE0IDEwOjU0OjM2DQoADQqWtPL8zzUDOQO/RgA2fCWDAzkDv0YANnwl
+g6qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqq
+</rawitemdata></item>
+<item name='$POID'><datetime dst='true'>20131129T170255,81-02</datetime></item>
+<item name='$AssistVersion'><datetime>20150309T094355,86-03</datetime></item></note>
+

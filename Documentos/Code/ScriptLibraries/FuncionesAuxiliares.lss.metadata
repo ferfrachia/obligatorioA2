@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A23D7" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="bfa" sequence="43" unid="013828CE3128DF35832577FB0055D3E1">
+<created><datetime dst="true">20101216T133728,01-02</datetime></created>
+<modified><datetime>20150311T132447,86-03</datetime></modified>
+<revised><datetime>20150309T094412,44-03</datetime></revised>
+<lastaccessed><datetime>20150311T132447,86-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132447,86-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Jose Emilio Caceres Baez/O=VISION</name><name>CN=Victoria Acuña/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>FuncionesAuxiliares</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20140701T145313,12-03</datetime></item></note>

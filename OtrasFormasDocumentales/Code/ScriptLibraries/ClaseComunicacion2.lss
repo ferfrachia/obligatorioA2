@@ -1,0 +1,128 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "FuncionesGenerales"
+Use "ConstantesSistema"
+Use "Configuracion Comunicaciones"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Comunicacion
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PRIVADAS
+Private Const VISTA_INDICE				= "vIndicexSistema"
+
+'MENSAJES DE ERROR
+Public Const ERROR_DB_CONFIG_NOTHING		= 15001
+Public Const MSG_ERROR_DB_CONFIG_NOTHING	= "La base de Administración y Configuración no está seteada"
+Public Const ERROR_VISTA_INDICE_NOTHING		= 15002
+Public Const MSG_ERROR_VISTA_INDICE_NOTHING	= "No se encontró la vista con el índice de documentos por sistema"
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <COMUNICACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Comunicacion
+'******************************************************************************************************************
+'ATRIBUTOS PRIVADOS
+	Private codigo As String
+	Private nroCom As String
+	Private anio As Integer
+	
+'******************************************************************************************************************
+'CONSTRUCTOR
+	
+	Public Sub new(Byval sCodigo As String, Byval sNroCom As String, Byval nAnio As Integer)
+		codigo = sCodigo
+		nroCom = sNroCom
+		anio = nAnio
+	End Sub
+	
+'******************************************************************************************************************
+'SELECTORAS
+	
+	Public Function getDBComunicacion() As NotesDatabase
+		On Error Goto HANDLER
+		Dim c As ConfigComunicaciones
+		Dim sServidorConfig As String
+		Dim sPathConfig As String
+		Dim formatoNumeracion As String
+		Dim i As Long
+		Dim dbConfig As NotesDatabase
+		Dim vIndice As NotesView
+		Dim vDocConfig As NotesView
+		Dim dcIndice As NotesDocumentCollection
+		Dim docDefCom As NotesDocument
+		Dim docIndice As NotesDocument
+		Dim docAux As NotesDocument
+		Dim aKeys(1 To 2) As Variant
+		
+		'hallo la base de administración y configuración
+		Set c = New ConfigComunicaciones
+		sServidorConfig = c.ServidorDomino(CLAVE_DBADMINCONF)
+		sPathConfig = c.BaseDeDatos(CLAVE_DBADMINCONF)
+		Set dbConfig = New NotesDatabase(sServidorConfig, sPathConfig)
+		If dbConfig Is Nothing Then
+			Error ERROR_DB_CONFIG_NOTHING, MSG_ERROR_DB_CONFIG_NOTHING
+		End If
+		
+		'configuración de la comunicación
+		Set vDocConfig = dbConfig.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(codigo)
+		formatoNumeracion = docDefCom.GetItemValue("sNumeracionFormato")(0)
+		
+		'hallo la vista usada para el índice
+		Set vIndice = dbConfig.GetView(VISTA_INDICE)
+		If vIndice Is Nothing Then
+			Error ERROR_VISTA_INDICE_NOTHING, MSG_ERROR_VISTA_INDICE_NOTHING
+		End If
+		
+		'hallo la lista de entradas del índice
+		aKeys(1) = CLAVE_SISTEMA
+		aKeys(2) = anio
+		Set dcIndice = vIndice.GetAllDocumentsByKey(aKeys)
+		
+		'recorro el índice buscando en cual estaría el documento
+		i = 1
+		While i<=dcIndice.Count And docIndice Is Nothing
+			Set docAux = dcIndice.GetNthDocument(i)
+			If esNumeroMayor(docAux.getItemValue("sCodigoDesde")(0),nroCom) Then
+				Set docIndice = docAux
+			End If
+			i = i+1
+		Wend
+		
+		'si no encontré una base adecuada, tengo que crear una
+		If docIndice Is Nothing Then
+			
+		End If
+		
+		'accedo y devuelvo la base
+		Set getDBComunicacion = New NotesDatabase(docIndice.GetItemValue("sServidor")(0), docIndice.GetItemValue("sPath")(0))
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"ClaseComunicacion - getDBComunicacion","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************
+'AUXILIARES
+	
+	Private Function esNumeroMayor(Byval numeroBase, Byval numero) As Boolean
+		On Error Goto HANDLER
+		
+		esNumeroMayor = True
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"ClaseComunicacion - esNumeroMayor","")
+		Exit Function
+	End Function
+	
+	
+'******************************************************************************************************************	
+End Class
+'******************************************************************************************************************	

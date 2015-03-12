@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+
+	<xp:this.data>
+		<xp:dominoDocument var="document1" formName="FPunto"></xp:dominoDocument>
+	</xp:this.data>
+	
+	<xc:JQuery></xc:JQuery></xp:view>

@@ -1,0 +1,33 @@
+<mxDefaultToolbar>
+	<add as="select" mode="select" icon="/mxgraph/Expediente/images/select.gif"/>
+	<add as="pan" mode="pan" icon="/mxgraph/Expediente/images/pan.gif"/>
+	<br/><hr/>
+	<add as="undo" action="undo" icon="/mxgraph/Expediente/images/undo.gif"/>
+	<add as="redo" action="redo" icon="/mxgraph/Expediente/images/redo.gif"/>
+	<br/><hr/>
+	<add as="cut" action="cut" icon="/mxgraph/Expediente/images/cut.gif"/>
+	<add as="copy" action="copy" icon="/mxgraph/Expediente/images/copy.gif"/>
+	<add as="paste" action="paste" icon="/mxgraph/Expediente/images/paste.gif"/>
+	<add as="delete" action="delete" icon="/mxgraph/Expediente/images/delete.gif"/>
+	<add as="zoomIn" action="zoomIn" icon="/mxgraph/Expediente/images/zoomin.gif"/>
+	<add as="zoomOut" action="zoomOut" icon="/mxgraph/Expediente/images/zoomout.gif"/>
+	<br/><hr/>
+	<add as="Inicio" template="inicio" icon="/mxgraph/Expediente/images/symbols/small_event.gif"/>
+	
+	<add as="Fin" template="fin" icon="/mxgraph/Expediente/images/symbols/small_terminate.gif"/>
+	<add as="Unidad" template="unidad" icon="/mxgraph/Expediente/images/rectangle.gif"/>
+	<add as="Grupo" template="grupo" icon="/mxgraph/Expediente/images/grupo.gif"/>
+	<add as="Cualquier unidad" template="u_cualquiera" icon="/mxgraph/Expediente/images/rounded.gif"/>
+	<add as="connect" mode="connect" icon="/mxgraph/Expediente/images/straight.gif"><![CDATA[
+		function (editor)
+		{
+			if (editor.defaultEdge != null)
+			{
+				editor.defaultEdge.style = 'straightEdge';
+			}
+		}
+	]]></add>
+	<br/><hr/>
+	
+	
+</mxDefaultToolbar>

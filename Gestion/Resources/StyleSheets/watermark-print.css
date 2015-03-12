@@ -1,0 +1,28 @@
+body{
+	margin:0;
+}
+div.watermark{
+	display:block;
+	position:fixed; /*fixed para IE8*/
+	z-index:-1;
+	width:100%;
+	height:100%;
+}
+	div.watermark div{
+		position:fixed;
+		left:0;
+		width:99%;
+	}
+	
+
+/* watermark position */
+/* horizontal */
+div.left{text-align:left;}
+div.center{text-align:center;}
+div.right{text-align:right;}
+	body:last-child:not(:root:root) div.right div{left:-160px;}/* safari only */
+
+/* vertical */
+div.top div{top:0;}
+div.middle div{top:35%;margin-top:-80px;}
+div.bottom div{bottom:2px;}

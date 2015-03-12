@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050059030D" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="cf2" sequence="16" unid="BEDF32BF797E7A198325780D0059FDAF">
+<created><datetime dst="true">20110103T142256,47-02</datetime></created>
+<modified><datetime>20150311T131229,38-03</datetime></modified>
+<revised><datetime>20150309T094454,55-03</datetime></revised>
+<lastaccessed><datetime>20150311T131229,38-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131229,38-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+
+<item name="$FileModDT" sign="true"><datetime dst="true">20110103T142243,53-02</datetime></item>
+
+<item name="$FileNames" sign="true"><text>iGDoc_estructura.css</text></item>
+<item name="$TITLE" sign="true"><text>BKUPiGDoc_estructura.css</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item></note>

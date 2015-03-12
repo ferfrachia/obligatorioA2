@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050059030D" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="cee" sequence="15" unid="FD02BC8B1923EB0A8325780D0042CAEC">
+<created><datetime dst="true">20110103T100933,24-02</datetime></created>
+<modified><datetime>20150311T131229,36-03</datetime></modified>
+<revised><datetime>20150309T094454,53-03</datetime></revised>
+<lastaccessed><datetime>20150311T131229,36-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131229,36-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=IMM</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Pablo Damseaux/O=IMM</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>menuTree.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20150309T094454,53-03</datetime></item></note>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF8003FF550" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="3e6" sequence="106" unid="D1DA472F52A823AA83257608000368A5">
+<created><datetime>20090803T213713,97-03</datetime></created>
+<modified><datetime>20150309T094523,03-03</datetime></modified>
+<revised><datetime>20150309T094523,02-03</datetime></revised>
+<lastaccessed><datetime>20150309T094523,03-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T093839,40-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Gonzalo Rodriguez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime>20090505T174710,24-03</datetime></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>UnidadCom Class</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+</note>

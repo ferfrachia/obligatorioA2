@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	pageTitle="Migracion de resoluciones"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xp:this.data>
+		<xp:dominoDocument var="document1" formName="FPunto">
+
+
+		</xp:dominoDocument>
+	</xp:this.data>
+	<xp:this.resources>
+		<xp:styleSheet href="/punto.css"></xp:styleSheet>
+		<xp:styleSheet href="/estiloMenuGris.css"></xp:styleSheet>
+
+	</xp:this.resources>
+
+	<xp:panel style="width:100%">
+
+		<xp:table style="width:99%" border="0" cellpadding="0"
+			cellspacing="0" styleClass="TablaActContenedorCampo" id="tabla">
+			<xp:tr>
+				<xp:td style="height:40.0px;display:none"></xp:td>
+				<xp:td style="display:none">
+					<xp:inputText id="inputText3"
+						value="#{document1.ccEstado}" defaultValue="Publicado">
+					</xp:inputText>
+					<xp:inputText id="inputText4"
+						value="#{document1.Autores}">
+					<xp:this.defaultValue><![CDATA[[GestionResoluc]]]></xp:this.defaultValue></xp:inputText>
+
+					<xp:inputText id="txtMigrado"
+						value="#{document1.Migrado}" defaultValue="1">
+						<xp:this.converter>
+							<xp:convertNumber type="number"
+								integerOnly="true">
+							</xp:convertNumber>
+						</xp:this.converter>
+					</xp:inputText>
+					<xp:inputText id="inputText6"
+						value="#{document1.SesionFinalizada}" defaultValue="1">
+					</xp:inputText>
+					<xp:br></xp:br>
+
+
+					<xp:inputText id="txtProtocolo">
+						<xp:this.value><![CDATA[#{javascript:@If(@UserName="Anonymous","http",@GetProfileField("(ConfiguracionRD)","rProtocolo"));}]]></xp:this.value>
+					</xp:inputText>
+					<xp:inputText id="txtPuerto">
+						<xp:this.value><![CDATA[#{javascript:@If(@UserName="Anonymous","80",@GetProfileField("(ConfiguracionRD)","sPuerto"));}]]></xp:this.value>
+					</xp:inputText>
+				</xp:td>
+
+			</xp:tr>
+
+
+			<xp:tr>
+				<xp:td styleClass="CeldaTituloAct">
+					<xp:image url="/docs.gif" id="image1"></xp:image>
+				</xp:td>
+				<xp:td styleClass="CeldaTituloAct">
+
+					<xp:span styleClass="TituloAct"></xp:span>
+					<xp:br id="br1"></xp:br>
+					<xp:span styleClass="TituloAct">Migración</xp:span>
+					<xp:span styleClass="TituloAct">de</xp:span>
+					<xp:span styleClass="TituloAct">
+						Resoluciones
+					</xp:span>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Fecha creación:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:inputText id="inputText1"
+						value="#{document1.ccfCreacion}">
+						<xp:dateTimeHelper id="dateTimeHelper1"></xp:dateTimeHelper>
+						<xp:this.converter>
+							<xp:convertDateTime pattern="dd/MM/yyyy"></xp:convertDateTime>
+						</xp:this.converter>
+					</xp:inputText>
+
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Referencia:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:inputText id="txtAsunto"
+						value="#{document1.sAsunto}" style="width:200px">
+
+						<xp:eventHandler event="onblur"
+							submit="false">
+							<xp:this.script><![CDATA[var campo = document.getElementById("#{id:txtAsunto}");
+campo.value = campo.value.toUpperCase();]]></xp:this.script>
+						</xp:eventHandler>
+					</xp:inputText>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">Tema:</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+
+					<xp:comboBox id="cbxTema" value="#{document1.sTema}"
+						style="width:200px">
+
+						<xp:selectItems id="selectItems1">
+							<xp:this.value><![CDATA[#{javascript:var docConf:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+var vec:Array =@Trim(docConf.getItemValue("sTemas"));
+return docConf.getItemValue("sTemas");
+}]]></xp:this.value>
+						</xp:selectItems>
+
+					</xp:comboBox>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Acceso Publico
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo" id="td1">
+
+					<xp:radioGroup id="radioGroup1"
+						layout="lineDirection" defaultValue="0"
+						value="#{document1.$PublicAccess}">
+						<xp:selectItem itemLabel="Si" itemValue='1'
+							id="selectItem1">
+						</xp:selectItem>
+						<xp:selectItem itemLabel="No" itemValue='0'
+							id="selectItem2">
+						</xp:selectItem>
+
+					</xp:radioGroup>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Expediente Nro:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:inputText id="inputText2"
+						value="#{document1.ccNroExp}" style="width:200px">
+					</xp:inputText>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Resolución Nro.:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:inputText id="txtNroRes"
+						value="#{document1.ccnNroRes}" style="width:200px"
+						readonly="#{javascript:return !document1.isNewNote() ;}"
+						disabled="#{javascript:return !document1.isNewNote() ;}">
+						<xp:this.validators>
+							<xp:customValidator>
+								<xp:this.validate><![CDATA[#{javascript:var vista:NotesView = database.getView("ResolucionesXNro");
+print("view="+ vista);
+var doc:NotesDocument = vista.getDocumentByKey(this.getSubmittedValue());
+print("doc= "+ doc);
+if(doc == null)
+{
+	this.setValid(true);
+}
+else
+{
+		if(document1.isEditable() & document1.isNewNote()){
+		//print("ENTRO AL ELSE CUANDO EL DOCUMENTO YA EXISTE");
+		var msgStr = " · Ya existe este número de resolución. ";
+	    var msgObj = new javax.faces.application.FacesMessage(javax.faces.application.FacesMessage.SEVERITY_FATAL, msgStr, msgStr);
+	    facesContext.addMessage(getClientId(this.getId()), msgObj);
+		this.setValid(false);
+		}
+		if(document1.isEditable() & !document1.isNewNote()){
+			this.setValid(true);
+		}
+	
+}
+	}]]></xp:this.validate>
+							</xp:customValidator>
+
+
+						</xp:this.validators>
+					</xp:inputText>
+
+					<xp:message id="message2" for="txtNroRes"
+						fatalClass="FatalError">
+					</xp:message>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Sesión Nro.:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:inputText id="txtNroSes"
+						value="#{document1.sNroSesion}" style="width:200px">
+
+						<xp:this.validators>
+							<xp:customValidator>
+								<xp:this.validate><![CDATA[#{javascript:var docConf:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");//"sFormNroSes"
+var formato = docConf.getItemValueString("sFormNroSes");
+
+var nro = docConf.getItemValueString("rMigracionNro");
+var anio= "";
+var anio2="";
+var conanio=false;
+var numerador,numerador2="";
+var numeral=0;
+var numerales=0;
+var posnral =0;
+var nroSubmited = this.getSubmittedValue();
+
+/**IMPORTANTE
+	*
+	* si el numero (de configuracion o ingresado ) contiene 
+	* puntos de mil o comas.. va a 
+	* retornar solo el primer elemento de la conversion solo 
+	* si este es numerico.. lo que este despues del punto o 
+	* coma.. no se parseará
+	* Por dicho morivo vamos a reemplazar dichos elementos
+	*
+**/
+
+nro = nro.replace(",","").replace(".","");
+nroSubmited = nroSubmited.replace(",","").replace(".","");
+
+
+while ( numeral<formato.length){
+	if(formato.charAt(numeral).equals("#")){
+		numerales= numerales +1;
+	}
+	numeral = numeral+1;
+}
+posnral = formato.indexOf("#");
+//----------------------------------------------------------
+numerador = nroSubmited.substring(posnral,numerales);
+numerador2= nro.substring(posnral,numerales);
+//-----------------------------------------------------------
+var pos= formato.indexOf("yyyy");
+var pos2 = formato.lastIndexOf("yyyy");
+if(pos>=0){
+	conanio=true;
+	//----
+	anio= nroSubmited.substring(pos,pos+4);
+	anio2= nro.substring(pos,pos+4);
+	//----
+}else{
+	pos=formato.indexOf("yyy");
+	pos2 = formato.lastIndexOf("yyy");
+	if(pos>=0){
+		//----
+		anio= nroSubmited.substring(pos,pos2);	
+		anio2= nro.substring(pos,pos+4);
+		//----	
+	}else{
+		pos=formato.indexOf("yy");
+		pos2 = formato.lastIndexOf("yy");
+		if(pos>=0){
+			//----
+			anio= nroSubmited.substring(pos,pos2);
+			anio2= nro.substring(pos,pos+4);
+			//----
+		}//else if(pos==-1){//caso de numeracion unica y/o sin año
+		//	conanio=false ;
+		//}
+	}
+}
+//--------- en este punto tenemos el anio y el numero de la sesion
+//print("ingresado num="+numerador+" anio="+anio);
+//print("base num="+numerador2+" anio="+anio2);		
+
+
+
+
+if(parseInt(anio)<parseInt(anio2)){
+	this.setValid(true);
+}else{
+	if(parseInt(anio)==parseInt(anio2)){//si es el mismo año controlo por el numero
+		if(parseInt(numerador)<parseInt(numerador2)){
+			this.setValid(true);
+		}else{
+		var msgStr = " · No es posible ingresar una sesion con dicho número. ";
+	    var msgObj = new javax.faces.application.FacesMessage(javax.faces.application.FacesMessage.SEVERITY_FATAL, msgStr, msgStr);
+	    facesContext.addMessage(getClientId(this.getId()), msgObj);
+		this.setValid(false);
+		}
+	}else{
+		var msgStr = " · No es posible ingresar una sesion con dicho número. ";
+	    var msgObj = new javax.faces.application.FacesMessage(javax.faces.application.FacesMessage.SEVERITY_FATAL, msgStr, msgStr);
+	    facesContext.addMessage(getClientId(this.getId()), msgObj);
+		this.setValid(false);
+	}
+
+}
+}]]></xp:this.validate>
+							</xp:customValidator>
+						</xp:this.validators>
+					</xp:inputText>
+
+
+					<xp:message id="message1" fatalClass="FatalError"
+						for="txtNroSes">
+					</xp:message>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Acta Nro.:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:inputText id="txtNroActa"
+						value="#{document1.sNroActa}" style="width:200px">
+					</xp:inputText>
+				</xp:td>
+			</xp:tr>
+			<xp:tr>
+				<xp:td rowspan="4"
+					styleClass="TablaActEtiquetaBlanco">
+					Documentos para adjuntar:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+
+					<xp:fileUpload id="fileUpload1"
+						value="#{document1.attachs}" style="width:290.0px">
+					</xp:fileUpload>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:fileUpload id="fileUpload2"
+						value="#{document1.attachs}" style="width:290.0px">
+					</xp:fileUpload>
+				</xp:td>
+			</xp:tr>
+			<xp:tr>
+
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:fileUpload id="fileUpload3"
+						value="#{document1.attachs}" style="width:290.0px">
+					</xp:fileUpload>
+				</xp:td>
+			</xp:tr>
+			<xp:tr>
+
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:fileUpload id="fileUpload4"
+						value="#{document1.attachs}" style="width:290.0px">
+					</xp:fileUpload>
+				</xp:td>
+			</xp:tr>
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiquetaBlanco">
+					Documentos adjuntos:
+				</xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:fileDownload rows="30" id="fileDownload1"
+						displayLastModified="false" value="#{document1.attachs}"
+						allowDelete="${javascript:document1.isEditable();}"
+						hideWhen="true" displaySize="false" typeTitle="Tipo"
+						createdTitle="Fecha de Creación" deleteImageTitle="Eliminar"
+						fileNameTitle="Nombre de Archivo" style="width:80%">
+
+					</xp:fileDownload>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td></xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:messages id="messages" fatalClass="FatalError"
+						infoClass="InfoError"
+						style="background-color:rgb(255,255,255);border-color:rgb(255,255,255)">
+					</xp:messages>
+				</xp:td>
+			</xp:tr>
+			<xp:tr>
+				<xp:td></xp:td>
+				<xp:td styleClass="TablaActContenedorCampo">
+					<xp:button id="btnGuardar" value=" Guardar"
+						icon="/save.gif">
+
+						<xp:this.rendered><![CDATA[#{javascript:print(context.getUser().getRoles());
+return document1.isEditable()& context.getUser().getRoles().contains('[GestionResoluc]')& !viewScope.containsKey("borre");}]]></xp:this.rendered>
+						<xp:eventHandler event="onclick" submit="true"
+							refreshMode="complete" id="eventHandler2" immediate="false"
+							save="false">
+							<xp:this.action><![CDATA[#{javascript:if(document1.getAttachmentList("attachs").size() == 0){
+
+	var msgStr = "· Debe adjuntar un documento.";
+    var msgObj = new javax.faces.application.FacesMessage(javax.faces.application.FacesMessage.SEVERITY_FATAL, msgStr, msgStr);
+    facesContext.addMessage("messages", msgObj);
+	
+	return false;
+}else{
+	
+	var msgStr = " · Se ha guardado correctamente la resolucion: "+document1.getItemValueString("ccnNroRes");
+    var msgObj = new javax.faces.application.FacesMessage(javax.faces.application.FacesMessage.SEVERITY_INFO, msgStr, msgStr);
+    facesContext.addMessage("messages", msgObj);
+	//document1.getDocument(true).getFirstItem("Autores").setAuthors(true);
+	print("a");
+	var document:NotesDocument =document1.getDocument(true);
+	document.getFirstItem("Autores").setAuthors(true);
+	print("b");
+	document.save();
+	context.reloadPage();
+	//document.save();
+	
+	//document1.save();
+	
+	
+}}]]></xp:this.action>
+						</xp:eventHandler>
+					</xp:button>
+
+					<xp:button value=" Cerrar" id="button1"
+						icon="/images%2Ficons%2Fremove.gif">
+						<xp:eventHandler event="onclick" submit="false"
+							id="eventHandler4">
+							<xp:this.script><![CDATA[
+if(confirm("Si cierra se perderán los cambios no guardados. ¿Desea continuar?"))
+{
+	window.close();
+	opener.location.reload(true);
+	
+}]]></xp:this.script>
+
+
+						</xp:eventHandler>
+					</xp:button>
+					<xp:button value="Borrar Resolución" id="btnBorrar"
+						icon="/papelera1.gif">
+						<xp:this.rendered><![CDATA[#{javascript:document1.isEditable()& context.getUser().getRoles().contains('[GestionResoluc]')& !document1.isNewNote()
+;}]]></xp:this.rendered>
+
+						<xp:eventHandler event="onclick" submit="true"
+							refreshMode="partial" immediate="false" save="false"
+							refreshId="tabla">
+							<xp:this.action><![CDATA[#{javascript:
+document1.setValue("Form","aBorrar");
+document1.save();
+var msgStr = " · Se ha borrado correctamente la resolucion: "+document1.getItemValueString("ccnNroRes");
+var msgObj = new javax.faces.application.FacesMessage(javax.faces.application.FacesMessage.SEVERITY_INFO, msgStr, msgStr);
+facesContext.addMessage("messages", msgObj);
+viewScope.put("borre",true);}]]></xp:this.action>
+							<xp:this.onComplete><![CDATA[var pathname=location.pathname;  
+//(document.getElementById("txtProtocolo").value+'://'+location.hostname+":"+document.getElementById("txtPuerto").value+pathname.substring(0,(pathname.toUpperCase().indexOf('.NSF')+5)))  
+//document.getElementById("txtProtocolo").value+"//"+location.hostname+":"+document.getElementById("txtPuerto").value+pathname.substring(0,pathname.toUpperCase().indexOf(".NSF")+5);
+opener.open(document.getElementById("#{id:txtProtocolo}").innerHTML+"://"+location.hostname+":"+document.getElementById("#{id:txtPuerto}").innerHTML+pathname.substring(0,pathname.toUpperCase().indexOf(".NSF")+5)+"/inicio?OpenFrameSet");
+window.focus();]]></xp:this.onComplete>
+
+						</xp:eventHandler>
+					</xp:button>
+				</xp:td>
+
+			</xp:tr>
+			<xp:tr>
+				<xp:td></xp:td>
+				<xp:td></xp:td>
+			</xp:tr>
+		</xp:table>
+	</xp:panel>
+</xp:view>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='12a' unid='28D4A4792C54E0F103257582004A455B' sequence='38'>
+<created><datetime>20090323T103114,19-03</datetime></created>
+<modified><datetime>20150311T132731,38-03</datetime></modified>
+<revised><datetime>20150309T094456,09-03</datetime></revised>
+<lastaccessed><datetime>20150311T132731,38-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132731,38-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>InicioNotes</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIAAgAAAAAAAAAAAAAAAAAAAAAA8P86AAAAAAABAAAAAAAHAAcAAAAAAAUAAAAAAAUAAAAA
+AAEAAQAAAAAABQAAAAAAAAADAAEAAgAUAPH/NAAAAAAAAEABAAMAAQABAAAAAAAAAAAAAAABAAAA
+AAAAAAEA////AAEAAAoBAAAAAAD2/y0AAAAAAAMABwALAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5p
+Y2lvTm90ZXM/
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item></note>
+

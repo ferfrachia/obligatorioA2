@@ -1,0 +1,45 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "VectorClass 2.05"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SolicitudWorkflow
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Class SolicitudWorkflow
+	Private  dbWorkFlow As NotesDatabase
+	Private solicitud As NotesDocument
+	
+	'Constructor de la clase
+	Sub new()
+		
+	End Sub
+	' Setea un campo, remplazando los valores
+	Sub setearCampo(nombreCampo As String, valor As Vector)
+		Call solicitud.ReplaceItemValue(nombreCampo,valor.values)
+	End Sub
+	
+	'Agregar valor
+	Sub agregarValor(nombreCampo As String,valor As Variant)
+		Dim vValores As New Vector(0)
+		vValores.values=solicitud.GetItemValue(nombreCampo)
+		Call vValores.insertElement(valor,vValores.CantElem+1)
+		Call solicitud.ReplaceItemValue(nombreCampo,vValores.values)
+	End Sub
+	'Borrar campo
+	Sub borrarCampo(nombreCampo As String)
+		Call solicitud.RemoveItem(nombreCampo)
+	End Sub
+	'Borrar valor 
+	Sub borrarValor(nombreCampo As String, valor As Variant)
+		Dim vValores As New Vector(0)
+		Dim pos As Long
+		
+		vValores.values = solicitud.GetItemValue(nombreCampo)
+		If vValores.isMember(valor,pos,True) Then
+			Call vValores.deleteElement(pos)
+			Call solicitud.ReplaceItemValue(nombreCampo,vValores.values)
+		End If
+	End Sub
+	
+End Class

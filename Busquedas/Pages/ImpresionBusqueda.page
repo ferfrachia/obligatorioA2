@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500598295'>
+<noteinfo noteid='566' unid='DF8144E1DE0D7960032574A2005279C1' sequence='117'>
+<created><datetime>20080811T120051,21-03</datetime></created>
+<modified><datetime>20150311T131747,01-03</datetime></modified>
+<revised><datetime>20150309T094347,67-03</datetime></revised>
+<lastaccessed><datetime>20150311T131747,01-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131747,01-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20081008T152012,43-03</datetime><datetime>20090121T174925,48-03</datetime><datetime
+>20090429T200210,99-03</datetime><datetime>20090429T200223,81-03</datetime><datetime
+>20090429T200235,92-03</datetime><datetime>20090719T145725,15-03</datetime><datetime
+>20100609T164936,99-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
++f8gAAAAAAAPAAQAbAEAAAAAAAAAAAAAAAAAAAAAAADc/34B+f9sASBOAAAAAAAAAABmdW5jdGlv
+biBmZWNoYUhveSgpew0JZCA9IG5ldyBEYXRlKCk7DQlpbnRZZWFyID0gZC5nZXRGdWxsWWVhcigp
+OyAgIA0gICAgIC8vaW50WWVhciArPTE5MDA7DSAgICAgaW50TW9udGggPSBkLmdldE1vbnRoKCk7
+DSAgICAgaW50TW9udGgrKzsNCWlmIChkLmdldERhdGUoKTwxMCkNCQlzdHJEYXRlID0gIjAiICsg
+ZC5nZXREYXRlKCk7DQllbHNlDQkJc3RyRGF0ZSA9ICIiK2QuZ2V0RGF0ZSgpOw0gICAgICAgIA0J
+aWYgKGludE1vbnRoPDEwKQ0JCXN0ck1vbnRoID0gIjAiK2ludE1vbnRoOw0JZWxzZQ0JCXN0ck1v
+bnRoID0gIiIgKyBpbnRNb250aDsNCXJldHVybihzdHJEYXRlICsgIi8iKyBzdHJNb250aCArIi8i
+ICsgaW50WWVhcik7DX0A+f8gAAAAAAANAAQAsgEAAAAAAAAAAAAAAAAAAAAAAADc/8QB+f+yASBO
+AAAAAAAAAABkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgicGFyYV9pbXByaW1pciIpLmlubmVySFRN
+TCA9IHdpbmRvdy5vcGVuZXIuZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoInBhcmFfaW1wcmltaXIi
+KS5pbm5lckhUTUw7DQ12YXIgY2FudFBhZ2luYXMgPSBwYXJzZUludChkb2N1bWVudC5nZXRFbGVt
+ZW50QnlJZCgiY2FudFBhZ2luYXMiKS52YWx1ZSk7DQ1mb3IgKHZhciBpID0gMTsgaSA8PSBjYW50
+UGFnaW5hczsgaSsrKSB7DQlkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiZGl2X3VzdWFyaW8iICsg
+aSkuaW5uZXJIVE1MID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoInVzdWFyaW8iKS52YWx1ZTsN
+CWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJkaXZfZmVjaGEiICsgaSkuaW5uZXJIVE1MID0gZmVj
+aGFIb3koKTsNfQ0Nc2V0VGltZW91dCh3aW5kb3cucHJpbnQsMTApOw0NAF//EAACAA8ABwAAAAAA
+AABf/xAAAgANAAcAAAAAAAAA
+</rawitemdata></item>
+<item name='$TITLE'><text>ImpresionBusqueda</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>ImpresionBusqueda</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/w4AAQAACjxo
+ZWFkPoECgwQBAIX/DwABAAAKPHN0eWxlPgCBAoL/WgACAAAAAAAAAAAAoAUAAKAFAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAlICgBQAAoAUQAMgoZAABAAAA
+BAAAAIMEAgCF/1oAAAAACkJPRFkgeyBGT05ULVNJWkU6IDhwdDsgZm9udC1mYW1pbHk6IEFyaWFs
+LCBWZXJkYW5hOyAgYmFja2dyb3VuZC1jb2xvcjogI0ZGRkZGRjsgIH2BAoMEAgCF/0AAAAAACi50
+YWJsYSB7Rk9OVC1TSVpFOiA4cHQ7IEZPTlQtRkFNSUxZOiBBcmlhbCwgIFZlcmRhbmEgOyB9gQKD
+BAIAhf8pAAAAAAoudGRzIHsgYm9yZGVyOiAxcHggc29saWQgYmxhY2s7IH0AgQKDBAEAhf8QAAEA
+AAo8L3N0eWxlPoECgwQBAIX/DwABAAAKPC9oZWFkPgCBAoL/WgADAAAAAAAAAAAAoAUAAKAFAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAlIcAAAAAAAAAAAAA
+AAABAAAABAAAAIMEAwCF/wgAAQAACoECgwQBAIX/QAABAAAKPGlucHV0IHR5cGU9ImhpZGRlbiIg
+bmFtZT0idXN1YXJpbyIgaWQ9InVzdWFyaW8iIHZhbHVlPSLdBgAArf+p/y4AAQAYAAQAIgAiAAAA
+FAACAAUAAAAAAAAA9AC0AgMABwAMAAUACTBTMEUAhf8IAAEAAAqqAt4GAACuAIX/CwABAAAKIi8+
+AIECgwQDAIX/CAABAAAKgQKDBAMAhf8gAAEAAAo8ZGl2IGlkPSJwYXJhX2ltcHJpbWlyIj6BAoME
+AwCF/wgAAQAACoECgwQDAIX/DgABAAAKPC9kaXY+zf8IAAAAAAA=
+</rawitemdata></item></note>
+

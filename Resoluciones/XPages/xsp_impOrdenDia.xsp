@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+<script>
+window.print();
+</script>
+	<xp:eventHandler event="onClientLoad" submit="true"
+		refreshMode="norefresh">
+		<xp:this.script><![CDATA[window.print();]]></xp:this.script>
+
+	</xp:eventHandler>
+	<xp:this.data>
+		<xp:dominoDocument var="document1" formName="FSesion"></xp:dominoDocument>
+	</xp:this.data>
+
+	<xp:inputRichText id="inputRichText1" style="width:100%" defaultValue=" "><xp:this.value><![CDATA[#{javascript:var punto:NotesDocument;
+var docConf:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+rti="";
+var aux="";
+var ret="";
+var laVar:NotesRichTextItem = docConf.getFirstItem("estiloOrdenDia");
+var rti = laVar.getUnformattedText();
+//docConf.getFirstItem("estiloOrdenDia");//"estiloOrdenDia"
+aux = rti.toString();
+laVar = docConf.getFirstItem("estiloCabezalOrdenDia")
+var cabezal=laVar.getUnformattedText();//docConf.getItemValueString("estiloCabezalOrdenDia").toString();
+//------cabezal
+if(document1.getDocument().hasItem("fSesion")){
+	cabezal = cabezal.replace("%fechasesion%",document1.getDocument().getItemValueDateTimeArray("fSesion").toString().replace("[","").replace("]",""));
+}else {
+	cabezal = cabezal.replace("%fechasesion%","");
+}
+
+if( document1.getDocument().hasItem("shInicio")){
+	cabezal = cabezal.replace("%horacomienzo%",document1.getDocument().getItemValueString("shInicio"));
+}else {
+	cabezal = cabezal.replace("%horacomienzo%","");
+}
+
+if( document1.getDocument().hasItem("shFin")){
+	cabezal = cabezal.replace("%horafinal%",document1.getDocument().getItemValueString("shFin"));
+}else {
+	cabezal = cabezal.replace("%horafinal%","");
+}
+//------contenido
+
+var puntos:NotesDocumentCollection = document1.getDocument();
+var vista:NotesView = database.getView("(PuntosPorSesion2Tema)");
+//-
+
+var ec:NotesViewEntryCollection = vista.getAllEntriesByKey(document1.getDocument().getItemValueString("sNroSesion"))
+var ve:NotesViewEntry = ec.getFirstEntry();
+//--
+puntos = vista.getAllDocumentsByKey(document1.getDocument().getItemValueString("sNroSesion"),true);
+punto = puntos.getFirstDocument();
+var miVec:Array = new Array();
+var i=1;
+var soloAprobados = docConf.getItemValueString("sTodosEstados").equals("No");
+if(soloAprobados){
+	while (ve!= null){
+		if(ve.getDocument().getItemValueString("ccEstado").equals("Aprobado")| 
+							ve.getDocument().getItemValueString("ccEstado").equals("Publicado")){
+			miVec[i]= ve.getDocument().getUniversalID();
+			
+			i++;
+		}
+		
+		ve = ec.getNextEntry(ve);
+	}
+}else{
+	while (ve!= null){
+		miVec[i]= ve.getDocument().getUniversalID();
+		//punto = puntos.getNextDocument(punto);
+		ve= ec.getNextEntry(ve);
+		i++;
+	}
+}
+var fin = i-1;
+for(i=1;i <=fin;i++){
+	//print(i+" =i "+miVec[i]);
+	punto = database.getDocumentByUNID(miVec[i]);
+	aux = rti;
+		if( punto.hasItem("ccnNroRes")){
+			var formatoNumCortaConf = docConf.getItemValueString("rNumCortaImp");
+			var formatoNumConf = docConf.getItemValueString("sFormNroRes");
+			var nro="";
+			nro =punto.getItemValueString("ccnNroRes");
+			if(docConf.getItemValueString("rUsarParteNumImpRes").equalsIgnoreCase("Si")){
+			//if(!formatoNumConf.equals(formatoNumCortaConf)){
+				var posFrom=  formatoNumCortaConf.indexOf(formatoNumCortaConf);
+				var posTo = posFrom + formatoNumCortaConf.length;
+				nro = nro.substr(posFrom,posTo);
+			}
+			aux= aux.replace("%nroresolucion%",nro);
+		}else {
+			aux= aux.replace("%nroresolucion%","");
+		}
+		
+		if( punto.hasItem("ccnNroPunto")){
+			aux= aux.replace("%nroasunto%",punto.getItemValueInteger("ccnNroPunto").toString());
+		}else {
+			aux= aux.replace("%nroasunto%","");
+		}
+		
+		if( punto.hasItem("sAsunto")){
+			aux= aux.replace("%referencia%",punto.getItemValueString("sAsunto"));
+		}else{
+		 	aux= aux.replace("%referencia%","");
+		}
+		
+		if( punto.hasItem("ccNroExp")){
+			aux= aux.replace("%nroexpediente%",punto.getItemValueString("ccNroExp"));
+		}else {
+			aux= aux.replace("%nroexpediente%","");
+		}
+		if( punto.hasItem("sTema")){
+			aux= aux.replace("%temaasunto%",punto.getItemValueString("sTema"));
+		}else {
+			aux= aux.replace("%temaasunto%","");
+		}
+		
+		
+		
+		
+		
+		
+	ret = ret + aux;
+}
+ret = cabezal + ret;
+return ret;}]]></xp:this.value></xp:inputRichText>
+	
+	</xp:view>

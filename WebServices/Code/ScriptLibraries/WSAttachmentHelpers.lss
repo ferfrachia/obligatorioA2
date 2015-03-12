@@ -1,0 +1,220 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+Use "TempFileClass"
+
+
+%REM
+These are a collection of "helper" functions that can be used to
+get files that are attached to a NotesDocument as a NotesStream,
+or write a NotesStream to a RichText field as a file attachment.
+
+This is useful when you are sending or receiving files in a Web Service,
+because there you're dealing with Streams instead of attachments.
+
+If web sevices or server-based agents use this script library, make sure 
+they have a "runtime security level" of "2. Allow restricted operations",
+and the person who's signing the agent has rights to run restricted and
+unrestricted operations on the server document.
+%END REM
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Function attachmentToStreamWeb (doc As NotesDocument, _
+fileName As String) As NotesStream
+Declare Function firstAttachmentFileName (doc As NotesDocument, _
+fieldName As String) As String
+Declare Function createTempFile (fileName As String, _
+streamIn As NotesStream) As String
+Declare Function attachmentToStream (doc As NotesDocument, _
+fieldName As String, fileName As String) As NotesStream
+Declare Function firstAttachmentToStream (doc As NotesDocument, _
+fieldName As String) As NotesStream
+
+'++LotusScript Development Environment:2:5:(Declarations):0:2
+
+'++LotusScript Development Environment:2:1:attachmentToStreamWeb:2:8
+Function attachmentToStreamWeb (doc As NotesDocument, _
+fileName As String) As NotesStream
+	'** Given a rich text field name on a Notes document and the name
+	'** of a file that is attached to that field, return a NotesStream containing
+	'** the contents of that attached file.
+	On Error Goto processError
+	
+	Dim session As New NotesSession
+	Dim rtitem As NotesRichTextItem
+	Dim eo As NotesEmbeddedObject
+	Dim tempGen As New TempFileGenerator
+	Dim tmpFileName As String
+	'** early creation of the return stream, in case we error out somewhere
+	Set attachmentToStreamWeb = session.CreateStream
+	
+	
+	
+	'** try to extract the requested file attachment
+	'tmpFileName = "/local/notesdata/SGD/" +tempGen.generateFileName(".tmp")
+	tmpFileName = Replace(session.Getenvironmentstring("Directory", true),"\\","/") & "/" & tempGen.generateFileName(".tmp")
+	
+	Set eo = doc.GetAttachment(fileName)
+	Call eo.ExtractFile(tmpFileName)
+	
+	'** read the detached file and write its contents to the NotesStream
+	'** we'll be sending back as a return value
+	Dim stream As NotesStream
+	Dim buffer As Variant
+	Set stream = session.CreateStream
+	Call stream.Open(tmpFileName, "binary")
+	Do
+		buffer = stream.Read(32767)
+		Call attachmentToStreamWeb.Write(buffer)
+	Loop Until stream.IsEOS
+	
+	'** reset the return Stream to position 0, so it can be read from
+	'** the beginning
+	attachmentToStreamWeb.Position = 0
+	
+	'** close the file stream and delete the temp file
+	stream.Close
+	Kill tmpFileName
+	
+	Exit Function
+	
+processError:
+	Msgbox Cstr(Erl) & "-" & Error$
+	'** add error logging stuff here...
+	Exit Function
+	
+End Function
+
+'++LotusScript Development Environment:2:1:firstAttachmentFileName:2:8
+Function firstAttachmentFileName (doc As NotesDocument, _
+fieldName As String) As String
+	'** get the file name of the first file attachment in the given
+	'** RichText field
+	Dim rtitem As NotesRichTextItem
+	Set rtitem = doc.GetFirstItem( fieldName )
+	
+	If ( rtitem.Type = RICHTEXT ) Then
+		Forall o In rtitem.EmbeddedObjects
+			If ( o.Type = EMBED_ATTACHMENT ) Then
+				firstAttachmentFileName = o.Name
+				Exit Function
+			End If
+		End Forall
+	End If
+	
+End Function
+
+'++LotusScript Development Environment:2:1:createTempFile:2:8
+Function createTempFile (fileName As String, _
+streamIn As NotesStream) As String
+	'** Take a NotesStream and write it to the given
+	'** fileName in a temp directory. The full path and
+	'** fileName of the temp file that was created will
+	'** be returned as a String.
+	
+	Dim tempGen As New TempFileGenerator
+	Dim tempDir As String
+	Dim tempFileName As String
+	Dim sep As String
+	
+	'** get the temp directory
+	tempDir = tempGen.GetTempFileDir()
+	
+	'** create a valid file name, using the temp directory as a base
+	If (Trim(fileName) = "") Then
+		tempFileName = tempGen.getTempFile(".file")
+	Elseif (Instr(fileName, "\") > 0) Then
+		tempFileName = tempDir & Strrightback(fileName, "\")
+	Elseif (Instr(fileName, "/") > 0) Then
+		tempFileName = tempDir & Strrightback(fileName, "/")
+	Else
+		tempFileName = tempDir & fileName
+	End If
+	
+	'** if this file already exists, use a random file name instead
+	If (Dir$(tempFileName, 6) <> "") Then
+		tempFileName = tempGen.getTempFile(Strrightback(fileName, "."))
+	End If
+	
+	'** write the contents of the stream to this temp file
+	Dim session As New NotesSession
+	Dim streamOut As NotesStream
+	Dim buffer As Variant
+	
+	Set streamOut = session.CreateStream
+	Call streamOut.Open(tempFileName, "binary")
+	streamIn.Position = 0
+	Do
+		buffer = streamIn.Read(32767)
+		Call streamOut.Write(buffer)
+	Loop Until streamIn.IsEOS
+	
+	'** close the stream and return the name of the file we wrote to
+	Call streamOut.Close
+	createTempFile = tempFileName
+End Function
+
+'++LotusScript Development Environment:2:1:attachmentToStream:2:8
+Function attachmentToStream (doc As NotesDocument, _
+fieldName As String, fileName As String) As NotesStream
+	'** Given a rich text field name on a Notes document and the name
+	'** of a file that is attached to that field, return a NotesStream containing
+	'** the contents of that attached file.
+	On Error Goto processError
+	
+	Dim session As New NotesSession
+	Dim rtitem As NotesRichTextItem
+	Dim eo As NotesEmbeddedObject
+	Dim tempGen As New TempFileGenerator
+	Dim tempFileName As String
+	
+	'** early creation of the return stream, in case we error out somewhere
+	Set attachmentToStream = session.CreateStream
+	
+	'** create a temp file name we can use to detach the contents of the
+	'** attachment to
+	tempFileName = tempGen.getTempFile(".file")
+	
+	'** try to extract the requested file attachment
+	Set rtitem = doc.GetFirstItem( fieldName )
+	Set eo = rtitem.GetEmbeddedObject(fileName)
+	Call eo.ExtractFile(tempFileName)
+	
+	'** read the detached file and write its contents to the NotesStream
+	'** we'll be sending back as a return value
+	Dim stream As NotesStream
+	Dim buffer As Variant
+	Set stream = session.CreateStream
+	Call stream.Open(tempFileName, "binary")
+	Do
+		buffer = stream.Read(32767)
+		Call attachmentToStream.Write(buffer)
+	Loop Until stream.IsEOS
+	
+	'** reset the return Stream to position 0, so it can be read from
+	'** the beginning
+	attachmentToStream.Position = 0
+	
+	'** close the file stream and delete the temp file
+	stream.Close
+	Kill tempFileName
+	
+	Exit Function
+	
+processError:
+	'** add error logging stuff here...
+	Exit Function
+	
+End Function
+
+'++LotusScript Development Environment:2:1:firstAttachmentToStream:2:8
+Function firstAttachmentToStream (doc As NotesDocument, _
+fieldName As String) As NotesStream
+	'** take the first attachment in a given RichText field and return it
+	'** as a NotesStream
+	Set firstAttachmentToStream = attachmentToStream(doc, _
+	fieldName, firstAttachmentFileName(doc, fieldName))
+End Function

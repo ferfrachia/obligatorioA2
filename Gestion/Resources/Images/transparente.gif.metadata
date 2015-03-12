@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050058D89B" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="13ae" sequence="11" unid="313FDB6FD0599C5B83257DC8004FA8AA">
+<created><datetime dst="true">20150109T123005,22-02</datetime></created>
+<modified><datetime>20150311T131046,91-03</datetime></modified>
+<revised><datetime>20150309T145402,23-03</datetime></revised>
+<lastaccessed><datetime>20150311T131046,91-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131046,91-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>transparente.gif</text></item>
+<item name="$Flags"><text>34CiQP</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+<item name="$FileModDT" sign="true"><datetime dst="true">20081201T075221,70-02</datetime></item>
+<item name="$ImageNames" sign="true"><text>transparente.gif</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+</note>

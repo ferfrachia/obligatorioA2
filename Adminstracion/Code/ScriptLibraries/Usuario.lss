@@ -1,0 +1,640 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+   
+Use "VectorClass 2.05"  
+Use "FuncionesGenerales"
+Use "ConfEE 1.0"
+'***************************	CLASE USUARIO	************************************************
+'*	INTERFASE 
+'*
+'*		New(byval nombre as string)
+'*			Constructor de la clase
+'*
+'*	PROPIEDADES
+'*	
+'*		Get Unidades () as vector
+'*			Dada una clave retorna/setea las unidades del usuario. 
+'*
+'*		Get/Set Roles(Byval unidad As String) As vector
+'*			Dada un unidad retorna/setea un vector con lo roles del usuario. 
+'*			
+'*		Get     NombreUsuario()as string
+'*			Retorna el nombre del usuario
+'*	'METODOS	
+'*		Set Retomarfunciones (Byval unidad as string, Byval as string )
+'*			Devuelve al suplente los permisos anteriores
+'*
+'******************************************************************************************************************
+
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Usuario
+Declare Private Function replaceSubstring(Byval x As String, Byval repfrom As String, Byval repto As String, _
+Byval caseflag As Integer) As String
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Constantes privadas
+
+Private Const CLAVE_BASE_ORGANIZACION						= "ORGAN"
+Private Const ROL_CREADOR									= "RolCreador"
+Private Const ROL_RECEPTOR									= "RolReceptor"
+Private Const ROL_EDITOR									= "RolEditor"
+Private Const ROL_FIRMANTE						 			= "RolFirmante"
+Private Const ROL_PASE										= "RolPase"
+Private Const ROL_GESTION									= "RolGestion"
+Private Const ROL_AMPLIARPLAZO								= "RolAmpliarPlazo"
+Private Const ROL_MANEJARCONF								= "RolManejarConf"
+Private Const VALOR_SUPLENCIA_FINALIZADA					= "0"
+
+'vistas
+Private Const VISTA_ORGANIZACION_BUSQUEDAPERSONAS				= "VBusqPers"
+Private Const VISTA_ORGANIZACION_BUSQUEDAUNIDADES				= "VBusqUni"
+Private Const VISTA_ORGANIZACION_BUSQUEDASUPLENCIAS				= "VBusSupAct"
+Private Const VISTA_ORGANIZACION_PERSONALIZACION				= "Personalizacion"
+
+'campos
+Private Const CAMPO_ORGANIZACION_UNIDAD							= "sUnidad"
+Private Const CAMPO_ORGANIZACION_UNIDADCOD						= "sNroUnidad"
+Private Const CAMPO_ORGROL_CREADOR								= "RolCreador"
+Private Const CAMPO_ORGROL_RECEPTOR								= "RolReceptor"
+Private Const CAMPO_ORGROL_EDITOR								= "RolEditor"
+Private Const CAMPO_ORGROL_FIRMANTE								= "RolFirmante"
+Private Const CAMPO_ORGROL_PASE									= "RolPase"
+Private Const CAMPO_ORGROL_GESTION								= "RolGestion"
+Private Const CAMPO_ORGROL_AMPLIARPLAZO							= "RolAmpliarPlazo"
+Private Const CAMPO_ORGROL_MANEJARCONF							= "RolManejarConf"
+
+Private Const CAMPO_ORGROL_ROLES_AGREGADOS_AL_SUPLENTE			= "sRolesAgregadosAlSuplente"
+Private Const CAMPO_ORGROL_SUPLENCIA_FINALIZADA					= "sSuplenciaFinalizada"
+Private Const CAMPO_NOMBRE_USUARIO_SUPLENTE						= "nbUsuario"
+Private Const CAMPO_ORGROL_CARTAS			="RolComunicaciones"
+
+
+'******************************************************************************************************************
+Public Class Usuario
+	
+	'variables privadas
+	Private sNombre As String
+	Private c As Configuracion
+	Private dbOrg As NotesDatabase	
+	Private docPerfil As NotesDocument
+	
+'*******************************************************************************************************************
+	
+'Constructor 
+	Public Sub new(Byval nombre As String)
+		On Error Goto HANDLER
+		
+		sNombre = nombre
+		
+		If c Is Nothing Then Set c = New Configuracion
+		Set dbOrg = c.ReferenciarBaseDeDatos(CLAVE_BASE_ORGANIZACION)
+		
+		If dbOrg Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN + " " + CLAVE_BASE_ORGANIZACION
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Constructor","")
+		Exit Sub
+	End Sub	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NombreUsuario() As String
+		'Retorna el nombre del usuario
+		
+		On Error Goto HANDLER
+		
+		NombreUsuario = sNombre
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Propiedad Get NombreUsuario","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get UnidadesPref() As Vector
+		On Error Goto handler
+		Dim vistaPer As NotesView
+		Set unidadesPref = New Vector(0)
+		If docPerfil Is Nothing Then
+			Set vistaPer = dbOrg.GetView(VISTA_ORGANIZACION_PERSONALIZACION)
+			Set docPerfil = vistaPer.GetDocumentByKey(sNombre,True)
+		End If
+		If Not docPerfil Is Nothing Then
+			unidadesPref.values = docPerfil.GetItemValue("sOrdenUnidad")
+		End If
+		Exit Property
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Propiedad Get UnidadesPref","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set UnidadesPref() As Vector
+		On Error Goto handler
+		Dim vistaPer As NotesView
+		
+		If docPerfil Is Nothing Then
+			Set vistaPer = dbOrg.GetView(VISTA_ORGANIZACION_PERSONALIZACION)
+			Set docPerfil = vistaPer.GetDocumentByKey(sNombre,True)
+		End If
+		If Not docPerfil Is Nothing Then
+			Call docPerfil.replaceitemvalue("sOrdenUnidad", UnidadesPref.values)
+			docPerfil.Save True,False
+		End If
+		Exit Property
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Propiedad Set UnidadesPref","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************			
+	Public Property Get Unidades() As vector
+		'CON EL NOMBRE del usuario obtener de la aplicación Estructura organizacional las
+		'unidades a las que pertenece el usuario el resultado lo cago en el vector		
+		
+		On Error Goto HANDLER
+		
+		Dim vistaOrg As NotesView, dc As notesdocumentcollection
+		Dim unidad As String, pos As Long, i As Integer
+		Dim docUnidad As NotesDocument
+		
+		Set Unidades = New Vector(0)
+		
+		Set vistaOrg = dbOrg.GetView(VISTA_ORGANIZACION_BUSQUEDAPERSONAS)
+		If vistaOrg Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+VISTA_ORGANIZACION_BUSQUEDAPERSONAS 
+		
+		Set dc = vistaOrg.GetAllDocumentsByKey(sNombre, True)
+		
+		For i = 1 To dc.count
+			Set docUnidad = dc.GetnthDocument(i)
+			Call Unidades.insertElement(docUnidad.GetItemValue(CAMPO_ORGANIZACION_UNIDAD)(0),Unidades.CantElem + 1)
+		Next
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento Unidades","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Roles(Byval unidad As String) As vector
+	'obtener el documento de unidad del usuario que representa este objeto y buscar en todos
+	'los campos roles donde esta el nombre del usuario.
+	'Guadar en los nombres de los campos donde esta el usuario y asignarlo a un vector
+		On Error Goto HANDLER
+		
+		Dim pos As Long, vistaOrg As NotesView, docUnidad As NotesDocument
+		Dim vRolAux As New Vector(0)
+		
+		Set Roles = New Vector(0)				
+		
+		Set vistaOrg = dbOrg.GetView(VISTA_ORGANIZACION_BUSQUEDAUNIDADES	)
+		If vistaOrg Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & _
+		VISTA_ORGANIZACION_BUSQUEDAUNIDADES
+		
+		Set docUnidad = vistaOrg.GetDocumentbyKey(unidad, True)
+		If docUnidad Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Unidad"
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_CREADOR)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_CREADOR ,Roles.cantElem + 1
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_RECEPTOR)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_RECEPTOR,Roles.cantElem + 1
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_EDITOR)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_EDITOR,Roles.cantElem + 1
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_FIRMANTE)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_FIRMANTE,Roles.cantElem + 1
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_PASE)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_PASE,Roles.cantElem + 1
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_GESTION)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_GESTION,Roles.cantElem + 1
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_AMPLIARPLAZO)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_AMPLIARPLAZO,Roles.cantElem + 1
+		
+		Set vRolAux = New Vector(0)
+		vRolAux.values = docUnidad.getItemValue(CAMPO_ORGROL_MANEJARCONF)
+		If vRolAux.isMember(sNombre,pos,False) Then _
+		Roles.InsertElement ROL_MANEJARCONF,Roles.cantElem + 1
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento - Get Roles","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Roles(Byval unidad As String) As Vector
+		On Error Goto HANDLER
+		
+		Dim vistaUnidades As NotesView, dc As notesdocumentcollection
+		Dim pos As Long, i As Integer, docUnidad As NotesDocument
+		Dim vAux As New Vector(0)
+		
+		If Roles.CantElem = 0 Then Error ERROR_INCORRECT_PARAMETER, _
+		MSG_ERROR_INCORRECT_PARAMETER
+		
+		Set vistaUnidades = dbOrg.GetView(VISTA_ORGANIZACION_BUSQUEDAUNIDADES)
+		If vistaUnidades Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_ORGANIZACION_BUSQUEDAUNIDADES
+		
+		Set docUnidad = vistaUnidades.GetDocumentByKey(unidad,True)
+		If docUnidad Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Unidad"
+		
+		For i = 1 To Roles.CantElem
+			
+			Delete vAux
+			Set vAux = Nothing
+			Set vAux = New Vector(0)
+			
+			Select Case Roles.GetElement(i)
+			Case ROL_CREADOR : 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_CREADOR)
+				If Not vAux.isMember(sNombre,pos,False) Then 
+					vAux.InsertElement sNombre, vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_CREADOR, vAux.Values
+				End If
+			Case ROL_RECEPTOR: 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_RECEPTOR)
+				If Not vAux.isMember(sNombre,pos,False) Then 
+					vAux.InsertElement sNombre ,vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_RECEPTOR, vAux.Values
+				End If
+			Case ROL_EDITOR  : 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_EDITOR)
+				If Not vAux.isMember(sNombre,pos,False) Then 
+					vAux.InsertElement sNombre ,vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_EDITOR, vAux.Values
+				End If
+			Case ROL_FIRMANTE: 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_FIRMANTE)
+				If Not vAux.isMember(sNombre,pos,False) Then
+					vAux.InsertElement sNombre ,vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_FIRMANTE, vAux.Values
+				End If
+			Case ROL_PASE    : 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_PASE)
+				If Not vAux.isMember(sNombre,pos,False) Then
+					vAux.InsertElement sNombre ,vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_PASE, vAux.Values
+				End If
+			Case ROL_GESTION : 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_GESTION)
+				If Not vAux.isMember(sNombre,pos,False) Then
+					vAux.InsertElement sNombre ,vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_GESTION, vAux.Values
+				End If 
+			Case ROL_AMPLIARPLAZO : 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_AMPLIARPLAZO)
+				If Not vAux.isMember(sNombre,pos,False) Then
+					vAux.InsertElement sNombre ,vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_AMPLIARPLAZO, vAux.Values
+				End If 
+			Case ROL_MANEJARCONF : 
+				vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_MANEJARCONF)
+				If Not vAux.isMember(sNombre,pos,False) Then
+					vAux.InsertElement sNombre ,vAux.cantElem + 1
+					docUnidad.ReplaceItemValue CAMPO_ORGROL_MANEJARCONF, vAux.Values
+				End If 
+			Case Else
+				Error ERROR_INCORRECT_OPTION, MSG_ERROR_INCORRECT_OPTION & " Rol: " & Roles.GetElement(i)
+			End Select
+		Next
+		
+		If Not docUnidad.Save(False,False) Then _
+		Error ERROR_CANT_SAVE_DOCUMENT,MSG_ERROR_CANT_SAVE_DOCUMENT + " de Unidad"
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento - Set Roles","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Sub Retomarfunciones(Byval unidad As String)
+		On Error Goto HANDLER
+		
+		Dim vistaSuplencias As NotesView, vistaUnidades As NotesView, pos As Long
+		Dim i As Integer, docSuplencia As NotesDocument, vAux As New Vector(0)
+		Dim vRolesAgregadosSuplente As New vector(0), docUnidad As NotesDocument
+		Dim vSuplentes As vector , j As Integer
+		
+		Set vistaSuplencias = dbOrg.GetView(VISTA_ORGANIZACION_BUSQUEDASUPLENCIAS)
+		If vistaSuplencias Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_ORGANIZACION_BUSQUEDASUPLENCIAS
+		
+		Set vistaUnidades = dbOrg.GetView(VISTA_ORGANIZACION_BUSQUEDAUNIDADES)
+		If vistaUnidades Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_ORGANIZACION_BUSQUEDAUNIDADES
+		
+		Set docSuplencia = vistaSuplencias.GetDocumentByKey(sNombre,True)
+		
+		If docSuplencia Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Suplencias"
+		
+		Set vSuplentes = New Vector(0)
+		vSuplentes.values = docSuplencia.GetItemValue(CAMPO_NOMBRE_USUARIO_SUPLENTE)
+		
+		Set docUnidad = vistaUnidades.GetDocumentByKey(unidad,True)
+		
+		If docUnidad Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Unidad"
+		
+		For j = 1 To vSuplentes.cantElem
+			
+			vRolesAgregadosSuplente.values = docSuplencia.GetItemValue(replaceSubstring(vSuplentes.Getelement(j)," ","_", 0) & "_RolesAdd")	
+			
+			For i = 1 To vRolesAgregadosSuplente.CantElem
+				
+				Delete vAux
+				Set vAux = Nothing
+				Set vAux = New Vector(0)
+				
+				Select Case vRolesAgregadosSuplente.GetElement(i)
+				Case ROL_CREADOR : 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_CREADOR)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then 
+						vAux.DeleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_CREADOR, vAux.Values
+					End If
+				Case ROL_RECEPTOR: 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_RECEPTOR)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then 
+						vAux.DeleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_RECEPTOR, vAux.Values
+					End If
+				Case ROL_EDITOR  : 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_EDITOR)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then 
+						vAux.deleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_EDITOR, vAux.Values
+					End If
+				Case ROL_FIRMANTE: 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_FIRMANTE)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then
+						vAux.deleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_FIRMANTE, vAux.Values
+					End If
+				Case ROL_PASE    : 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_PASE)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then
+						vAux.deleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_PASE, vAux.Values
+					End If
+				Case ROL_GESTION : 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_GESTION)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then
+						vAux.deleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_GESTION, vAux.Values
+					End If 
+				Case ROL_AMPLIARPLAZO : 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_AMPLIARPLAZO)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then
+						vAux.deleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_AMPLIARPLAZO, vAux.Values
+					End If 
+				Case ROL_MANEJARCONF : 
+					vAux.values = docUnidad.getItemValue(CAMPO_ORGROL_MANEJARCONF)
+					If vAux.isMember(vSuplentes.getelement(j),pos,False) Then
+						vAux.deleteElement pos
+						docUnidad.ReplaceItemValue CAMPO_ORGROL_MANEJARCONF, vAux.Values
+					End If 
+				Case Else
+					Error ERROR_INCORRECT_OPTION, MSG_ERROR_INCORRECT_OPTION & " Rol: " & vRolesAgregadosSuplente.GetElement(i)
+				End Select
+			Next
+		Next		
+		
+		If Not docUnidad.Save(False,False) Then _
+		Error ERROR_CANT_SAVE_DOCUMENT,MSG_ERROR_CANT_SAVE_DOCUMENT + " de Unidad"
+		
+		docSuplencia.ReplaceItemValue CAMPO_ORGROL_SUPLENCIA_FINALIZADA	, VALOR_SUPLENCIA_FINALIZADA
+		If Not docSuplencia.Save(False,False) Then _
+		Error ERROR_CANT_SAVE_DOCUMENT,MSG_ERROR_CANT_SAVE_DOCUMENT + " de Suplencia"		
+		
+		Exit Sub		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento - RetomarFunciones","")
+		Exit Sub
+	End Sub
+'*******************************************************************************************************************		
+	
+	Public Property Get RealRoles(Byval Clavedb As String)As vector
+		On Error Goto HANDLER
+		
+		Dim db As New NotesDatabase("",""), vRealRoles As New vector(0)
+		Dim acl As NotesACL,  entry As NotesACLEntry,Pers As Usuario
+		
+		If c Is Nothing Then Set c = New Configuracion
+		Set db = c.ReferenciarBaseDeDatos(Clavedb)
+		
+		If db Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN + " " + Clavedb
+		
+		Set acl = db.ACL
+		Set entry = acl.GetEntry( sNombre )
+		If entry Is Nothing Then _
+		Error ERROR_ENTRY_NOT_FOUND_IN_ACL, MSG_ERROR_ENTRY_NOT_FOUND_IN_ACL + " :" + sNombre
+		
+		Set RealRoles =entry.Roles
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento - Get RealRoles","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set RealRoles(Byval Clavedb As String)As vector
+		On Error Goto HANDLER
+		
+		Dim  vRealRoles As New vector(0), db As New NotesDatabase("","")
+		Dim acl As NotesACL,  entry As NotesACLEntry,Pers As Usuario, i As Integer
+		Dim foundRole As Integer
+		
+		If c Is Nothing Then Set c = New Configuracion
+		Set db = c.ReferenciarBaseDeDatos(Clavedb)
+		If db Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN + " " + Clavedb
+		
+		Set acl = db.ACL
+		Set entry = acl.GetEntry( sNombre )
+		
+		If entry Is Nothing Then 
+			Set entry = New NotesACLEntry(acl,sNombre,ACLLEVEL_AUTHOR )		
+			entry.CanDeleteDocuments = False
+			acl.Save 
+		End If
+		
+		For i=1 To RealRoles.cantElem
+			' me fijo si el rol existe en la acl, sino lo creo
+			foundRole = False
+			Forall r In acl.Roles
+				If ( r = RealRoles.getElement(i) ) Then
+					foundRole = True
+					Exit Forall
+				End If
+			End Forall
+			If Not foundRole Then
+				Call acl.AddRole( RealRoles.getElement(i) )
+				acl.Save
+			End If
+			Call entry.EnableRole( RealRoles.getElement(i) )
+		Next
+		acl.Save
+		Exit Property		
+HANDLER:
+		Dim aux As String
+		If Not db Is Nothing Then 
+			aux = db.Server & "!!"& db.FilePath
+			Call RegistraryGenerarError2(Err,Error & ", DB: " & aux,NOMBRE_APLICACION,"Usuario - Procedimiento - Set RealRoles",aux,"")
+		Else
+			Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"Usuario - Procedimiento - Set RealRoles",aux,"")			
+		End If
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set RolesReales(Byval Clavedb As String,nivel As Integer)As vector
+		On Error Goto HANDLER
+		
+		Dim  vRealRoles As New vector(0), db As New NotesDatabase("","")
+		Dim acl As NotesACL,  entry As NotesACLEntry,Pers As Usuario, i As Integer
+		Dim foundRole As Integer
+		
+		If c Is Nothing Then Set c = New Configuracion
+		Set db = c.ReferenciarBaseDeDatos(Clavedb)
+		If db Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN + " " + Clavedb
+		
+		Set acl = db.ACL
+		Set entry = acl.GetEntry( sNombre )
+		
+		If entry Is Nothing Then 
+			Set entry = New NotesACLEntry(acl,sNombre,nivel )		
+			entry.CanDeleteDocuments = False
+			acl.Save 
+		End If
+		
+		For i=1 To RolesReales.cantElem
+			' me fijo si el rol existe en la acl, sino lo creo
+			foundRole = False
+			Forall r In acl.Roles
+				If ( r = RolesReales.getElement(i) ) Then
+					foundRole = True
+					Exit Forall
+				End If
+			End Forall
+			If Not foundRole Then
+				Call acl.AddRole( RolesReales.getElement(i) )
+				acl.Save
+			End If
+			Call entry.EnableRole( RolesReales.getElement(i) )
+		Next
+		acl.Save
+		Exit Property		
+HANDLER:
+		Dim aux As String
+		If Not db Is Nothing Then 
+			aux = db.Server & "!!"& db.FilePath
+			Call RegistraryGenerarError2(Err,Error & ", DB: " & aux,NOMBRE_APLICACION,"Usuario - Procedimiento - Set RealRoles",aux,"")
+		Else
+			Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"Usuario - Procedimiento - Set RealRoles",aux,"")			
+		End If
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	
+	Public Sub DisableRoles(Byval Clavedb As String, Byval rol As String)
+		On Error Goto HANDLER
+		
+		Dim db As New NotesDatabase("","") 
+		Dim acl As NotesACL,  entry As NotesACLEntry,Pers As Usuario, i As Integer
+		Dim vRol As New Vector(0)
+		
+		If c Is Nothing Then Set c = New Configuracion
+		Set db = c.ReferenciarBaseDeDatos(Clavedb)
+		
+		If db Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN + " " + Clavedb
+		
+		Set acl = db.ACL
+		Set entry = acl.GetEntry( sNombre )
+		
+		If entry Is Nothing Then _
+		Error ERROR_ENTRY_NOT_FOUND_IN_ACL, MSG_ERROR_ENTRY_NOT_FOUND_IN_ACL + " :" + sNombre
+		
+		If rol<>"" Then
+			Call entry.DisableRole( rol)
+			vRol.values=entry.Roles
+			If vRol.CantElem=0 Then
+				entry.Remove
+			End If
+		End If
+		
+		acl.Save
+		Exit Sub	
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento - DisableRoles","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+End Class
+'++LotusScript Development Environment:2:1:replaceSubstring:2:8
+Private Function replaceSubstring(Byval x As String, Byval repfrom As String, Byval repto As String, _
+Byval caseflag As Integer) As String
+	Dim pos As Long, lastpos As Long
+	lastpos = 1
+	Do
+		pos = Instr(lastpos, x, repfrom, caseflag)
+		If pos = 0 Then Exit Do
+		replaceSubstring = replaceSubstring & Mid$(x, lastpos, pos-lastpos) & repto
+		lastpos = pos + Len(repfrom)
+	Loop
+	replaceSubstring = replaceSubstring & Mid$(x, lastpos)
+End Function
+
+
+

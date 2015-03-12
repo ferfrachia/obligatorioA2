@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='99e' unid='41C9A423E72CD565832577D20045D072' sequence='27'>
+<created><datetime dst='true'>20101105T104233,46-02</datetime></created>
+<modified><datetime>20150311T132740,56-03</datetime></modified>
+<revised><datetime>20150309T094509,10-03</datetime></revised>
+<lastaccessed><datetime>20150311T132740,56-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132740,56-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Publico|FrPublico</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIABQAAAAAAAAAAAAAAAAAAAAAA8P8+AEUAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAUAAAAA
+AAEAAgAAAAAAAQAAAAAAAAADAAEAAQCgAAIAUQDx/z0AFwAAAABAAAECAAAAAAAAAAAACQAAAAAA
+AQAAAAAAAABJenF1aWVyZG8BAP///7ABAAAJAQD///+wP/b/MAAAAAAAAwAHAA4AAAAAAAAAAAAA
+AAAAAAAAAAAAAABwTWVudUl6cXVpZXJkYfD/PgABAAAAAAAAAAAAAAAAAAAAAAAFAAAAAAAFAAAA
+AAACAAEAAAAAAAUAAAAAAAAAAQAyAAMAXAADAAEA8f87ABEAAAAAQAABAgABAAEAAAAAAAcAAAAA
+AAEAAAAAAAAAQ2FiZXphbAEA////sAEAAAkBAP///7A/9v8qAAAAAAADAAMACAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAEZDYWJlemFs8f87AAEAAAAAQAAAAwABAAEAAAAAAAcAAAAAAAEAAAAAAAAARGVy
+ZWNobwEA////sAEAAAoBAAAAALA/9v+8AAEAAAABAAAAogAAAAAAAAAAAAAAAACiAAAAkgABAAEA
+LwCLAAAAAAAAAAAA8D8QAWsCAQABAFwAAQABAC8AhAMiAvQAAQAJAEFub255bW91cwAKAq8AUAAs
+AAEAIgAvQmFuZGVqYVJlc29sdWNpb25lc3hUZW1hP1JlYWRmb3JtrgAkAAEAGAAvKENhcmdhckZy
+YW1lKT9PcGVuQWdlbnSuAAQAtQMiAgMABwAOAAcACTIzUjI0UgA=
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

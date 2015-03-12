@@ -1,0 +1,520 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+	2.0 24/09/2009		Modificado por: Ian Coates
+		Versión base, se modifico la "no modificacion" anterior para que sea la misma clase en todos los modulos independiente
+%END REM
+
+Option Declare
+
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05" 
+Use "ConstantesSistema"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigEventos
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const DOCUMENTO_PERFIL													= "(ConfiguracionEv)"
+
+'Public Const NOMBRE_NUMERADOR_SESION = "NRO_SESION_DIR_"
+'Public Const NOMBRE_NUMERADOR_RESOLUCION = "NRO_RESOLUCION_DIR_"
+'Public Const NOMBRE_NUMERADOR_ACTA = "NRO_ACTA_DIR_"
+'Public Const CAMPO_EVENTOS_PROTOCOLO										="rProtocolo"
+'Public Const CAMPO_EVENTOS_PUERTO											="sPuerto"
+Public Const CAMPO_EVENTOS_RUTA_DB											= "sPath"
+Public Const CAMPO_EVENTOS_SERVIDOR_DB										= "sServidor"
+Public Const CAMPO_EVENTOS_HOST_DB											= "sHost"
+Public Const CAMPO_EVENTOS_CLAVE_DB											= "sClave"
+Private Const CAMPO_TIEMPO_MAX_AUDITORIA									= "sTiempoMaxAuditoria"
+
+Public Class ConfigEventos
+	
+	Private docConfiguracion As NotesDocument
+	Private session As NotesSession
+	Private db As NotesDatabase
+	Private vKeyDB As Vector
+	Private vServer As  Vector
+	Private vHost As Vector
+	Private vFilePath As Vector
+	
+	
+	Public Sub new ()
+		On Error Goto HANDLER
+		Set session = New NotesSession
+		Set db = session.CurrentDatabase
+		Set docConfiguracion= db.GetProfileDocument(DOCUMENTO_PERFIL)
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vHost = New Vector(0)
+		Set vFilePath = New Vector(0)
+		
+		vKeyDB.values = docconfiguracion.getItemValue(CAMPO_EVENTOS_CLAVE_DB)
+		vServer.values = docconfiguracion.getItemValue(CAMPO_EVENTOS_SERVIDOR_DB)
+		vHost.values = docconfiguracion.getItemValue(CAMPO_EVENTOS_HOST_DB)
+		vFilePath.values = docconfiguracion.getItemValue(CAMPO_EVENTOS_RUTA_DB)
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Procedimiento GuardarProfile","")
+		Exit Sub
+	End Sub
+'********************************************************************************************************************	
+	
+	
+	
+'********************************************************************************************************************	
+	Public Function SustituirCantDigitos (Byval formato As String, Byval nro As String) As String
+	'Chequea la cantidad de veces que aparece el indicador de un digito y lo sustituye
+	'por el nro formateado con esa cantidad de digitos
+		On Error Goto HANDLER
+		
+		Dim pos As Integer, digitos As Integer, prefijo As String, resto As String, sufijo As String
+		
+		'Busco la cantidad de dígitos para el número
+		pos = Instr(formato,INDICADOR_DIGITO)	'debe haber por lo menos un indicador (digitos segun los que tenga el nro)
+		If pos <> 0 Then
+			digitos = 1
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			resto = Right(formato, Len(formato)-pos)
+			pos = Instr(resto,INDICADOR_DIGITO)		
+			While pos <> 0  'cuento los dígitos
+				digitos = digitos + 1
+				resto = Right(resto, Len(resto)-pos)
+				pos = Instr(resto,INDICADOR_DIGITO)
+			Wend
+			sufijo = resto
+		'Agrego 0's al nro hasta llegar a la cant de dígitos
+			While Len(nro)<digitos
+				nro = "0" + nro
+			Wend 
+		'Armo el nuevo formato
+			SustituirCantDigitos = prefijo + nro + sufijo
+		Else   'no está el #
+		'busco el *
+			pos = Instr(formato,INDICADOR_DIGITOS_PROPIO_NRO)
+			If pos = 0 Then Error ERROR_INDICADOR_DIGITO_NOT_FOUND, MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND
+			
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			If pos = Len(formato) Then  'no hay sufijo
+				sufijo = ""
+			Else
+				sufijo = Right(formato, Len(formato)-pos)
+			End If
+			
+			SustituirCantDigitos = prefijo + nro + sufijo
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Funcion SustituirCantDigitos","")
+		Exit Function
+	End Function
+
+'********************************************************************************************************************		
+	Public Property Set Protocolo As String
+		On Error Goto handler
+	'	docconfiguracion.ReplaceItemValue CAMPO_EVENTOS_PROTOCOLO,Cstr(Protocolo)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionEventos - Método set Protocolo","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get Protocolo As String
+		On Error Goto handler
+	'	Protocolo =Cstr(docconfiguracion.GetItemValue(CAMPO_EVENTOS_PROTOCOLO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionEventos - Método get Protocolo","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Set Puerto As String
+		On Error Goto handler
+	'	docconfiguracion.ReplaceItemValue CAMPO_EVENTOS_PUERTO,Cstr(Puerto)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionEventos - Método set Puerto","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get Puerto As String
+		On Error Goto handler
+	'	Puerto =Cstr(docconfiguracion.GetItemValue(CAMPO_EVENTOS_PUERTO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionEventos - Método get Puerto","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Get Host(Byval clave As String) As String
+	' Dada una clave retorna el Host. Si lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		'If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		Host = vHost.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad Get Host","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	
+	Public Property Set Host(Byval clave As String) As String
+	' Dada una clave setea el Host. Si no retorna un error ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vHost.ReplaceElement(pos,Host)
+		Else
+			Error 10000, "Host: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad Set Host","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get BaseDeDatos(Byval clave As String) As String
+	' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		BaseDeDatos = vFilePath.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad Get BaseDeDatos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	
+	%REM
+		Function referenciarBasededatos
+		Description: Comments for Function
+	%END REM
+	Public Function referenciarBasededatos(ByVal clave As String) As NotesDatabase
+		Set referenciarbasededatos = New NotesDatabase("","")
+		Call referenciarbasededatos.Open(me.Servidor(clave), me.BaseDeDatos(Clave))
+	End Function
+'******************************************************************************************************************	
+	
+	Public Property Set BaseDeDatos(Byval clave As String) As String
+	' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vFilePath.ReplaceElement(pos,BaseDeDatos)
+		Else
+			Error 10000, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad Set BaseDeDatos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Claves() As vector
+	' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = docconfiguracion.GetItemValue(CAMPO_EVENTOS_CLAVE_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Claves","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	
+	Public Property Set Claves() As Vector
+		On Error Goto HANDLER
+		Set vKeyDB = Claves
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad set Claves","")
+		Exit Property
+	End Property			
+'******************************************************************************************************************		
+	
+	Public Property Get Paths() As vector
+	' Retorna un vector con la lista de paths de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Paths = New Vector(0)
+		Paths.Values = docconfiguracion.GetItemValue(CAMPO_EVENTOS_RUTA_DB	)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Paths","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	
+	Public Property Set Paths() As Vector
+		On Error Goto HANDLER
+		Set vFilePath = Paths
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad set Paths","")
+		Exit Property
+	End Property		
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Server() As vector
+	' Retorna un vector con la lista de servers de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Server = New Vector(0)
+		Server.Values = docconfiguracion.GetItemValue(CAMPO_EVENTOS_SERVIDOR_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Servers","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Server() As Vector
+		On Error Goto HANDLER
+		Set vServer = Server
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad set Claves","")
+		Exit Property
+	End Property		
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Hosts() As vector
+	' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Hosts = New Vector(0)
+		Hosts.Values = docconfiguracion.GetItemValue(CAMPO_EVENTOS_HOST_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Hosts","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	
+	Public Property Set Hosts() As Vector
+		On Error Goto HANDLER
+		Set vHost = Hosts
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad set Host","")
+		Exit Property
+	End Property			
+	'******************************************************************************************************************			
+	
+	Public Property Get Servidor(Byval clave As String) As String
+	' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Servidor = vServer.getElement(pos)
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad Get Servidor","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Servidor(Byval clave As String) As String
+	' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vServer.ReplaceElement(pos,Servidor)
+		Else
+			Error 10000, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Propiedad Set Servidor","")
+		Exit Property
+	End Property
+	
+
+'******************************************************************************************************************			
+	Public Function insertLineaInteroperabilidad(vIns As Vector,nColOrdenar As Integer)
+		'Inserta en forma ordenada segun la clave si nColOrdenar<>0
+	'nColOrdenar es la columna por la cual ordenar
+	'Si nColOrdenar=0 inserta al final
+		On Error Goto handler		
+		Dim posIns As Long
+		
+		If nColOrdenar<>0 Then
+			Select Case(nColOrdenar)
+			Case 1:
+				posIns=vKeyDB.InsertPos(vIns.getElement(1),True)
+			Case 2:
+				posIns=vServer.InsertPos(vIns.getElement(2),True)
+			Case 3:
+				posIns=vHost.InsertPos(vIns.getElement(3),True)
+			Case 4:
+				posIns=vFilePath.InsertPos(vIns.getElement(4),True)
+			End Select			
+		Else
+			posIns = vKeyDB.cantElem + 1
+		End If
+		vKeyDB.insertElement vIns.getElement(1),posIns
+		vServer.insertElement vIns.getElement(2),posIns
+		vHost.insertElement vIns.getElement(3),posIns
+		vFilePath.insertElement vIns.getElement(4),posIns
+		Exit Function 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Funcion ReferenciarBasedeDatos","")
+		Exit Function
+	End Function
+	'******************************************************************************************************************			
+	Public Sub save
+		On Error Goto handler
+		Dim db As NotesDatabase
+		Dim servidor As String
+		Dim path As String
+		Dim claves As Vector
+		Dim docConfig As NotesDocument
+		Dim i As Integer
+		
+		Call docconfiguracion.ReplaceItemValue(CAMPO_EVENTOS_CLAVE_DB,vKeyDB.values)
+		Call docconfiguracion.ReplaceItemValue(CAMPO_EVENTOS_SERVIDOR_DB,vServer.values)
+		Call docconfiguracion.ReplaceItemValue(CAMPO_EVENTOS_HOST_DB,vHost.values)
+		Call docconfiguracion.replaceItemValue(CAMPO_EVENTOS_RUTA_DB,vFilePath.values)
+		
+		Call docconfiguracion.Save(True,False)
+		
+		Set claves = Me.vKeyDB
+		For i = 1 To claves.CantElem
+			servidor = Me.Servidor(claves.getElement(i))
+			path = Me.BasedeDatos(claves.getElement(i))
+			Set db = New NotesDatabase(servidor,path)
+			If db.FilePath <> session.CurrentDatabase.FilePath Then
+				Set docConfig = db.GetProfileDocument("(ConfiguracionEv)")
+				Call docconfiguracion.CopyAllItems(docConfig,True)
+				docConfig.Save True,False
+			End If
+		Next
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Eventos Sub Save","")
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************				
+	
+	Public Function getIdEvento() As String
+		On Error GoTo handler
+		
+		Dim dbNum As NotesDatabase
+		Dim oNumerador As NumClient
+		Dim nro As Long
+		Dim strNro As String
+		Dim path As String
+		Dim server As String
+		Dim formatoSesion As String
+		
+		server = Servidor("NUMERACION")
+		path =BasedeDatos("NUMERACION")
+		
+		Set oNumerador = New NumClient("idEventos",server,path)
+
+		nro = CStr(oNumerador.getNumber())
+				
+		getIdEvento=nro
+		Exit Function
+HANDLER:
+		MsgBox "numeroid ConfEv - Erl: " + CStr(Erl) +" Error: " + Error
+		Call RegistrarYGenerarError("Eventos","ConfiguracionEv - Procedimiento getIdEvento","")
+		Exit Function
+	End Function
+	'******************************************************************************
+	Public Property Get TiempoMaximoAuditoria As String
+		On Error GoTo handler
+		TiempoMaximoAuditoria=  docConfiguracion.GetItemValue(CAMPO_TIEMPO_MAX_AUDITORIA)(0)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método set TiempoMaximoAuditoria","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************				
+	
+	Public Sub addAuditoriaDate(sClave As String,dCreacion As Variant)
+		'dCreacion es de tipo Date, sClave=clave de la base
+		
+		Dim itClaves As NotesItem,itFechas As NotesItem,aFechas As Variant
+		
+		If docConfiguracion.hasItem(CAMPO_CLAVE_CREACION_AUDITORIA) Then
+			Set itClaves=docConfiguracion.getFirstItem(CAMPO_CLAVE_CREACION_AUDITORIA)
+		Else
+			Set itClaves=New NotesItem(docConfiguracion,CAMPO_CLAVE_CREACION_AUDITORIA,"")	
+		End If
+		itClaves.appendToTextlist sClave
+		If docConfiguracion.hasItem(CAMPO_CREACION_AUDITORIA) Then
+			Set itFechas=docConfiguracion.getFirstItem(CAMPO_CREACION_AUDITORIA)
+		Else
+			Set itFechas=New NotesItem(docConfiguracion,CAMPO_CREACION_AUDITORIA,"")		
+		End If
+		aFechas=itFechas.values
+		ReDim Preserve aFechas(LBound(itClaves.values) To UBound(itClaves.values))
+		aFechas(UBound(itClaves.values))=dCreacion
+		itFechas.values=aFechas
+	End Sub
+End Class

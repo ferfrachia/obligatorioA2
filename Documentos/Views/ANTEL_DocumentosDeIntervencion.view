@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A23D7'>
+<noteinfo noteid='f7a' unid='F279E9E36701CC0B83257AC40063E2FD' sequence='10'>
+<created><datetime dst='true'>20121128T161101,73-02</datetime></created>
+<modified><datetime>20150311T132451,84-03</datetime></modified>
+<revised><datetime>20150309T094415,08-03</datetime></revised>
+<lastaccessed><datetime>20150311T132451,84-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132451,84-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+0AACAGAAAgAkMQUADABmVmVuY2ltaWVudG9LAVABVgEBAAEALwAiAgUADABmVmVuY2ltaWVudG9L
+AU8BVgEiAgEAAQAvACICBQAMAGZWZW5jaW1pZW50b0sBTgFWASICAwAFAC4AKgAEAAIADwAJAAQA
+JDFudW1lcm9Eb2N1bWVudG8kQ29uZmxpY3QkUkVGBAAEAAAALgAFAAQARm9ybQEAFQBEb2N1bWVu
+dG9JbnRlcnZlbmNpb24ACgIEAAQAAwAHAA4ACAAJTDFTNFM1Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABECGYHAAACACQx
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAMACAAAAFZDAwACAAEAbgAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMAAA8AAAAAAAAAUAAB
+AAAKAAAAAAAAAAAAAgIAAAAkMSNuAAIAYAACACQxBQAMAGZWZW5jaW1pZW50b0sBUAFWAQEAAQAv
+ACICBQAMAGZWZW5jaW1pZW50b0sBTwFWASICAQABAC8AIgIFAAwAZlZlbmNpbWllbnRvSwFOAVYB
+IgIDAAcADAAFAAkwUzBFAG51bWVyb0RvY3VtZW50byYAAQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEA
+AQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAA
+AFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABCAAAAAAABAP//
+/wAFAP///wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQAAAAAAAQAAAAAAAAAI
+AAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$TITLE' sign='true'><text>ANTEL_DocumentosDeIntervencion</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item></note>
+

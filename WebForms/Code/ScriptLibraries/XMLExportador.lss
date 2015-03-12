@@ -1,0 +1,382 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <XMLExporter>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'* 
+'*		New()
+'*			Constructor de la clase 
+'*
+'*	PROPIEDADES
+
+'******************************************************************************************************************
+
+Option Declare
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class XMLExportador
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+
+
+
+'******************************************************************************************************************		
+'********************************************************************************************************************************************	
+
+
+'CONSTANTES PRIVADAS
+Private Const NOMBRE_FORM_CONF				= "IGDocConfig"
+Private Const CAMPO_PROTOCOLO					="rProtocolo"
+Private Const CAMPO_PUERTO					="sPuerto"
+Private Const CAMPO_EMAIL_INSTITUCIONAL			="sMail"
+Private Const CAMPO_INSTITUCION				="sInstitucion"
+Private Const CAMPO_HOST_SERVER				="sHost"
+Private Const CAMPO_MODULOS					="sModulos"
+
+
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class XMLExportador
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private dbActual As NotesDatabase
+	Private  domParser As NotesDOMParser
+	'Private doc As NotesDocument
+	'Private nomarch As String
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+'********************************************************************************************************************************************************************************	
+'CONSTRUCTOR
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		
+		'Se carga la base de datos
+		Set dbActual = ses.CurrentDatabase
+		
+	'	Set doc =docu
+	'	
+	'	nomarch = nombreArchivo
+		
+		
+		'En caso de que nunca haya sido editado se setea el campo form para poderse editar
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase XMLEXportador - Método new","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	Public Sub exportarTodo(doc As NotesDocument, nomArch As String)
+		On Error Goto HANDLER
+		
+		Dim Stream As NotesStream
+		Dim Exporter As NotesDXLExporter
+		
+		
+		
+	'Create an XML exporter tool.
+		Set Exporter = ses.CreateDxlExporter
+		
+     'Create an output stream that will receive XML. 
+		Set Stream = ses.CreateStream
+		
+	'Attach the stream as the output of the XML exporter.
+		Call Exporter.SetOutput (Stream)
+		Exporter.ValidationStyle = 0
+		Exporter.SchemaLocation = ""
+		Exporter.ForceNoteFormat=True
+		
+		'Make this document the input to the XML exporter.
+		Call Exporter.SetInput (doc)
+		
+		
+		
+		'Associate the XML output stream with the output file.
+		Call Stream.Open(nomArch)
+		
+		'Translate the doc into XML.
+		Call Exporter.Process
+		
+		'Close the output file.
+		Call Stream.Close
+		
+		
+NormalReturn:
+		Exit Sub
+		
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase XMLEXportador - Método exportarTodo","")
+		Exit Sub
+	End Sub
+	
+	
+	Public Sub exportarParcial(doc As NotesDocument, nomArch As String)
+		On Error Goto HANDLER
+		
+		
+		'Dim session As New NotesSession
+		
+		
+		Dim xmlin As NotesStream
+		Set xmlin=ses.CreateStream
+		If Not xmlin.Open("c:\hola.xml") Then
+			Messagebox "Cannot open " & "c:\hola.xml",, "Error"
+			Exit Sub
+		End If
+		If xmlin.Bytes = 0 Then
+			Messagebox "File did not exist or was empty",, "c:\hola.xml"
+			Exit Sub
+		End If
+		
+		Dim xslin As NotesStream
+		Set xslin=ses.CreateStream
+		If Not xslin.Open("c:\tr.xsl") Then
+			Messagebox "Cannot open " &"c:\tr.xml",, "Error"
+			Exit Sub
+		End If
+		If xslin.Bytes = 0 Then
+			Messagebox "File did not exist or was empty",, "c:\tr.xml"
+			Exit Sub
+		End If
+		
+		Dim xmlout As NotesStream
+		Set xmlout=ses.CreateStream
+		Call xmlout.Open("c:\sal.txt")
+		Call xmlout.Truncate
+		
+		Dim transformer As NotesXSLTransformer
+		Set transformer=ses.CreateXSLTransformer(xmlin, xslin, _
+		xmlout)
+		Call transformer.Process	
+		
+		
+		
+		
+		
+		
+		
+		
+NormalReturn:
+		Exit Sub
+		
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase XMLEXportador - Método exportarTodo","")
+		Exit Sub
+	End Sub	
+	
+	
+	Public Sub exportarParcialDOM(doc As NotesDocument, nomArch As String,campos As String)
+		
+		Dim db As NotesDatabase
+		Dim inputStream As NotesStream, outputStream As NotesStream
+		Dim docNode As NotesDOMDocumentNode
+		Dim outputFile As String
+		outputFile = nomarch
+		
+		Dim header As String
+		header = "Comienzo"
+		Dim LF As String
+		LF = Chr(13)+Chr(10)
+		
+		On Error Goto errh
+		
+		Set db = ses.CurrentDatabase
+		Set outputStream =ses.CreateStream
+		outputStream.Open (outputFile)
+		outputStream.Truncate
+		
+		'Escribo el cabezal
+		outputStream.WriteText ("<?xml version='1.0' encoding='utf-8'?>" )
+		
+		Dim Exporter As NotesDXLExporter
+		Set Exporter = ses.CreateDxlExporter
+		Set inputStream = ses.CreateStream
+		Call Exporter.SetOutput (inputStream)
+		Call Exporter.SetInput (doc)
+		'Exporto el documento al stream que sera entrada del parser 
+		Call Exporter.Process
+		Set domParser=ses.CreateDOMParser(inputStream, outputStream)
+		domParser.Process
+		Set docNode = domParser.Document
+		
+		'llamo a la funcionn  que recorrre los nodos 
+		Call walkTree(docNode,campos)
+		
+results:
+		Call outputStream.Close
+		Exit Sub
+errh:
+		outputStream.WriteText ("errh: "+Cstr(Err)+":  "+Error+LF)
+		Resume results
+	End Sub
+	
+	
+	
+	
+	Private Sub walkTree ( node As notesdomnode,campos As String)
+		Dim child As notesdomnode
+		Dim elt As notesdomnode
+		Dim attrs As notesdomnamednodemap
+		Dim a As notesdomattributenode
+		Dim piNode As Notesdomprocessinginstructionnode
+		
+		Dim LF As String
+		LF = Chr(13)+Chr(10)
+		
+		If Not node.IsNull Then  
+			Select Case node.NodeType
+			Case DOMNODETYPE_DOCUMENT_NODE:      
+				'Si es la raiz recorro todos los hijos
+				Set child = node.FirstChild   
+				Dim numChildNodes As Integer
+				numChildNodes = node.NumberOfChildNodes
+				While numChildNodes > 0 
+					Set child = child.NextSibling 
+					numChildNodes = numChildNodes - 1
+					Call walkTree(child,campos)
+				Wend
+				
+			Case DOMNODETYPE_ELEMENT_NODE:
+				'si es un nodo item o documento
+				If Ucase(node.NodeName)="ITEM" Or Ucase(node.NodeName)="DOCUMENT"  Then
+					'me fijo en los atributos buscando el nombre
+					Set elt = node
+					Dim atnombre As String
+					atnombre="-*-"
+					Dim numAttributes As Integer, numChildren As Integer
+					numAttributes = elt.attributes.numberofentries
+					Set attrs = elt.Attributes     
+					
+					Dim i As Integer
+					For i = 1 To numAttributes     
+						Set a = attrs.GetItem(i)
+						If a.NodeName="name" Then
+							atnombre=a.NodeValue
+							Exit For
+						End If
+						
+					Next
+					Dim esta As Variant
+					Dim exporto As Boolean
+					exporto = False
+					'si el nombre esta entre los campos a exportar
+					esta=Evaluate({@if(@ismember("}+atnombre+{";@explode("}+campos+{";","));"SI";"NO")})
+					If Ucase(node.NodeName)="ITEM"  And esta(0)="SI" Then
+						'escribo la etiqueta del campo 
+						domParser.Output("<"+atnombre+">" )	
+						exporto = True
+					End If
+					'luego recorro los hijos
+					numChildren =  elt.NumberOfChildNodes
+					Set child = elt.FirstChild     
+					While numChildren > 0
+						'Call walkTree(child,campos)
+						'si esta en la lista de campo los escribo recursivamente sino solo recorro
+						If exporto Then 
+							Call ExportTree(child) 
+						Else 
+							Call walkTree(child,campos) 
+						End If
+						Set child = child.NextSibling   
+						numChildren = numChildren - 1
+					Wend
+					'cierro el tag
+					If exporto Then domParser.Output("</"+atnombre+">" )	
+					
+				End If
+			Case Else:
+				
+				
+			End Select 
+		End If        
+		
+	End Sub
+	
+	Private Sub ExportTree ( node As notesdomnode)
+		Dim child As notesdomnode
+		Dim elt As notesdomnode
+		Dim attrs As notesdomnamednodemap
+		Dim a As notesdomattributenode
+		Dim piNode As Notesdomprocessinginstructionnode
+		
+		Dim LF As String
+		LF = Chr(13)+Chr(10)
+		
+		If Not node.IsNull Then  
+			Select Case node.NodeType
+			Case DOMNODETYPE_DOCUMENT_NODE:        
+				
+				Set child = node.FirstChild   
+				Dim numChildNodes As Integer
+				numChildNodes = node.NumberOfChildNodes
+				
+				
+				While numChildNodes > 0 
+					Set child = child.NextSibling 
+					numChildNodes = numChildNodes - 1
+					Call ExportTree(child)
+				Wend
+				
+				
+			Case DOMNODETYPE_TEXT_NODE:           
+				domParser.Output(node.NodeValue)
+				
+			Case DOMNODETYPE_ELEMENT_NODE:        
+				
+				
+				domParser.Output("<"+node.NodeName+">" )	
+				
+				
+				Set elt = node
+				Dim numChildren As Integer
+				
+				numChildren =  elt.NumberOfChildNodes
+				Set child = elt.FirstChild     
+				While numChildren > 0
+					Call ExportTree(child)
+					Set child = child.NextSibling   
+					numChildren = numChildren - 1
+				Wend
+				domParser.Output("</"+node.NodeName+">" )	
+				
+			Case Else:
+				
+				
+			End Select  
+		End If       
+		
+	End Sub
+	
+	
+	
+End Class
+'******************************************************************************************************************

@@ -1,0 +1,80 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Declare
+
+Use "IGDocConfig"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SesionUsuario
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Private Const VISTA_SESIONES_POR_USUARIO 																="Session"
+Private Const CAMPO_BANDEJA																							="sBandeja"
+Private Const CAMPO_TIPO_DOC																						="sTipoDoc"
+Private Const CAMPO_ANIO																								="sAnio"
+Private Const CAMPO_PAGINA																							="sPagina"
+Private Const CAMPO_USUARIO																							="UserName"
+Private Const CAMPO_TIPO_BANDEJA																				="sTipoBandeja"
+
+Public Class SesionUsuario
+	Private doc As NotesDocument
+	Private db As NotesDatabase
+	
+'#################################    FUNCIONES    ##############################################
+	Public Sub new (nombreUsuario As String)
+		On Error Goto handler
+		Dim conf As New IGDocConfig
+		Dim pathDb As String
+		Dim ses As New NotesSession
+		Dim vSesiones As NotesView
+		Dim nNames As  NotesName
+		
+		pathDb = conf.PathSesion
+		Set db = ses.GetDatabase(ses.CurrentDatabase.Server,pathDb)
+		If db Is Nothing Then
+			Error 1002,"No se encuentra la base de Sesion de Usuarios"
+		End If
+		
+		Set vSesiones = db.GetView(VISTA_SESIONES_POR_USUARIO )
+		Set nNames = New NotesName(nombreUsuario)
+		Set doc = vSesiones.GetDocumentByKey(nNames.Canonical, True )
+		
+		If doc Is Nothing Then
+			Set doc = New NotesDocument(db)
+			doc.ReplaceItemValue "Form","Session"
+			doc.ReplaceItemValue "UltLog",Now
+			doc.ReplaceItemValue CAMPO_USUARIO,nNames.Canonical
+			doc.Save True,False
+		End If
+		
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SesionUsuario - new","")
+		Exit Sub
+	End Sub
+'#############################################################################################
+	Public Sub actualizoContexto(tipoDoc As String,tipoBandeja As String,bandeja As String, anio As String,pagina As String,unidad As String)
+		On Error Goto handler
+		
+		Call doc.ReplaceItemValue(CAMPO_TIPO_DOC,tipoDoc)
+		Call doc.ReplaceItemValue(CAMPO_BANDEJA,bandeja)
+		Call doc.ReplaceItemValue(CAMPO_ANIO,anio)
+		Call doc.ReplaceItemValue(CAMPO_PAGINA,pagina)
+		Call doc.Save(True,False)
+		
+		Exit Sub 
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase actualizoContexto - new","")	
+	End Sub
+'#############################################################################################	
+	
+End Class

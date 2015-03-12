@@ -1,0 +1,63 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_OPERPAL = "sOperPalabra"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_OPERCAM = "sOperCampos"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TIPOBUSQPAL = "sTipoBusqP"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TIPOBUSQCAM = "sTipoBusqC"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_SOLICITANTE = "sSolicitante"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_SOLICITANTE_CARTA = "sSolicitanteCarta"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP = "ccEstado"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_CAR = "ccEstadoCarta"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL = "ccOficinaInicial"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_UNIDADORIGEN = "ccOficinaOrigen"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL = "ccOficinaActual"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_UNIDADDESTINO = "lUnidadesDest"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_USUARIO = "sUsuarioFirma"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO = "sAsunto"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO_CARTA = "sAsuntoCarta"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO = "sExtracto"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TEXTO = "sTexto"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TEXTO_CARTA = "sTextoCarta"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT = "sSubestado"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_FECHA_CREACION="sFechaCreacion"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_FECHA_FIN="sFechaCreacionFin"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_NRO = "sNroDoc"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC = "sFormaDoc"
+Public Const DBBUSQ_CAMPO_PALABRAS = "sPalabra"
+Public Const DBBUSQ_CAMPO_PAQUETE = "rTienePaquete"
+Public Const DBSGD_CAMPO_FECHA_CREACION="ccfCreacion"
+Public Const DBSGD_CAMPO_FECHA_ENTRADA="fEntrada"
+
+Public Const DBSGD_CAMPO_FCARATA_NRO = "ccNroCS"
+%REM
+Public Const DBSGD_CAMPO_FCARATULA_CANT_ACT			= "cCantAct"
+
+Public Const DBSGD_VISTA_BUSQ_ACTUACION_NRO			= "VBusqActNroAct"
+%END REM
+Public Const CAMPOUNIDADACTUAL= "ccOficinaAct"
+Public Const CAMPO_RESULTADO_BUSQUEDA = 20
+Public Const NRORESPUESTASMAX = 150
+Public Const MSG_ERROR_TYPE_SEARCH_NOT_FOUND = "El tipo de búsqueda no está definido"
+
+Public Const FORMA_DOC_EXPEDIENTE = "EXPEDIENTE"
+Public Const FORMA_DOC_CARATULA = "CARATULA"
+Public Const FORMA_DOC_ACTUACION = "ACTUACION"
+Public Const FORMA_DOC_CARTA = "CARTA DE SERVICIO"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TEMA		="sTema"
+
+Public Const OPERADOR_AND = "AND"
+Public Const OPERADOR_OR = "OR"
+Public Const BUSCAR_TEXTO_PARTE = "LIKE"
+Public Const BUSCAR_TEXTO_COMPLETO = "="
+
+Public Const SESSION_CAMPO_HOST					="sSessionHost"
+Public Const SESSION_CAMPO_NUMERO					="sSessionNumero"
+Public Const SESSION_CAMPO_OFICINA					="sSessionOficina"
+Public Const SESSION_CAMPO_TITULO					="sSessionTitulo"
+Public Const SESSION_CAMPO_ESTADO					="sSessionEstado"
+Public Const SESSION_CAMPO_DESC					="sSessionDesc"

@@ -1,0 +1,2770 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+ '******************************************************************************************************************	
+'* 
+'*		  							CLASS <CARATULA>
+'* 
+'******************************************************************************************************************	
+%REM
+Esta clase representa un objeto CARATULA de un expediente
+ 
+CONSTRUCTOR
+Sub new(byval sNroExpediente As String, byval bCrear as Integer)
+		'Si bCrear = True, devuelve el doc carátula con universalid sNroExpediente
+		'Si bCrear = False, devuelve el doc caratula con numero de expediente sNroExpediente
+Parámetros:
+	sNroExpediente	(IN) = número de expediente o universalid del documento carátula
+	bCrear		(IN) = indica si se está creando el expediente (true) o no (false)
+
+PROPIEDADES
+Get/Set NroExp() As String
+		'Devuelve/Setea el número de expediente correspondiente a esta carátula
+Get/Set Tema() As String
+		'Devuelve/Setea el nombre del tema del expediente
+Get/Set Asunto() As String
+		'Devuelve/Setea el asunto del expediente
+Get/Set OficinaActual As String
+		'Devuelve/Setea el nombre de la unidad en la que se encuentra el expediente
+Get/Set OficinaAnterior As String
+		'Devuelve/Setea el nombre de la unidad que actuó sobre el expediente en el paso anterior al actual
+Get/Set OficinaInicial() As String
+		'Devuelve/Setea el nombre de la unidad que inició el expediente
+Get/Set CantActuaciones() As Integer
+		'Devuelve/Setea la cantidad de actuaciones del expediente
+Get/Set Estado() As String
+		'Devuelve/Setea el estado del expediente
+Get/Set FechaCreacion() As String
+		'Devuelve/Setea la fecha de creación del expediente
+Get/Set Autores() As Vector
+		'Devuelve/Setea los autores de la carátula
+Get/Set Lectores() As Vector
+		'Devuelve/Setea un vector con los lectores de la carátula
+Get/Set Seguridad() As String
+		'Devuelve/Setea el tipo de seguridad del expediente (normal o confidencial)
+Get/Set FechaPase As Variant
+		'Devuelve/Setea la última fecha de pase del expediente
+		
+
+MÉTODOS
+Function save()
+		'Salva el documento carátula
+
+Function getRecorridoColumna(byval nColumna As Integer) As Vector
+		'Devuelve los valores de la columna indicada para la tabla de recorrido
+Parámetros:
+	nColumna	(IN) = número de columna cuyos valores se quieren obtener
+
+Function setRecorridoColumna(byval nColumna As Integer,vColumna As Vector)
+		'Setea los valores de la columna indicada para la tabla de recorrido con los de vColumna
+Parámetros:
+	nColumna	(IN) = número de columna cuyos valores se quieren setear
+	vColumna	(IN) = vector con los valores para la columna
+
+Sub addRecorrido(Byval fechaRecibido As Variant)
+		'Agrega una línea a la tabla de recorrido
+Parámetros:
+	fechaRecibido	(IN) = fecha de recepción del expediente en la actuación actual
+
+Sub addLog(vLog As Vector)
+		'Agrega una línea al log
+Parámetros:
+	vLog	(IN) = vector con los datos de la línea a agregar al log. Debe tener
+			  el formato {Operacion, usuario, fecha-hora}
+
+
+
+%END REM
+
+Option Declare
+Use "FuncionesGenerales"
+Use "ConfEE 1.0"
+Use "Errores Generales"
+Use "ConstantesDBGestionDoc"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Caratula
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+Public Const NRO_EX_VACIO					= "VACIO"
+
+'ERRORES GENERADOS
+
+
+'CONSTANTES PRIVADAS
+Const	CAMPO_FCARATULA_NRO_EXPEDIENTE		="ccNroExp"
+Const	CAMPO_FCARATULA_TEMA				="sTema"
+Const	CAMPO_FCARATULA_CODTEMA				="nCodTema"
+
+Const 	CAMPO_FCARATULA_VERSION_TEMA			="nVersionRuta"
+Const	CAMPO_FCARATULA_ASUNTO				="sAsunto"
+Const	CAMPO_FCARATULA_OFICINA_ACTUAL		="ccOficinaActual"
+Const	CAMPO_FCARATULA_OFICINA_ANTERIOR		="ccOficinaAnterior"
+Const	CAMPO_FCARATULA_OFICINA_INCIAL		="ccOficinaInicial"
+Const	CAMPO_FCARATULA_CANT_ACTUACIONES		="cCantAct"
+Const	CAMPO_FCARATULA_ESTADO				="ccEstado"
+
+Const	CAMPO_FCARATULA_FECHA_CREACION		="ccfCreacion"
+Const	CAMPO_FCARATULA_FECHA_ARCHIVADO		="fFechaArchivado"
+Const	CAMPO_FCARATULA_AUTORES				="sAutores"
+Const	CAMPO_FCARATULA_LECTORES				="sLectores"
+Const	CAMPO_FCARATULA_AUTORES_PERMANENTES	="sAutoresPer"
+
+
+Const	CAMPO_FCARATULA_RECORRIDO_ENTRADA		="sRecorridoFechaEntrada"
+Const	CAMPO_FCARATULA_RECORRIDO_SALIDA		="sRecorridoFechaSalida"
+Const	CAMPO_FCARATULA_RECORRIDO_UNIDAD		="sRecorridoUnidad"
+Const	CAMPO_FCARATULA_LOG_OPERACION			="sLogOperacion"
+Const	CAMPO_FCARATULA_LOG_USUARIO			="sLogusuario"
+Const	CAMPO_FCARATULA_LOG_FECHAHORA			="sLogFechaHora"
+Const	CAMPO_FCARATULA_SEGURIDAD			="ccSeguridad"
+Const	CAMPO_FCARATULA_FECHA_PASE			="ccFechaPase"
+
+
+Const	CAMPO_FCARATULA_AGREGADOS_NRO			="sListaAgregadosNro"
+Const	CAMPO_FCARATULA_AGREGADOS_UNIDAD		="sListaAgregadosUnidad"
+Const	CAMPO_FCARATULA_AGREGADOS_ACTUACION	="sListaAgregadosAct"
+Const	CAMPO_FCARATULA_AGREGADOS_FECHA		="sListaAgregadosFecha"
+Const	CAMPO_FCARATULA_PADRE_DE_AGREGADO		="sCodigoPadre"
+
+
+Const	CAMPO_FCARATULA_PAQ_RECIBIDO			="fPaqRecibido"
+Const	CAMPO_FCARATULA_PAQ_LUGAR			="sPaqLugar"
+Const	CAMPO_FCARATULA_PAQ_RESPONSABLE		="sPaqResponsable"
+
+Const	CAMPO_FCARATULA_HPAQ_FECHAS			="fHPaqFechas"
+Const	CAMPO_FCARATULA_HPAQ_LUGARES			="sHPaqLugares"
+Const	CAMPO_FCARATULA_HPAQ_RESPONSABLES		="sHPaqResponsables"
+
+Const	CAMPO_FCARATULA_FIRMANTES			="sFirmantes"
+Const	CAMPO_FCARATULA_RESERVADO_POR			="sReservadoPor"
+
+Const	CAMPO_FCARATULA_NOTIF_SIN_ACUSE		="sNotificados"
+Const	CAMPO_FCARATULA_NOTIF_ACUSARON		="sNotifAcusaron"
+Const	CAMPO_FCARATULA_TNOTIF_FECHA			="sTNotifFecha"
+Const	CAMPO_FCARATULA_TNOTIF_UNIDAD			="sTNotifUnidad"
+Const	CAMPO_FCARATULA_TNOTIF_NRO_ACT		="sTNotifNroAct"
+Const	CAMPO_FCARATULA_TNOTIF_ACUSE			="sTNotifAcuse"
+Const	CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA		="sTNotifAcuseFecha"
+Const	CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA_IND	="sTNotifAcuseFechaInd"
+Const	CAMPO_FCARATULA_URGENTE				="sUrgenteActs"
+Const	CAMPO_FCARATULA_USUARIOS_COPIA		="sUsuariosCopia"
+Const 	CAMPO_FCARATULA_FECHA_RECIBIDO		="sFechaRecibido"
+Const 	CAMPO_FCARATULA_LOG_FECHA			= "logFecha"
+Const 	CAMPO_FCARATULA_LOG_USUARIO_EJ		= "logUsuarioEj"
+Const 	CAMPO_FCARATULA_LOG_USUARIO_COPIA		= "logUsuarioCopia"
+Const 	CAMPO_FCARATULA_ARBOL				= "sArbolAgregacion"
+
+'Historial de copia de expediente (las acciones de copiar y quitar copia)
+Const 	CAMPO_FCARATULA_H_US_COPIA	= "hUsCopia"
+Const 	CAMPO_FCARATULA_H_OF_COPIA	= "hOfCopia"
+Const 	CAMPO_FCARATULA_H_FECHA		= "hFecha"
+Const 	CAMPO_FCARATULA_H_ACCION		= "hAccion"
+Const 	CAMPO_FCARATULA_H_CANT_ACT	= "hCantAct"
+
+'Campo para saber la cantidad de actuaciones que se copiaron a la oficina
+Const 	CAMPO_FCARATULA_CANT_ACT_COP		= "cantidadActCopiadas"
+
+'Agregaciones, Desagregaciones
+Const		CAMPO_FCARATULA_AGR_FECHA		="sLogAgrFecha"
+Const		CAMPO_FCARATULA_AGR_USUARIO		="sLogAgrUsuario"
+Const		CAMPO_FCARATULA_AGR_OFICINA		="sLogAgrOficina"
+Public Const	CAMPO_FCARATULA_AGR_NROEXP		="sLogAgrNroExp"
+Const		CAMPO_FCARATULA_AGR_OPERACION		="sLogAgrOperacion"
+Public Const	CAMPO_FCARATULA_AGR_ACTUACION		="sLogAgrNroAct"
+
+'Campos de anexos en las caratulas
+Public Const	CAMPO_FCARATULA_ANEXOS_NOMBRES	="sAnexoNombre"
+Public Const	CAMPO_FCARATULA_ANEXOS_TAMAÑO		="sAnexoTamanio"
+Public Const	CAMPO_FCARATULA_ANEXOS_ACTUACION	="sAnexoActuacion"
+
+Public Const 	ERROR_ANEXO_NOT_FOUND 			= 31021
+Public Const   MSG_ERROR_ANEXO_NOT_FOUND		= "No se encontró el anexo: "
+
+Public Const CAMPO_FCARATULA_FERMIGRADO="FechaEntradaRecorridoMigrado"
+Public Const CAMPO_FCARATULA_FSRMIGRADO="FechaSalidaRecorridoMigrado"
+Public Const CAMPO_FCARATULA_URMIGRADO="UnidadRecorridoMigrado"
+Public Const CAMPO_FCARATULA_DRMIGRADO="DescMovimientoMigrado"
+Public Const CAMPO_FCARATULA_NROBOLMIGRADO="NroBoleta"
+Public Const CAMPO_FCARATULA_MIGRADO="Migrado"
+Public Const CAMPO_FCARATULA_PAQUETE="rTienePaquete"
+
+'Historial de envios de avisos manuales
+Public Const CAMPO_FCARATULA_QUIEN_ENVIA_AVISO_M="sQuienEnviaAvisoManual"
+Public Const CAMPO_FCARATULA_CUANDO_ENVIA_AVISO_M="sCuandoEnviaAvisoManual"
+Public Const CAMPO_FCARATULA_A_QUIEN_ENVIA_AVISO_M="sAQuienEnviaAvisoManual"
+
+'Vinculacion entre expedientes
+Public Const CAMPO_VINCULACION_EXP			= "sExpedientesVinculados"
+Public Const CAMPO_VINCULACION_BASES		= "sBasesExpVinculados"
+Public Const CAMPO_VINCULACION_SERVS		= "sServidoresExpVinculados"
+Public Const CAMPO_VINCULACION_UIDS			= "sUidsExpVinculados"
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CARATULA>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Caratula
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private db As notesDatabase
+	Private doc As notesdocument
+	
+'******************************************************************************************************************	
+	
+	
+	'PROPIEDADES
+	
+	Public Property Set UrgenteActs As Vector
+		On Error Goto HANDLER
+		
+		If UrgenteActs.cantElem > 0 Then
+			doc.replaceItemValue CAMPO_FCARATULA_URGENTE,UrgenteActs.values
+		Else
+			doc.replaceItemValue CAMPO_FCARATULA_URGENTE,""
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set UrgenteActs","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set hUsCopia As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_H_US_COPIA,hUsCopia.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set hUsCopia","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get hUsCopia As Vector
+		On Error Goto HANDLER
+		
+		Set hUsCopia = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_H_US_COPIA)Then
+			hUsCopia.values = doc.GetItemValue(CAMPO_FCARATULA_H_US_COPIA)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get hUsCopia","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set hOfCopia As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_H_OF_COPIA,hOfCopia.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set hOfCopia","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get hOfCopia As Vector
+		On Error Goto HANDLER
+		
+		Set hOfCopia = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_H_OF_COPIA)Then
+			hOfCopia.values = doc.GetItemValue(CAMPO_FCARATULA_H_OF_COPIA)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get hOfCopia","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set hFecha As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_H_FECHA,hFecha.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set hFecha","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get hFecha As Vector
+		On Error Goto HANDLER
+		
+		Set hFecha = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_H_FECHA)Then
+			hFecha.values = doc.GetItemValue(CAMPO_FCARATULA_H_FECHA)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get hFecha","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set hAccion As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_H_ACCION,hAccion.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set hAccion","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get hAccion As Vector
+		On Error Goto HANDLER
+		
+		Set hAccion = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_H_ACCION)Then
+			hAccion.values = doc.GetItemValue(CAMPO_FCARATULA_H_ACCION)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get hAccion","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set hCantAct As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_H_CANT_ACT,hCantAct.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set hCantAct","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get hCantAct As Vector
+		On Error Goto HANDLER
+		
+		Set hCantAct = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_H_CANT_ACT)Then
+			hCantAct.values = doc.GetItemValue(CAMPO_FCARATULA_H_CANT_ACT)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get hCantAct","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set cantidadActCopiadas As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_CANT_ACT_COP,cantidadActCopiadas.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set cantidadActCopiadas","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get cantidadActCopiadas As Vector
+		On Error Goto HANDLER
+		
+		Set cantidadActCopiadas = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_CANT_ACT_COP)Then
+			cantidadActCopiadas.values = doc.GetItemValue(CAMPO_FCARATULA_CANT_ACT_COP)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get cantidadActCopiadas","")
+		Exit Property	
+	End Property		
+	
+	
+'******************************************************************************************************************	
+	Public Property Set UsuariosCopia As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_USUARIOS_COPIA,UsuariosCopia.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set UsuariosCopia","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get UsuariosCopia As Vector
+		On Error Goto HANDLER
+		
+		Set UsuariosCopia = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_USUARIOS_COPIA) Then
+			UsuariosCopia.values=doc.GetItemValue(CAMPO_FCARATULA_USUARIOS_COPIA)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get UsuariosCopia","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set FechaRecibido As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_FECHA_RECIBIDO,FechaRecibido.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set FechaRecibido","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FechaRecibido As Vector
+		On Error Goto HANDLER
+		
+		Set FechaRecibido = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_FECHA_RECIBIDO) Then
+			FechaRecibido.values=doc.GetItemValue(CAMPO_FCARATULA_FECHA_RECIBIDO)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get FechaRecibido","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	
+	Public Property Set logUsuarioCopia As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_LOG_USUARIO_COPIA,logUsuarioCopia.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set logUsuarioCopia","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get logUsuarioCopia As Vector
+		On Error Goto HANDLER
+		
+		Set logUsuarioCopia = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_LOG_USUARIO_COPIA)Then
+			logUsuarioCopia.values = doc.GetItemValue(CAMPO_FCARATULA_LOG_USUARIO_COPIA)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get logUsuarioCopia","")
+		Exit Property	
+	End Property
+	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set logUsuarioEj As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_LOG_USUARIO_EJ,logUsuarioEj.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set logUsuarioEj","")
+		Exit Property	
+	End Property	
+	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get logUsuarioEj As Vector
+		On Error Goto HANDLER
+		
+		Set logUsuarioEj = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_LOG_USUARIO_EJ)Then
+			logUsuarioEj.values = doc.GetItemValue(CAMPO_FCARATULA_LOG_USUARIO_EJ)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get logUsuarioEj","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set logFecha As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_LOG_FECHA,logFecha.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set logFecha","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get logFecha As Vector
+		On Error Goto HANDLER
+		
+		Set logFecha = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_LOG_FECHA)Then
+			logFecha.values = doc.GetItemValue(CAMPO_FCARATULA_LOG_FECHA)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get logFecha","")
+		Exit Property	
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Set ArbolAgregacion As String
+		On Error Goto handler
+		doc.ReplaceItemValue CAMPO_FCARATULA_ARBOL,ArbolAgregacion
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set ArbolAgregacion","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Get UrgenteActs As Vector
+		On Error Goto HANDLER
+		
+		Set UrgenteActs=New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_URGENTE) Then
+			UrgenteActs.values=doc.getItemValue(CAMPO_FCARATULA_URGENTE)
+		End If	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get UrgenteActs","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NotificacionesAcuse As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_TNOTIF_ACUSE,NotificacionesAcuse.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set NotificacionesAcuse","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NotificacionesAcuse As Vector
+		On Error Goto HANDLER
+		
+		Set NotificacionesAcuse = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_TNOTIF_ACUSE) Then
+			NotificacionesAcuse.values=doc.GetItemValue(CAMPO_FCARATULA_TNOTIF_ACUSE)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesAcuse","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set NotificacionesNroAct As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_TNOTIF_NRO_ACT,NotificacionesNroAct.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesNroAct","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NotificacionesNroAct As Vector
+		On Error Goto HANDLER
+		
+		Set NotificacionesNroAct = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_TNOTIF_NRO_ACT) Then
+			NotificacionesNroAct.values=doc.GetItemValue(CAMPO_FCARATULA_TNOTIF_NRO_ACT)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesNroAct","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NotificacionesUnidad As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_TNOTIF_UNIDAD,NotificacionesUnidad.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesUnidad","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NotificacionesUnidad As Vector
+		On Error Goto HANDLER
+		
+		Set NotificacionesUnidad = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_TNOTIF_UNIDAD) Then
+			NotificacionesUnidad.values=doc.GetItemValue(CAMPO_FCARATULA_TNOTIF_UNIDAD)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesUnidad","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NotificacionesFecha As Vector
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_TNOTIF_FECHA,NotificacionesFecha.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesFecha","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NotificacionesFecha As Vector
+		On Error Goto HANDLER
+		
+		Set NotificacionesFecha = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_TNOTIF_FECHA) Then
+			NotificacionesFecha.values=doc.GetItemValue(CAMPO_FCARATULA_TNOTIF_FECHA)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesFecha","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NotificacionesAcusaronFecha As Vector
+		On Error Goto HANDLER
+		
+		If NotificacionesAcusaronFecha.cantElem > 0 Then
+			doc.replaceItemValue CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA,NotificacionesAcusaronFecha.values	
+		Else
+			If doc.hasItem(CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA) Then
+				doc.RemoveItem CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA
+			End If
+		End If		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set NotificacionesAcusaronFecha","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get NotificacionesAcusaronFecha As Vector
+		On Error Goto HANDLER
+		
+		Set NotificacionesAcusaronFecha=New Vector(0)
+		If doc.hasItem(CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA) Then
+			NotificacionesAcusaronFecha.values=doc.getItemValue(CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA)
+		End If		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesAcusaronFecha","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	'Inidice que indica a que notificación corresponde cada fecha de acuse
+	Public Property Get NotificacionesAcusaronFechaInd As Vector
+		On Error Goto HANDLER
+		
+		Set NotificacionesAcusaronFechaInd=New Vector(0)
+		If doc.hasItem(CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA_IND) Then
+			NotificacionesAcusaronFechaInd.values=doc.getItemValue(CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA_IND)
+		End If		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificacionesAcusaronFechaInd","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	'Inidice que indica a que notificación corresponde cada fecha de acuse
+	Public Property Set NotificacionesAcusaronFechaInd As Vector
+		On Error Goto HANDLER
+		
+		Dim vNumerico As New Vector(0),i As Integer
+		If NotificacionesAcusaronFechaInd.cantElem > 0 Then
+			'No entiendo por que tuve que hacer esta conversión hasta el día de hoy.- Error TIpos mezclados
+			For i=1 To NotificacionesAcusaronFechaInd.CantElem
+				vNumerico.insertElement Cint(NotificacionesAcusaronFechaInd.getelement(i)),i
+			Next
+			If doc.HasItem(CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA_IND) Then
+				doc.RemoveItem CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA_IND	
+			End If
+			doc.replaceItemValue CAMPO_FCARATULA_TNOTIF_ACUSE_FECHA_IND,vNumerico.values
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set NotificacionesAcusaronFechaInd","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	
+	Public Property Get NotificadosAcusaron As Vector
+		On Error Goto HANDLER
+		
+		Set NotificadosAcusaron=New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_NOTIF_ACUSARON) Then
+			NotificadosAcusaron.values=doc.GetItemValue(CAMPO_FCARATULA_NOTIF_ACUSARON)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificadosAcusaron","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NotificadosAcusaron As Vector
+		On Error Goto HANDLER
+		
+		If NotificadosAcusaron.cantElem > 0 Then
+			doc.replaceItemValue CAMPO_FCARATULA_NOTIF_ACUSARON,NotificadosAcusaron.values	
+		Else
+			If doc.hasItem(CAMPO_FCARATULA_NOTIF_ACUSARON) Then
+				doc.RemoveItem CAMPO_FCARATULA_NOTIF_ACUSARON
+			End If
+		End If		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NotificadosAcusaron","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get Notificados As Vector
+		On Error Goto HANDLER
+		
+		Set Notificados=New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_NOTIF_SIN_ACUSE) Then
+			Notificados.values=doc.GetItemValue(CAMPO_FCARATULA_NOTIF_SIN_ACUSE)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Notificados","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Notificados As Vector
+		On Error Goto HANDLER
+		
+		If Notificados.cantElem > 0 Then
+			doc.replaceItemValue CAMPO_FCARATULA_NOTIF_SIN_ACUSE,Notificados.values	
+		Else
+			If doc.hasItem(CAMPO_FCARATULA_NOTIF_SIN_ACUSE) Then
+				doc.RemoveItem CAMPO_FCARATULA_NOTIF_SIN_ACUSE
+			End If
+		End If		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Notificados","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get PaqueteResponsable As String
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FCARATULA_PAQ_RESPONSABLE) Then
+			PaqueteResponsable=doc.GetItemValue(CAMPO_FCARATULA_PAQ_RESPONSABLE)(0)	
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get PaqueteResponsable","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set PaqueteResponsable As String
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_PAQ_RESPONSABLE,PaqueteResponsable
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set PaqueteResponsable","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	
+	Public Property Get ReservadoPor As String
+		'Devuelve el nombre del usuario que tiene reservado el expediente
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FCARATULA_RESERVADO_POR) Then
+			ReservadoPor=doc.getItemValue(CAMPO_FCARATULA_RESERVADO_POR)(0)
+		End If		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carátula - Propiedad Get ReservadoPor","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set ReservadoPor As String
+		'Setea el nombre del usuario que tiene reservado el expediente
+		On Error Goto HANDLER		
+		
+		
+		doc.replaceItemValue CAMPO_FCARATULA_RESERVADO_POR,ReservadoPor
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carátula - Propiedad Set ReservadoPor","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get PaqueteLugar As String
+		On Error Goto HANDLER
+		
+		
+		If doc.HasItem(CAMPO_FCARATULA_PAQ_LUGAR) Then
+			PaqueteLugar=doc.GetItemValue(CAMPO_FCARATULA_PAQ_LUGAR)(0)	
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get PaqueteLugar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set PaqueteLugar As String
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_PAQ_LUGAR,PaqueteLugar
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set PaqueteLugar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get PaqueteFechaRecibido As Variant
+		On Error Goto HANDLER
+		
+		
+		If doc.HasItem(CAMPO_FCARATULA_PAQ_RECIBIDO) Then
+			PaqueteFechaRecibido=doc.GetItemValue(CAMPO_FCARATULA_PAQ_RECIBIDO)(0)	
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get PaqueteFechaRecibido","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set PaqueteFechaRecibido As Variant
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_PAQ_RECIBIDO,PaqueteFechaRecibido
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set PaqueteFechaRecibido","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get AgregadosFecha As Vector
+		On Error Goto HANDLER
+		
+		Set AgregadosFecha=New Vector(0)
+		
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_FECHA) Then
+			AgregadosFecha.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_FECHA)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método Get AgregadosFecha","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get AgregadosActuaciones As Vector
+		On Error Goto HANDLER
+		
+		Set AgregadosActuaciones=New Vector(0)
+		
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_ACTUACION) Then
+			AgregadosActuaciones.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_ACTUACION)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método Get AgregadosActuaciones","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	
+	Public Property Get AgregadosUnidades As Vector
+		On Error Goto HANDLER
+		
+		Set AgregadosUnidades=New Vector(0)
+		
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_UNIDAD) Then
+			AgregadosUnidades.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_UNIDAD)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método Get AgregadosUnidades","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get AgregadosNros As Vector
+		On Error Goto HANDLER
+		
+		Set AgregadosNros=New Vector(0)
+		
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_NRO) Then
+			AgregadosNros.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_NRO)
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método Get AgregadosNros","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set CodigoPadre As String
+		'Setea el Expediente al cual se agregó
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_PADRE_DE_AGREGADO,CodigoPadre
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set CodigoPadre","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get CodigoPadre As String
+		'Indica el Expediente al cual se agregó
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FCARATULA_PADRE_DE_AGREGADO) Then
+			CodigoPadre=doc.GetItemValue(CAMPO_FCARATULA_PADRE_DE_AGREGADO)(0)	
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get CodigoPadre","")
+		Exit Property	
+	End Property
+	
+	Public Property Get Document As NotesDocument
+		On Error Goto HANDLER
+		
+		Set Document=doc
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get aBorrar","")
+		Exit Property
+		
+	End Property
+	
+	Public Property Get aBorrar As Integer
+		'Devuelve true si el nombre del formulario indica que la actuación debe borrarse
+		'Obs: Cuando una actuación se anula (a causa de las operaciones de "Anular pase"
+		'o "Devolver"), la misma deja de ser una actuación y por tanto se cambia su formulario
+		'por otro que indica que es una actuación que ha sido borrada
+		On Error Goto HANDLER
+		
+		If Instr(doc.GetItemValue(CAMPO_FORM)(0),DBSGD_CAMPO_FORM_BORRAR_PREFIJO) > 0 Then
+			aBorrar=True
+		Else
+			aBorrar=False
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get aBorrar","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set aBorrar As Integer
+		'Setea la carátula como borrada o como activa (modificando su form)
+		On Error Goto HANDLER
+		
+		If aBorrar Then
+			doc.ReplaceItemValue CAMPO_FORM,DBSGD_CAMPO_FORM_BORRAR_PREFIJO & DBSGD_FORM_CARATULA
+		Else
+			doc.ReplaceItemValue CAMPO_FORM,DBSGD_FORM_CARATULA
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set aBorrar","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set FechaArchivado As Variant
+		'Indica si el expediente está marcado como Confidencial
+		On Error Goto HANDLER
+		
+		If Isnull(FechaArchivado) Then
+			If doc.HasItem(CAMPO_FCARATULA_FECHA_ARCHIVADO) Then
+				doc.RemoveItem CAMPO_FCARATULA_FECHA_ARCHIVADO
+			End If
+		Else
+			doc.replaceItemValue CAMPO_FCARATULA_FECHA_ARCHIVADO,FechaArchivado	
+		End If		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set FechaArchivado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FechaArchivado As Variant
+		'Indica si el expediente está marcado como Confidencial
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FCARATULA_FECHA_ARCHIVADO) Then
+			FechaArchivado=doc.GetItemValue(CAMPO_FCARATULA_FECHA_ARCHIVADO)(0)
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get FechaArchivado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Confidencial As Integer
+		'Indica si el expediente está marcado como Confidencial
+		On Error Goto HANDLER
+		
+		If doc.HasItem(DBSGD_CAMPO_FCARATULA_SEGURIDAD) Then
+			Confidencial=doc.getItemValue(DBSGD_CAMPO_FCARATULA_SEGURIDAD)(0)=SEGURIDAD_CONFIDENCIAL
+		Else
+			Confidencial=False
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Confidencial","")
+		Exit Property
+		
+	End Property
+'******************************************************************************************************************	
+	
+	Public Property Get TipoRuta As String
+		
+		On Error Goto HANDLER
+		
+		TipoRuta=doc.getItemValue(DBSGD_CAMPO_FCARATULA_CAMPO_TIPO_RUTA )(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get TipoRuta","")
+		Exit Property
+		
+	End Property	
+'******************************************************************************************************************	
+	
+	Public Property Set Confidencial As Integer
+		'Indica si el expediente está marcado como Confidencial
+		On Error Goto HANDLER
+		
+		If Confidencial Then
+			doc.replaceItemValue DBSGD_CAMPO_FCARATULA_SEGURIDAD,SEGURIDAD_CONFIDENCIAL
+		Else
+			doc.replaceItemValue DBSGD_CAMPO_FCARATULA_SEGURIDAD,SEGURIDAD_NORMAL
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Confidencial","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Id() As String
+		'Devuelve el UniversalId del documento de Carátula
+		On Error Goto HANDLER
+		
+		Id=doc.UniversalID
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Id","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NroExp() As String
+		'Devuelve el número de expediente correspondiente a esta carátula
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_NRO_EXPEDIENTE) Then
+			NroExp=doc.getItemValue(CAMPO_FCARATULA_NRO_EXPEDIENTE)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get NroExp","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NroExp() As String
+		'Setea el número de expediente correspondiente a esta carátula
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_NRO_EXPEDIENTE,NroExp
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set NroExp","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get CodTema() As String
+		'Devuelve el codigo del tema del expediente
+		On Error Goto HANDLER
+		
+		If doc.hasItem(	CAMPO_FCARATULA_CODTEMA) Then
+			CodTema=doc.getItemValue(	CAMPO_FCARATULA_CODTEMA)(0)
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CodTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set CodTema() As String
+		'Setea el codigo del tema del expediente
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue	CAMPO_FCARATULA_CODTEMA,CodTema
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set CodTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Tema() As String
+		'Devuelve el nombre del tema del expediente
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_TEMA) Then
+			Tema=doc.getItemValue(CAMPO_FCARATULA_TEMA)(0)
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Tema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Tema() As String
+		'Setea el nombre del tema del expediente
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_TEMA,Tema
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Tema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get VersionTema() As Integer
+		'Devuelve el nombre del tema del expediente
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_VERSION_TEMA) Then
+			VersionTema=doc.getItemValue(CAMPO_FCARATULA_VERSION_TEMA)(0)
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get VersionTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set VersionTema() As Integer
+		'Setea el nombre del tema del expediente
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_VERSION_TEMA,VersionTema
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set VersionTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Asunto() As String
+		'Devuelve el asunto del expediente
+		On Error Goto HANDLER
+		Dim vAsunto As New Vector(0)
+		
+		If doc.hasItem(CAMPO_FCARATULA_ASUNTO) Then
+			
+			vAsunto.values=doc.getItemValue(CAMPO_FCARATULA_ASUNTO)
+			Asunto = vAsunto.toString(Chr(13)&Chr(10))
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Asunto","")
+		Exit Property
+		
+	End Property
+
+	'******************************************************************************************************************	
+	Function vincularExpedientes(expedientes As Variant)
+		On Error GoTo handler
+		Dim expedientesABuscar As New vector(0)
+		Dim expActual As String
+		Dim i As Integer
+		expedientesAbuscar.values = expedientes
+		expActual  = expedientesAbuscar.getElement(1)
+		' vinculo el expediente actual a cada uno de los expedientes que selecciono el usuario
+		For i=2 To expedientesABuscar.cantElem
+			Call vincularExpActualAExpSeleccionados(expActual, expedientesABuscar.getelement(i))
+		Next
+		Exit Function
+HANDLER:
+		MsgBox "Clase Caratula - Método vincularExp " & Error & " - "  & Erl 
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método vincularExp ","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************		
+
+	Function vincularExpActualAExpSeleccionados(nroExpActual As String, nroExpABuscar As String)
+		On Error GoTo handler
+		Dim conf As  NotesDocument
+		Dim config As Configuracion
+		Dim nv As NotesView
+		Dim ses As New NotesSession
+		Dim expediente As NotesDocument	
+		Dim bdExpediente As NotesDatabase
+		Dim i As Integer
+		Dim encontro As Integer
+		Dim cadena As String 
+		
+		Dim claves As New Vector(0)
+		Dim servsClave As New Vector(0)
+		Dim pathsClave As New Vector(0)
+	
+		Set conf = db.Getprofiledocument("fConfiguracion")
+		claves.Values = conf.Getitemvalue("sClave")
+		servsClave.values = conf.Getitemvalue("sHost")
+		pathsClave.values = conf.Getitemvalue("sRuta")
+		
+		Set config = New Configuracion
+		cadena = "GESTIONDOC"
+		encontro = 0		
+		' para los campos del exp actual
+		Dim bdActual As String
+		Dim servActual As String
+		Dim expeVinculados As String 
+		Dim basesVinculadas As String
+		Dim servsVinculados As String	
+		Dim uIdsVinculados As String
+		Dim uIdExpVinculado As String
+
+		bdActual = db.Filepath
+		servActual = db.Server
+		expeVinculados = doc.Getitemvalue(CAMPO_VINCULACION_EXP)(0)
+		basesVinculadas = doc.Getitemvalue(CAMPO_VINCULACION_BASES)(0)
+		servsVinculados = doc.Getitemvalue(CAMPO_VINCULACION_SERVS)(0)
+		uIdsVinculados  = doc.Getitemvalue(CAMPO_VINCULACION_UIDS) (0)
+		
+		' para los campos de los exp vinculados
+		Dim expVinculados As String
+		Dim basesExpVinculados As String
+		Dim servsExpVinculados As String	
+		Dim uIdsExpVinculados As String	
+				
+		' vinculo los expedientes que selecciono el usuario al expediente actual
+		For  i = 1 To claves.cantElem
+			If InStr(claves.getElement(i),cadena) Then
+				Set bdExpediente = config.ReferenciarBasedeDatos(claves.getElement(i))
+				Set nv =  bdExpediente.Getview("(ExpedientesporTema)")
+				Set expediente = nv.Getdocumentbykey(nroExpABuscar)
+				If Not expediente Is Nothing  Then
+					encontro =  1
+				End If
+				If (encontro = 1) Then					
+					' seteo los numeros, las bases y servidores de los exp vinculados a los campos del exp actual
+					uIdExpVinculado = expediente.Universalid
+					If(expeVinculados  = "")Then
+						'Call doc.Replaceitemvalue(CAMPO_VINCULACION_EXP, "")					
+						'Call doc.Replaceitemvalue(CAMPO_VINCULACION_BASES, "")
+						'Call doc.Replaceitemvalue(CAMPO_VINCULACION_SERVS, "")
+						'Call doc.Replaceitemvalue(CAMPO_VINCULACION_UIDS,  "")	
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_EXP, nroExpABuscar)
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_BASES, pathsClave.getElement(i))
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_SERVS, servsClave.getElement(i))
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_UIDS,  uIdExpVinculado)
+					Else
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_BASES,basesVinculadas & ";" & pathsClave.getElement(i))
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_SERVS,servsVinculados & ";" & servsClave.getElement(i))
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_EXP,expeVinculados & ";" & nroExpABuscar)
+						Call doc.Replaceitemvalue(CAMPO_VINCULACION_UIDS,uIdsVinculados & ";" & uIdExpVinculado)
+					End If 
+					
+					' seteo a cada uno de los expedientes vinculados la base el serv y el num del exp acutal
+					expVinculados = expediente.Getitemvalue(CAMPO_VINCULACION_EXP)(0)
+					basesExpVinculados = expediente.Getitemvalue(CAMPO_VINCULACION_BASES)(0)
+					servsExpVinculados = expediente.Getitemvalue(CAMPO_VINCULACION_SERVS)(0)
+					uIdsExpVinculados = expediente.Getitemvalue(CAMPO_VINCULACION_UIDS)(0)
+					If (expVinculados  = "")Then
+						'Call expediente.Replaceitemvalue(CAMPO_VINCULACION_EXP, "")
+						'Call expediente.Replaceitemvalue(CAMPO_VINCULACION_BASES, "")
+						'Call expediente.Replaceitemvalue(CAMPO_VINCULACION_SERVS, "")
+						'Call expediente.Replaceitemvalue(CAMPO_VINCULACION_UIDS,  "")
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_EXP, nroExpActual)
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_BASES, bdActual)
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_SERVS, servActual)
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_UIDS,  doc.Universalid)
+					Else
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_EXP,expVinculados & ";" & nroExpActual)
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_BASES,basesExpVinculados & ";" & bdActual)
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_SERVS,servsExpVinculados & ";" & servActual)
+						Call expediente.Replaceitemvalue(CAMPO_VINCULACION_UIDS,uIdsExpVinculados & ";" & doc.Universalid)
+					End If 
+					Call expediente.Save(True, False)
+					
+					Exit Function	
+				End If				
+			End If
+		Next
+		Exit Function
+HANDLER:
+		MsgBox "Clase Caratula - Método vincularExpActualAExpSeleccionados " & Error & " - "  & Erl 
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método vincularExpActualAExpSeleccionados ","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Asunto() As String
+		'Setea el asunto del expediente
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_ASUNTO,Asunto
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Asunto","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get OficinaActual As String
+		'Devuelve el nombre de la unidad en la que se encuentra el expediente
+		On Error Goto HANDLER
+		
+		
+		If doc.hasItem(CAMPO_FCARATULA_OFICINA_ACTUAL) Then
+			OficinaActual=doc.getItemValue(CAMPO_FCARATULA_OFICINA_ACTUAL)(0)
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get OficinaActual","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set OficinaActual As String
+		'Setea el nombre de la unidad en la que se encuentra el expediente
+		On Error Goto HANDLER		
+		
+		doc.replaceItemValue CAMPO_FCARATULA_OFICINA_ACTUAL ,OficinaActual		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set OficinaActual","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get OficinaAnterior As String
+		'Devuelve el nombre de la unidad que actuó sobre el expediente en el paso anterior al actual
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_OFICINA_ANTERIOR) Then
+			OficinaAnterior=doc.getItemValue(CAMPO_FCARATULA_OFICINA_ANTERIOR)(0)
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get OficinaAnterior","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set OficinaAnterior As String
+		'Setea el nombre de la unidad que actuó sobre el expediente en el paso anterior al actual
+		On Error Goto HANDLER		
+		
+		doc.replaceItemValue CAMPO_FCARATULA_OFICINA_ANTERIOR ,OficinaAnterior		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set OficinaAnterior","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get OficinaInicial() As String
+		'Devuelve el nombre de la unidad que inició el expediente
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_OFICINA_INCIAL) Then
+			OficinaInicial=doc.getItemValue(CAMPO_FCARATULA_OFICINA_INCIAL)(0)
+		End If				
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get OficinaInicial","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set OficinaInicial() As String
+		'Setea el nombre de la unidad que inició el expediente
+		On Error Goto HANDLER		
+		
+		doc.replaceItemValue CAMPO_FCARATULA_OFICINA_INCIAL,OficinaInicial		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set OficinaInicial","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get CantActuaciones() As Integer
+		'Devuelve la cantidad de actuaciones del expediente
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_CANT_ACTUACIONES) Then
+			CantActuaciones=Cint(doc.getItemValue(CAMPO_FCARATULA_CANT_ACTUACIONES)(0))
+		End If			
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CantActuaciones","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set CantActuaciones() As Integer
+		'Setea la cantidad de actuaciones del expediente
+		On Error Goto HANDLER		
+		
+		doc.replaceItemValue CAMPO_FCARATULA_CANT_ACTUACIONES,CantActuaciones		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set CantActuaciones","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get Estado() As String
+		'Devuelve el estado del expediente
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_ESTADO) Then
+			Estado=doc.getItemValue(CAMPO_FCARATULA_ESTADO)(0)
+		End If		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Estado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Estado() As String
+		'Setea el estado del expediente
+		On Error Goto HANDLER		
+		
+		doc.replaceItemValue CAMPO_FCARATULA_ESTADO,Estado		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Estado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get FechaCreacion() As Variant
+		'Devuelve la fecha de creación del expediente
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FCARATULA_FECHA_CREACION) Then
+			FechaCreacion=doc.getItemValue(CAMPO_FCARATULA_FECHA_CREACION)(0)
+		End If		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get FechaCreacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set FechaCreacion() As Variant
+		'Setea la fecha de creación del expediente
+		On Error Goto HANDLER		
+		
+		doc.replaceItemValue CAMPO_FCARATULA_FECHA_CREACION,FechaCreacion		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set FechaCreacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get Autores() As Vector
+		'Devuelve un vector con los autores de la carátula
+		On Error Goto HANDLER
+		
+		Dim vAutores As New Vector(0),vTransformar As New Vector(0)
+		
+		If doc.hasItem(CAMPO_FCARATULA_AUTORES) Then
+			vAutores.values=doc.getItemValue(CAMPO_FCARATULA_AUTORES)	
+			If vAutores.cantElem > 0 Then
+				Dim i As Integer,nom As NotesName
+				For i = 1 To vAutores.cantElem
+					Set nom=New notesName(vAutores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next		
+			End If			
+		End If		
+		Set Autores=vTransformar
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Autores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Autores() As Vector
+		'Setea los autores de la carátula
+		On Error Goto HANDLER		
+		
+		Dim itAut As notesItem
+		If Autores.cantElem > 0 Then
+			Dim vTransformar As New Vector(0)
+			Dim i As Integer,nom As NotesName
+			For i = 1 To Autores.cantElem
+				Set nom=New notesName(Autores.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next	
+			If doc.HasItem(CAMPO_FCARATULA_AUTORES) Then
+				doc.RemoveItem CAMPO_FCARATULA_AUTORES
+			End If
+			Set itAut=New NotesItem(doc,CAMPO_FCARATULA_AUTORES,vTransformar.values,AUTHORS)
+			'doc.replaceItemValue CAMPO_FCARATULA_AUTORES,vTransformar.values
+		Else
+			If doc.HasItem(CAMPO_FCARATULA_AUTORES) Then
+				doc.RemoveItem CAMPO_FCARATULA_AUTORES
+			End If
+			Set itAut=New NotesItem(doc,CAMPO_FCARATULA_AUTORES,"",AUTHORS)
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Autores","")
+		Exit Property
+		
+	End Property
+	
+'*****************************************************************************************************************				
+	
+	Public Property Set AutoresPermanentes As Vector
+		'Setea los autores de la carátula
+		On Error Goto HANDLER		
+		
+		Dim itAutores As NotesItem
+		Set itAutores=New  NotesItem(doc,CAMPO_FCARATULA_AUTORES_PERMANENTES,AutoresPermanentes.values,AUTHORS)
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set AutoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+'*****************************************************************************************************************				
+	
+	Public Property Get AutoresPermanentes As Vector
+		'Setea los autores de la carátula
+		On Error Goto HANDLER		
+		
+		AutoresPermanentes.values=doc.getItemValue(CAMPO_FCARATULA_AUTORES_PERMANENTES)
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get AutoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+'*****************************************************************************************************************				
+	
+	Public Property Get Lectores() As Vector
+		'Devuelve un vector con los lectores de la carátula
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0)
+		
+		If doc.hasItem(CAMPO_FCARATULA_LECTORES) Then
+			vLectores.values=doc.getItemValue(CAMPO_FCARATULA_LECTORES)	
+		End If		
+		Set Lectores=vLectores
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Lectores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Lectores() As Vector
+		'Setea los lectores de la carátula
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_LECTORES,Lectores.values
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Lectores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get Seguridad() As String
+		'Devuelve el tipo de seguridad del expediente (normal o confidencial)
+		On Error Goto HANDLER		
+		
+		If doc.hasItem(CAMPO_FCARATULA_SEGURIDAD) Then
+			Seguridad=doc.getItemValue(CAMPO_FCARATULA_SEGURIDAD)(0)
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Seguridad","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Seguridad() As String
+		'Setea el tipo de seguridad del expediente (normal o confidencial)
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_SEGURIDAD, Seguridad		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Seguridad","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get FechaPase As Variant
+		'Devuelve la última fecha de pase del expediente
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FCARATULA_FECHA_PASE) Then
+			FechaPase=doc.getItemValue(CAMPO_FCARATULA_FECHA_PASE)(0)	
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get FechaPase","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set FechaPase As Variant
+		'Setea la última fecha de pase del expediente
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_FECHA_PASE, FechaPase
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set FechaPase","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set Firmantes As Vector
+		'Son las personas a quien se va a notificar para que firmen el expediente
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FCARATULA_FIRMANTES, Firmantes.values
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Firmantes","")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************				
+	
+	Public Property Get Firmantes As Vector
+		'Son las personas a quien se va a notificar para que firmen el expediente
+		On Error Goto HANDLER
+		
+		Dim vFir As New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_FIRMANTES) Then
+			vFir.values=doc.getItemValue(CAMPO_FCARATULA_FIRMANTES)
+		End If
+		Set Firmantes=vFir
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Firmantes","")
+		Exit Property
+		
+	End Property
+	
+		'******************************************************************************************************************				
+	
+	Public Property Get PaqueteEnAgregado As Boolean
+		'Son las personas a quien se va a notificar para que firmen el expediente
+		On Error Goto HANDLER
+		
+		If doc.GetItemValue("PaqueteenAgregado")(0)="1" Then
+			PaqueteEnAgregado=True
+		Else
+			PaqueteEnAgregado=False
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get PaqueteEnAgregado","")
+		Exit Property
+		
+	End Property
+		'******************************************************************************************************************				
+	
+	Public Property Set PaqueteEnAgregado As Boolean
+		'Son las personas a quien se va a notificar para que firmen el expediente
+		On Error Goto HANDLER
+		
+		If PaqueteEnAgregado Then
+			Call doc.ReplaceItemValue("PaqueteEnAgregado","1")
+		Else
+			Call doc.ReplaceItemValue("PaqueteEnAgregado","0")
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get PaqueteEnAgregado","")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************	
+		Public Property Get CorreosAvisosManualQuienEnvia As Vector
+		On Error GoTo HANDLER
+		
+		Set CorreosAvisosManualQuienEnvia = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_QUIEN_ENVIA_AVISO_M) Then
+			CorreosAvisosManualQuienEnvia.values = doc.GetItemValue(CAMPO_FCARATULA_QUIEN_ENVIA_AVISO_M)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CorreosAvisosManualQuienEnvia","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set CorreosAvisosManualQuienEnvia As Vector
+		On Error GoTo HANDLER
+		doc.replaceItemValue CAMPO_FCARATULA_QUIEN_ENVIA_AVISO_M,CorreosAvisosManualQuienEnvia.values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CorreosAvisosManualQuienEnvia","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Get CorreosAvisosManualCuandoEnvia As Vector
+		On Error GoTo HANDLER
+		
+		Set CorreosAvisosManualCuandoEnvia = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_CUANDO_ENVIA_AVISO_M) Then
+			CorreosAvisosManualCuandoEnvia.values = doc.GetItemValue(CAMPO_FCARATULA_CUANDO_ENVIA_AVISO_M)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CorreosAvisosManualCuandoEnvia","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set CorreosAvisosManualCuandoEnvia As Vector
+		On Error GoTo HANDLER
+		doc.replaceItemValue CAMPO_FCARATULA_CUANDO_ENVIA_AVISO_M,CorreosAvisosManualCuandoEnvia.values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CorreosAvisosManualCuandoEnvia","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Get CorreosAvisosManualAQuienEnvia As Vector
+		On Error GoTo HANDLER
+		
+		Set CorreosAvisosManualAQuienEnvia = New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_A_QUIEN_ENVIA_AVISO_M) Then
+			CorreosAvisosManualAQuienEnvia.values = doc.GetItemValue(CAMPO_FCARATULA_A_QUIEN_ENVIA_AVISO_M)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CorreosAvisosManualAQuienEnvia","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set CorreosAvisosManualAQuienEnvia As Vector
+		On Error GoTo HANDLER
+		doc.replaceItemValue CAMPO_FCARATULA_A_QUIEN_ENVIA_AVISO_M,CorreosAvisosManualAQuienEnvia.values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get CorreosAvisosManualAQuienEnvia","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+	
+'Privadas	
+	
+	Private Sub SetearDbGestionDoc(Byval anio As Integer)
+	'Si aún no está seteada, setea la base de gestión documental que corresponda según el anio que recibe
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion	
+		
+		If db Is Nothing Then
+			If Not Isnumeric(anio) Then Error ERROR_ANIO_NOTHING, MSG_ERROR_ANIO_NOTHING
+			
+			Set db = c.BaseDeDatosAnio(anio,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)
+			If Not db.isOpen Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBGESTIONDOC
+		End If
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carátula - Procedimiento SetearDbGestionDoc","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Function getDocCaratulaPorNro(sNroExpediente As String) As notesDocument	
+		'Busca el documento Caratula correspondiente al expediente número sNroExpediente y lo devuelve
+		On Error Goto HANDLER
+		Dim vCaratulas As notesview
+		Set vCaratulas=db.getView(DBSGD_VISTA_BUSQ_CARATULA) 
+		
+		If Not vCaratulas Is Nothing Then
+			Set doc=vCaratulas.getdocumentByKey(sNroExpediente,True)				
+			Set getDocCaratulaPorNro=doc	
+		Else
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & DBSGD_VISTA_BUSQ_CARATULA
+		End If
+		
+		
+		Exit Function
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carátula - Procedimiento getDocCaratulaPorNro " & sNroExpediente,"")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Function getDocCaratulaPorId(sIDExpediente As String)As notesDocument
+		'Busca el documento Caratula correspondiente al expediente con UniversalID sIDExpediente y lo devuelve
+		On Error Goto HANDLER
+		
+		Set getDocCaratulaPorId=db.getDocumentByUNID(sIDExpediente)	
+		
+		Exit Function
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carátula - Procedimiento getDocCaratulaPorId " & sIDExpediente,"")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Sub addPaqHistorial(fFechaRecibido As Variant,sLugar As String,sResponsable As String)
+		On Error Goto HANDLER
+		
+		Dim itFechas As NotesItem
+		If doc.HasItem(CAMPO_FCARATULA_HPAQ_FECHAS) Then
+			Dim vFechas As New Vector(0)
+			vFechas.values=doc.GetItemValue(CAMPO_FCARATULA_HPAQ_FECHAS)
+			vFechas.insertElement fFechaRecibido,vFechas.cantElem + 1
+			doc.replaceItemValue CAMPO_FCARATULA_HPAQ_FECHAS,vFechas.values
+		Else
+			Set itFechas=New notesItem(doc,CAMPO_FCARATULA_HPAQ_FECHAS,fFechaRecibido)
+		End If
+		
+		
+		Dim itLugares As NotesItem
+		If doc.HasItem(CAMPO_FCARATULA_HPAQ_LUGARES) Then
+			Set itLugares=doc.GetFirstItem(CAMPO_FCARATULA_HPAQ_LUGARES)
+			itLugares.AppendToTextList sLugar
+		Else
+			Set itLugares=New notesItem(doc,CAMPO_FCARATULA_HPAQ_LUGARES,sLugar)
+		End If		
+		
+		Dim itResponsables As NotesItem
+		If doc.HasItem(CAMPO_FCARATULA_HPAQ_RESPONSABLES) Then
+			Set itResponsables=doc.GetFirstItem(CAMPO_FCARATULA_HPAQ_RESPONSABLES)
+			itResponsables.AppendToTextList sResponsable
+		Else
+			Set itResponsables=New notesItem(doc,CAMPO_FCARATULA_HPAQ_RESPONSABLES,sResponsable)
+		End If
+		
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método addPaqHistorial","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+	
+	
+'CONSTRUCTOR
+	
+	Public Sub new(Byval sNroExpediente As String, Byval bCrear As Integer)
+		'Si bCrear = True, devuelve el doc carátula con universalid sNroExpediente
+		'Si bCrear = False, devuelve el doc caratula con numero de expediente sNroExpediente
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion
+		
+		If sNroExpediente <> NRO_EX_VACIO Then
+			If bCrear Then   'vino el universalid
+				
+				Call SetearDbGestionDoc(Year(Today))
+				Set doc=getDocCaratulaPorId(sNroExpediente)
+			Else   'vino el nro de expediente
+				Set db = c.BaseDeDatosNroDoc(sNroExpediente,NUMERADOR_EXP,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)
+				Set doc=getDocCaratulaPorNro(sNroExpediente)
+				If doc Is Nothing Then
+					'Podría estar achivado
+					Set db = c.BaseDeDatosNroDoc(sNroExpediente,NUMERADOR_EXP,CLAVE_DBARCHIVO_TEMPLATE	,CLAVE_DBARCHIVO)
+					Set doc=getDocCaratulaPorNro(sNroExpediente)
+				End If
+			End If
+			If doc Is Nothing Then	
+				Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " : " & sNroExpediente
+			End If
+		End If
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carátula - Procedimiento New " & sNroExpediente,"")
+		Exit Sub	
+	End Sub	
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Inicializar(docCar As NotesDocument)
+		On Error Goto HANDLER
+		
+		If docCar Is Nothing Then	
+			Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND
+		Else
+			Set doc=docCar
+		End If
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carátula - Procedimiento Inicializar","")
+		Exit Sub		
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	'METODOS	
+	
+	Public Function save()
+		'Salva el documento carátula
+		On Error Goto HANDLER
+		
+		doc.save True,False
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método Save","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************	
+	Function tienePaquete() As Boolean
+		On Error Goto handler
+		If doc.GetItemValue(CAMPO_FCARATULA_PAQUETE)(0)="Si" Then
+			tienePaquete=True
+		Else
+			tienePaquete=False
+		End If
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método tienePaquete","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************	
+	
+	Public Function getRecorridoColumna(Byval nColumna As Integer) As Vector
+		'Devuelve los valores de la columna indicada para la tabla de recorrido
+		On Error Goto HANDLER
+		
+		Set getRecorridoColumna= New Vector(0)
+		Select Case(nColumna)
+			Case 1:
+				getRecorridoColumna.values=doc.getItemValue(CAMPO_FCARATULA_RECORRIDO_ENTRADA)			
+			Case 2:
+				getRecorridoColumna.values=doc.getItemValue(CAMPO_FCARATULA_RECORRIDO_SALIDA)
+			Case 3:
+				getRecorridoColumna.values=doc.getItemValue(CAMPO_FCARATULA_RECORRIDO_UNIDAD)
+			Case 4:
+				getRecorridoColumna.values=doc.getItemValue(CAMPO_FCARATULA_FECHA_RECIBIDO)
+			Case Else
+				
+		End Select
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método getRecorridoColumna","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************			
+	
+	Public Function setRecorridoColumna(Byval nColumna As Integer,vColumna As Vector)
+		'Setea los valores de la columna indicada para la tabla de recorrido con los de vColumna
+		On Error Goto HANDLER
+		
+		Select Case(nColumna)
+		Case 1:
+			doc.replaceItemValue CAMPO_FCARATULA_RECORRIDO_ENTRADA,vColumna.values
+		Case 2:
+			doc.replaceItemValue CAMPO_FCARATULA_RECORRIDO_SALIDA,vColumna.values
+		Case 3:
+			doc.replaceItemValue CAMPO_FCARATULA_RECORRIDO_UNIDAD,vColumna.values
+		Case 4:
+			doc.replaceItemValue CAMPO_FCARATULA_FECHA_RECIBIDO,vColumna.values
+		Case Else
+			
+		End Select
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método setRecorridoColumna","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Sub addRecorrido(Byval fechaRecibido As Variant, sUnidad As String)
+		'Agrega una línea a la tabla de recorrido
+		On Error Goto HANDLER
+		
+		Dim vSalidas As New Vector(0),vEntradas As New Vector(0)
+		Dim iEntrada As notesItem,iSalida As notesItem,iUnidad As notesItem
+		
+		If doc.hasItem(CAMPO_FCARATULA_RECORRIDO_ENTRADA) Then
+			Set iEntrada= doc.getFirstItem(CAMPO_FCARATULA_RECORRIDO_ENTRADA)	
+			vEntradas.values=iEntrada.Values
+			vEntradas.insertElement fechaRecibido,vEntradas.cantElem + 1
+			iEntrada.Values=vEntradas.values
+		Else
+			Set iEntrada= New notesItem(doc,CAMPO_FCARATULA_RECORRIDO_ENTRADA,fechaRecibido)	
+		End If
+		If doc.hasItem(CAMPO_FCARATULA_RECORRIDO_SALIDA) Then
+			Set iSalida= doc.getFirstItem(CAMPO_FCARATULA_RECORRIDO_SALIDA)	
+			vSalidas.values=iSalida.Values			
+			vSalidas.insertElement Now,vSalidas.cantElem + 1
+			iSalida.Values=vSalidas.values
+		Else
+			Set iSalida= New notesItem(doc,CAMPO_FCARATULA_RECORRIDO_SALIDA,Now)	
+		End If
+		If doc.hasItem(CAMPO_FCARATULA_RECORRIDO_UNIDAD) Then
+			Set iUnidad= doc.getFirstItem(CAMPO_FCARATULA_RECORRIDO_UNIDAD)	
+			iUnidad.AppendToTextList sUnidad
+		Else
+			Set iUnidad= New notesItem(doc,CAMPO_FCARATULA_RECORRIDO_UNIDAD,sUnidad)	
+		End If
+		
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método addRecorrido","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Public Sub addLog(vLog As Vector)
+		'vLog={Operacion, usuario, fecha-hora}
+	'Agrega una línea al log
+		
+		'Set campos
+		Dim iOperacion As notesItem,iUsuario As notesItem,iFechaHora As notesItem
+		If doc.hasItem(CAMPO_FCARATULA_LOG_OPERACION) Then
+			Set iOperacion= doc.getFirstItem(CAMPO_FCARATULA_LOG_OPERACION)	
+		Else
+			Set iOperacion= New notesItem(doc,CAMPO_FCARATULA_LOG_OPERACION,"")	
+		End If
+		If doc.hasItem(CAMPO_FCARATULA_LOG_USUARIO) Then
+			Set iUsuario= doc.getFirstItem(CAMPO_FCARATULA_LOG_USUARIO)	
+		Else
+			Set iUsuario= New notesItem(doc,CAMPO_FCARATULA_LOG_USUARIO,"")	
+		End If
+		If doc.hasItem(CAMPO_FCARATULA_LOG_FECHAHORA) Then
+			Set iFechaHora= doc.getFirstItem(CAMPO_FCARATULA_LOG_FECHAHORA)	
+		Else
+			Set iFechaHora= New notesItem(doc,CAMPO_FCARATULA_LOG_FECHAHORA,"")	
+		End If		
+		
+		'Agrego LOG
+		Call iOperacion.appendToTextList(vLog.getElement(1))	
+		Call iUsuario.appendToTextList(vLog.getElement(2))
+		Call iFechaHora.appendToTextList(vLog.getElement(3))
+		
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Public Sub delListaAgregados(sNroExp As String)
+		On Error Goto HANDLER		
+		
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_NRO) Then
+			Dim vNros As New Vector(0),posNro As Long
+			vNros.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_NRO)
+			If vNros.isMember(sNroExp,posNro,False) Then
+				vNros.deleteElement posNro
+				
+				Dim vUnidades As New Vector(0),vFechas As New Vector(0)
+				Dim vActuaciones As New Vector(0)
+				vUnidades.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_UNIDAD)
+				vFechas.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_FECHA)
+				vActuaciones.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_ACTUACION)
+				
+				If vUnidades.cantElem >= posNro Then
+					vUnidades.deleteElement posNro	
+				End If			
+				If vFechas.cantElem >= posNro Then
+					vFechas.deleteElement posNro	
+				End If			
+				
+				If vActuaciones.cantElem >= posNro Then
+					vActuaciones.deleteElement posNro	
+				End If			
+				
+				doc.ReplaceItemValue CAMPO_FCARATULA_AGREGADOS_NRO,vNros.values
+				doc.ReplaceItemValue CAMPO_FCARATULA_AGREGADOS_UNIDAD,vUnidades.values
+				doc.ReplaceItemValue CAMPO_FCARATULA_AGREGADOS_FECHA,vFechas.values
+				doc.ReplaceItemValue CAMPO_FCARATULA_AGREGADOS_ACTUACION,vActuaciones.values
+			End If			
+		End If	
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método delListaAgregados","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Public Sub addListaAgregados(sNroExp As String,sUnidadAgregante As String,nroAct As Integer)
+		On Error Goto HANDLER
+		
+		Dim itNros As NotesItem
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_NRO) Then
+			Set itNros=doc.GetFirstItem(CAMPO_FCARATULA_AGREGADOS_NRO)
+			itNros.AppendToTextList sNroExp
+		Else
+			Set itNros=New notesItem(doc,CAMPO_FCARATULA_AGREGADOS_NRO,sNroExp)
+		End If
+		
+		
+		Dim itUnidades As NotesItem
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_UNIDAD) Then
+			Set itUnidades=doc.GetFirstItem(CAMPO_FCARATULA_AGREGADOS_UNIDAD)
+			itUnidades.AppendToTextList sUnidadAgregante
+		Else
+			Set itUnidades=New notesItem(doc,CAMPO_FCARATULA_AGREGADOS_UNIDAD,sUnidadAgregante)
+		End If		
+		
+		Dim itActuaciones As NotesItem
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_ACTUACION) Then
+			Set itActuaciones=doc.GetFirstItem(CAMPO_FCARATULA_AGREGADOS_ACTUACION)
+			itActuaciones.AppendToTextList Cstr(nroAct)
+		Else
+			Set itActuaciones=New notesItem(doc,CAMPO_FCARATULA_AGREGADOS_ACTUACION,Cstr(nroAct))
+		End If
+		
+		'Nuevo 8/12/2004: Diego
+		Dim itFechas As NotesItem
+		If doc.HasItem(CAMPO_FCARATULA_AGREGADOS_FECHA) Then
+			
+			Dim vFechasAntes As New Vector(0),i As Integer
+			vFechasAntes.values=doc.GetItemValue(CAMPO_FCARATULA_AGREGADOS_FECHA)
+			Dim vFechas As New Vector(0),tmpFecha As NotesDateTime
+			If vFechasAntes.cantElem > 0 Then
+				For i= 1 To vFechasAntes.cantElem
+					Set tmpFecha=New NotesDateTime(vFechasAntes.getElement(i))
+					vFechas.insertElement Cdat(tmpFecha.DateOnly),vFechas.cantElem + 1
+				Next	
+			End If
+			Set tmpFecha=New NotesDateTime(Today)
+			vFechas.insertElement Cdat(tmpFecha.DateOnly),vFechas.cantElem + 1
+			
+			doc.removeItem CAMPO_FCARATULA_AGREGADOS_FECHA
+			doc.replaceItemValue CAMPO_FCARATULA_AGREGADOS_FECHA,vFechas.values
+		Else
+			Set itFechas=New notesItem(doc,CAMPO_FCARATULA_AGREGADOS_FECHA,Today)
+		End If
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método addListaAgregados","")
+		Exit Sub
+	End Sub
+	
+	
+'******************************************************************************************************************			
+	
+	Public Sub setPaquete(fFechaRecibido As Variant,sLugar As String,sResponsable As String)
+		On Error Goto HANDLER
+		
+		
+		addPaqHistorial Me.PaqueteFechaRecibido,Me.PaqueteLugar ,Me.PaqueteResponsable
+		Me.PaqueteFechaRecibido=fFechaRecibido
+		Me.PaqueteLugar=sLugar
+		Me.PaqueteResponsable=sResponsable
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método addListaAgregados","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************				
+	
+	Public Sub addPadre(sNroExp As String)
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FCARATULA_PADRE_DE_AGREGADO) Then
+			Dim vPadres As New Vector(0)			
+			vPadres.values=doc.getItemValue(CAMPO_FCARATULA_PADRE_DE_AGREGADO)
+			vPadres.insertElement sNroExp,vPadres.cantElem + 1
+			doc.replaceItemValue CAMPO_FCARATULA_PADRE_DE_AGREGADO,vPadres.values
+		Else
+			doc.replaceItemValue CAMPO_FCARATULA_PADRE_DE_AGREGADO,sNroExp
+		End If
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método addPadre","")
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************				
+	
+	Public Function PopPadre() As String
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FCARATULA_PADRE_DE_AGREGADO) Then
+			Dim vPadres As New Vector(0)			
+			vPadres.values=doc.getItemValue(CAMPO_FCARATULA_PADRE_DE_AGREGADO)
+			If vPadres.cantElem > 0 Then
+				PopPadre=vPadres.getElement(vPadres.cantElem)
+				vPadres.deleteElement vPadres.cantElem	
+				doc.replaceItemValue CAMPO_FCARATULA_PADRE_DE_AGREGADO,vPadres.values
+			End If
+		End If
+		
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método addPadre","")
+		Exit Function
+	End Function
+	
+	
+'******************************************************************************************************************				
+	
+	Public Property Get BaseDeDatos As NotesDatabase
+		Set BasedeDatos= db
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Sub DelLogAgregados(nroActuacion As Integer)
+		On Error Goto handler
+		Dim vActuacion As New Vector(0), vFecha As New Vector(0), vUsuario As New Vector(0)
+		Dim vOficina As New Vector(0), vNroExp As New Vector(0), vOperacion As New Vector(0)
+		Dim pos As Long
+		
+		vActuacion.values = doc.GetItemValue(CAMPO_FCARATULA_AGR_ACTUACION)
+		vFecha.values = doc.GetItemValue(CAMPO_FCARATULA_AGR_FECHA)
+		vUsuario.values = doc.GetItemValue(CAMPO_FCARATULA_AGR_USUARIO)
+		vOficina.values = doc.GetItemValue(CAMPO_FCARATULA_AGR_OFICINA)
+		vNroExp.values = doc.GetItemValue(CAMPO_FCARATULA_AGR_NROEXP)
+		vOperacion.values = doc.GetItemValue(CAMPO_FCARATULA_AGR_OPERACION)
+		pos=0
+		While vActuacion.isMember(Cstr(nroActuacion),pos,True) 
+			vActuacion.deleteElement pos
+			vFecha.deleteElement pos
+			vUsuario.deleteElement pos
+			vOficina.deleteElement pos
+			vNroExp.deleteElement pos
+			vOperacion.deleteElement pos
+			pos=0
+		Wend
+		doc.ReplaceItemValue CAMPO_FCARATULA_AGR_ACTUACION, vActuacion.values
+		doc.ReplaceItemValue CAMPO_FCARATULA_AGR_FECHA, vFecha.values
+		doc.ReplaceItemValue CAMPO_FCARATULA_AGR_USUARIO, vUsuario.values
+		doc.ReplaceItemValue CAMPO_FCARATULA_AGR_OFICINA, vOficina.values
+		doc.ReplaceItemValue CAMPO_FCARATULA_AGR_NROEXP, vNroExp.values
+		doc.ReplaceItemValue CAMPO_FCARATULA_AGR_OPERACION, vOperacion.values
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método DelLogAgregados","")
+		Exit Sub		
+	End Sub
+'******************************************************************************************************************				
+	
+	Public Sub AddLogAgregados(sNroExp As String,usrActua As String,agregar As Integer,nroActuacion As Integer)
+		'Agrega filas a la tabla de log de Agregaciones y Desagregaciones
+		'agregar=true indica Agregar, de lo contrario indica Desagregar
+		On Error Goto HANDLER
+		
+		Dim i As Integer,posEliminar As Long
+		posEliminar=0
+		
+		Dim vTmp As New Vector(0)
+'		If posEliminar = 0 Then
+		If doc.HasItem(CAMPO_FCARATULA_AGR_FECHA) Then
+			vTmp.values=doc.getItemValue(CAMPO_FCARATULA_AGR_FECHA)
+		End If
+		vTmp.insertElement   Now,vTmp.cantElem + 1
+		doc.replaceItemValue CAMPO_FCARATULA_AGR_FECHA,vTmp.values
+		
+		Set vTmp =New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_AGR_USUARIO) Then
+			vTmp.values=doc.getItemValue(CAMPO_FCARATULA_AGR_USUARIO)
+		End If
+		vTmp.insertElement   usrActua,vTmp.cantElem + 1
+		doc.replaceItemValue CAMPO_FCARATULA_AGR_USUARIO,vTmp.values
+		
+		Set vTmp =New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_AGR_OFICINA) Then
+			vTmp.values=doc.getItemValue(CAMPO_FCARATULA_AGR_OFICINA)
+		End If
+		vTmp.insertElement   Me.OficinaActual,vTmp.cantElem + 1
+		doc.replaceItemValue CAMPO_FCARATULA_AGR_OFICINA,vTmp.values
+		
+		Set vTmp =New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_AGR_NROEXP) Then
+			vTmp.values=doc.getItemValue(CAMPO_FCARATULA_AGR_NROEXP)
+		End If
+		vTmp.insertElement   sNroExp,vTmp.cantElem + 1
+		doc.replaceItemValue CAMPO_FCARATULA_AGR_NROEXP,vTmp.values
+		
+		Set vTmp =New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_AGR_ACTUACION) Then
+			vTmp.values=doc.getItemValue(CAMPO_FCARATULA_AGR_ACTUACION)
+		End If
+		vTmp.insertElement   Cstr(nroActuacion),vTmp.cantElem + 1
+		doc.replaceItemValue CAMPO_FCARATULA_AGR_ACTUACION,vTmp.values
+		
+		
+		Set vTmp =New Vector(0)
+		If doc.HasItem(CAMPO_FCARATULA_AGR_OPERACION) Then
+			vTmp.values=doc.getItemValue(CAMPO_FCARATULA_AGR_OPERACION)
+		End If
+		If agregar Then
+			vTmp.insertElement   "Agregado",vTmp.cantElem + 1	
+		Else
+			vTmp.insertElement   "Desagregado",vTmp.cantElem + 1
+		End If		
+		doc.replaceItemValue CAMPO_FCARATULA_AGR_OPERACION,vTmp.values				
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método AddLogAgregados","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************				
+	Public Sub addAnexo ( nroAct As String, nombreAnexo As String, tamAnexo As String)
+		On Error Goto handler
+		Dim vAct As New Vector(0), vNom As New Vector(0), vTam As New Vector(0)
+		
+		If doc.HasItem(CAMPO_FCARATULA_ANEXOS_ACTUACION) Then
+			vAct.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_ACTUACION)
+			vNom.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_NOMBRES)
+			vTam.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_TAMAÑO)
+		End If
+		
+		If  Not vNom.isMember(nombreAnexo,0,True) _
+		And Not vTam.isMember(tamAnexo,0,True) Then
+			Call vAct.insertElement(nroAct,vAct.cantElem+1)
+			Call vNom.insertElement(nombreAnexo,vNom.cantElem+1)
+			Call vtam.insertElement(tamAnexo,vTam.cantElem+1)
+			doc.ReplaceItemValue CAMPO_FCARATULA_ANEXOS_ACTUACION, vAct.values
+			doc.ReplaceItemValue CAMPO_FCARATULA_ANEXOS_NOMBRES, vNom.values
+			doc.ReplaceItemValue CAMPO_FCARATULA_ANEXOS_TAMAÑO, vTam.values
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método addAnexo","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************				
+	
+	Public Sub popAnexo ( nroAct As String, nombreAnexo As String, tamAnexo As String)
+		On Error Goto handler
+		Dim vAct As New Vector(0), vNom As New Vector(0), vTam As New Vector(0)
+		Dim i As Integer
+		
+		If doc.HasItem(CAMPO_FCARATULA_ANEXOS_ACTUACION) Then
+			vAct.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_ACTUACION)
+			vNom.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_NOMBRES)
+			vTam.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_TAMAÑO)
+			For i = 1 To vAct.cantelem 
+				If vAct.getElement(i) = nroAct And vNom.getElement(i)=nombreAnexo _
+				And vTam.getElement(i) = tamAnexo Then
+					vAct.deleteElement(i)
+					vNom.deleteElement(i)
+					vTam.deleteElement(i)
+					doc.ReplaceItemValue CAMPO_FCARATULA_ANEXOS_ACTUACION, vAct.values
+					doc.ReplaceItemValue CAMPO_FCARATULA_ANEXOS_NOMBRES, vNom.values
+					doc.ReplaceItemValue CAMPO_FCARATULA_ANEXOS_TAMAÑO, vTam.values
+					Exit Sub
+				End If
+			Next						
+		End If
+		Error ERROR_ANEXO_NOT_FOUND, MSG_ERROR_ANEXO_NOT_FOUND & nombreAnexo
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método popAnexo","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************					
+	Public Function getAnexosAct (nroAct As String, campo As String) As Vector
+		On Error Goto handler
+		Dim vAct As New Vector(0), vNom As New Vector(0), vTam As New Vector(0)
+		Dim vAux As New Vector(0), i As Integer
+		
+		vAct.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_ACTUACION)
+		vNom.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_NOMBRES)
+		vTam.values = doc.GetItemValue(CAMPO_FCARATULA_ANEXOS_TAMAÑO)
+		For i = 1 To vAct.cantelem 
+			If vAct.getElement(i) = nroAct Then
+				If campo = CAMPO_FCARATULA_ANEXOS_NOMBRES Then
+					Call vAux.insertElement(vNom.getElement(i), vAux.cantElem+1)
+				Else
+					Call vAux.insertElement(vTam.getElement(i),vAux.cantElem+1)
+				End If
+			End If
+		Next
+		Set getAnexosAct = vAux
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método getAnexosAct","")
+		Exit Function
+	End Function
+	'******************************************************************************************************************	
+	
+	Public Function getColumnaRecorridoMigrado(Byval nColumna As Integer) As Vector
+		'Devuelve los valores de la columna indicada para la tabla de recorrido
+		On Error Goto HANDLER
+		
+		Set getColumnaRecorridoMigrado= New Vector(0)
+		Select Case(nColumna)
+		Case 1:
+			getColumnaRecorridoMigrado.values=doc.getItemValue(CAMPO_FCARATULA_FERMIGRADO)
+		Case 2:
+			getColumnaRecorridoMigrado.values=doc.getItemValue(CAMPO_FCARATULA_FSRMIGRADO)
+		Case 3:
+			getColumnaRecorridoMigrado.values=doc.getItemValue(CAMPO_FCARATULA_URMIGRADO)
+		Case 4:
+			getColumnaRecorridoMigrado.values=doc.getItemValue(CAMPO_FCARATULA_DRMIGRADO)
+		Case 5:
+			getColumnaRecorridoMigrado.values=doc.GetItemValue(CAMPO_FCARATULA_NROBOLMIGRADO)	
+		Case Else
+			
+		End Select
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método getColumnaRecorridoMigrado","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	Function esMigrado As Boolean
+		On Error Goto handler
+		If doc.HasItem(CAMPO_FCARATULA_MIGRADO) Then 
+			If (Cint(doc.GetItemValue(CAMPO_FCARATULA_MIGRADO)(0))=1) Then 
+				esMigrado=True
+			Else
+				esMigrado=False
+			End If
+		Else
+			esMigrado=False
+		End If
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Método esMigrado","")
+		Exit Function	
+	End Function
+'******************************************************************************************************************						
+End Class 

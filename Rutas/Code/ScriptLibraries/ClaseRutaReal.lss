@@ -1,0 +1,51 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "ClaseRuta" 
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class RutaReal As Ruta
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Class RutaReal As Ruta
+'Esta clase representa la RUTA SEGUIDA para determinado expediente
+'Hereda propiedades y métodos de la clase Ruta, utilizada para representar la ruta definida para cierto tema	
+	
+	'VARIABLES PRIVADAS
+	
+'******************************************************************************************************************	
+	'Constructor 
+	
+	Public Sub new(Byval codTema As Integer, Byval versionRuta As Integer)
+		
+		
+	End Sub
+	
+	
+'******************************************************************************************************************	
+	
+'PROPIEDADES
+	
+	
+	
+'******************************************************************************************************************	
+	
+'METODOS
+	
+	Public Sub EliminarUltimoPaso
+		'Elimina el último paso de la ruta guardada en la carátula del expediente
+		'Está pensado para el caso en que un expediente es devuelto hacia atrás
+		
+		On Error Goto HANDLER
+		
+		'AGREGAR EL CODIGO
+		
+		Exit Sub		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase RutaReal - Método EliminarUltimoPaso","")
+		Exit Sub
+		
+	End Sub
+	
+	
+End Class

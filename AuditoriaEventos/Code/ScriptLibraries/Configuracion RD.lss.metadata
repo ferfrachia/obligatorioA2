@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A499A" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1e2" sequence="25" unid="D263318F8DEEA13C032572BB006E0AA3">
+<created><datetime>20070412T170156,83-03</datetime></created>
+<modified><datetime>20150311T132611,90-03</datetime></modified>
+<revised><datetime>20150309T094335,36-03</datetime></revised>
+<lastaccessed><datetime>20150311T132611,90-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132611,90-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Federico Tobler/O=FTS</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Daniel Gomez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Melissa Vidal/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>Configuracion RD</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20070810T160807,65-03</datetime></item></note>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800416654" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="20a" sequence="222" unid="5B561D32B88C589C832575D1004A3012">
+<created><datetime>20090610T103019,70-03</datetime></created>
+<modified><datetime>20150309T094340,76-03</datetime></modified>
+<revised><datetime>20150309T094340,75-03</datetime></revised>
+<lastaccessed><datetime>20150309T094340,76-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T095421,67-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090924T120911,36-03</datetime><datetime dst="true">20100202T215332,92-02</datetime><datetime dst="true">20100208T192042,45-02</datetime><datetime dst="true">20100209T151321,76-02</datetime><datetime>20100217T173252,70-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime>20080908T133308,31-03</datetime></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>AvisosConfig</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+</note>

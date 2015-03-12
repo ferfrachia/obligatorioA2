@@ -1,0 +1,1022 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+  
+%END REM
+
+'******************************************************************************************************************	
+'* 
+'*									CLASS <CONFIGURACION>
+'*  
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'*
+'*		New()
+'*			Constructor de la clase 
+'*
+
+
+'******************************************************************************************************************
+
+Option Declare
+
+
+Use "ConstantesSistema"
+Use "Errores Generales"
+Use "FuncionesGenerales"
+Use "NumeradorClient"
+Use "VectorClass 2.05"
+Use "BasesPorCantidad"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigForms
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const DOCUMENTO_PERFIL						= "ConfFormularios"
+
+'CONSTANTES PRIVADAS
+Private Const NOMBRE_APLICACION						= "IGDoc Formularios"
+Private Const CONF_SERVIDOR_ACTUAL						= "SERVER_ACTUAL"	
+Private Const CONF_SERVIDOR_LOCAL						= "LOCAL"
+
+
+'CAMPOS
+Private Const CAMPO_NOTIFICACION_ENVIAR					= "rNotificacionEnviar"
+Private Const CAMPO_NOTIFICACION_REENVIAR				= "rNotificacionReEnviar"
+Private Const CAMPO_NOTIFICACION_PASE					= "rNotificacionPase"
+Private Const CAMPO_NOTIFICACION_FINALIZAR				= "rNotificacionFinalizar"
+Private Const CAMPO_NOTIFICACION_ARCHIVAR				= "rNotificacionArchivar"
+Private Const CAMPO_TEMPLATE_NOTIFICACION				= "lMsgTemplate"
+
+
+
+Public Const CAMPO_HOST_DB_FORMS							= "sHost"
+Public Const CAMPO_RUTA_DB_FORMS							= "sPath"
+Public Const CAMPO_SERVIDOR_DB_FORMS						= "sServer"
+Public Const CAMPO_CLAVE_DB_FORMS							= "sClave"
+
+Public Const INDICADOR_CODIGO_FORMULARIO				= "c"
+Public Const INDICADOR_CODIGO_SECUENCIA					= "#"
+Public Const INDICADOR_CODIGO_UNIDAD					= "u"
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class ConfigForms
+	'******************************************************************************************************************	
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	Private vKeyDB As Vector
+	Private vServer As Vector
+	Private vHost As Vector 
+	Private vFilePath As Vector
+	
+	
+	'******************************************************************************************************************	
+	'FUNCIONES Y PROCEDIMIENTOS PÚBLICOS
+	'******************************************************************************************************************		
+	
+	Public Sub new()
+		'CONSTRUCTOR
+		On Error Goto HANDLER
+		Set ses = New NotesSession	
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(DOCUMENTO_PERFIL)
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vHost = New Vector(0)
+		Set vFilePath = New Vector(0)
+		
+		
+		
+		vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB_FORMS)
+		vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB_FORMS)
+		vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB_FORMS)
+		vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB_FORMS)
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Método new","")
+		Exit Sub
+	End Sub
+	
+	
+	
+	
+	'******************************************************************************************************************		
+	
+	Public Function PedirNumero (Byval nombrenumerador As String) As Long
+		'Pide un número a la clase numeración para el numerador que recibe y lo devuelve
+		'Suposiciones:
+		' 1) Si se utiliza un numerador diferente por año, el nombre del numerador indicará que va 
+		'    el año con yy o yyyy en el lugar que corresponda. Esta función sustituye ese indicador
+		'	por el año actual
+		On Error Goto HANDLER
+		
+		Dim num As NumClient, BASENUMERACION As String, SERVIDORNUMERACION As String
+		
+		'Sustituyo el indicador de año por el año actual
+		nombrenumerador = SustituirAnio(nombrenumerador)
+		
+		'Pido el número
+		'Busco srv y path de la base de numeracion
+		Dim pos As Long
+		Set vKeyDB = me.Claves
+		
+		If vKeyDb.isMember(CLAVE_DBNUMERACION, pos, false) Then
+			SERVIDORNUMERACION = me.Servers.getElement(pos)
+			BASENUMERACION = me.Rutas.getElement(pos)
+		End If
+		
+		If (nombrenumerador <> "") And (BASENUMERACION <> "") Then
+			'Creo el objeto numerador
+			Set num = New NumClient(nombrenumerador,SERVIDORNUMERACION,BASENUMERACION)		
+			PedirNumero = num.GetNumber()		
+			Call ManejoVectoresNumeracion (nombrenumerador, CStr(PedirNumero))	
+		Else
+			Error ERROR_NUMERATION,MSG_ERROR_NUMERATION
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion PedirNumero","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************		
+	
+	Public Function SustituirAnio (Byval formato As String)As String
+		'Busca el indicador del año (yy o yyyy) dentro del formato y lo sustituye por el año actual
+		'Si el indicador del año no está devuelve el formato como lo recibió
+		On Error Goto HANDLER
+		
+		Dim anioactual As String, pos As Integer
+		
+		'Veo si va el año con cuatro digitos
+		anioactual = Cstr(Year(Today))
+		pos = Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)
+		If pos = 0 Then  'veo si va el año con dos digitos
+			anioactual = Right(Cstr(Year(Today)),2)
+			pos = Instr(formato, INDICADOR_AÑO_DOS_DIGITOS)
+		End If
+		If pos <> 0 Then  'va el año
+			Mid$ (formato, pos,Len(anioactual)) = anioactual
+		End If  'si no va el año no modifiqué nada al texto		
+		SustituirAnio = formato
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirAnio","")
+		Exit Function
+	End Function
+	
+
+	
+
+
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionEnviar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_ENVIAR)(0)="Si" Then
+			NotificacionEnviar=True
+		Else
+			NotificacionEnviar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionEnviar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	%REM
+		Property Set NotificarEnviar
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set NotificarEnviar As String
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_NOTIFICACION_ENVIAR, NotificarEnviar)
+		Exit property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set NotificarEnviar","")
+		Exit property
+	End Property
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionReEnviar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_REENVIAR)(0)="Si" Then
+			NotificacionReEnviar=True
+		Else
+			NotificacionReEnviar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionReEnviar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************
+	%REM
+		Property Set NotificacionReEnviar
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set NotificarReEnviar As String
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_NOTIFICACION_REENVIAR, NotificarReEnviar)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set NotificarReEnviar","")
+		Exit Property
+		
+	End Property
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionPase As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_PASE)(0)="Si" Then
+			NotificacionPase=True
+		Else
+			NotificacionPase=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionPase","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************
+	%REM
+		Property Set NotificarPase
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set NotificarPase As String
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_NOTIFICACION_PASE, NotificarPase)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set NotificarPase","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************
+	
+	Public Property Get NotificacionFinalizar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_FINALIZAR)(0)="Si" Then
+			NotificacionFinalizar=True
+		Else
+			NotificacionFinalizar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionFinalizar","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************
+	%REM
+		Property Set NotificarFinalizar
+		Description: Comments for Property Set
+	%END REM
+	Public Property set NotificarFinalizar As String
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_NOTIFICACION_FINALIZAR, NotificarFinalizar)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set NotificarFinalizar","")
+		Exit Property
+	End Property
+'*************************************************************************************************	
+	%REM
+		Sub ManejoVectoresNumeracion
+		Description: Comments for Sub
+	%END REM
+	Private Sub ManejoVectoresNumeracion(ByVal numerador As String, nro As String)
+		On Error GoTo handler
+		Dim baseActual As String
+		Dim encontre As Boolean
+		Dim i As Long
+		numerador = SustituirAnio(numerador)
+		
+		baseActual = me.BasesCreadas.getElement(me.BasesCreadas.cantElem)
+		encontre=False
+		For i = 1 To me.BasesCreadasIni.cantElem
+			If me.BasesCreadasIni.getElement(i) = baseACtual And me.NumeradoresIni.getElement(i)=numerador Then
+				encontre = True
+			End If
+		Next
+		If Not encontre Then
+			Dim vBIni As Vector
+			Dim vNIni As Vector
+			Dim vNNIni As Vector
+			
+			Set vBINI = me.BasesCreadasIni
+			Set vNINI = me.NumeradoresIni
+			Set vNNini = me.NumerosIni
+			
+			Call vbINI.insertElement(baseActual, vbIni.cantElem+1)
+			Call vNINI.insertElement(numerador, vNINI.cantElem+1)
+			Call vNNini.insertElement(nro, vNNIni.cantElem+1)
+			
+			Set me.BasesCreadasIni = vBINI
+			Set me.NumeradoresIni = vNINI
+			Set me.NumerosIni = vNNini
+			Call me.Save()
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Método ManejoVectoresNumeracion","")
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************
+	
+	Public Property Get NotificacionArchivar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_ARCHIVAR)(0)="Si" Then
+			NotificacionArchivar=True
+		Else
+			NotificacionArchivar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionArchivar","")
+		Exit Property
+	End Property
+
+	'******************************************************************************************************************
+	%REM
+		Property Set NotificarArchivar
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set NotificarArchivar As String
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_NOTIFICACION_ARCHIVAR, NotificarArchivar)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set NotificarArchivar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	
+	Public Property Get TemplateNotificacion As String
+		On Error Goto handler
+		TemplateNotificacion = docConfiguracion.GetItemValue(CAMPO_TEMPLATE_NOTIFICACION)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get TemplateNotificacion","")
+		Exit Property
+	End Property
+	
+	%REM
+		Property Set TemplateNotificacion
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set TemplateNotificacion As String
+		On Error GoTo handler
+		call docConfiguracion.replaceitemvalue(CAMPO_TEMPLATE_NOTIFICACION,TemplateNotificacion)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set TemplateNotificacion","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	%REM
+		Property Set TiempoAuditoria
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set TiempoAuditoria As String
+		On Error GoTo handler
+		Call docConfiguracion.replaceitemvalue("nTiempoVidaAuditoria",TiempoAuditoria)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set TiempoAuditoria","")
+		Exit Property
+	End Property
+	
+	%REM
+		Property Get TiempoAuditoria
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get TiempoAuditoria As String
+		On Error GoTo handler
+		tiempoauditoria = docConfiguracion.getItemValue("nTiempoVidaAuditoria")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get TiempoAuditoria","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	
+	
+	Public Property Get Claves() As vector
+		' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = docConfiguracion.GetItemValue(CAMPO_CLAVE_DB_FORMS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get Claves","")
+		Exit Property
+	End Property
+	
+	
+	'******************************************************************************************************************
+	Public Property Set Claves() As vector
+		On Error GoTo HANDLER
+		Call docConfiguracion.Replaceitemvalue(CAMPO_CLAVE_DB_FORMS, claves.Values)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set Claves","")
+		Exit Property
+	End property	
+
+	'******************************************************************************************************************	
+	Public Property Get Hosts() As Vector
+		On Error GoTo HANDLER
+		Set hosts = New Vector(0)
+		hosts.values = docConfiguracion.Getitemvalue(CAMPO_HOST_DB_FORMS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get Hosts","")
+		Exit Property
+	End property	
+	'******************************************************************************************************************	
+	Public Property Set Hosts() As Vector
+		On Error GoTo HANDLER
+		docConfiguracion.replaceitemvalue CAMPO_HOST_DB_FORMS, hosts.values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set Hosts","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get Rutas() As Vector
+		On Error GoTo HANDLER
+		Set Rutas = New Vector(0)
+		Rutas.values = docConfiguracion.Getitemvalue(CAMPO_RUTA_DB_FORMS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get Rutas","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Set Rutas() As Vector
+		On Error GoTo HANDLER
+		docConfiguracion.replaceitemvalue CAMPO_RUTA_DB_FORMS, Rutas.values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set Rutas","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get Servers() As Vector
+		On Error GoTo HANDLER
+		Set Servers = New Vector(0)
+		Servers.values = docConfiguracion.Getitemvalue(CAMPO_SERVIDOR_DB_FORMS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get Servers","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Set Servers() As Vector
+		On Error GoTo HANDLER
+		docConfiguracion.replaceitemvalue CAMPO_SERVIDOR_DB_FORMS, Servers.values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set Servers","")
+		Exit Property
+	End Property	
+	'******************************************************************************************************************	
+	'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	'******************************************************************************************************************		
+	
+	Private Sub GuardarProfile(docDestino As NotesDocument, docOrigen As NotesDocument)
+		'Carga los campos del docDestino con los del docOrigen
+		On Error Goto HANDLER
+		
+		
+		'Campos para las notificaciones
+		Call docDestino.ReplaceItemValue("rNotificacionEnviar",docOrigen.GetItemValue("rNotificacionEnviar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionReenviar",docOrigen.GetItemValue("rNotificacionReenviar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionPase",docOrigen.GetItemValue("rNotificacionPase")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionFinalizar",docOrigen.GetItemValue("rNotificacionFinalizar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionArchivar",docOrigen.GetItemValue("rNotificacionArchivar")(0))	
+		Call docDestino.ReplaceItemValue("lMsgTemplate",docOrigen.GetItemValue("lMsgTemplate")(0))
+		
+		'Campos de auditoría
+		Call docDestino.ReplaceItemValue("nTiempoVidaAuditoria",docOrigen.GetItemValue("nTiempoVidaAuditoria"))
+		Call docDestino.ReplaceItemValue("sClaveCreacionAuditoria",docOrigen.GetItemValue("sClaveCreacionAuditoria"))
+		Call docDestino.ReplaceItemValue("dFechaCreacionAuditoria",docOrigen.GetItemValue("dFechaCreacionAuditoria"))
+		Call docDestino.ReplaceItemValue("rLogTOperaciones",docOrigen.GetItemValue("rLogTOperaciones"))
+		
+		'Campos de interoperabilidad
+		Call docDestino.ReplaceItemValue("sClave",docOrigen.GetItemValue("sClave"))
+		Call docDestino.ReplaceItemValue("sHost",docOrigen.GetItemValue("sHost"))
+		Call docDestino.ReplaceItemValue("sServer",docOrigen.GetItemValue("sServer"))
+		Call docDestino.ReplaceItemValue("sPath",docOrigen.GetItemValue("sPath"))
+		
+		'Campos para rendimiento
+		Call docDestino.ReplaceItemValue("rRendimientoPor",docOrigen.GetItemValue("rRendimientoPor")(0))
+		Call docDestino.ReplaceItemValue("nCantMBxBase",docOrigen.GetItemValue("nCantMBxBase")(0))
+		Call docDestino.ReplaceItemValue("nCantDocxBase",docOrigen.GetItemValue("nCantDocxBase")(0))
+		Call docDestino.ReplaceItemValue("sBasesCreadas",docOrigen.GetItemValue("sBasesCreadas"))
+		Call docDestino.ReplaceItemValue("sBasesCreadasIni",docOrigen.GetItemValue("sBasesCreadasIni"))
+		Call docDestino.ReplaceItemValue("sNumeradores",docOrigen.GetItemValue("sNumeradores"))
+		Call docDestino.ReplaceItemValue("sNumeros",docOrigen.GetItemValue("sNumeros"))
+		
+		
+		'Guardo el doc
+		If Not docDestino.save(False, False) Then Error ERROR_CANT_SAVE_DOCUMENT, MSG_ERROR_CANT_SAVE_DOCUMENT
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Procedimiento GuardarProfile","")
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	'FUNCIONES Y PROCEDIMIENTOS PUBLICOS	
+	
+	'******************************************************************************************************************			
+	%REM
+		Sub save
+		Description: Comments for Sub
+	%END REM
+	Public Sub save()
+		Dim i As Integer
+		Dim clave As String
+		Dim db As NotesDatabase
+		Dim docConfig As NotesDocument
+		
+		Call me.docConfiguracion.Save(true, false)
+		For i = 1 To me.Claves.cantElem
+			clave = me.claves.getElement(i)
+			If clave<>"NAMES" Then
+				Set db = me.ReferenciarBaseDeDatos(clave)
+				If Not db Is Nothing Then
+					Set docConfig = db.GetProfileDocument("ConfFormularios")
+					Call me.GuardarProfile(docConfig, me.docConfiguracion)
+					
+				End If
+			End If
+		Next
+	End Sub
+	
+	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
+		'Retorna una referencia a la base de datos que recibe como parámetro.
+		'En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+		On Error Goto HANDLER
+		Dim pos As Long
+		
+		Set vKeyDB = me.Claves
+		Set ReferenciarBaseDeDatos = Nothing
+		If vKeyDB.isMember(Ucase(clave), pos, False) Then _
+		Set ReferenciarBaseDeDatos = New NotesDatabase(me.Servers.getElement(pos), me.rutas.getElement(pos))
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método ReferenciarBaseDeDatos","")
+		Exit Function
+		
+	End Function	
+	
+	'******************************************************************************************************************						
+	
+	Public Function insertLineaInteroperabilidad(vIns As Vector,nColOrdenar As Integer)
+		'Inserta en forma ordenada segun la clave si nColOrdenar<>0
+		'nColOrdenar es la columna por la cual ordenar
+		'Si nColOrdenar=0 inserta al final
+		Dim posIns As Long
+		
+		If nColOrdenar<>0 Then
+			Select Case(nColOrdenar)
+			Case 1:
+				posIns=vKeyDB.InsertPos(vIns.getElement(1),True)
+			Case 2:
+				posIns=vServer.InsertPos(vIns.getElement(2),True)
+			Case 3:
+				posIns=vHost.InsertPos(vIns.getElement(3),True)
+			Case 4:
+				posIns=vFilePath.InsertPos(vIns.getElement(4),True)
+		End Select			
+		Else
+			posIns = vKeyDB.cantElem + 1
+		End If
+		vKeyDB.insertElement vIns.getElement(1),posIns
+		vServer.insertElement vIns.getElement(2),posIns
+		vHost.insertElement vIns.getElement(3),posIns
+		vFilePath.insertElement vIns.getElement(4),posIns
+	End Function
+	
+	'*****************************************************************************************************************
+	'********* CAMPOS DE RENDIMIENTO *********************************************************************************					
+	'*****************************************************************************************************************
+
+	Public Property Get BasesCreadas As Vector
+		On Error GoTo handler
+		Set BasesCreadas = New Vector(0)
+		BasesCreadas.Values = docConfiguracion.Getitemvalue(CAMPO_CONFIG_BASESCREADAS)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get BasesCreadas","")
+		Exit Property
+	End Property
+	'*****************************************************************************************************************
+	
+	Public Property Set BasesCreadas As Vector
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_CONFIG_BASESCREADAS, BasesCreadas.Values)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set BasesCreadas","")
+		Exit Property
+	End Property
+	'*****************************************************************************************************************
+	Public Property Get BasesCreadasIni As Vector
+		On Error GoTo handler
+		Set BasesCreadasIni = New Vector(0)
+		BasesCreadasIni.Values = docConfiguracion.Getitemvalue(CAMPO_CONFIG_BASESCREADASINI)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get BasesCreadasIni","")
+		Exit Property
+	End Property
+	'*****************************************************************************************************************
+	
+	Public Property Set BasesCreadasIni As Vector
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_CONFIG_BASESCREADASINI, BasesCreadasINI.Values)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set BasesCreadasINI","")
+		Exit Property
+	End Property	
+	'*****************************************************************************************************************
+	Public Property Get NumeradoresIni As Vector
+		On Error GoTo handler
+		Set NumeradoresIni = New Vector(0)
+		NumeradoresIni.Values = docConfiguracion.Getitemvalue(CAMPO_CONFIG_NUMERADORES)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NumeradoresIni","")
+		Exit Property
+	End Property
+	'*****************************************************************************************************************
+	
+	Public Property Set NumeradoresIni As Vector
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_CONFIG_NUMERADORES, NumeradoresIni.Values)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set NumeradoresIni","")
+		Exit Property
+	End Property	
+	'*****************************************************************************************************************
+	Public Property Get NumerosIni As Vector
+		On Error GoTo handler
+		Set NumerosIni = New Vector(0)
+		NumerosIni.Values = docConfiguracion.Getitemvalue(CAMPO_CONFIG_NUMEROS)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NumerosIni","")
+		Exit Property
+	End Property
+	'*****************************************************************************************************************
+	
+	Public Property Set NumerosIni As Vector
+		On Error GoTo handler
+		Call docConfiguracion.Replaceitemvalue(CAMPO_CONFIG_NUMEROS, NumerosIni.Values)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set NumerosIni","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get CantMBPorBase As Long
+		On Error GoTo handler
+		'no se usa, cambio a la interoperabilidad
+		CantMBPorBase = docConfiguracion.Getitemvalue(CAMPO_CONFIG_CANTMBXBASE)(0) 
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase Configuracion Formularios - Propiedad Get CantMBPorBase","")
+		Exit Property
+	End Property	
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set CantMBPorBase As Long
+		On Error GoTo handler
+		'no se usa, cambio a la interoperabilidad
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_CANTMBXBASE, CLng(CantMBPorBase)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase Configuracion Formularios - Propiedad Set CantMBPorBase","")
+		Exit Property
+	End Property		
+	'******************************************************************************************************************	
+	
+	Public Property Get CantDocPorBase As Long
+		On Error GoTo handler
+		'no se usa, cambio a la interoperabilidad
+		CantDocPorBase = docConfiguracion.Getitemvalue(CAMPO_CONFIG_CANTDOCXBASE)(0) 
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase Configuracion Formularios - Propiedad Get CantDocPorBase","")
+		Exit Property
+	End Property	
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set CantDocPorBase As Long
+		On Error GoTo handler
+		'no se usa, cambio a la interoperabilidad
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_CANTDOCXBASE, CLng(CantDocPorBase)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase Configuracion Formularios - Propiedad Set CantDocPorBase","")
+		Exit Property
+	End Property	
+	
+	'******************************************************************************************************************
+	
+	Public Property Set RendimientoPor As String
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_RENDIMIENTOPOR, CStr(RendimientoPor)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Set RendimientoPor","")
+		Exit Property
+	End Property
+	
+	'*****************************************************************************************************************
+	
+	Public Property Get RendimientoPor As String
+		On Error GoTo handler
+		RendimientoPor = CStr(docConfiguracion.GetItemValue (CAMPO_CONFIG_RENDIMIENTOPOR)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get RendimientoPor","")
+		Exit Property
+	End Property	
+	'*****************************************************************************************************************	
+	'**********************FIN CAMPOS RENDIMIENTO*********************************************************************
+	'*****************************************************************************************************************
+	
+'*************************************************************************************************************************************	
+	%REM
+		Function ValidoEspacio
+		Description: Comments for Function
+		Este metodo devuelve "" en caso de que haya que crear una nueva base
+		En caso de que se pueda crear un nuevo doc en la base "Actual" devuelve la clave de la base actual
+	%END REM
+	Public Function ValidoEspacio As String
+		On Error GoTo handler
+		Dim Basedatos As String
+		Dim dbDoc As NotesDatabase
+		If me.RendimientoPor="1" Then
+			'Este caso es que el control se hace por tamaño
+			If me.BasesCreadas.cantElem=0 Then
+				'Todavía no se creo ninguna base
+				ValidoEspacio = ""
+				Exit Function
+			Else
+				Set dbDoc = me.ReferenciarBaseDeDatos(me.BasesCreadas.getElement(me.BasesCreadas.cantElem))
+				'If dbDoc.Size > me.CantMBPorBase*1024*1024 Then
+				If (dbDoc.Size/1024)/1024 > me.CantMBPorBase Then
+					ValidoEspacio = ""
+					Exit Function
+				Else
+					ValidoEspacio = me.BasesCreadas.getElement(me.BasesCreadas.cantElem)
+				End If
+			End If		
+		Else
+			'En este caso el control es por #docs
+			Dim dt As Entrada
+			
+			Set dt.BasesCreadas = Me.BasesCreadas
+			Set dt.BasesCreadasIni = Me.BasesCreadasIni
+			Set dt.NumeradoresIni = Me.NumeradoresIni
+			Set dt.NumerosIni = Me.NumerosIni
+			dt.CantidadDocumentos = Me.CantDocPorBase
+			Set dt.BaseNumerador = Me.ReferenciarBaseDeDatos("NUMERACION")
+			
+			Dim bc As BasesPorCantidad
+			Set bc = New BasesPorCantidad(dt)
+			
+			ValidoEspacio = bc.getBaseDatos()	
+		End If
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC FORMULARIOS", "Clase ConfigGorms - Function ValidoEspacio", Erl, ses.Effectiveusername)
+		Exit Function
+	End Function
+'******************************************************************************************************************			
+	
+	%REM
+		Function ClaveBasexNumero
+		Description: Comments for Function
+	%END REM
+	Public function ClaveBasexNumero(numero As long, numerador As String) As String
+		Dim dt As Entrada
+		
+		Set dt.BasesCreadas = Me.BasesCreadas
+		Set dt.BasesCreadasIni = Me.BasesCreadasIni
+		Set dt.NumeradoresIni = Me.NumeradoresIni
+		Set dt.NumerosIni = Me.NumerosIni
+		dt.CantidadDocumentos = Me.CantDocPorBase
+		Set dt.BaseNumerador = Me.ReferenciarBaseDeDatos("NUMERACION")
+		
+		Dim bc As BasesPorCantidad
+		Set bc = New BasesPorCantidad(dt)
+		ClaveBaseXNumero = bc.getBasePorNumero(Numero, Numerador)
+	End Function
+'******************************************************************************************************************	
+	Public Sub addAuditoriaDate(sClave As String,dCreacion As Variant)
+		On Error GoTo HANDLER
+		
+		'dCreacion es de tipo Date, sClave=clave de la base
+		Dim itClaves As NotesItem,itFechas As NotesItem,aFechas As Variant
+		
+		If docConfiguracion.hasItem(CAMPO_CLAVE_CREACION_AUDITORIA) Then
+			Set itClaves=docConfiguracion.getFirstItem(CAMPO_CLAVE_CREACION_AUDITORIA)
+		Else
+			Set itClaves=New NotesItem(docConfiguracion,CAMPO_CLAVE_CREACION_AUDITORIA,"")	
+		End If
+		itClaves.appendToTextlist sClave
+		If docConfiguracion.hasItem(CAMPO_CREACION_AUDITORIA) Then
+			Set itFechas=docConfiguracion.getFirstItem(CAMPO_CREACION_AUDITORIA)
+		Else
+			Set itFechas=New NotesItem(docConfiguracion,CAMPO_CREACION_AUDITORIA,"")		
+		End If
+		aFechas=itFechas.values
+		ReDim Preserve aFechas(LBound(itClaves.values) To UBound(itClaves.values))
+		aFechas(UBound(itClaves.values))=dCreacion
+		itFechas.values=aFechas
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método addAuditoriaDate","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	Public Function SustituirCodigoFormulario(ByVal formato As String, codigoFormulario As Integer) As String
+		On Error GoTo HANDLER
+		
+		Dim pos As Integer
+		Dim izq As String
+		Dim der As String
+		
+		pos = InStr(formato, INDICADOR_CODIGO_FORMULARIO)
+		
+		If (pos <> 0) Then
+			'Saco lo que hay a la derecha e izquierda del código del formulario
+			izq = StrLeft(formato, INDICADOR_CODIGO_FORMULARIO)
+			der = StrRightBack(formato, INDICADOR_CODIGO_FORMULARIO)
+			
+			formato = izq & codigoFormulario & der
+		End If
+		SustituirCodigoFormulario = formato
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirCodigoFormulario","")
+		Exit Function
+	End Function
+'*************************************************************************************************************************************
+	%REM
+		Sub CrearBase
+		Description: Comments for Sub
+	%END REM
+	Public Function CrearBase() As String	
+		On Error GoTo handler
+		Dim dbTemplate As NotesDatabase
+		Dim dbNueva As NotesDatabase
+		
+		Dim i As Long
+		Dim filename As String
+		Dim vAux As Vector
+		
+		Dim baseDatos As String
+		baseDatos = me.ValidoEspacio()
+		If baseDatos<>"" Then
+			'Valido que realmente sea necesario crear la base 
+			'(para el caso de 2 request concurrentes) 
+			CrearBase = baseDatos
+			Exit Function
+		End If
+		
+		Set dbTemplate = me.ReferenciarBaseDeDatos("FORMULARIOS")
+		i = me.BasesCreadas.cantElem
+		i = i +1
+		filename = StrLeft(dbTemplate.Filepath,".nsf")
+		filename = filename & "_" & CStr(i) & ".nsf"
+		Set dbNueva = dbTemplate.Createcopy(dbTemplate.Server, filename)
+		Set vAux = me.BasesCreadas
+		Call vAux.insertElement("FORMULARIOS" & "_" & CStr(i), i)
+		Set me.BasesCreadas = vAux
+		Set vkeyDb = me.Claves
+		Call vKeyDb.insertElement("FORMULARIOS" & "_" & CStr(i) , vKeyDb.cantElem+1)
+		Set vHost = me.Hosts
+		Call vHost.insertElement(vhost.getElement(1), vhost.cantElem+1)
+		Set vServer = me.Servers
+		Dim nname As New NotesName(dbTemplate.Server)
+		Call vServer.insertElement(nname.Abbreviated, vServer.cantElem+1)
+		Set vFilePath = me.Rutas
+		Call vFilePath.insertElement(filename, rutas.cantElem+1)
+		
+		Set me.Claves = vKeyDb
+		Set me.Hosts = vHost
+		Set me.Servers = vServer
+		Set me.Rutas = vFilePath
+		'Call me.InsertarLineaInterop("FORMULARIOS" & "_" & CStr(i) , me.Host, dbTemplate.Server, filename)
+		Call me.save()
+		
+		Dim igD As NotesDocument
+		Set igD = dbTEmplate.Getprofiledocument("IGDocConfig")
+		Dim igDNuevo As NotesDocument
+		Set igDNuevo = dbNueva.Getprofiledocument("IGDocConfig")
+		
+		Call igd.Copyallitems(igdNuevo, True)
+		Call igdNuevo.Save(True, False)
+		'El insertarLineaInterop hace un save por lo que no tengo porque llamarlo nuevamente 
+		CrearBase = "FORMULARIOS" & "_" & CStr(i)
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC FORMULARIOS", "Clase ConfDocumentos - Sub CrearBase", Erl, ses.Effectiveusername)
+		Exit Function
+	End Function	
+'******************************************************************************************************************	
+	Public Function SustituirNumeroSecuencia(ByVal formato As String, secuencia As Long) As String
+		On Error GoTo HANDLER
+		Dim izq As String
+		Dim der As String
+		Dim largoNum As Integer
+		Dim largoSec As Integer
+		Dim aux As String
+		Dim i As Integer
+		
+		largoSec = Len(CStr(secuencia))
+		izq = StrLeft(formato, INDICADOR_CODIGO_SECUENCIA)
+		der = StrRightBack(formato, INDICADOR_CODIGO_SECUENCIA)
+		
+		'Obtengo la cantidad de numerales de la secuencia
+		largoNum = Len(formato) - (Len(izq) + Len(der))
+		
+		For i%=1 To (largoNum - largoSec)
+			aux = aux & 0
+		Next
+		aux = aux & secuencia
+		formato = izq & aux & der
+		
+		SustituirNumeroSecuencia = formato
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirNumeroSecuencia","")
+		Exit Function
+	End Function
+'******************************************************************************************************************
+	Public Function  SustituirCodigoUnidad(ByVal formato As String, codigoUnidad As String)
+		On Error GoTo HANDLER
+		
+		Dim izq As String
+		Dim der As String
+		Dim pos As Integer
+		
+		pos = InStr(formato, INDICADOR_CODIGO_UNIDAD)
+		
+		If(pos <> 0 And codigoUnidad<>"") Then
+			izq = StrLeft(formato, INDICADOR_CODIGO_UNIDAD)
+			der = StrRightBack(formato, INDICADOR_CODIGO_UNIDAD)
+			
+			formato = izq & codigoUnidad & der
+		End If
+		
+		
+		SustituirCodigoUnidad = formato
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirCodigoFormulario","")
+		Exit Function
+	End Function	
+End Class
+'******************************************************************************************************************

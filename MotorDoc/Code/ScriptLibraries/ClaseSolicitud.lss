@@ -1,0 +1,2348 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+'*******************************************************************************************************************
+'*  
+'*                                               CLASS <Solicitud>
+'*
+'*******************************************************************************************************************
+'*
+'*	CONSTRUCTOR
+'*
+'*	Public Sub new(db_ As notesDatabase,doc_ As notesdocument,sNroExpediente_ As String,sUsuario_ As String)
+'*	
+'*	METODOS
+'*
+'*	Public Sub save() 
+'*	'Salva la solicitud
+'*	
+'*	Public Sub refresh() 
+'*	
+'*	Public Sub setEstado(bProcesado As Integer)
+'*	
+'*		PARAMETROS
+'*			bProcesado (IN)		-Booleano. Si es True el estado de la solicitud será Procesado.
+'*
+'*	Public Sub setParameter(operacion As String,nNroParam As Integer, vValor As Variant)
+'*	Setea el parámetro valor, en un campo(de la solicitud).Este valor se corresponde con el parameto "nroParam" 
+'*	de alguna operación "operacion" de la clase Expediente.
+'*
+'*		PARAMETROS
+'*			operacion (IN)		-String obtenido por constantes que indica para que operación de la 
+'*							clase Expediente es que se quiere setear el parámetro.
+'*			nNroParam (IN)		-Número que indica que parámetro se quiere setear para la operación.
+'*			vValor	(IN)		-Valor del parámetro. Puede ser un String, un Integer, o un Array.
+'*
+'*	Public Function getParameter(operacion As String,nNroParam As Integer) As Variant
+'*	Obtiene del documento de solicitud un parámetro para alguna operacion de la clase Expediente
+'*	Devuelve dicho valor. Puede ser un string, Integer o un array. Tambien puede ser un Vector, 
+'*	dependiendo de la interfase de la operacion solicitada.
+'*	
+'*		PARAMETROS
+'*			operacion (IN)		-String obtenido por constantes que indica para que operación de la 
+'*							clase Expediente es que se quiere obtener  el parámetro.
+'*			nNroParam (IN)		-Número que indica que parámetro se quiere obtener para la función.
+'*
+'*	Public Function isProcesada() As Integer
+'*	
+'*	Public Function getEstado() As String
+'*	
+'*	Public Function getNroExpediente() As String
+'*	
+'*	Public Function getUsuario() As String
+'*	
+'*	Public Function hayError() As Integer
+'*	
+'*	Public Sub setHayError(bHay As Integer)
+'*	
+'*	Public Function getErrorMsg() As String
+'*	
+'*	Public Function setErrorMsg(sMsg As String)
+'*	
+'*	Public Function getErrorCode() As Integer
+'*	
+'*	Public Function setErrorCode(nErrorCode  As Integer)
+'*	
+'*	Public Function getOperacion()As String
+'*	
+'*	Public Sub setOperacion(sOperacion As String)
+'*	
+
+Use "VectorClass 2.05"
+Use "Errores Generales"
+Use "ConfEE 1.0"
+Use "ConstantesSistema"
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Solicitud
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Diseño
+Public Const FORM_SOLICITUD						="FSolicitud"
+Public Const CAMPO_FSOLICITUD_OPERACION			="sOperacion"
+Public Const CAMPO_FSOLICITUD_ERRORFLAG			="sError_flag"
+Public Const CAMPO_FSOLICITUD_ERRORMSG			="sError_msg"
+Public Const CAMPO_FSOLICITUD_ERRORCODE			="sError_code"
+Public Const CAMPO_FSOLICITUD_NUMEXPEDIENTE		="sNumeroExpediente"
+Public Const CAMPO_FSOLICITUD_USUARIO			="sUsuario"
+Public Const CAMPO_FSOLICITUD_ESTADO			="sEstado"
+
+'Flags
+Public Const FLAG_TRUE						="1"
+Public Const FLAG_FALSE						="0"
+
+'Parametros
+Public Const ACCION_QUITAR_COPIA_P1="quitarCopia"
+Public Const ACCION_QUITAR_COPIA_P2="usuarioQuitar"
+Public Const ACCION_COPIAR_EXP_P1="copia"
+Public Const ACCION_COPIAR_EXP_P2="textoCopia"
+Public Const ACCION_CREAR_P1="caratula_unid"
+
+
+Public Const ACCION_PASE_P1="unidadDestino"
+Public Const ACCION_PASE_P2="procedimiento"
+Public Const ACCION_PASE_P3="listaUniNotif"
+Public Const ACCION_PASE_P4="sUrgente"
+Public Const ACCION_PASE_P5="NotifPaq"
+Public Const ACCION_PASE_P6 = "sMotivoDePase"
+Public Const ACCION_PASE_P7 = "sPlazoDeMotivo"
+
+Public Const ACCION_RUTEAR_P1="unidadDestino"
+Public Const ACCION_RUTEAR_P2="procedimiento"
+Public Const ACCION_RUTEAR_P3="listaUniNotif"
+Public Const ACCION_RUTEAR_P4="sUrgente"
+Public Const ACCION_RUTEAR_P5="NotifPaq"
+Public Const ACCION_RUTEAR_P6="PasoRuta"
+
+Public Const ACCION_AGREGAR_P1="nroExpAgregado"
+Public Const ACCION_DESAGREGAR_P1="nroExpAgregado"
+Public Const ACCION_DEVOLVER_P1="motivo"
+Public Const ACCION_SOLCONFIDENCIAL_P1="lectores"
+Public Const ACCION_MARCARCONFIDENCIAL_P1="lectores"
+Public Const ACCION_MARCARCONFIDENCIAL_P2="solicitante"
+Public Const ACCION_RECHAZARCONFIDENCIAL_P1="motivo"
+Public Const ACCION_RECHAZARCONFIDENCIAL_P2="solicitante"
+
+Public Const ACCION_FIRMAR_P1="sFirma"
+Public Const ACCION_FIRMAR_P2="sFechaFirma"
+Public Const ACCION_FIRMAR_P3="aFirmar"
+
+Public Const ACCION_ASIGNAR_P1="sEditor"
+
+Public Const ACCION_MODIFICAR_PLAZO_P1="nDias"
+
+Public Const ACCION_ADD_LECT_CONFIDENCIAL_P1="lectores"
+Public Const ACCION_DEL_LECT_CONFIDENCIAL_P1="lectores"
+
+Public Const ACCION_SET_PAQUETE_P1="paq_fecha"
+Public Const ACCION_SET_PAQUETE_P2="paq_lugar"
+Public Const ACCION_SET_PAQUETE_P3="paq_responsable"
+
+Public Const ACCION_PASAR_FIRMAR_P1="unidadDestino"
+Public Const ACCION_PASAR_FIRMAR_P2="procedimiento"
+Public Const ACCION_PASAR_FIRMAR_P3="firma"
+Public Const ACCION_PASAR_FIRMAR_P4="fechaFirma"
+Public Const ACCION_PASAR_FIRMAR_P5="listaUniNotif"
+Public Const ACCION_PASAR_FIRMAR_P6="sUrgente"
+
+
+Public Const ACCION_PARA_FIRMAR_P1="sFirmantes"
+
+Public Const ACCION_TOMAR_CONOCIMIENTO_P1="unidadToma"
+
+Public Const ACCION_MARCAR_EXPEDIENTE_P1="nroExp"
+Public Const ACCION_MARCAR_EXPEDIENTE_P2="idMarca"
+Public Const ACCION_MARCAR_EXPEDIENTE_P3="usuario"
+Public Const ACCION_MARCAR_EXPEDIENTE_P4="fechaRecord"
+Public Const ACCION_MARCAR_EXPEDIENTE_P5="msgRecord"
+Public Const ACCION_MARCAR_EXPEDIENTE_P6="sRecordEnviado"
+
+
+Public Const ACCION_EXPORTAR_MARCAS_P1="sUsuario"
+Public Const ACCION_EXPORTAR_MARCAS_P2="marcasNoteids"
+
+'Post its
+Public Const ACCION_POSTIT_CREAR_P1="nroExp"
+Public Const ACCION_POSTIT_CREAR_P2="nroAct"
+Public Const ACCION_POSTIT_CREAR_P3="usr"
+Public Const ACCION_POSTIT_CREAR_P4="coloresWeb"
+Public Const ACCION_POSTIT_CREAR_P5="titulosWeb"
+Public Const ACCION_POSTIT_CREAR_P6="textosWeb"
+
+Public Const ACCION_POSTIT_MODIF_P1="nroExp"
+Public Const ACCION_POSTIT_MODIF_P2="nroAct"
+Public Const ACCION_POSTIT_MODIF_P3="usr"
+Public Const ACCION_POSTIT_MODIF_P4="coloresWeb"
+Public Const ACCION_POSTIT_MODIF_P5="titulosWeb"
+Public Const ACCION_POSTIT_MODIF_P6="textosWeb"
+
+Public Const ACCION_POSTIT_BORRAR_P1="nroExp"
+Public Const ACCION_POSTIT_BORRAR_P2="nroAct"
+Public Const ACCION_POSTIT_BORRAR_P3="usr"
+Public Const ACCION_POSTIT_BORRAR_P4="coloresWeb"
+Public Const ACCION_POSTIT_BORRAR_P5="titulosWeb"
+Public Const ACCION_POSTIT_BORRAR_P6="textosWeb"
+
+Public Const ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P1="nroExp"
+Public Const ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P2="nroAct"
+Public Const ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P3="mensaje"
+Public Const ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P4="tipoDoc"
+Public Const ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P5="unidad"
+Public Const ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P6="fecha"
+
+Public Const ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P1="nroExp"
+Public Const ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P2="nroAct"
+Public Const ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P3="nrosDocs"
+Public Const ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P4="tiposDocs"
+Public Const ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P5="unisDocs"
+
+Public Const ACCION_GENERAR_ASUNTO_EXPEDIENTE_P1="nroExp"
+Public Const ACCION_GENERAR_ASUNTO_EXPEDIENTE_P2="nroAct"
+Public Const ACCION_GENERAR_ASUNTO_EXPEDIENTE_P3="unidAsunto"
+Public Const ACCION_GENERAR_ASUNTO_EXPEDIENTE_P4="unidPdf"
+
+'Notificar 
+Public Const ACCION_NOTIFICAR_P1="nroExp"
+Public Const ACCION_NOTIFICAR_P2="nroAct"
+Public Const ACCION_NOTIFICAR_P3="unidades"
+Public Const ACCION_NOTIFICAR_P4="sUsuario"
+
+'EnviarAviso
+Public Const ACCION_ENVIAR_AVISO_EXPEDIENTE_P1="AvisosDest"
+Public Const ACCION_ENVIAR_AVISO_EXPEDIENTE_P2="AvisosAsunto"
+Public Const ACCION_ENVIAR_AVISO_EXPEDIENTE_P3="AvisosCuerpo"
+
+'CrearEvento
+Public Const ACCION_CREAR_EVENTO_P1  = "usuario"
+Public Const ACCION_CREAR_EVENTO_P2  = "fechaInicio"
+Public Const ACCION_CREAR_EVENTO_P3  = "fechaFin"
+Public Const ACCION_CREAR_EVENTO_P4  = "horaInicio"
+Public Const ACCION_CREAR_EVENTO_P5  = "horaFin"
+Public Const ACCION_CREAR_EVENTO_P6  = "detalles"
+Public Const ACCION_CREAR_EVENTO_P7  = "descripcion"
+Public Const ACCION_CREAR_EVENTO_P8  = "personal"
+Public Const ACCION_CREAR_EVENTO_P9  = "notificar"
+Public Const ACCION_CREAR_EVENTO_P10 = "aviso"
+Public Const ACCION_CREAR_EVENTO_P11 = "usuarios"
+Public Const ACCION_CREAR_EVENTO_P12 = "minutos"
+Public Const ACCION_CREAR_EVENTO_P13 = "unidad"
+Public Const ACCION_CREAR_EVENTO_P14 = "nroUnidad"
+Public Const ACCION_CREAR_EVENTO_P15 = "nroExpediente"
+
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P2 = "nroSesion"
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P3 = "nroPunto"
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P4 = "nroResol"
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P5 = "estado"
+
+Public Const ACCION_QUITAR_PUNTO_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_QUITAR_PUNTO_EXPEDIENTE_P2 = "nroSesion"
+Public Const ACCION_QUITAR_PUNTO_EXPEDIENTE_P3 = "nroPunto"
+
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P2 = "nroSesion"
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P3 = "nroPunto"
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P4 = "estado"
+
+Public Const ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P1 = "solicitante"
+Public Const ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P2 = "fechaSolicitud"
+Public Const ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P3 = "cantidadDeNumeros"
+Public Const ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P4 = "codUnidad"
+Public Const ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P5 = "nroInciso"
+
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P2 = "nroAct"
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P3 = "usr"
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P4 = "nroDoc"
+
+'vinculo expedientes
+Public Const ACCION_VINCULO_EXPEDIENTES = "sVinculoExp"
+
+'parametros de solicitud para accion obtener expediente desde unidad externa
+Public Const ACCION_OBTENER_EXP_P1 = "sUnidadDst"
+Public Const ACCION_OBTENER_EXP_P2 = "sProcedimiento"
+Public Const ACCION_OBTENER_EXP_P3 = "sUrgente"
+Public Const ACCION_OBTENER_EXP_P4 = "sUnidadesNotifPase"
+Public Const ACCION_OBTENER_EXP_P5 = "sNotifPaquete"
+'recibir multiples expedientes
+Public Const CMP_RECBIR_EXPEDIENTES = "sExpedientesRecibidos"
+
+
+Public Class Solicitud
+	Private db As notesDatabase
+	Private doc As notesDocument
+	Private sNoteId As String
+	
+	'*****************************************************************************************************************************				
+	Public Function getDocumento As NotesDocument
+		On Error GoTo errorHandler
+		Set getDocumento = me.doc
+		Exit Function 
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getDocumento", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************	
+	
+	Public Sub new(doc_ As notesdocument,Byval sNroExpediente_ As String,Byval sUsuario_ As String)
+		On Error Goto errorHandler
+		Dim c As New Configuracion, srv As String, path As String
+		
+		If db Is Nothing Then
+			
+			srv = c.ServidorDomino(CLAVE_DBMOTORDOC)
+			path = c.BaseDeDatos(CLAVE_DBMOTORDOC)
+
+			Set db = New NotesDataBase ("","")
+			Call db.Open (srv,path)			
+
+			If Not db.isOpen Then
+				Error ERROR_DB_NOT_OPEN,MSG_ERROR_DB_NOT_OPEN & " Motor Documental"
+			End If			
+		End If		
+		If doc_ Is Nothing Then
+			Set doc=New notesdocument(db)
+			doc.form=FORM_SOLICITUD
+			doc.replaceItemValue CAMPO_FSOLICITUD_NUMEXPEDIENTE,sNroExpediente_
+			doc.replaceItemValue CAMPO_FSOLICITUD_USUARIO,sUsuario_
+			doc.replaceItemValue CAMPO_FSOLICITUD_ESTADO,FLAG_FALSE 'Procesar. Ver que pasa si el motor no la procesó aún	
+		Else
+			Set doc=doc_
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método New", ""
+		Exit Sub
+	End Sub
+	
+	
+	'*****************************************************************************************************************************
+	'*****************************************************************************************************************************
+	'Privadas
+	
+	Private Sub setAccionCopiar(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.ReplaceItemValue ACCION_COPIAR_EXP_P1,vValor		
+			Case 2:
+				doc.ReplaceItemValue ACCION_COPIAR_EXP_P2, vValor	
+			Case Else			
+		End Select	
+		End If
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionCopiar", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionCopiar(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionCopiar=doc.getItemValue(ACCION_COPIAR_EXP_P1)
+			Case 2:
+				getAccionCopiar=doc.getItemValue(ACCION_COPIAR_EXP_P2)
+			Case Else			
+		End Select	
+		End If
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionCopiar", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getQuitarCopia(Byval nNroParam As Integer) As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getQuitarCopia=doc.getItemValue(ACCION_QUITAR_COPIA_P1)(0)
+			Case 2:
+				getQuitarCopia=doc.getItemValue(ACCION_QUITAR_COPIA_P2)(0)
+			Case Else			
+		End Select	
+		End If
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getQuitarCopia", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************
+	
+	Private Sub setQuitarCopia(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.ReplaceItemValue ACCION_QUITAR_COPIA_P1, Cstr(vValor)
+			Case 2:
+				doc.ReplaceItemValue ACCION_QUITAR_COPIA_P2, Cstr(vValor)
+			Case Else			
+		End Select	
+		End If
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setQuitarCopia", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************			
+
+	Private Function getAccionVincularExpedientes() As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			getAccionVincularExpedientes = doc.Getitemvalue(ACCION_VINCULO_EXPEDIENTES)
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionVincularExpedientes", ""
+		Exit Function
+	End Function
+	
+	%REM
+		Function getNumero
+		Description: Comments for Function
+	%END REM
+	Public Function getNuevoDatoPrivado() As Variant
+		getNuevoDatoPrivado= doc.Getitemvalue("sIDDato")(0)
+	End Function
+	'*****************************************************************************************************************************
+	
+	Private Sub setAccionVincularExpedientes(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Dim i As Integer
+			doc.replaceItemValue ACCION_VINCULO_EXPEDIENTES,vValor.values
+		End If
+		Exit Sub
+errorHandler:
+		MsgBox "Error setAccionVincularExpedientes" & Error & " - " & Erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionVincularExpedientes", ""
+		Exit Sub
+	End Sub	
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionMotivoDePase(param As Integer) As String
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			getAccionMotivoDePase = doc.Getitemvalue(ACCION_MOTIVO_DE_PASE & cstr(param))(0)
+		End If
+		Exit Function
+errorHandler:
+		MsgBox "Clase Solicitud - Método getAccionMotivoDePase" & Error & " - " & erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionMotivoDePase", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************
+	
+	Private Sub setAccionMotivoDePase(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Dim i As Integer
+			doc.replaceItemValue ACCION_MOTIVO_DE_PASE & CStr(nNroParam),CStr(vValor)
+		End If
+		Exit Sub
+errorHandler:
+		MsgBox "Error setAccionMotivoDePase" & Error & " - " & Erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionMotivoDePase", ""
+		Exit Sub
+	End Sub
+	
+	Private Sub setAccionCrear(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_CREAR_P1,Cstr(vValor)
+			Case Else			
+		End Select	
+		End If
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionCrear", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionCrear(Byval nNroParam As Integer) As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionCrear=doc.getItemValue(ACCION_CREAR_P1)(0)
+			Case Else			
+		End Select	
+		End If
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionCrear", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionPase(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_PASE_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_PASE_P2,Cstr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_PASE_P3,vValor
+			Case 4:
+				doc.replaceItemValue ACCION_PASE_P4,Cstr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_PASE_P5,Cstr(vValor)
+			Case 6:
+				doc.replaceItemValue ACCION_PASE_P6,CStr(vValor)
+			Case 7:
+				doc.replaceItemValue ACCION_PASE_P7,vValor
+			Case Else			
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionPase", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionPase(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionPase=Cstr(doc.getItemValue(ACCION_PASE_P1)(0))
+			Case 2:
+				getAccionPase=Cstr(doc.getItemValue(ACCION_PASE_P2)(0))
+			Case 3:
+				getAccionPase=doc.getItemValue(ACCION_PASE_P3)
+			Case 4:
+				getAccionPase=Cstr(doc.getItemValue(ACCION_PASE_P4)(0))
+			Case 5:
+				getAccionPase=Cstr(doc.getItemValue(ACCION_PASE_P5)(0))
+			Case 6:
+				getAccionPase=CStr(doc.getItemValue(ACCION_PASE_P6)(0))
+			Case 7:
+				getAccionPase=CInt(doc.getItemValue(ACCION_PASE_P7)(0))
+			Case Else			
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionPase", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionRutear(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_RUTEAR_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_RUTEAR_P2,Cstr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_RUTEAR_P3,vValor
+			Case 4:
+				doc.replaceItemValue ACCION_RUTEAR_P4,Cstr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_RUTEAR_P5,Cstr(vValor)
+			Case 6:
+				doc.replaceItemValue ACCION_RUTEAR_P6,Cstr(vValor)				
+			Case Else			
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionRutear", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionRutear(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionRutear=Cstr(doc.getItemValue(ACCION_RUTEAR_P1)(0))
+			Case 2:
+				getAccionRutear=Cstr(doc.getItemValue(ACCION_RUTEAR_P2)(0))
+			Case 3:
+				getAccionRutear=doc.getItemValue(ACCION_RUTEAR_P3)
+			Case 4:
+				getAccionRutear=Cstr(doc.getItemValue(ACCION_RUTEAR_P4)(0))
+			Case 5:
+				getAccionRutear=Cstr(doc.getItemValue(ACCION_RUTEAR_P5)(0))
+			Case 6:
+				getAccionRutear=Cstr(doc.getItemValue(ACCION_RUTEAR_P6)(0))
+			Case Else			
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionPase", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionObtenerExt(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionObtenerExt = CStr(doc.Getitemvalue(ACCION_OBTENER_EXP_P1)(0))
+			Case 2:
+				getAccionObtenerExt = CStr(doc.Getitemvalue(ACCION_OBTENER_EXP_P2)(0))
+			Case 3:
+				getAccionObtenerExt = CStr(doc.Getitemvalue(ACCION_OBTENER_EXP_P3)(0))
+			Case 4:
+				getAccionObtenerExt = CStr(doc.Getitemvalue(ACCION_OBTENER_EXP_P4)(0))
+			Case 5:
+				getAccionObtenerExt = CStr(doc.Getitemvalue(ACCION_OBTENER_EXP_P5)(0))
+			End select
+		End If
+		Exit Function
+errorHandler:
+		MsgBox "ClaseSolicitud-getAccionObtenerExt: " & Error & " - " & erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionObtenerExt", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************
+	Private Sub setAccionObtenerExt(ByVal nNroParam As Integer, vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				Call doc.replaceItemValue (ACCION_OBTENER_EXP_P1,vValor)
+			Case 2:
+				Call doc.replaceItemValue (ACCION_OBTENER_EXP_P2,vValor)
+			Case 3:
+				Call doc.replaceItemValue (ACCION_OBTENER_EXP_P3,vValor)
+			Case 4:
+				Call doc.replaceItemValue (ACCION_OBTENER_EXP_P4,vValor)
+			Case 5:
+				Call doc.replaceItemValue (ACCION_OBTENER_EXP_P5,vValor)
+			End Select
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionObtenerExt", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************
+	
+	
+	Private Sub setAccionAgregar(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue ACCION_AGREGAR_P1,vValor
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionAgregar", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionAgregar(Byval nNroParam As Integer)As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			getAccionAgregar=doc.getItemValue(ACCION_AGREGAR_P1)
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionAgregar", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************
+	
+	Private Sub setAccionDesagregar(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue ACCION_DESAGREGAR_P1,vValor
+		End If	
+		Exit Sub	
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionDesagregar", ""
+		Exit Sub	
+	End Sub	
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionDesagregar(Byval nNroParam As Integer)As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			getAccionDesagregar=doc.getItemValue(ACCION_DESAGREGAR_P1)
+		End If	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionDesagregar", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionDevolver(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue ACCION_DEVOLVER_P1,Cstr(vValor)	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionDevolver", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionDevolver(Byval nNroParam As Integer)As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			getAccionDevolver=Cstr(doc.getItemValue(ACCION_DEVOLVER_P1)(0))
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionDevolver", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************
+	
+	Private Sub setAccionSolConfidencial(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue ACCION_SOLCONFIDENCIAL_P1,vValor.values
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionSolConfidencial", ""
+		Exit Sub
+	End Sub	
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionSolConfidencial(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		Dim v As New Vector(0)
+		If Not doc Is Nothing Then
+			v.values=doc.getGetItemValue(ACCION_SOLCONFIDENCIAL_P1)
+			Set getAccionSolConfidencial=v
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionSolConfidencial", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionMarcarConfidencial(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_MARCARCONFIDENCIAL_P1,vValor
+			Case 2:
+				doc.replaceItemValue ACCION_MARCARCONFIDENCIAL_P2,Cstr(vValor)
+			Case Else
+		End Select			
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionMarcarConfidencial", ""
+		Exit Sub
+	End Sub	
+	
+	'*****************************************************************************************************************************
+	
+	Private Function getAccionMarcarConfidencial(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionMarcarConfidencial=doc.getItemValue(ACCION_MARCARCONFIDENCIAL_P1)
+			Case 2:
+				getAccionMarcarConfidencial=Cstr(doc.getItemValue(ACCION_MARCARCONFIDENCIAL_P2)(0))
+			Case Else
+		End Select			
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionMarcarConfidencial", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionRechazarConfidencial(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_RECHAZARCONFIDENCIAL_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_RECHAZARCONFIDENCIAL_P2,Cstr(vValor)
+			Case Else
+		End Select			
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionRechazarConfidencial", ""
+		Exit Sub
+	End Sub		
+	
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionRechazarConfidencial(Byval nNroParam As Integer)As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionRechazarConfidencial=Cstr(doc.getItemValue(ACCION_RECHAZARCONFIDENCIAL_P1)(0))
+			Case 2:
+				getAccionRechazarConfidencial=Cstr(doc.getItemValue(ACCION_RECHAZARCONFIDENCIAL_P2)(0))
+			Case Else
+		End Select			
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionRechazarConfidencial", ""
+		Exit Function
+	End Function		
+	
+	'*****************************************************************************************************************************			
+	
+	
+	Private Function getAccionFirmar(Byval nNroParam As Integer)As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionFirmar=doc.getItemValue(ACCION_FIRMAR_P1)(0)
+			Case 2:				
+				getAccionFirmar=doc.getItemValue(ACCION_FIRMAR_P2)(0)
+			Case 3:				
+				getAccionFirmar=doc.getItemValue(ACCION_FIRMAR_P3)(0)				
+			Case Else
+		End Select			
+		End If
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionRevisar", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************			
+	
+	Private Sub setAccionFirmar(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_FIRMAR_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_FIRMAR_P2,vValor
+			Case 3:
+				doc.replaceItemValue ACCION_FIRMAR_P3,vValor				
+			Case Else
+		End Select			
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionFirmar", ""
+		Exit Sub
+	End Sub		
+	
+	'*****************************************************************************************************************************				
+	
+	Private Function getAccionAsignar(Byval nNroParam As Integer)As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionAsignar=doc.getItemValue(ACCION_ASIGNAR_P1)(0)
+			Case Else
+		End Select			
+		End If
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionAsignar", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************			
+	
+	Private Sub setAccionAsignar(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_ASIGNAR_P1,Cstr(vValor)
+			Case Else
+		End Select			
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionAsignar", ""
+		Exit Sub
+	End Sub		
+	
+	'*****************************************************************************************************************************			
+	
+	Private Sub setAccionModificarPlazo(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_MODIFICAR_PLAZO_P1,Cstr(vValor)
+			Case Else
+		End Select			
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionModificarPlazo", ""
+		Exit Sub
+	End Sub		
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function getAccionModificarPlazo(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				If Isnumeric(doc.getItemValue(ACCION_MODIFICAR_PLAZO_P1)(0)) Then
+					getAccionModificarPlazo=Cint(doc.getItemValue(ACCION_MODIFICAR_PLAZO_P1)(0))
+				End If
+				
+			Case Else
+		End Select			
+		End If	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionModificarPlazo", ""
+		Exit Function
+	End Function	
+	
+	
+	Private Sub setAccionAddLectConfidencial(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_ADD_LECT_CONFIDENCIAL_P1,vValor
+			Case Else
+		End Select			
+		End If	
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionAddLectConfidencial", ""
+		Exit Sub
+	End Sub
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionActualizarInformeExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P4)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionActualizarInformeExpediente", ""
+		Exit Function
+	End Function	
+	
+	Private Function GetAccionAddLectConfidencial(Byval nNroParam) As Variant
+		On Error Goto errorHandler
+		
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				GetAccionAddLectConfidencial=doc.getItemValue(ACCION_ADD_LECT_CONFIDENCIAL_P1)
+			Case Else
+		End Select			
+		End If	
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método GetAccionAddLectConfidencial", ""
+		Exit Function
+	End Function
+	
+	Private Function GetAccionDelLectConfidencial(Byval nNroParam) As Variant
+		On Error Goto errorHandler
+		
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				GetAccionDelLectConfidencial=doc.getItemValue(ACCION_DEL_LECT_CONFIDENCIAL_P1)
+			Case Else
+		End Select			
+		End If	
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método GetAccionDelLectConfidencial", ""
+		Exit Function
+	End Function
+	
+	Private Function SetAccionDelLectConfidencial(Byval nNroParam,vValor As Variant)
+		On Error Goto errorHandler
+		
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_DEL_LECT_CONFIDENCIAL_P1,vValor
+			Case Else
+		End Select			
+		End If	
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método SetAccionDelLectConfidencial", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Sub setAccionSetPaquete(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_SET_PAQUETE_P1,vValor
+			Case 2:
+				doc.replaceItemValue ACCION_SET_PAQUETE_P2,Cstr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_SET_PAQUETE_P3,Cstr(vValor)
+				
+			Case Else
+		End Select			
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionSetPaquete", ""
+		Exit Sub
+	End Sub		
+	
+	
+	Private Function getAccionSetPaquete(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionSetPaquete=doc.getItemValue(ACCION_SET_PAQUETE_P1)(0)
+			Case 2:
+				getAccionSetPaquete=doc.getItemValue(ACCION_SET_PAQUETE_P2)(0)
+			Case 3:
+				getAccionSetPaquete=doc.getItemValue(ACCION_SET_PAQUETE_P3)(0)
+			Case Else
+				
+		End Select			
+		End If	
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionSetPaquete", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function getAccionFirmarPasar(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionFirmarPasar=doc.getItemValue(ACCION_PASAR_FIRMAR_P1)(0)
+			Case 2:
+				getAccionFirmarPasar=doc.getItemValue(ACCION_PASAR_FIRMAR_P2)(0)
+			Case 3:
+				getAccionFirmarPasar=doc.getItemValue(ACCION_PASAR_FIRMAR_P3)(0)
+			Case 4:
+				getAccionFirmarPasar=doc.getItemValue(ACCION_PASAR_FIRMAR_P4)(0)
+			Case 5:
+				getAccionFirmarPasar=doc.getItemValue(ACCION_PASAR_FIRMAR_P5)
+			Case 6:
+				getAccionFirmarPasar=doc.getItemValue(ACCION_PASAR_FIRMAR_P6)(0)
+			Case Else
+				
+		End Select			
+		End If	
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionFirmarPasar", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function setAccionFirmarPasar(Byval nNroParam As Integer,valor As Variant)
+		On Error Goto errorHandler
+		
+		Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_PASAR_FIRMAR_P1,valor
+			Case 2:
+				doc.replaceItemValue ACCION_PASAR_FIRMAR_P2,valor
+			Case 3:
+				doc.replaceItemValue ACCION_PASAR_FIRMAR_P3,valor
+			Case 4:
+				doc.replaceItemValue ACCION_PASAR_FIRMAR_P4,valor
+			Case 5:
+				doc.replaceItemValue ACCION_PASAR_FIRMAR_P5,valor
+			Case 6:
+				doc.replaceItemValue ACCION_PASAR_FIRMAR_P6,valor
+			Case Else
+				
+		End Select			
+		
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionFirmarPasar", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function getAccionParaFirmar(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionParaFirmar=doc.getItemValue(ACCION_PARA_FIRMAR_P1)
+			Case Else
+				
+		End Select			
+		End If	
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionParaFirmar", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function setAccionParaFirmar(Byval nNroParam As Integer,valor As Variant)
+		On Error Goto errorHandler
+		
+		Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_PARA_FIRMAR_P1,valor
+			Case Else
+				
+		End Select			
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionParaFirmar", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function setAccionTomarConocimiento(Byval nNroParam As Integer,valor As Variant)
+		On Error Goto errorHandler
+		
+		Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_TOMAR_CONOCIMIENTO_P1,valor
+			Case Else
+				
+		End Select			
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionTomarConocimiento", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function getAccionTomarConocimiento(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		
+		If doc Is Nothing Then
+			Exit Function
+		End If
+		Select Case(nNroParam)
+			Case 1:
+				getAccionTomarConocimiento=doc.getItemValue(ACCION_TOMAR_CONOCIMIENTO_P1)
+			Case Else
+				
+		End Select			
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionTomarConocimiento", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function getAccionMarcarExpediente(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		
+		If doc Is Nothing Then
+			Exit Function
+		End If
+		Select Case(nNroParam)
+			Case 1:
+				getAccionMarcarExpediente=Cstr(doc.getItemValue(ACCION_MARCAR_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionMarcarExpediente=Clng(doc.getItemValue(ACCION_MARCAR_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionMarcarExpediente=Cstr(doc.getItemValue(ACCION_MARCAR_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionMarcarExpediente=doc.getItemValue(ACCION_MARCAR_EXPEDIENTE_P4)
+			Case 5:
+				getAccionMarcarExpediente=doc.getItemValue(ACCION_MARCAR_EXPEDIENTE_P5)
+			Case 6:
+				getAccionMarcarExpediente=Cstr(doc.getItemValue(ACCION_MARCAR_EXPEDIENTE_P6)(0))
+			Case Else
+				
+		End Select			
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionMarcarExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function setAccionMarcarExpediente(Byval nNroParam As Integer,valor As Variant)
+		On Error Goto errorHandler
+		
+		If doc Is Nothing Then
+			Exit Function
+		End If
+		Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_MARCAR_EXPEDIENTE_P1,Cstr(valor)
+			Case 2:
+				doc.replaceItemValue ACCION_MARCAR_EXPEDIENTE_P2,Clng(valor)
+			Case 3:
+				doc.replaceItemValue ACCION_MARCAR_EXPEDIENTE_P3,Cstr(valor)
+			Case 4:
+				doc.replaceItemValue ACCION_MARCAR_EXPEDIENTE_P4,valor
+			Case 5:
+				doc.replaceItemValue ACCION_MARCAR_EXPEDIENTE_P5,valor
+			Case 6:
+				doc.replaceItemValue ACCION_MARCAR_EXPEDIENTE_P6,Cstr(valor)
+			Case Else
+				
+		End Select			
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionMarcarExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function setAccionExportarMarcas(Byval nNroParam As Integer,valor As Variant)
+		On Error Goto errorHandler
+		
+		If doc Is Nothing Then
+			Exit Function
+		End If
+		Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_EXPORTAR_MARCAS_P1,Cstr(valor)
+			Case 2:
+				doc.replaceItemValue ACCION_EXPORTAR_MARCAS_P2,Clng(valor)
+			Case Else
+				
+		End Select			
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionExportarMarcas", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function getAccionExportarMarcas(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		
+		If doc Is Nothing Then
+			Exit Function
+		End If
+		Select Case(nNroParam)
+			Case 1:
+				getAccionExportarMarcas=doc.getItemValue(ACCION_EXPORTAR_MARCAS_P1)
+			Case 2:
+				getAccionExportarMarcas=doc.getItemValue(ACCION_EXPORTAR_MARCAS_P2)			
+			Case Else
+				
+		End Select			
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionExportarMarcas", ""
+		Exit Function
+	End Function
+	
+	
+	'*****************************************************************************************************************************			
+	'*****************************************************************************************************************************
+	'Publicas
+	
+	Public Sub save() 
+		'Salva la solicitud
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.save True,False	
+			sNoteId=doc.noteId
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método Save", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************			
+	
+	Public Sub refresh() 
+		On Error Goto errorHandler
+		Set doc=Nothing
+		If sNoteId<>"" Then
+			Set doc=db.getDocumentById(sNoteId)	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método Refresh", ""
+		Exit Sub
+	End Sub	
+	
+	'*****************************************************************************************************************************
+	
+	Public Sub setEstado(Byval bProcesado As Integer)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If bProcesado Then
+				doc.replaceItemValue CAMPO_FSOLICITUD_ESTADO,FLAG_TRUE
+			Else
+				doc.replaceItemValue CAMPO_FSOLICITUD_ESTADO,FLAG_FALSE	
+			End If		
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setEstado", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function isProcesada() As Integer
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_ESTADO) Then
+				isProcesada=doc.getItemValue(CAMPO_FSOLICITUD_ESTADO)(0)=FLAG_TRUE	
+			End If				
+		End If	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método isProcesada", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function getEstado() As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_ESTADO) Then
+				getEstado=doc.getItemValue(CAMPO_FSOLICITUD_ESTADO)(0)
+			End If	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getEstado", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function getNroExpediente() As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_NUMEXPEDIENTE) Then
+				getNroExpediente=doc.getItemValue(CAMPO_FSOLICITUD_NUMEXPEDIENTE)(0)
+			End If	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getNroExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Sub setNroExpediente(sNro As String)
+		On Error Goto errorHandler
+		
+		doc.replaceItemValue CAMPO_FSOLICITUD_NUMEXPEDIENTE,sNro	
+		
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setNroExpediente", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function getUsuario() As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_USUARIO) Then
+				getUsuario=doc.getItemValue(CAMPO_FSOLICITUD_USUARIO)(0)		
+			End If		
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getUsuario", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************	
+
+	Private Function getAccionRegResolExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P4)(0))
+			Case 5:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P5)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionRegResolExpediente", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************	
+
+	Private Function getAccionQuitarPuntoExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionQuitarPuntoExpediente=CStr(doc.getItemValue(ACCION_QUITAR_PUNTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionQuitarPuntoExpediente=CStr(doc.getItemValue(ACCION_QUITAR_PUNTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionQuitarPuntoExpediente=CStr(doc.getItemValue(ACCION_QUITAR_PUNTO_EXPEDIENTE_P3)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionQuitarPuntoExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+
+	Private Function getAccionUpdatePuntoExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P4)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionUpdatePuntoExpediente", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************			
+	
+	
+	Public Function hayError() As Integer
+		On Error Goto errorHandler
+		If doc.hasItem(CAMPO_FSOLICITUD_ERRORFLAG) Then
+			If doc.getItemValue(CAMPO_FSOLICITUD_ERRORFLAG)(0)=FLAG_TRUE Then
+				hayError=True	
+			Else
+				hayError=False	
+			End If
+		Else
+			hayError=False
+		End If
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método hayError", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Sub setHayError(Byval bHay As Integer)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If bHay Then
+				doc.replaceItemValue CAMPO_FSOLICITUD_ERRORFLAG,FLAG_TRUE	
+			Else								
+				doc.replaceItemValue CAMPO_FSOLICITUD_ERRORFLAG,FLAG_FALSE
+			End If
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setHayError", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************		
+	
+	Public Function getErrorMsg() As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_ERRORMSG) Then
+				getErrorMsg=doc.getItemValue(CAMPO_FSOLICITUD_ERRORMSG)(0)
+			End If	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getErrorMsg", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function setErrorMsg(Byval sMsg As String)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue CAMPO_FSOLICITUD_ERRORMSG,sMsg	
+		End If	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setErrorMsg", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************		
+	
+	Public Function getErrorCode() As Integer
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_ERRORCODE) Then
+				If Isnumeric(doc.getItemValue(CAMPO_FSOLICITUD_ERRORCODE)(0)) Then
+					getErrorCode=Cint(doc.getItemValue(CAMPO_FSOLICITUD_ERRORCODE)(0))	
+				End If			
+			End If			
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getErrorCode", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function setErrorCode(Byval nErrorCode  As Integer)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue CAMPO_FSOLICITUD_ERRORCODE,nErrorCode
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setErrorCode", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************		
+	
+	Public Function getOperacion()As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_OPERACION) Then
+				getOperacion=doc.getItemValue(CAMPO_FSOLICITUD_OPERACION)(0)
+			End If			
+		End If	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getOperacion", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Private Function getAccionCrearEvento(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P1)(0)
+			Case 2:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P2)(0)				
+			Case 3:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P3)(0)
+			Case 4:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P4)(0)
+			Case 5:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P5)(0)
+			Case 6:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P6)(0)
+			Case 7:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P7)(0)
+			Case 8:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P8)(0)
+			Case 9:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P9)(0)
+			Case 10:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P10)(0)
+			Case 11:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P11)(0)
+			Case 12:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P12)(0)
+			Case 13:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P13)(0)
+			Case 14:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P14)(0)
+			Case 15:
+				getAccionCrearEvento=doc.getItemValue(ACCION_CREAR_EVENTO_P15)(0)
+			Case Else
+				
+		End Select			
+		End If	
+		
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionFirmarPasar", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Sub setOperacion(Byval sOperacion As String)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue CAMPO_FSOLICITUD_OPERACION,sOperacion
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setOperacion", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+	
+	Public Sub setParameter(Byval operacion As String,Byval nNroParam As Integer, vValor As Variant)
+		'Setea el parámetro valor, en un campo(de la solicitud) correspondiente al parameto nroParam 
+		'de la operación de negocios operacion de la clase Expediente
+		On Error Goto errorHandler
+		
+		Select Case (operacion)
+			Case ACCION_QUITAR_COPIA:
+				setQuitarCopia nNroParam, vValor
+			Case ACCION_COPIAR_EXP:
+				setAccionCopiar nNroParam, vValor
+			Case ACCION_CREAR:
+				setAccionCrear	nNroParam,vValor
+			Case ACCION_PASE:
+				setAccionPase nNroParam,vValor
+			Case ACCION_AGREGAR:
+				setAccionAgregar nNroParam,vValor
+			Case ACCION_DESAGREGAR:
+				setAccionDesagregar nNroParam,vValor
+			Case ACCION_DEVOLVER:
+				setAccionDevolver nNroParam,vValor
+			Case ACCION_MARCAR_CONFIDENCIAL:
+				setAccionMarcarConfidencial nNroParam,vValor
+			Case ACCION_FIRMAR:
+				setAccionFirmar nNroParam,vValor
+			Case ACCION_ASIGNAR:
+				setAccionAsignar nNroParam,vValor
+			Case ACCION_MODIFICAR_PLAZO:
+				setAccionModificarPlazo nNroParam,vValor
+			Case ACCION_ADD_LECT_CONFIDENCIAL:
+				setAccionAddLectConfidencial nNroParam,vValor
+			Case ACCION_DEL_LECT_CONFIDENCIAL:
+				setAccionDelLectConfidencial nNroParam,vValor
+			Case ACCION_SET_PAQUETE:
+				setAccionSetPaquete nNroParam,vValor
+			Case ACCION_FIRMAR_PASAR:
+				setAccionFirmarPasar nNroParam,vValor
+			Case ACCION_PARA_FIRMAR:
+				setAccionParaFirmar nNroParam,vValor
+			Case ACCION_TOMAR_CONOCIMIENTO:
+				setAccionTomarConocimiento nNroParam,vValor
+			Case ACCION_MARCAR_EXPEDIENTE:
+				setAccionMarcarExpediente nNroParam,vValor
+			Case ACCION_EXPORTAR_MARCAS:
+				setAccionExportarMarcas nNroParam,vValor
+			Case ACCION_RUTEAR:
+				setAccionRutear nNroParam,vValor			
+			Case ACCION_POSTIT_CREAR:
+				setAccionPostitCrear nNroParam, vValor
+			Case ACCION_POSTIT_MODIF:
+				setAccionPostitModif nNroParam, vValor
+			Case ACCION_POSTIT_BORRAR:
+				setAccionPostitBorrar nNroParam, vValor
+			Case ACCION_NOTIFICAR_EXPEDIENTE:
+				setAccionNotificar nNroParam,vValor
+			Case ACCION_GENERAR_DOCUMENTO_EXPEDIENTE:
+				setAccionGenerarDocumento nNroParam,vValor
+			Case ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE:
+				setAccionCancelarDocumento nNroParam,vValor
+			Case ACCION_GENERAR_ASUNTO_EXPEDIENTE:
+				setAccionGenerarAsunto nNroParam,vValor
+			Case ACCION_ENVIAR_AVISO_EXPEDIENTE
+				setAccionEnviarAviso nNroParam,vValor
+			Case ACCION_CREAR_EVENTO
+				setAccionCrearEvento nNroParam,vValor
+			Case ACCION_VINCULAR_EXPEDIENTES:
+				setAccionVincularExpedientes Nnroparam, Vvalor
+			Case ACCION_MOTIVO_DE_PASE
+				setAccionMotivoDePase Nnroparam, Vvalor
+			Case ACCION_OBTENER_EXTERNO
+				setAccionObtenerExt Nnroparam, Vvalor
+			Case ACCION_RESERVAR_NUMEROS_EXPEDIENTE:
+				setAccionReservarNumerosExpediente nNroParam,vValor
+			Case Else
+				
+		End Select	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setParameter", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************************************************************************************************************************************************************
+	
+	Public Function getParameter(Byval operacion As String,Byval nNroParam As Integer) As Variant
+		'Devuelve el valor de un campo segun el parameto nroParam de la operación de 
+		'negocios operacion que se encuentra en el documento de solicitud doc
+		On Error Goto errorHandler
+		
+		Select Case (operacion)
+			Case ACCION_QUITAR_COPIA:
+				getParameter=getQuitarCopia(nNroParam)
+			Case ACCION_COPIAR_EXP:
+				getParameter=getAccionCopiar(nNroParam)
+			Case ACCION_CREAR:
+				getParameter=getAccionCrear(nNroParam)
+			Case ACCION_PASE:
+				getParameter=getAccionPase(nNroParam)
+			Case ACCION_AGREGAR:
+				getParameter=getAccionAgregar(nNroParam)
+			Case ACCION_DESAGREGAR:
+				getParameter=getAccionDesagregar(nNroParam)
+			Case ACCION_DEVOLVER:
+				getParameter=getAccionDevolver(nNroParam)
+			Case ACCION_MARCAR_CONFIDENCIAL:
+				getParameter=getAccionMarcarConfidencial(nNroParam)
+			Case ACCION_FIRMAR:
+				getParameter=getAccionFirmar(nNroParam)	
+			Case ACCION_ASIGNAR:
+				getParameter=getAccionAsignar(nNroParam)
+			Case ACCION_MODIFICAR_PLAZO:
+				getParameter=getAccionModificarPlazo(nNroParam)
+			Case ACCION_ADD_LECT_CONFIDENCIAL:
+				getParameter=getAccionAddLectConfidencial(nNroParam)
+			Case ACCION_DEL_LECT_CONFIDENCIAL:
+				getParameter=getAccionDelLectConfidencial(nNroParam)
+			Case ACCION_SET_PAQUETE:
+				getParameter=getAccionSetPaquete(nNroParam)
+			Case ACCION_FIRMAR_PASAR:
+				getParameter=getAccionFirmarPasar(nNroParam)
+			Case ACCION_PARA_FIRMAR:
+				getParameter=getAccionParaFirmar(nNroParam)
+			Case ACCION_TOMAR_CONOCIMIENTO:
+				getParameter=getAccionTomarConocimiento(nNroParam)
+			Case ACCION_MARCAR_EXPEDIENTE:
+				getParameter=GetAccionMarcarExpediente(nNroParam)
+			Case ACCION_EXPORTAR_MARCAS:
+				getParameter=getAccionExportarMarcas(nNroParam)
+			Case ACCION_RUTEAR:
+				getParameter=getAccionRutear(nNroParam)	
+			Case ACCION_POSTIT_CREAR:
+				getParameter= getAccionPostitCrear(nNroParam)
+			Case ACCION_POSTIT_MODIF:
+				getParameter=getAccionPostitModif(nNroParam)
+			Case ACCION_POSTIT_BORRAR:
+				getParameter=getAccionPostitBorrar(nNroParam)
+			Case ACCION_NOTIFICAR_EXPEDIENTE:
+				getParameter=getAccionNotificar( nNroParam)
+			Case ACCION_GENERAR_DOCUMENTO_EXPEDIENTE:
+				getParameter=getAccionGenerarDocumento( nNroParam)
+			Case ACCION_ACTUALIZAR_INFORME_EXPEDIENTE:
+				getParameter=getAccionActualizarInformeExpediente( nNroParam)				
+			Case ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE:
+				getParameter = me.getAccionCancelarDocumento(nNroParam)	
+			Case ACCION_GENERAR_ASUNTO_EXPEDIENTE:
+				getParameter=getAccionGenerarAsunto( nNroParam)
+			Case ACCION_CREAR_EVENTO
+				getParameter=getAccionCrearEvento( nNroParam)
+			Case ACCION_VINCULAR_EXPEDIENTES
+				getParameter=getAccionVincularExpedientes()
+			Case ACCION_OBTENER_EXTERNO
+				getParameter=getAccionObtenerExt (nNroParam)
+			Case ACCION_RESERVAR_NUMEROS_EXPEDIENTE:
+				getParameter=getAccionReservarNumerosExpediente(nNroParam)
+			Case "acc_NuevoDatoPrivado"		
+				getParameter = getNuevoDatoPrivado()
+			Case ACCION_REGISTRAR_PUNTO_EXPEDIENTE:
+				getParameter=getAccionRegResolExpediente( nNroParam)
+			Case ACCION_QUITAR_PUNTO_EXPEDIENTE:
+				getParameter=getAccionQuitarPuntoExpediente( nNroParam)
+			Case ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE:
+				getParameter=getAccionUpdatePuntoExpediente( nNroParam)
+			Case ACCION_REG_RESOL_EXPEDIENTE:
+				getParameter=getAccionRegResolExpediente( nNroParam)		
+			Case else
+		End Select	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************		
+	
+	Private Function getAccionPostitCrear(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionPostitCrear=Cstr(doc.getItemValue(ACCION_POSTIT_CREAR_P1)(0))
+			Case 2:
+				getAccionPostitCrear=Cstr(doc.getItemValue(ACCION_POSTIT_CREAR_P2)(0))
+			Case 3:
+				getAccionPostitCrear=Cstr(doc.getItemValue(ACCION_POSTIT_CREAR_P3)(0))
+			Case 4:
+				getAccionPostitCrear=Cstr(doc.getItemValue(ACCION_POSTIT_CREAR_P4)(0))
+			Case 5:
+				getAccionPostitCrear=Cstr(doc.getItemValue(ACCION_POSTIT_CREAR_P5)(0))
+			Case 6:
+				getAccionPostitCrear=Cstr(doc.GetItemValue(ACCION_POSTIT_CREAR_P6)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionPostitCrear", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionPostitCrear(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_POSTIT_CREAR_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_POSTIT_CREAR_P2,Cstr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_POSTIT_CREAR_P3,Cstr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_POSTIT_CREAR_P4,Cstr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_POSTIT_CREAR_P5,Cstr(vValor)
+			Case 6:
+				doc.replaceItemValue ACCION_POSTIT_CREAR_P6,Cstr(vValor)				
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionPostitCrear", ""
+		Exit Sub
+	End Sub
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionPostitModif(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionPostitModif=Cstr(doc.getItemValue(ACCION_POSTIT_MODIF_P1)(0))
+			Case 2:
+				getAccionPostitModif=Cstr(doc.getItemValue(ACCION_POSTIT_MODIF_P2)(0))
+			Case 3:
+				getAccionPostitModif=Cstr(doc.getItemValue(ACCION_POSTIT_MODIF_P3)(0))
+			Case 4:
+				getAccionPostitModif=Cstr(doc.getItemValue(ACCION_POSTIT_MODIF_P4)(0))
+			Case 5:
+				getAccionPostitModif=Cstr(doc.getItemValue(ACCION_POSTIT_MODIF_P5)(0))
+			Case 6:
+				getAccionPostitModif=Cstr(doc.GetItemValue(ACCION_POSTIT_MODIF_P6)(0))
+			Case Else	
+		End Select
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionPostitModif", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionPostitModif(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_POSTIT_MODIF_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_POSTIT_MODIF_P2,Cstr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_POSTIT_MODIF_P3,Cstr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_POSTIT_MODIF_P4,Cstr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_POSTIT_MODIF_P5,Cstr(vValor)
+			Case 6:
+				doc.replaceItemValue ACCION_POSTIT_MODIF_P6,Cstr(vValor)				
+			Case Else
+			End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionPostitModif", ""
+		Exit Sub
+	End Sub
+	
+'*****************************************************************************************************************************	
+	
+	Private Function getAccionPostitBorrar(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionPostitBorrar=Cstr(doc.getItemValue(ACCION_POSTIT_BORRAR_P1)(0))
+			Case 2:
+				getAccionPostitBorrar=Cstr(doc.getItemValue(ACCION_POSTIT_BORRAR_P2)(0))
+			Case 3:
+				getAccionPostitBorrar=Cstr(doc.getItemValue(ACCION_POSTIT_BORRAR_P3)(0))
+			Case 4:
+				getAccionPostitBorrar=Cstr(doc.getItemValue(ACCION_POSTIT_BORRAR_P4)(0))
+			Case 5:
+				getAccionPostitBorrar=Cstr(doc.getItemValue(ACCION_POSTIT_BORRAR_P5)(0))
+			Case 6:
+				getAccionPostitBorrar=Cstr(doc.GetItemValue(ACCION_POSTIT_BORRAR_P6)(0))
+			Case Else	
+			End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionPostitBorrar", ""
+		Exit Function
+	End Function
+	
+'*****************************************************************************************************************************	
+	
+	Private Sub setAccionPostitBorrar(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_POSTIT_BORRAR_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_POSTIT_BORRAR_P2,Cstr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_POSTIT_BORRAR_P3,Cstr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_POSTIT_BORRAR_P4,Cstr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_POSTIT_BORRAR_P5,Cstr(vValor)
+			Case 6:
+				doc.replaceItemValue ACCION_POSTIT_BORRAR_P6,Cstr(vValor)				
+			Case Else
+			End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionPostitBorrar", ""
+		Exit Sub
+	End Sub
+'*****************************************************************************************************************************	
+	
+	Private Function getAccionNotificar(Byval nNroParam As Integer) As Variant
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionNotificar=Cstr(doc.getItemValue(ACCION_NOTIFICAR_P1)(0))
+			Case 2:
+				getAccionNotificar=Cstr(doc.getItemValue(ACCION_NOTIFICAR_P2)(0))
+			Case 3:
+				getAccionNotificar=Cstr(doc.getItemValue(ACCION_NOTIFICAR_P3)(0))
+			Case 4:
+				getAccionNotificar=Cstr(doc.getItemValue(ACCION_NOTIFICAR_P4)(0))
+			Case Else	
+			End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionNotificar", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionCancelarDocumento(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionCancelarDocumento=CStr(doc.getItemValue(ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionCancelarDocumento=CStr(doc.getItemValue(ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionCancelarDocumento=CStr(doc.getItemValue(ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionCancelarDocumento=CStr(doc.getItemValue(ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P4)(0))
+			Case 5:
+				getAccionCancelarDocumento=CStr(doc.getItemValue(ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P5)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionCancelarDocumento", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionGenerarDocumento(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionGenerarDocumento=CStr(doc.getItemValue(ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionGenerarDocumento=CStr(doc.getItemValue(ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionGenerarDocumento=CStr(doc.getItemValue(ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionGenerarDocumento=CStr(doc.getItemValue(ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P4)(0))
+			Case 5:
+				getAccionGenerarDocumento=CStr(doc.getItemValue(ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P5)(0))
+			Case 6:
+				getAccionGenerarDocumento=CStr(doc.getItemValue(ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P6)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionGenerarDocumento", ""
+		Exit Function
+	End Function
+
+	'*****************************************************************************************************************************	
+	
+	Private Function getAccionGenerarAsunto(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionGenerarAsunto=CStr(doc.getItemValue(ACCION_GENERAR_ASUNTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionGenerarAsunto=CStr(doc.getItemValue(ACCION_GENERAR_ASUNTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionGenerarAsunto=CStr(doc.getItemValue(ACCION_GENERAR_ASUNTO_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionGenerarAsunto=CStr(doc.getItemValue(ACCION_GENERAR_ASUNTO_EXPEDIENTE_P4)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionGenerarAsunto", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionCancelarDocumento(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P4,CStr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_CANCELAR_DOCUMENTO_EXPEDIENTE_P5,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionCancelarDocumento", ""
+		Exit Sub
+	End Sub	
+'*****************************************************************************************************************************	
+	
+	Private Sub setAccionGenerarAsunto(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_GENERAR_ASUNTO_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_GENERAR_ASUNTO_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_GENERAR_ASUNTO_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_GENERAR_ASUNTO_EXPEDIENTE_P4,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionGenerarDocumento", ""
+		Exit Sub
+	End Sub	
+'*****************************************************************************************************************************	
+	
+	Private Sub setAccionGenerarDocumento(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P4,CStr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P5,CStr(vValor)
+			Case 6:
+				doc.replaceItemValue ACCION_GENERAR_DOCUMENTO_EXPEDIENTE_P6,CStr(vValor)
+			Case Else
+			End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionGenerarDocumento", ""
+		Exit Sub
+	End Sub	
+'*****************************************************************************************************************************	
+	
+	Private Sub setAccionNotificar(Byval nNroParam As Integer,vValor As Variant)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_NOTIFICAR_P1,Cstr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_NOTIFICAR_P2,Cstr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_NOTIFICAR_P3,Cstr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_NOTIFICAR_P4,Cstr(vValor)
+			Case Else
+			End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionNotificar", ""
+		Exit Sub
+	End Sub
+	%REM
+		Sub setAccionEnviarAviso
+		Description: Comments for Sub
+	%END REM
+	Private Sub setAccionEnviarAviso (ByVal nNroParam As integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_ENVIAR_AVISO_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_ENVIAR_AVISO_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_ENVIAR_AVISO_EXPEDIENTE_P3,CStr(vValor)		
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionNotificar", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+	
+	Private Sub setAccionCrearEvento(ByVal nNroParam As Integer, vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P4,CStr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P5,CStr(vValor)
+			Case 6:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P6,CStr(vValor)
+			Case 7:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P7,CStr(vValor)
+			Case 8:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P8,CStr(vValor)
+			Case 9:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P9,CStr(vValor)
+			Case 10:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P10,CStr(vValor)
+			Case 11:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P11,CStr(vValor)
+			Case 12:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P12,CStr(vValor)
+			Case 13:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P13,CStr(vValor)
+			Case 14:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P14,CStr(vValor)
+			Case 15:
+				doc.replaceItemValue ACCION_CREAR_EVENTO_P15,CStr(vValor)
+			Case Else
+			End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionGenerarDocumento", ""
+		Exit Sub
+	End Sub	
+'*****************************************************************************************************************************	
+	Private Function getAccionReservarNumerosExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionReservarNumerosExpediente=CStr(doc.getItemValue(ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionReservarNumerosExpediente=CStr(doc.getItemValue(ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionReservarNumerosExpediente=CStr(doc.getItemValue(ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionReservarNumerosExpediente=CStr(doc.getItemValue(ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P4)(0))
+			Case 5:
+				getAccionReservarNumerosExpediente=CStr(doc.getItemValue(ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P5)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionReservarNumerosExpediente", ""
+		Exit Function
+	End Function
+	'*****************************************************************************************************************************	
+
+	Private Sub setAccionReservarNumerosExpediente(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P4,CStr(vValor)
+			Case 5:
+				doc.replaceItemValue ACCION_RESERVAR_NUMEROS_EXPEDIENTE_P5,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionReservarNumerosExpediente", ""
+		Exit Sub
+	End Sub	
+End Class

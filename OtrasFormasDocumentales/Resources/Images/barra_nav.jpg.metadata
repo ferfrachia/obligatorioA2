@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="152" sequence="42" unid="892C488AD824316E0325734C00687323">
+<created><datetime>20070904T160052,19-03</datetime></created>
+<modified><datetime>20150309T094353,12-03</datetime></modified>
+<revised><datetime>20150309T094353,11-03</datetime></revised>
+<lastaccessed><datetime>20150309T094353,12-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100906,07-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Federico Tobler/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20070904T160054,53-03</datetime><datetime>20080328T143612,93-03</datetime><datetime>20081029T161703,00-03</datetime><datetime dst="true">20081117T102119,54-02</datetime><datetime dst="true">20081119T085512,12-02</datetime><datetime dst="true">20081119T162408,39-02</datetime><datetime dst="true">20081122T153309,20-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>barra_nav.jpg</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+<item name="$DesignerVersion" sign="true"><text>6.5</text></item>
+
+
+<item name="$MimeType" sign="true"><text>image/jpeg</text></item>
+<item name="$FileModDT" sign="true"><datetime dst="true">20070308T212934,04-02</datetime></item>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$ImageNames" sign="true"><text>barra_nav.jpg</text></item></note>

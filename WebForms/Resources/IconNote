@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257DF800649717'>
+<noteinfo noteid='122' unid='C2D298CE3F9EC5038325734B004F4B4F' sequence='133'>
+<created><datetime>20070903T112606,23-03</datetime></created>
+<modified><datetime>20150309T094511,23-03</datetime></modified>
+<revised><datetime>20150309T094511,22-03</datetime></revised>
+<lastaccessed><datetime>20150309T094511,23-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T161842,94-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Acosta/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name
+>CN=Pablo Damseaux/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Victoria Acuña/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Desarrollo3/O=DesarrolloISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Demos01/O=iGDocDemos</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20070905T153108,53-03</datetime><datetime>20071003T121418,48-03</datetime><datetime
+>20071008T150041,53-03</datetime><datetime>20071008T150043,88-03</datetime><datetime
+>20071008T150757,91-03</datetime><datetime>20071008T150802,76-03</datetime><datetime
+>20071008T150805,55-03</datetime><datetime>20071008T150817,72-03</datetime><datetime
+>20071008T150855,18-03</datetime><datetime>20071008T162301,30-03</datetime><datetime
+>20071008T162317,67-03</datetime><datetime>20090213T171024,56-03</datetime><datetime
+>20090225T173107,99-03</datetime><datetime>20090227T175037,95-03</datetime><datetime
+>20090227T180822,00-03</datetime><datetime>20090227T193942,67-03</datetime><datetime
+>20090401T112355,77-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAA///////wD///gAH//gAAf/wAAD/4AAAf8AAAD+AAAAfgAAAHwAAAA8AAAAPAAAADgAAA
+AYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAADwAAAA8AAAAPgAAAH4AAAB/AAAA/4AAAf
+/AAAP/4AAH//gAH///AP//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiIiAAAAAAAAAAAAAAI
+jPZmZm/IgAAAAAAAAAAIjGZmZmZmZsiAAAAAAAAAjGZmZmZmZmZmyAAAAAAACMZmZmZmZmZmZmyA
+AAAAAIxmZmZmZmZmZmZmyAAAAAjGZmZmZmZmZmZmZmyAAAAIZmbyL2byL2byL2ZmgAAAjGZmIiJm
+IiJmIiJmZsgAAIZmZiIiZiIiZiIiZmZoAADGZmYiImYiImYiImZmbAAI9mZmIiJmIiJmIiJmZm+A
+CGZmZiIiZiIiZiIiZmZmgAhmZmYiImYiImYiImZmZoAIZmZmIiJmIiJmIiJmZmaACGZvIiIiZiIi
+ZiIiIvZmgAhmYiIiImYiImYiIiImZoAIZm8iIi9m8i9m8iIi9maACPZmZmZmZmZmZmZmZmZvgADG
+ZmbyL2byL2byL2ZmbAAAj2ZmIiJmIiJmIiJmZvgAAIxmZiIiZiIiZiIiZmbIAAAI9mbyL2byL2by
+L2ZvgAAACMZmZmZmZmZmZmZmbIAAAACMZmZmZmZmZmZmZsgAAAAACMZmZmZmZmZmZmyAAAAAAACM
+9mZmZmZmZm/IAAAAAAAACIz2ZmZmZm/IgAAAAAAAAAAIiMZmZmyIgAAAAAAAAAAAAACIiIiIAAAA
+AAAAUEEAAAIAAgAgAEAAAQABAA==
+</rawitemdata></item>
+<item name='$DefaultFrameset' sign='true'><text>Inicio</text></item>
+<item name='$DefaultWebFrameset' sign='true'><text>Inicio</text></item>
+<item name='$DefaultWebLaunchPage' sign='true'><text>Abir bandejas</text></item>
+<item name='$Flags'><text>JFE</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$TemplateServerName'><text>CN=Guillermo Zana/O=ISA</text></item>
+<item name='$PIRCRefreshModTime'><datetime dst='true'>20141119T121718,25-02</datetime></item>
+<item name='$TemplateModTime'><datetime dst='true'>20141119T121711,27-02</datetime></item>
+<item name='$TemplateFileName'><text>c:\Program Files (x86)\IBM\Lotus\Notes\Data\focaaaa.ntf</text></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current Webforms</text></item></note>
+

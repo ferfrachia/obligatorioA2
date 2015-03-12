@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='309a' unid='8EEF408B76E31C1B83257DDA003DA6A3' sequence='4'>
+<created><datetime dst='true'>20150127T091323,55-02</datetime></created>
+<modified><datetime>20150311T132828,96-03</datetime></modified>
+<revised><datetime>20150309T094513,36-03</datetime></revised>
+<lastaccessed><datetime>20150311T132828,96-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132828,96-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Fabian Alvariza/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true'>
+<rawitemdata type='4'>
+AQDlH9aknb8G4hQvSgCCdSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>RepoMigracion</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+PAEKAAQAAQAqAAwAbnJvAKu4RQDSfSUABQAJAGNjbk5yb1JlcwABAAEALwCGAgMAAgBOAAIAJDEF
+AAwAbnJvAKu4RQDSfSUAAAAAAAAAAADwPyACVgEFAAwAbnJvAKu4RQDSfSUAAAAAAAAAAAAAQCAC
+VgEiAvsBVAFWAQMAAgAMAAIAJDJzAAMABQAsACgABQACAAkAAgAJAAQAJDFjY25Ocm9SZXMkMiRD
+b25mbGljdCRSRUYEAAQAAABmAAUABABGb3JtAQAGAEZQdW50bwoCBQAJAGNjbk5yb1JlcwABAAAA
+CwIcAgUACwBjY0VzdGFkb1JlcwABAAkAUHVibGljYWRhAAoCHAIFAAkAJENvbmZsaWN0AGgBHgEc
+AgMABwAcABYACUwxUzRTNVM2UzdTOFM5UzEyUzEzUw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+HwACAABEAGYAAAACAABmAAIACQAkMWNjbk5yb1Jlcw==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAMACAAAAFZDAQACAAEAlgAAAJwAAQAACgAAAAAIAAAAAAICAAAAVkMBAAkAAQAAAAAAnAAB
+AAAKAAAAAAgAAAAAAgIAAABWQwAAAgAAAA4AAABQAAEAAAoAAAAAAAAAAAACAgAAACQxI5YACgAE
+AAEAKgAMAG5ybwCruEUA0n0lAAUACQBjY25Ocm9SZXMAAQABAC8AhgIDAAcADAAFAAkwUzBFAAIA
+TgACACQxBQAMAG5ybwCruEUA0n0lAAAAAAAAAAAA8D8gAlYBBQAMAG5ybwCruEUA0n0lAAAAAAAA
+AAAAAEAgAlYBIgL7AVQBVgEDAAcADAAGAAkwUjExU2Njbk5yb1JlcyMkMg4AAgAMAAIAJDJzAAMA
+JgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAA
+AAAAAACAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA
+//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAA
+AAAAAABCABAAAAABAP///wAFAP///wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAA
+AQAAAAAAAQAAAAAAAAAIAAAAAAABAFlDAAAIAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAIA
+AAAAAAAAAAAAAAAAAAAAAAAsLgOAWUMAAAgAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA
+AAAAAAAAAAAAAAAAAAAAACwuA4A=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item></note>
+

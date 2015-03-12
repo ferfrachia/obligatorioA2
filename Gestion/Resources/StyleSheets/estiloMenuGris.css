@@ -1,0 +1,113 @@
+
+div.menuBar,
+div.menuBar a.menuButton,
+div.menu,
+div.menu a.menuItem {
+font-family: Tahoma, Arial, Verdana, Helvetica, sans-serif; 
+font-size: 8pt;
+font-style: normal;
+font-weight: normal;
+color: #FFFFFF;
+cursor:pointer;
+}
+div.menuSombra {
+background-image: url(menuBarra/fondoSombra.gif?OpenImageResource); 
+background-repeat: repeat-x;
+background-position: top;
+padding: 0px;
+margin: 0px;
+border-collapse: collapse;
+height: 8px; width: 100%; 
+}
+div.menuBar {
+/* background-color: #C8D7E3; */
+background-image: url(menuBarra/fondoBarra.gif?OpenImageResource); 
+/* background-repeat: repeat-x; */
+background-position: top;
+padding: 0px;
+margin: 0px;
+border-collapse: collapse;
+text-align: left;
+vertical-align: middle;
+cursor:pointer;
+height: 24px; width: 100%; 
+}
+div.menuBar a.menuButton {
+background-color: transparent;
+/* border: 1px solid #07619F; */
+border-collapse: collapse; 
+height: 24px; 
+color: #444444;
+cursor: default;
+padding: 4px 6px 0px 6px;
+position: relative;
+left: 0px; top: 0px;
+text-decoration: none;
+text-align: center;
+vertical-align: middle;
+cursor:pointer;
+z-index: 100;
+display:inline-block;
+}
+div.menuBar a.menuButton:hover {
+background-image: url(menuBarra/fondoOpcionSel.gif?OpenImageResource); 
+background-repeat: repeat-x;
+background-position: top;
+/* border-color: #E5ECF1 #003366 #003366 #E5ECF1; */ 
+color: #444444;
+cursor:pointer;
+}
+div.menuBar a.menuButton img.menuButtonExpand, 
+div.menuBar a.menuButtonActive img.menuButtonExpand {
+margin: 4px 3px 8px 3px;
+}
+div.menuBar a.menuButtonActive,
+div.menuBar a.menuButtonActive:hover {
+background-image: url(menuBarra/fondoOpcionSel.gif?OpenImageResource); 
+background-repeat: repeat-x;
+background-position: middle;
+background-color: transparent;
+/* background-color: #C8D7E3; */
+/* border-color: #003366 #07619F #07619F #003366; */
+/* left: 1px; */
+/* top: 1px; */
+color: #444444;
+cursor:pointer;
+}
+div.menu {
+background-color: #BDCFDD;
+border: 1px solid #9DB0C1;
+/* border-color: #07619F #003366 #003366 #07619F;*/
+left: 0px;
+padding: 0px 0px 0px 0px;
+position: absolute;
+top: 0px;
+visibility: hidden;
+z-index: 101;
+cursor:pointer;
+}
+div.menu a.menuItem {
+color: #444444;
+cursor: pointer;
+display: block;
+padding: 2px 1em;
+text-decoration: none;
+white-space: nowrap;
+}
+div.menu a.menuItem:hover, div.menu a.menuItemHighlight {
+background-color: #AEBFD1;
+color: #444444;
+cursor:pointer;
+}
+div.menu a.menuItem span.menuItemText {}
+div.menu a.menuItem span.menuItemArrow {
+margin-right: -.75em;
+cursor:pointer;
+}
+div.menu div.menuItemSep {
+border-top: 1px solid #003366;
+border-bottom: 1px solid #07619F;
+margin: 4px 2px;
+cursor:pointer;
+}
+

@@ -1,0 +1,904 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library SL_ManejadorEstructura
+	Created Jan 31, 2014 by Francisco Alvarez/ISA
+	Description: Clase encargada de manejar la estructura organizacional desde la base de web services.
+%END REM
+Option Public
+Option Declare
+'%Include "lsxsd.lss"
+Use "IGDocConfig"
+Use "Errores Generales"
+Use "FuncionesGenerales"
+Use "ConstantesSistema"
+Use "Unidad Class"
+Use "ConfEE 1.0"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ManejadorEstructura	
+Declare Public Class Unidad_WS
+Declare Public Class Miembro_WS
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Private Const PREFIJO_UNIDAD_EXPEDIENTE					="EXP_"
+
+Private Const CAMPO_MIEMBROS_EXPEDIENTE					="nbMiembrosExp"
+
+Private Const	VALOR_GRUPO_MULTIPROPOSITO				= "0"
+Private Const	VALOR_NAMES_TYPE 						= "Group"
+Private Const	VALOR_LIST_DESCRIPTION					= "Grupo generado desde la aplicación SGD"
+
+Private Const CLAVE_DBMOTOR								="MOTORDOC"
+Private Const CLAVE_DBNAMES 							="NAMES"
+Private Const CLAVE_DBSESSION							="SESSIONID"
+
+Private Const VISTA_BUSQUEDA_POR_NOMBRE 				="(BusquedaPorNombre)"
+Private Const VISTA_BUSQUEDA_POR_UNIDAD 				="(BusquedaPorUnidadTodas)"
+Private Const VISTA_NAMES_GROUPS  						= "Groups"
+Private Const VISTA_NAMES_VIM_PEOPLE					= "($VIMPeople)"
+
+Private Const MSG_ERROR_CAMPO_UNIDAD_VACIO				= "El número de unidad no puede ser vacío"
+Private Const ERROR_CAMPO_UNIDAD_VACIO					= 18201
+Private Const MSG_ERROR_CAMPO_NOMBRE_VACIO				= "El campo nombre unidad no puede ser vacío"
+Private Const ERROR_CAMPO_NOMBRE_VACIO					= 18202
+Private Const MSG_ERROR_YA_EXISTE_NUMERO				= "Ya existe otra unidad con el número ingresado"
+Private Const ERROR_YA_EXISTE_NUMERO					= 18203
+Private Const MSG_ERROR_YA_EXISTE_NOMBRE				= "Ya existe otra unidad con el nombre ingresado"
+Private Const ERROR_YA_EXISTE_NOMBRE					= 18204
+Private Const MSG_ERROR_NO_EXISTE_SUPERIOR				= "No existe una unidad con el numero de unidad superior ingresado"
+Private Const ERROR_NO_EXISTE_SUPERIOR					= 18205
+Private Const MSG_ERROR_NO_EXISTE_UNIDAD				= "No existe una unidad con el número ingresado"
+Private Const ERROR_NO_EXISTE_UNIDAD					= 18206
+Private Const MSG_ERROR_MODIFICO_NUMERO					= "No se puede modificar en número de unidad"
+Private Const ERROR_MODIFICO_NUMERO						= 18207
+
+%REM
+	Class ManejadorEstructura
+	Description: Comments for Class
+%END REM
+Public Class ManejadorEstructura	
+	Private dbEstructura As NotesDatabase
+	Private vUnidadesPorNumero As NotesView
+	Private vUnidadesPorNombre As NotesView
+	Private igdocConfig As IGDocConfig
+	Private dbNames As NotesDatabase
+	Private viewNames As NotesView
+	Private session As NotesSession 
+	%REM
+		Sub new
+		Description: Funcion new de clase
+	%END REM
+	Sub New	
+		On Error GoTo handler
+		Set session = New NotesSession 
+		
+		Set igdocConfig = New IGDocConfig
+		
+		Set dbEstructura = New NotesDatabase(igdocConfig.ServerInstalacion,igdocConfig.PathOrgan)
+		If Not dbEstructura.Isopen Then
+			Call dbEstructura.Open(igdocConfig.ServerInstalacion,igdocConfig.PathOrgan)
+		End If
+		If dbEstructura Is Nothing Then
+			Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN & " Estructura Organizacional"
+		End If
+		
+		Set vUnidadesPorNumero = dbEstructura.Getview(VISTA_BUSQUEDA_POR_UNIDAD)
+		If vUnidadesPorNumero Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_BUSQUEDA_POR_UNIDAD
+		End If
+		
+		Set vUnidadesPorNombre = dbEstructura.Getview(VISTA_BUSQUEDA_POR_NOMBRE)
+		If vUnidadesPorNombre Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_BUSQUEDA_POR_NOMBRE
+		End If
+		
+		Set dbNames = New NotesDatabase(igdocConfig.ServerInstalacion,"names.nsf")
+		If Not dbNames.Isopen Then
+			Call dbNames.Open(igdocConfig.ServerInstalacion,"names.nsf")
+		End If
+		If dbNames Is Nothing Then 
+			Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN & " " & CLAVE_NAMES
+		End If 
+		
+		Set ViewNames = dbNames.GetView(VISTA_NAMES_GROUPS)
+		If ViewNames Is Nothing Then 
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND &" "& VISTA_NAMES_GROUPS
+		End If
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub New", "Linea " & CStr(Erl), "")
+		Exit sub
+	End Sub
+	
+	%REM
+		Function altaUnidad
+		Description: Funcion encargada de dar alta una unidad
+		Parameters: unidad - unidad a dar de alta
+	%END REM
+	Function altaUnidad (unidad As Unidad_WS)
+		Dim docAux As NotesDocument
+		Dim docUnidadSup As NotesDocument
+		Dim docUnidad As NotesDocument
+		
+		unidad.nombre = UCase(unidad.nombre)
+		
+		'Controlo que el campo numero no sea vacío
+		If unidad.Nrounidad = "" Then
+			'Error 1,"El campo de unidad no puede ser vacío"
+			Error ERROR_CAMPO_UNIDAD_VACIO,MSG_ERROR_CAMPO_UNIDAD_VACIO
+		End If
+		
+		'Controlo que el campo de nombre de unidad no sea vacío
+		If unidad.Nombre = "" Then
+			'Error 5, "El campo nombre unidad no puede ser vacío"
+			Error ERROR_CAMPO_NOMBRE_VACIO,MSG_ERROR_CAMPO_NOMBRE_VACIO
+		End If
+		
+		'Controlo que no exista una unidad con el mismo numero
+		Set docAux = vUnidadesPorNumero.Getdocumentbykey(unidad.Nrounidad, true)
+		If Not docAux Is Nothing Then
+			'Error 2,"Ya existe una unidad con ese número"
+			Error ERROR_YA_EXISTE_NUMERO, MSG_ERROR_YA_EXISTE_NUMERO
+		End if 
+
+		'Controlo que no exista una unidad con el mismo nombre
+		Set docAux = vUnidadesPorNombre.Getdocumentbykey(unidad.nombre, true)
+		If Not docAux Is Nothing Then
+			'Error 3,"Ya existe una unidad con ese nombre"
+			Error ERROR_YA_EXISTE_NOMBRE,MSG_ERROR_YA_EXISTE_NOMBRE
+		End If
+
+		'En el caso que corresponda, controlo que exista la unidad superior
+		If unidad.numunidadsuperior <> "" then
+			Set docUnidadSup = vUnidadesPorNumero.Getdocumentbykey(unidad.numunidadsuperior, True)
+			If docUnidadSup Is Nothing Then
+				'Error 4,"No existe una unidad con el código indicado en unidad superior"
+				Error ERROR_NO_EXISTE_SUPERIOR, MSG_ERROR_NO_EXISTE_SUPERIOR
+			End If
+		End If
+		'Estoy en condiciones de crear la unidad
+		Set docUnidad = dbEstructura.Createdocument()
+		
+		'Paso los valores del objto unidad al documento docUnidad
+		Call unidadADocumento(unidad, docUnidad, docUnidadSup)
+		
+		'Actualizo el names.
+		Call GestionarNames(docUnidad) 
+		
+		'Controlo los roles de la unidad.
+		Call QuitoExMiembrosUnidad(docUnidad)
+		
+		Call SepararNombresyApellidos(docUnidad)
+		
+		Call docUnidad.Save(true,false)
+	End Function
+	
+	%REM
+		Function consultaUnidad
+		Description: Funcion para consultar los datos de una unidad
+		Parameters: nroUnidad - numero de la unidad a consultar
+	%END REM
+	Function consultaUnidad (nroUnidad As String) As Unidad_WS
+		Dim docUnidad As NotesDocument
+		
+		'controlo que el numero de unidad no sea vacío
+		If(nroUnidad = "")Then
+			'Error 1,"1"
+			Error ERROR_CAMPO_UNIDAD_VACIO, MSG_ERROR_CAMPO_UNIDAD_VACIO
+		End If
+		
+		'controlo que exista una unidad con ese código
+		Set docUnidad = vUnidadesPorNumero.Getdocumentbykey(nroUnidad, True)
+		If docUnidad Is Nothing Then
+			'Error 2,"2"
+			Error ERROR_NO_EXISTE_UNIDAD, MSG_ERROR_NO_EXISTE_UNIDAD
+		End If 
+		
+		'cargo los datos de la unidad a partir del documento de unidad
+		Set consultaUnidad = documentoAUnidad (docUnidad)
+	End Function
+	
+	%REM
+		Function setUnidadhabilitada
+		Description: Funcion para habilitar/deshabilitar una unidad
+		Parameters: codUnidad - codigo de la unidad a habilitar/deshabilitar
+	%END REM
+	Function setUnidadhabilitada (numUnidad As String, habilitada As Boolean)
+		Dim docUnidad As NotesDocument
+		'Controlo que exista una unidad con el numero pasado
+		Set docUnidad = vUnidadesPorNumero.Getdocumentbykey(numUnidad, True)
+		If docUnidad Is Nothing Then
+			'Error 2,"No existe una unidad con el número ingresado"
+			Error ERROR_NO_EXISTE_UNIDAD, MSG_ERROR_NO_EXISTE_UNIDAD
+		End If 
+		
+		If(habilitada) Then
+			Call docUnidad.Replaceitemvalue(CAMPO_ESTADO_UNIDAD_HAB, UNIDAD_HABILITADA)
+		Else
+			Call docUnidad.Replaceitemvalue(CAMPO_ESTADO_UNIDAD_HAB, UNIDAD_DESHABILITADA)
+		End If
+		
+		docUnidad.Save true,false
+	End Function
+	
+	%REM
+		Function modificarUnidad
+		Description: Funcion para modificar una unidad
+		Parameters:  numUnidad - numero de la unidad a modificar
+					 unidad - objeto de la unidad con los parametros modificados
+	%END REM
+	Function modificarUnidad (numUnidad As String, unidad As Unidad_WS)
+		Dim docAux As NotesDocument
+		Dim docUnidadSup As NotesDocument
+		Dim docUnidad As NotesDocument
+		
+		unidad.nombre = UCase(unidad.nombre)
+		
+		'Controlo que no haya modificado el número de unidad
+		If numUnidad <> unidad.nroUnidad Then
+			'Error 5,"No se puede modificar en número de unidad"
+			Error ERROR_MODIFICO_NUMERO, MSG_ERROR_MODIFICO_NUMERO
+		End If
+		
+		'Controlo que el numero no sea vacío
+		If numUnidad = "" Then
+			'Error 5,"El número de unidad no puede ser vacío"
+			Error ERROR_CAMPO_UNIDAD_VACIO, MSG_ERROR_CAMPO_UNIDAD_VACIO
+		End If
+		
+		'Controlo que el campo numero no sea vacío
+		If unidad.Nrounidad = "" Then
+			'Error 1,"El número de unidad no puede ser vacío"
+			Error ERROR_CAMPO_UNIDAD_VACIO, MSG_ERROR_CAMPO_UNIDAD_VACIO
+		End If
+		
+		'Controlo que el campo de nombre de unidad no sea vacío
+		If unidad.Nombre = "" Then
+			'Error 5, "El nombre de unidad no puede ser vacío"
+			Error ERROR_CAMPO_NOMBRE_VACIO, MSG_ERROR_CAMPO_NOMBRE_VACIO
+		End If
+		
+		'Controlo que exista una unidad con el numero pasado
+		Set docUnidad = vUnidadesPorNumero.Getdocumentbykey(numUnidad, True)
+		If docUnidad Is Nothing Then
+			'Error 2,"No existe una unidad con el número ingresado"
+			Error ERROR_NO_EXISTE_UNIDAD, MSG_ERROR_NO_EXISTE_UNIDAD
+		End If 
+
+		'Controlo que no exista una unidad con el mismo nombre salvo que sea ella misma
+		If docUnidad.Getitemvalue(CAMPO_UNIDAD_UNIDAD)(0) <> unidad.nombre then
+			Set docAux = vUnidadesPorNombre.Getdocumentbykey(unidad.nombre, True)
+			If Not docAux Is Nothing Then
+				'Error 3,"Ya existe otra unidad con el nombre ingresado"
+				Error ERROR_YA_EXISTE_NOMBRE, MSG_ERROR_YA_EXISTE_NOMBRE
+			End If
+		End if
+
+		'En el caso que corresponda, controlo que exista la unidad superior
+		If unidad.numunidadsuperior <> "" Then
+			Set docUnidadSup = vUnidadesPorNumero.Getdocumentbykey(unidad.numunidadsuperior, True)
+			If docUnidadSup Is Nothing Then
+				'Error 4,"No existe una unidad con el numero de unidad superior ingresado"
+				Error ERROR_NO_EXISTE_SUPERIOR, MSG_ERROR_NO_EXISTE_SUPERIOR
+			End If
+		End If
+		
+		'Paso los valores del objto unidad al documento docUnidad
+		Call unidadADocumento(unidad, docUnidad, docUnidadSup)
+		
+		'Actualizo el names.
+		Call GestionarNames(docUnidad) 
+		
+		'Controlo los roles de la unidad.
+		Call QuitoExMiembrosUnidad(docUnidad)
+		
+		Call SepararNombresyApellidos(docUnidad)
+		
+		Call docUnidad.Save(True,False)
+	End Function
+	
+	Private Sub GestionarNames(docUnidad As NotesDocument)
+		'Se fija si existe el grupo en el Names.nsf sino lo crea
+		On Error GoTo HANDLER
+		Dim docGrupo As NotesDocument
+		Dim vMiembrosNombOrg As New Vector(0)
+		Dim nuevo As Boolean
+		Dim vModInstalados As New Vector(0)
+		Dim contratosActivo As Boolean
+		Dim pos As Long
+
+		Set vModInstalados = igdocConfig.ModulosInstalados()
+		nuevo = False
+		If vModInstalados.isMember(MODULO_EXPEDIENTE,0 , False) And docUnidad.GetItemValue(CAMPO_MIEMBROS_EXPEDIENTE)(0)<>"" Then
+			Set docGrupo = ExisteGrupoEnNames (PREFIJO_UNIDAD_EXPEDIENTE & docUnidad.GetItemValue(CAMPO_UNIDAD_NRO)(0) )
+			If docGrupo Is Nothing Then 	
+				Set docGrupo = dbNames.CreateDocument()
+				docGrupo.replaceItemValue CAMPO_FORM, FORM_NAMES_GRUPO
+				docGrupo.replaceItemValue CAMPO_NAMES_LISTNAME , PREFIJO_UNIDAD_EXPEDIENTE & docUnidad.GetItemValue(CAMPO_UNIDAD_NRO)(0)		
+				nuevo = True			
+			End If		
+			vMiembrosNombOrg.values = docUnidad.GetItemValue(CAMPO_MIEMBROS_EXPEDIENTE)
+			Call ActualizaPersonasEnGrupo (docGrupo,vMiembrosNombOrg,UCase(MODULO_EXPEDIENTE),nuevo,docUnidad)
+		End If 		
+		Exit Sub
+HANDLER:
+		'Envío el error hacia arriba, indicando el nombre de la función
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub GestionarNames", "Linea " & CStr(Erl), "")
+		Exit Sub
+	End Sub
+	
+	Private Function ExisteGrupoEnNames (ByVal unidad As String)As NotesDocument
+		'Aquí se busca en el names si ya existe el grupo (unidad)
+		'retorna true o false
+		On Error GoTo HANDLER
+		Dim Resultado	As Integer,  doc As NotesDocument
+		Set doc = ViewNames.GetDocumentByKey(unidad, True )
+		Set ExisteGrupoEnNames = doc
+		Exit Function
+HANDLER:
+		'Envío el error hacia arriba, indicando el nombre de la función
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub ExisteGrupoEnNames", "Linea " & CStr(Erl), "")
+		Exit Function
+	End Function
+	
+	Private Sub ActualizaPersonasEnGrupo(docGrupo As NotesDocument,vMiembrosNombOrg As Vector,clave As String, nuevo As Boolean, docUnidad As NotesDocument)
+		'Recibe el documento de grupo y actualiza la información, de sus miembros 	
+		On Error GoTo HANDLER
+		
+		Dim vMiembros As New vector(0)
+		Dim nombreCompleto As String, nombreOriginal As String
+		Dim i As Integer, nam As NotesName
+		Dim vNombres As New Vector(0)
+		Dim vApellidos As New Vector(0)
+		Dim dbNames As NotesDatabase
+		Dim vNames As NotesView
+		Dim docNames As NotesDocument
+
+		Set vNames = me.dbNames.GetView(VISTA_NAMES_VIM_PEOPLE)
+
+		For i = 1 To vMiembrosNombOrg.CantElem
+			Set nam = session.CreateName( _
+			vMiembrosNombOrg.getElement(i))
+			Set docNames = vNames.GetDocumentByKey(nam.Abbreviated)
+			If Not docNames Is Nothing Then 
+				Call vNombres.insertElement(docNames.FirstName(0),vNombres.CantElem+1)
+				Call vApellidos.insertElement(docNames.LastName(0),vApellidos.CantElem+1)		
+			Else
+				'MsgBox "La persona no existe"
+			End If 
+			nombreCompleto = nam.Canonical
+			Call vMiembros.insertElement(nombreCompleto, 1)		
+		Next
+		
+		'vMiembros.values = docUnidad.GetItemValue(CAMPO_UNIDAD_MIEMBROS)
+		
+		docGrupo.replaceItemValue CAMPO_NAMES_MEMBERS , vMiembros.values
+		docGrupo.replaceItemValue CAMPO_NAMES_GROUPTYPE , VALOR_GRUPO_MULTIPROPOSITO
+		docGrupo.replaceItemValue CAMPO_NAMES_TYPE , VALOR_NAMES_TYPE
+		docGrupo.replaceItemValue CAMPO_LIST_DESCRIPTION , VALOR_LIST_DESCRIPTION & " " & docUnidad.GetItemValue("sUnidad")(0)
+		
+		docGrupo.ComputeWithForm False, False
+		
+		If Not docGrupo.Save( False,False) Then _
+		Error ERROR_CANT_SAVE_DOCUMENT,MSG_ERROR_CANT_SAVE_DOCUMENT + " de Grupo"		
+		
+		If nuevo And clave=UCase(MODULO_EXPEDIENTE) Then
+			'Solo actualizo las acls en caso de que sea una nueva unidad, los cambios de nombre
+			'se hacen en otro agente.
+			Call ActualizarACLs(PREFIJO_UNIDAD_EXPEDIENTE & docUnidad.GetItemValue(CAMPO_UNIDAD_NRO)(0))
+		End If
+		Exit Sub
+HANDLER:
+		'Envío el error hacia arriba, indicando el nombre de la función
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub ActualizaPersonasEnGrupo", "Linea " & CStr(Erl), "")
+		Exit Sub
+	End Sub
+	
+	Private Sub ActualizarACLs(Grupo As String)
+		' Este procedimiento resibe el nombre del grupo y recorre todas las claves del 
+		' documento de parametros seateando las aplicaciones y agregando el grupo
+		' a sus acls
+		On Error GoTo HANDLER
+		
+		Dim vClaves As New vector(0), i As Integer, dbSetear As NotesDatabase
+		Dim nombreDB As String, nombreServer As String
+		Dim c As New Configuracion
+		
+		Set vClaves = c.Claves()
+		For i = 1 To vClaves.CantElem
+			If Lista_Exclucion(vClaves.getElement(i)) Then
+				nombreDB = c.BaseDeDatos(vClaves.getElement(i))
+				nombreServer = c.ServidorDomino(vClaves.getElement(i))
+				Set dbSetear = session.GetDatabase(nombreServer, nombreDB )
+				If Not dbSetear.IsOpen Then _ 
+				Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN & " " & nombreServer  & "!!" & nombreDB	
+				Call ModificarACLs(Grupo, dbSetear)	
+			End If
+		Next
+		Exit Sub
+HANDLER:
+		'Envío el error hacia arriba, indicando el nombre de la función
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub ActualizarACLs", "Linea " & CStr(Erl), "")
+		Exit Sub
+	End Sub
+	
+	Function Lista_Exclucion(Aplicacion As String)As Integer
+		'Con esta funcion se evita que se agregen los grupos a las ACLs de estas
+		'Aplicaciones
+		Lista_Exclucion = True
+		Select Case Aplicacion
+			Case CLAVE_DBMOTOR  		: Lista_Exclucion=False
+			Case CLAVE_DBRESOLUCIONES  	: Lista_Exclucion=False
+			Case CLAVE_DBNAMES   		: Lista_Exclucion=False
+			Case CLAVE_DBSESSION   		: Lista_Exclucion=False
+		End Select
+	End Function
+	
+	Private Sub ModificarACLs(Grupo As String, dbSetear As NotesDatabase)
+		On Error GoTo HANDLER
+		Dim acl As NotesACL	
+		Dim entry As NotesACLEntry
+		Set acl = dbSetear.ACL
+		Set entry = acl.GetEntry( Grupo )
+		If entry Is Nothing Then
+			Set entry = acl.CreateACLEntry( Grupo, ACLLEVEL_AUTHOR )
+			entry.CanDeleteDocuments = False
+			Call acl.Save
+		Else
+			Call entry.Remove()
+			Set entry = acl.CreateACLEntry( Grupo, ACLLEVEL_AUTHOR )
+			entry.CanDeleteDocuments = False
+			Call acl.Save
+		End If
+		Exit Sub
+HANDLER:
+		'Envío el error hacia arriba, indicando el nombre de la función
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub ModificarACLs", "Linea " & CStr(Erl), "")
+		Exit Sub
+	End Sub
+	
+	Sub QuitoExMiembrosUnidad(docUnidad As NotesDocument)
+		On Error GoTo HANDLER
+		Dim vMiembros As vector, i As Integer, vAux As Vector
+		Dim pos As Long
+		Set vMiembros = New Vector(0)
+		vMiembros.values = docUnidad.GetItemValue(CAMPO_UNIDAD_MIEMBROS)
+		Set vAux = New Vector(0)
+		'	ROL_CREADOR :	
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_CREAR)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1
+			End If		
+		Loop	
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_CREAR, vAux.Values	
+		End If
+		
+		'	ROL_RECEPTOR: 
+		Delete vAux
+		Set vAux = Nothing
+		Set vAux = New Vector(0)
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_RECEPTOR)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1		
+			End If	
+		Loop
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_RECEPTOR, vAux.Values
+		End If
+		
+		'	ROL_EDITOR  : 
+		Delete vAux
+		Set vAux = Nothing
+		Set vAux = New Vector(0)
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_EDITOR)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1				
+			End If	
+		Loop
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza		
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_EDITOR, vAux.Values
+		End If
+		
+		'	ROL_FIRMANTE: 
+		Delete vAux
+		Set vAux = Nothing
+		Set vAux = New Vector(0)
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_FIRMAR)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1						
+			End If	
+		Loop
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_FIRMAR, vAux.Values
+		End If
+		
+		'	ROL_PASE: 
+		Delete vAux
+		Set vAux = Nothing
+		Set vAux = New Vector(0)
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_PASE)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1								
+			End If	
+		Loop
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_PASE, vAux.Values
+		End If
+		
+		'	ROL_GESTION : 
+		Delete vAux
+		Set vAux = Nothing
+		Set vAux = New Vector(0)
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_GESTION)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1										
+			End If	
+		Loop
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_GESTION, vAux.Values
+		End If
+		
+		'	ROL_AMPLIARPLAZO : 
+		Delete vAux
+		Set vAux = Nothing
+		Set vAux = New Vector(0)
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_MODIFICAR_PLAZO)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1												
+			End If	
+		Loop
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_MODIFICAR_PLAZO, vAux.Values
+		End If
+		
+		'	ROL_MANEJARCONF : 
+		Delete vAux
+		Set vAux = Nothing
+		Set vAux = New Vector(0)
+		vAux.values = docUnidad.getItemValue(CAMPO_UNIDAD_USUARIOS_MANEJAR_CONF)
+		i = 1
+		Do While i <= vAux.cantElem
+			If Not vMiembros.isMember(vAux.getelement(i),pos,False) Then 
+				vAux.DeleteElement i
+			Else
+				i = i + 1												
+			End If	
+		Loop
+		If Not vAux.cantElem < 0 Then 'cuando el vector es vacío también se reemplaza
+			docUnidad.ReplaceItemValue CAMPO_UNIDAD_USUARIOS_MANEJAR_CONF, vAux.Values
+		End If		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub QuitoExMiembrosUnidad", "Linea " & CStr(Erl), "")
+		Exit Sub
+	End Sub
+	
+	Sub SepararNombresyApellidos(docUnidad As notesDocument)
+		On Error GoTo handler
+		Dim vMiembros As New Vector(0)
+		Dim vNombres As New Vector(0)
+		Dim vApellidos As New Vector(0)
+		Dim i As Integer
+		Dim vNames As NotesView
+		Dim docNames As NotesDocument
+		
+		Set vNames = dbNames.GetView(VISTA_NAMES_VIM_PEOPLE)
+		
+		vMiembros.values = docUnidad.GetItemValue(CAMPO_UNIDAD_MIEMBROSPUB)
+		For i=1 To vMiembros.CantElem
+			Set docNames = vNames.GetDocumentByKey(vMiembros.getElement(i))
+			If Not docNames Is Nothing Then 
+				Call vNombres.insertElement(docNames.FirstName(0),vNombres.CantElem+1)
+				Call vApellidos.insertElement(docNames.LastName(0),vApellidos.CantElem+1)		
+			Else
+				'MsgBox "La persona no existe"
+			End If 
+		Next
+		
+		Call docUnidad.ReplaceItemValue("sNombres",vNombres.values)
+		Call docUnidad.ReplaceItemValue("sApellidos",vApellidos.values)	
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase ManejadorEstructura- Sub SepararNombresyApellidos", "Linea " & CStr(Erl), "")
+		Exit Sub
+	End Sub
+	
+	%REM
+		Sub unidadADocumento
+		Description: Comments for Sub
+	%END REM
+	Private Sub unidadADocumento(unidad As Unidad_WS, docUnidad As NotesDocument, docUnidadSup As NotesDocument)
+		'Seteo el nombre del formulario
+		Call docUnidad.Replaceitemvalue("Form", NOMBRE_FORM_UNIDAD)
+		'Seteo el número de la unidad
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_NRO, unidad.Nrounidad)
+		'Seteo el nombre de la unidad
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_UNIDAD, unidad.Nombre)
+		'Seteo la descripción de la unidad
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_DESCRIPCION, unidad.Descripcion)
+		'Seteo el mail de la unidad
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_MAIL, unidad.Correoelectronico)
+		'Seteo el numero de la unidad superior
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_UNIDADSUPERIOR, unidad.numunidadsuperior)
+		'En caso que sea necesario seteo el nombre de la undad superior
+		If(unidad.numunidadsuperior <> "") Then
+			Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_UNIDADSUPERIORVIS,docUnidadSup.Getitemvalue("sUnidad")(0))
+		End If
+		'Seteo el código de unidad
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_CODIGO, unidad.Codunidad)
+		'Seteo el núemro de inciso
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_INCISO, unidad.Nroinciso)
+		'Seteo el tipo de unidad Externa/Interna
+		If(unidad.Externa) Then
+			Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_TIPOUNIDAD, UNIDAD_EXTERNA)
+		Else
+			Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_TIPOUNIDAD, UNIDAD_INTERNA)
+		End If
+		'Seteo el estado de la unidad Habilitada/Deshabilitada
+		If(unidad.Habilitada) Then
+			Call docUnidad.Replaceitemvalue(CAMPO_ESTADO_UNIDAD_HAB, UNIDAD_HABILITADA)
+		Else
+			Call docUnidad.Replaceitemvalue(CAMPO_ESTADO_UNIDAD_HAB, UNIDAD_DESHABILITADA)
+		End If
+		'Seteo los parametros de expedientes por defecto
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_HABILITADAPASE, "0")
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_HABILITADAARCHIVAR, "0")
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_HABILITADAALARMA, "1")
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_ESCLAR_NOTIF, CAMPO_UNIDAD_ESCLAR_NOTIF_TRUE)
+		Call docUnidad.Replaceitemvalue(CAMPO_OPCIONES_PASE, CAMPO_OPCION_PASE_TODAS)
+		Call docUnidad.Replaceitemvalue(CAMPO_OPCIONES_PASE2, CAMPO_OPCION_PASE_TODAS)
+		'Seteo el campo autores
+		Dim strAuthors(0 To 5) As String
+		Dim item As NotesItem
+		strAuthors(0) = "ROLESPECIAL_ADMINUNIDAD"
+		strAuthors(1) = "ROLESPECIAL_AGREGARROLES"
+		strAuthors(2) = "ROLESPECIAL_AGREGARROLESCOMUNICACIONES"
+		strAuthors(3) = "ROLESPECIAL_AGREGARROLESDOCUMENTOS"
+		strAuthors(4) = "ROLESPECIAL_AGREGARROLESDOCUMENTOS"
+		strAuthors(5) = "ROLESPECIAL_AGREGARROLESFORMULARIOS"
+		Set item = New NotesItem(docUnidad, "autores", strAuthors, AUTHORS)
+		'Seteo los miembros de la unidad y sus respectivos roles en expedientes
+		Dim i As Integer
+		Dim vMiembros As New Vector(0)
+		Dim vMiembrosExp As New Vector(0)
+		Dim vJefes As New Vector(0)
+		Dim vRolCreador As New Vector(0)
+		Dim vRolReceptor As New Vector(0)
+		Dim vRolEditor As New Vector(0)
+		Dim vRolFirmante As New Vector(0)
+		Dim vRolPase As New Vector(0)
+		Dim vRolGestion As New Vector(0)
+		Dim vRolModificarPlazo As New Vector(0)
+		Dim vRolArchivar As New Vector(0)
+		Dim vRolManejarConf As New Vector(0)
+		Dim miembro As Miembro_WS
+		For i = 1 To unidad.miembros.cantElem
+			Set miembro = unidad.miembros.getElement(i)
+			Call vMiembros.insertElement(miembro.nombre, vMiembros.cantElem+1)
+			If(miembro.receptorNotificaciones) Then
+				Call vJefes.insertElement(miembro.nombre, vJefes.cantElem+1)
+			End If
+			If(miembro.accesoExpedientes) Then
+				Call vMiembrosExp.insertElement(miembro.nombre, vMiembrosExp.cantElem+1)
+				If miembro.rolExpReceptor Then 
+					Call vRolReceptor.insertElement(miembro.nombre, vRolReceptor.cantElem+1)
+				End If
+				If miembro.rolCreador Then 
+					Call vRolCreador.insertElement(miembro.nombre, vRolCreador.cantElem+1)
+				End If
+				If miembro.rolExpArchivo Then 
+					Call vRolArchivar.insertElement(miembro.nombre, vRolArchivar.cantElem+1)
+				End If
+				If miembro.rolExpConfiden Then 
+					Call vRolManejarConf.insertElement(miembro.nombre, vRolManejarConf.cantElem+1)
+				End If
+				If miembro.rolExpEditor Then 
+					Call vRolEditor.insertElement(miembro.nombre, vRolEditor.cantElem+1)
+				End If
+				If miembro.rolExpFirmante Then 
+					Call vRolFirmante.insertElement(miembro.nombre, vRolFirmante.cantElem+1)
+				End If
+				If miembro.rolExpGestion Then 
+					Call vRolGestion.insertElement(miembro.nombre, vRolGestion.cantElem+1)
+				End If
+				If miembro.rolExpPase Then 
+					Call vRolPase.insertElement(miembro.nombre, vRolPase.cantElem+1)
+				End If
+				If miembro.rolExpPlazo Then 
+					Call vRolModificarPlazo.insertElement(miembro.nombre, vRolModificarPlazo.cantElem+1)
+				End If
+			End If
+		Next
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_MIEMBROSPUB, vMiembros.Values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_MIEMBROS, vMiembros.Values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_JEFEUNIDAD, vJefes.values)
+		
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_MIEMBROSEXP, vMiembrosExp.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_CREAR, vRolCreador.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_RECEPTOR, vRolReceptor.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_GESTION, vRolGestion.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_EDITOR, vRolEditor.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_FIRMAR, vRolFirmante.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_PASE, vRolPase.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_MODIFICAR_PLAZO, vRolModificarPlazo.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_ARCHIVO, vRolArchivar.values)
+		Call docUnidad.Replaceitemvalue(CAMPO_UNIDAD_USUARIOS_MANEJAR_CONF, vRolManejarConf.values)
+	End Sub
+	
+	%REM
+		Function documentoAUnidad
+		Description: Función que retorna un objeto de Unidad_WS a partir de un documento de unidad
+	%END REM
+	Private function documentoAUnidad (docUnidad As NotesDocument) As Unidad_WS
+		Set documentoAUnidad = New Unidad_WS
+		'Seteo el número de la unidad
+		documentoAUnidad.nroUnidad = docUnidad.getItemValue(CAMPO_UNIDAD_NRO)(0)
+		'Seteo el nombre de la unidad
+		documentoAUnidad.Nombre = docUnidad.getItemValue(CAMPO_UNIDAD_UNIDAD)(0)
+		'Seteo la descripción de la unidad
+		documentoAUnidad.Descripcion = docUnidad.getitemvalue(CAMPO_UNIDAD_DESCRIPCION)(0)
+		'Seteo el mail de la unidad
+		documentoAUnidad.Correoelectronico = docUnidad.getitemvalue(CAMPO_UNIDAD_MAIL)(0)
+		'Seteo el numero de la unidad superior
+		documentoAUnidad.numunidadsuperior = docUnidad.getitemvalue(CAMPO_UNIDAD_UNIDADSUPERIOR)(0)
+		'Seteo el código de unidad
+		documentoAUnidad.Codunidad = docUnidad.getitemvalue(CAMPO_UNIDAD_CODIGO)(0)
+		'Seteo el núemro de inciso
+		documentoAUnidad.Nroinciso = docUnidad.getitemvalue(CAMPO_UNIDAD_INCISO)(0)
+		'Seteo el tipo de unidad Externa/Interna
+		If(docUnidad.getitemvalue(CAMPO_UNIDAD_TIPOUNIDAD)(0)=UNIDAD_EXTERNA) Then
+			documentoAUnidad.Externa = true 
+		Else
+			documentoAUnidad.Externa = false 
+		End If
+		'Seteo el estado de la unidad Habilitada/Deshabilitada
+		If(docUnidad.getitemvalue(CAMPO_ESTADO_UNIDAD_HAB)(0) = UNIDAD_HABILITADA) Then
+			documentoAUnidad.Habilitada = true
+		Else
+			documentoAUnidad.Habilitada = false
+		End If
+		'Seteo los miembros de la unidad y sus respectivos roles en expedientes
+		Dim i As Integer
+		Dim vMiembros As New Vector(0)
+		Dim vMiembrosExp As New Vector(0)
+		Dim vJefes As New Vector(0)
+		Dim vRolCreador As New Vector(0)
+		Dim vRolReceptor As New Vector(0)
+		Dim vRolEditor As New Vector(0)
+		Dim vRolFirmante As New Vector(0)
+		Dim vRolPase As New Vector(0)
+		Dim vRolGestion As New Vector(0)
+		Dim vRolModificarPlazo As New Vector(0)
+		Dim vRolArchivar As New Vector(0)
+		Dim vRolManejarConf As New Vector(0)
+		
+		vMiembros.Values = docUnidad.getitemvalue(CAMPO_UNIDAD_MIEMBROS)
+		vJefes.values = docUnidad.getitemvalue(CAMPO_UNIDAD_JEFEUNIDAD)
+		
+		vMiembrosExp.values = docUnidad.getitemvalue(CAMPO_UNIDAD_MIEMBROSEXP)
+		vRolCreador.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_CREAR)
+		vRolReceptor.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_RECEPTOR)
+		vRolGestion.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_GESTION)
+		vRolEditor.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_EDITOR)
+		vRolFirmante.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_FIRMAR)
+		vRolPase.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_PASE)
+		vRolModificarPlazo.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_MODIFICAR_PLAZO)
+		vRolArchivar.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_ARCHIVO)
+		vRolManejarConf.values = docUnidad.getitemvalue(CAMPO_UNIDAD_USUARIOS_MANEJAR_CONF)
+		
+		Set documentoAUnidad.miembros = New Vector(0)
+		Dim miembro As Miembro_WS
+		Dim nombreMiembro As String
+		For i = 1 To vMiembros.cantElem
+			Set miembro = New Miembro_WS()
+			nombreMiembro = vMiembros.getElement(i)
+			miembro.nombre = nombreMiembro
+			If(vJefes.isMember(nombreMiembro, -1, true)) Then
+				miembro.receptorNotificaciones = true
+			End If
+			
+			If(vMiembrosExp.isMember(nombreMiembro, -1, True)) Then
+				miembro.accesoExpedientes = true
+				miembro.rolExpReceptor = vRolReceptor.isMember(nombreMiembro, -1, True)
+				miembro.rolCreador = vRolCreador.isMember(nombreMiembro, -1, True)
+				miembro.rolExpArchivo = vRolArchivar.isMember(nombreMiembro, -1, True) 
+				miembro.rolExpConfiden = vRolManejarConf.isMember(nombreMiembro, -1, True) 
+				miembro.rolExpEditor = vRolEditor.isMember(nombreMiembro, -1, True)
+				miembro.rolExpFirmante = vRolFirmante.isMember(nombreMiembro, -1, True)
+				miembro.rolExpGestion = vRolGestion.isMember(nombreMiembro, -1, True)
+				miembro.rolExpPase = vRolPase.isMember(nombreMiembro, -1, True)
+				miembro.rolExpPlazo = vRolModificarPlazo.isMember(nombreMiembro, -1, True)
+			Else
+				miembro.accesoExpedientes = false
+				miembro.rolExpReceptor = False
+				miembro.rolCreador = False
+				miembro.rolExpArchivo = False 
+				miembro.rolExpConfiden = False
+				miembro.rolExpEditor = False
+				miembro.rolExpFirmante = False
+				miembro.rolExpGestion = False
+				miembro.rolExpPase = False
+				miembro.rolExpPlazo = False
+			End If
+			Call documentoAUnidad.miembros.insertElement(miembro, documentoAUnidad.miembros.cantElem+1)
+		Next
+	End Function
+End Class
+
+
+%REM
+	Class UnidadDTO
+	Description: Clase que modela la unidad y sus miembros
+%END REM
+
+
+Public Class Unidad_WS
+	Sub New
+	End Sub
+	
+	Public nombre As String
+	Public nroUnidad As String
+	Public descripcion As String
+	Public numUnidadSuperior As String
+	Public correoElectronico As String
+	Public externa As Boolean
+	Public habilitada As Boolean
+	Public miembros As Vector
+	Public codUnidad As String
+	Public nroInciso As String
+End Class
+
+%REM
+	Class MiembroDTO
+	Description: Clase que modela al miembro de la unidad y su roles en expedientes
+%END REM
+Public Class Miembro_WS
+	Sub New
+	End Sub
+	
+	Public nombre As String
+	Public receptorNotificaciones As Boolean
+	Public accesoExpedientes As Boolean
+	Public rolCreador As Boolean
+	Public rolExpReceptor As Boolean
+	Public rolExpEditor As Boolean
+	Public rolExpFirmante As Boolean
+	Public rolExpPase As Boolean
+	Public rolExpGestion As Boolean
+	Public rolExpArchivo As Boolean
+	Public rolExpPlazo As Boolean
+	Public rolExpConfiden As Boolean
+End Class

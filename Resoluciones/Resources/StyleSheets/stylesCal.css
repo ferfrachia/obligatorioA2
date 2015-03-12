@@ -1,0 +1,190 @@
+.db 
+{ 
+    COLOR: #336699 
+} 
+.m 
+{ 
+    COLOR: #999999; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px 
+} 
+.ml 
+{ 
+    COLOR: #999999; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 10px 
+} 
+.mb 
+{ 
+    COLOR: #000000; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px; 
+    TEXT-DECORATION: none 
+} 
+.mbl 
+{ 
+    COLOR: #000000; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 15px 
+} 
+.mbm 
+{ 
+    COLOR: #000000; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 13px 
+} 
+.mgm 
+{ 
+    COLOR: #339933; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 13px 
+} 
+.msm 
+{ 
+    COLOR: #666666; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 13px 
+} 
+.mrm 
+{ 
+    COLOR: #ff3333; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 13px 
+} 
+.ms 
+{ 
+    COLOR: #666666; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px 
+} 
+.mr 
+{ 
+    COLOR: #ff3333; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px 
+} 
+.mg 
+{ 
+    COLOR: #339933; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px 
+} 
+.swnu 
+{ 
+    COLOR: #ffffff; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px; 
+    FONT-WEIGHT: bold; 
+    TEXT-DECORATION: none 
+} 
+.sbnu 
+{ 
+    COLOR: #003366; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px; 
+    FONT-WEIGHT: bold; 
+    TEXT-DECORATION: none 
+} 
+.sw 
+{ 
+    COLOR: #ffffff; 
+    FONT-FAMILY: arial,san-serif; 
+    FONT-SIZE: 11px; 
+    FONT-WEIGHT: bold 
+} 
+.s 
+{ 
+    COLOR: #000000; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px 
+} 
+.f 
+{ 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px 
+} 
+ 
+.fb 
+{ 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 11px; 
+    FONT-WEIGHT: bold 
+} 
+ 
+.mlbl 
+{ 
+    COLOR: #336699; 
+    FONT-FAMILY: arial,sans-serif,helvetica; 
+    FONT-SIZE: 13px 
+} 
+.offerText 
+{ 
+    COLOR: #333333; 
+    FONT-FAMILY: arial,sans-serif; 
+    FONT-SIZE: 11px 
+} 
+.promoText 
+{ 
+    COLOR: #ff6600; 
+    FONT-SIZE: 10px 
+} 
+.salesText 
+{ 
+    COLOR: #ff6600 
+} 
+.moreSale 
+{ 
+    BACKGROUND: #cccccc; 
+    FONT-FAMILY: arial,sans-serif; 
+    FONT-SIZE: 11px; 
+    PADDING-BOTTOM: 2px; 
+    PADDING-LEFT: 3px; 
+    PADDING-RIGHT: 3px; 
+    PADDING-TOP: 0px 
+} 
+.shopBy 
+{ 
+    COLOR: #ff6600; 
+    FONT-FAMILY: arial,sans-serif; 
+    FONT-SIZE: 11px; 
+    PADDING-LEFT: 6px 
+} 
+.shopLink 
+{ 
+    FONT-FAMILY: arial,sans-serif; 
+    FONT-SIZE: 10px; 
+    PADDING-BOTTOM: 0px; 
+    PADDING-LEFT: 3px; 
+    PADDING-RIGHT: 3px; 
+    PADDING-TOP: 3px 
+} 
+.shopDesc 
+{ 
+    COLOR: #666666; 
+    FONT-FAMILY: arial,sans-serif; 
+    FONT-SIZE: 10px; 
+    PADDING-BOTTOM: 3px; 
+    PADDING-LEFT: 3px; 
+    PADDING-RIGHT: 3px; 
+    PADDING-TOP: 0px 
+} 
+.moreDiv 
+{ 
+    BACKGROUND: #ccccff; 
+    FONT-FAMILY: arial,sans-serif; 
+    FONT-SIZE: 11px; 
+    PADDING-BOTTOM: 2px; 
+    PADDING-LEFT: 3px; 
+    PADDING-RIGHT: 3px; 
+    PADDING-TOP: 0px 
+} 
+.featuredDiv 
+{ 
+    BACKGROUND: #ffff99; 
+    FONT-FAMILY: arial,sans-serif; 
+    FONT-SIZE: 11px; 
+    PADDING-BOTTOM: 2px; 
+    PADDING-LEFT: 3px; 
+    PADDING-RIGHT: 3px; 
+    PADDING-TOP: 0px 
+}

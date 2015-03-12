@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF800416654" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="21a" sequence="12" unid="EEC6097A876D3032832575D2004987CB">
+<created><datetime>20090611T102308,91-03</datetime></created>
+<modified><datetime>20150309T094340,84-03</datetime></modified>
+<revised><datetime>20150309T094340,83-03</datetime></revised>
+<lastaccessed><datetime>20150309T094340,84-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T095421,75-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090611T102308,56-03</datetime><datetime>20090611T104607,99-03</datetime><datetime>20090611T104618,16-03</datetime><datetime>20090924T100449,92-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/jpeg</text></item>
+<item name="$FileModDT" sign="true"><datetime>20071006T092825,81-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>barraFondoIgDoc.jpg</text></item>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$TITLE" sign="true"><text>barraFondoIgDoc.jpg</text></item>
+<item name="$DesignerVersion"><text>7</text></item></note>

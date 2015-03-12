@@ -1,0 +1,127 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library ClaseSolicitud 2.0
+	Created May 8, 2012 by Ian Coates/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Solicitud
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+%REM
+	Class Solicitud
+	Description: Comments for Class
+	Esta clase va a poder ser utilizada por cualquier módulo de iGdoc
+	La idea es que no maneje más que los documentos de solicitud y que 
+	sean el controller y el motor de cada módulo los que manejen la lógica
+%END REM
+Public Class Solicitud
+	private dbMotor As NotesDatabase
+	Private docSol As NotesDocument
+	Private sNoteId As string
+	
+	%REM
+		Sub New
+		Description: Comments for Sub
+	%END REM
+	Public Sub New (db As NotesDatabase, doc As NotesDocument)
+		On Error GoTo handler
+		Set dbMotor = db
+		If doc Is Nothing then
+			Set docSol = New NotesDocument(db)
+			Call docSol.Replaceitemvalue("Form", "FSolicitud")
+		Else
+			Set docSol = doc
+		End if
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(err, Error$, "IGDOC", "Clase Solicitud- Sub New", "Linea " & CStr(Erl), db.Parent.Effectiveusername)
+		Exit sub
+	End Sub
+	
+	%REM
+		Sub SetValor
+		Description: Comments for Sub
+	%END REM
+	Public Sub SetValor (campo As String, valor As Variant)
+		On Error GoTo handler
+		Call docSol.Replaceitemvalue(campo, valor)
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase Solicitud- Sub SetValor", "Linea " & CStr(Erl), dbMotor.Parent.Effectiveusername)
+		Exit sub
+	End Sub
+	
+	%REM
+		Function GetValor
+		Description: Comments for Function
+	%END REM
+	Public Function GetValor (Campo As String) As Variant
+		On Error GoTo handler
+		getValor = docSol.Getitemvalue(Campo)
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase Solicitud- Function GetValor", "Linea " & CStr(Erl), dbMotor.Parent.Effectiveusername)
+		Exit Function
+	End Function
+	
+	%REM
+		Sub RunMotor
+		Description: Comments for Sub
+	%END REM
+	Public Sub RunMotor(nombreMotor As String)
+		On Error GoTo handler
+		Dim agente As NotesAgent
+		Dim sId As String
+		sid = docSol.Universalid
+		If nombreMotor ="" Then nombreMotor ="motor"
+		Set agente = dbMotor.Getagent(nombreMotor)
+		If Not agente Is Nothing then
+			Call agente.Run
+		Else
+			Error 11133, "No se encontro agente con nombre " & nombreMotor & "en la base " & dbMotor.Filename
+		End If
+		Set docSol = nothing
+		Set docSol = dbMotor.Getdocumentbyunid(sid)
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase Solicitud- Sub RunMotor", "Linea " & CStr(Erl), dbMotor.Parent.Effectiveusername)
+		Exit Sub
+	End Sub
+	
+	%REM
+		Sub save
+		Description: Comments for Sub
+	%END REM
+	Public Sub save()
+		On Error GoTo handler
+		Call docSol.Save(true, false)
+		sNoteId=docSol.noteId
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC", "Clase Solicitud- Sub Save", "Linea " & CStr(Erl), dbMotor.Parent.Effectiveusername)
+		Exit Sub
+	End Sub
+	
+	
+	Public Sub refresh() 
+		On Error GoTo errorHandler
+		Set docSol=Nothing
+		If sNoteId<>"" Then
+			Set docSol=dbMotor.getDocumentById(sNoteId)	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método Refresh", ""
+		Exit Sub
+	End Sub	
+	
+	
+End Class

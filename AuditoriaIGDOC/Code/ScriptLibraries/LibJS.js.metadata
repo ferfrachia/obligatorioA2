@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005C47C3" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1fa" sequence="16" unid="048B1CA689131179032572C3006C6BE4">
+<created><datetime>20070420T164415,08-03</datetime></created>
+<modified><datetime>20150311T134758,01-03</datetime></modified>
+<revised><datetime dst="true">20150206T174553,95-02</datetime></revised>
+<lastaccessed><datetime>20150311T134758,01-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T134758,01-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Diego Celery/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IMF</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=CTM</name><name>CN=Administrador Isa/O=CTM</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>LibJS</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$Comment" sign="true"><text>Libraría de funciones varias en JavaScript</text></item>
+<item name="$POID"><datetime>20120725T175330,71-03</datetime></item></note>

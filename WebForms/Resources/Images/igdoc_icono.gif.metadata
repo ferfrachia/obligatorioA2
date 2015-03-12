@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="6ce" sequence="36" unid="A22666DE1D5BE848032573780073A8A2">
+<created><datetime>20071018T180318,10-03</datetime></created>
+<modified><datetime>20150309T094517,69-03</datetime></modified>
+<revised><datetime>20150309T094517,68-03</datetime></revised>
+<lastaccessed><datetime>20150309T094517,69-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161850,20-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=CURSO</name><name>CN=Admin ISA/O=VISION</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=WebApp Manager/O=1871</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime dst="true">20081114T180440,29-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>igdoc_icono.gif</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime dst="true">20071017T193048,35-02</datetime></item>
+<item name="$ImageNames" sign="true"><text>igdoc_icono.gif</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$Flags"><text>34CiQ</text></item></note>

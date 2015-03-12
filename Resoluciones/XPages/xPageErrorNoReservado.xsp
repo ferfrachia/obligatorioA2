@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+
+	<xp:this.resources>
+		<xp:styleSheet href="/LetraError.css"></xp:styleSheet>
+	</xp:this.resources>
+	<xp:panel
+		style="height:387.0px;background-repeat:no-repeat;background-position:center center">
+		
+
+		<xp:br></xp:br>
+		<xp:table style="width:903.0px">
+
+			<xp:tr>
+				<xp:td style="height:331.0px"></xp:td>
+				<xp:td style="height:331.0px"></xp:td>
+				<xp:td style="width:564.0px;height:331.0px"></xp:td>
+
+				<xp:td style="width:277.0px;height:331.0px">
+					<xp:image url="/manostop.jpg" id="image1"
+						style="width:250.0px">
+					</xp:image>
+					<xp:br></xp:br>
+					<xp:br></xp:br>
+					<xp:label id="label1"
+						value="No puede editar el documento ya que ha sido reservado por otro usuario."
+						style="width:271.0px" styleClass="letra">
+					</xp:label></xp:td>
+				<xp:td style="width:24.0px;height:331.0px"></xp:td>
+			</xp:tr>
+			
+		</xp:table>
+		
+		<xp:br></xp:br>
+
+		<xp:br></xp:br>
+		&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+	</xp:panel>
+</xp:view>

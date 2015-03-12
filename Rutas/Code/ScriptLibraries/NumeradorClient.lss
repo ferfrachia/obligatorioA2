@@ -1,0 +1,314 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+'************************************************************************************************************************
+'
+'							CLASS NUMCLIENT
+'
+'************************************************************************************************************************
+'
+'
+'Esta clase realiza toda la gestion de numeros con un numerador
+'
+'
+'		INTERFASE
+'
+'	* Public Sub New(Byval num As String, Byval server As String, Byval dBase As String, _
+'	  Byval milisec As Long, Byval maxTry As Integer)
+'		'Contructor de la clase
+'		'IN 			-> num: 		Nombre del numerador
+'		'IN (optional) -> server:	Nombre del servidor donde se encuentra la base de Numeración
+'		'						optional = "", asume que es el servidor actual
+'		'IN (optional) -> dBase:		Nombre de la base de datos de Numeración
+'		'						optional = "", asume la base CONFIGURATION_DATABASE
+'
+'	* Public Function GetNumber() As Long
+'		'Esta funcion retorna un nuevo numero
+'
+'	* Public Sub ReturnNumber(Byval numero As Long)
+'		'Devuelve el numero de parametro al pool de numeros del objeto numerador
+'
+'************************************************************************************************************************
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class NumClient
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+%REM
+=======================================================================================================================================
+								PROTOCOLO
+
+>> OPERATION REQUEST NUMBER
+	Cliente ->	Form						= NOMBRE_FORM_SOLNUM
+				SOLNUMERO_CAMPO_OPERACION	= PROTOCOL_REQUEST_NUMBER
+				SOLNUMERO_CAMPO_NUMERO		= NUMBER_NOT_ASIGNED	(Create empty field)
+				SOLNUMERO_CAMPO_NUMERADOR	= <Nombre Numerador>	(User supply)
+				SOLNUMERO_CAMPO_USER		= S.CommonUserName		(Admin purpous)
+				SOLNUMERO_CAMPO_AUTOR		= S.UserName			(Security Reasons)
+
+	Servidor <- 	SOLNUMERO_CAMPO_NUMERO		1) <First number in queue>	(OK)
+										2) EMPTY_NUMBER			(ERROR - SolNum for numerator not found)
+										3) NUMBER_NOT_ASIGNED		(ERROR - Internal error before asigning a number)
+
+
+>> OPERATION RETURN NUMBER	(Version 2.00 asynchronous version, so the client does not wait for the server RETURNED_SUCCESS)
+	Cliente -> 	Form						= NOMBRE_FORM_SOLNUM
+				SOLNUMERO_CAMPO_OPERACION	= PROTOCOL_RETURN_NUMBER
+				SOLNUMERO_CAMPO_NUMERO		= <Number to Return>	(User Supply)
+				SOLNUMERO_CAMPO_NUMERADOR	= <Nombre Numerador>	(User supply)
+				SOLNUMERO_CAMPO_DEVUELTO		= NOT_RETURNED			(Not returned to the queue yet)
+				SOLNUMERO_CAMPO_USER		= S.CommonUserName		(Admin purpous)
+				SOLNUMERO_CAMPO_AUTOR		= S.UserName			(Security Reasons)
+
+	Servidor <- 	SOLNUMERO_CAMPO_DEVUELTO		1) RETURNED_SUCCESS		(Successfully returned to the queue)
+										2) NOT_RETURNED		(Failed to return de number)
+
+=======================================================================================================================================
+
+'********************************************************************************************************
+'							CONSTANTES
+'********************************************************************************************************
+
+'NOMBRE DE LA BASE DE CONFIGURACION DE NUMERADORES
+Private Const CONFIGURATION_DATABASE 			= "NUMERACI.NSF"
+
+'********************************************************************************************************
+'CONSTANTES DE ERROR
+Public Const DATABASE_NOT_FOUND				= 16011
+Public Const VIEW_NOT_FOUND					= 16012
+Public Const NUMERATOR_NOT_FOUND				= 16013
+Public Const SOLNUM_NOT_FOUND					= 16014
+Public Const ERROR_NUMBER_NOT_ASIGNED			= 16015
+Public Const NUMERATOR_INTERNAL_ERROR			= 16016
+Public Const NUMBER_RETURNED_FAILED			= 16017
+Public Const PARAMETER_PROBLEM				= 16018
+Public Const SOLNUM_SAVE_FAILED				= 16019
+Public Const AGENT_NOT_FOUND					= 16020
+
+'********************************************************************************************************
+'PROTOCOLO DE MANEJO DE NUMEROS CON EL NUMERADOR
+Private Const PROTOCOL_REQUEST_NUMBER			= "S"
+Private Const PROTOCOL_RETURN_NUMBER			= "R"
+
+Private Const NUMBER_NOT_ASIGNED				= 0		'No se intentó numerar la solicitud aun, o se produjo un error antes de salvar el numero
+Private Const EMPTY_NUMBER					= -1		'Se produjo un problema al numerar la solicitud
+
+Private Const RETURNED_SUCCESS				= "1"
+Private Const NOT_RETURNED					= "0"
+
+'********************************************************************************************************
+'CAMPOS DE LA SOLICITUD DE NUMEROS
+Private Const SOLNUMERO_CAMPO_NUMERO			= "Numero"		'Numero asignado o a retornar
+Private Const SOLNUMERO_CAMPO_NUMERADOR			= "Numerator"		'Nombre del numerador
+Private Const SOLNUMERO_CAMPO_OPERACION			= "Operation"		'Operacion dentro del protocolo de manejo de numeros
+Private Const SOLNUMERO_CAMPO_DEVUELTO			= "Returned"		'Bandera que indica si el numero fue retornado con exito
+Private Const SOLNUMERO_CAMPO_USUARIO			= "User"			'Usuario que solicito el numero
+Private Const SOLNUMERO_CAMPO_AUTORES			= "Autores"
+Private Const SOLNUMERO_CAMPO_CHECKEDOUT		= "Retirado"		'Indica si el numero fue retirado por el cliente
+Private Const SOLNUMERO_CAMPO_CANT_INTENTOS		= "NroIntentos"	'Cantidad de intentos del cliente para retirar el numero
+
+'********************************************************************************************************
+'OBJETOS DE DISEÑO EN LA BASE DE CONFIGURACION DE NUMEROS
+Private Const VISTA_NUMERADORES				= "Numeradores"
+Private Const NOMBRE_FORM_SOLNUM				= "SolicitudNumero"
+Private Const AGENTE_NUMERADOR				= "NumeracionInterior"
+
+'********************************************************************************************************
+%END REM
+
+Const CONFIGURATION_DATABASE							=	"NUMERACI.NSF"
+Const ERROR_NUMCLIENT_DATABASE_NOT_FOUND				=	16011
+Const ERROR_NUMCLIENT_VIEW_NOT_FOUND					=	16012
+Const ERROR_NUMCLIENT_NUMERATOR_NOT_FOUND				=	16013
+Const ERROR_NUMCLIENT_SOLNUM_NOT_FOUND					=	16014
+Const ERROR_NUMCLIENT_ERROR_NUMBER_NOT_ASIGNED			=	16015
+Const ERROR_NUMCLIENT_NUMERATOR_INTERNAL_ERROR			=	16016
+Const ERROR_NUMCLIENT_NUMERATOR_RETURNED_FAIL			=	16017
+Const ERROR_NUMCLIENT_PARAMETER_PROBLEM					=	16018
+Const ERROR_NUMCLIENT_SOLNUM_SAVE_FAILED				=	16019
+Const ERROR_NUMCLIENT_AGENT_NOT_FOUND					=	16020
+Const ERROR_NUMCLIENT_NUMERATOR_SAVE_FAILED				=	16021
+Const ERROR_NUMCLIENT_CODE_LOCK_FAILED					=	16022
+Const ERROR_NUMSERVER_ERROR_NO_ERROR					=	16101
+Const PROTOCOL_REQUEST_NUMBER							=	"S"
+Const PROTOCOL_RETURN_NUMBER							=	"R"
+Const NUMBER_NOT_ASIGNED								=	0
+Const EMPTY_NUMBER										=	-1
+Const RETURNED_SUCCESS									=	"1"
+Const NOT_RETURNED										=	"0"
+Const SOLNUMERO_CAMPO_NUMERO							=	"Numero"
+Const SOLNUMERO_CAMPO_NUMERADOR							=	"Numerator"
+Const SOLNUMERO_CAMPO_OPERACION							=	"Operation"
+Const SOLNUMERO_CAMPO_DEVUELTO							=	"Returned"
+Const SOLNUMERO_CAMPO_USUARIO							=	"User"
+Const SOLNUMERO_CAMPO_AUTORES							=	"Autores"
+Const SOLNUMERO_CAMPO_CHECKEDOUT						=	"Retired"
+Const SOLNUMERO_CAMPO_CANT_INTENTOS						=	"NroIntentos"
+Const SOLNUMERO_CAMPO_ERROR_NRO							=	"ErrNro"
+Const SOLNUMERO_CAMPO_ERROR_DESC						=	"ErrDesc"
+Const SOLNUMERO_CAMPO_ERROR_FLAG						=	"ErrFlag"
+Const SOLNUMERO_CAMPO_ERROR_FECHA						=	"ErrFecha"
+Const NUMERADOR_CAMPO_NOMBRE							=	"Name"
+Const NUMERADOR_CAMPO_NUMERO							=	"LastAssigned"
+Const NUMERADOR_CAMPO_COLA								=	"Queue"
+Const NUMERADOR_CAMPO_LASTQUEUED						=	"LastQueued"
+Const NUMERADOR_CAMPO_LARGO_COLA						=	"QueueLen"
+Const ERROR_LOG_CAMPO_NUMERO							=	"ErrNro"
+Const ERROR_LOG_CAMPO_DESC								=	"ErrDesc"
+Const ERROR_LOG_CAMPO_FECHA								=	"ErrFecha"
+Const ERROR_LOG_CAMPO_USUARIO							=	"ErrUsuario"
+Const VISTA_NUMERADORES									=	"Numeradores"
+Const NOMBRE_FORM_SOLNUM								=	"SolicitudNumero"
+Const AGENTE_NUMERADOR									=	"NumeracionInterior"
+Const VISTA_SOLICITUDES									=	"SolDate"
+Const FORM_ERROR										=	"ErrLog"
+Const AUTHORS											=	1076
+
+'********************************************************************************************************
+'********************************************************************************************************
+Public Class NumClient
+	
+	Private s As NotesSession
+	Private db As NotesDatabase		'Referencia a la base de datos de configuracion de numeradores
+	
+	Private nombreNumerador As String	'Nombre del numerador
+	
+'********************************************************************************************************	
+	Public Sub New(Byval num As String, Byval server As String, Byval dBase As String)
+		'Contructor de la clase
+		'IN 			-> num: 		Nombre del numerador
+		'IN (optional) -> server:	Nombre del servidor donde se encuentra la base de Numeración
+		'						optional = "", asume que es el servidor actual
+		'IN (optional) -> dBase:		Nombre de la base de datos de Numeración
+		'						optional = "", asume la base CONFIGURATION_DATABASE
+		Dim vista As NotesView, doc As NotesDocument	
+		
+		Set s = New NotesSession
+		Set db = New NotesDatabase("","")
+		
+		'Completo el servidor y filePath, y abro la base de configuracion de numeros
+		If server = "" Then 
+			server = s.CurrentDatabase.Server
+		End If
+		
+		If dBase = "" Then 
+			dBase = CONFIGURATION_DATABASE
+		End If
+		
+		If Not db.Open(server,dBase) Then 
+			Error ERROR_NUMCLIENT_DATABASE_NOT_FOUND,"La base de datos " & dBase & " en " & server & " no existe."
+		End If
+			
+		
+		'Seteo la vista de numeradores y busco el de parametro
+		Set vista = db.GetView(VISTA_NUMERADORES)
+		If vista Is Nothing Then	
+			Error ERROR_NUMCLIENT_VIEW_NOT_FOUND,"No se encuentra la vista de numeradores."
+		End If
+		
+		'Verifico que exista el numerador pasado como parametro en la base de numeradores
+		Set doc = vista.GetDocumentByKey(num,True)
+		If doc Is Nothing Then 
+			Error ERROR_NUMCLIENT_NUMERATOR_NOT_FOUND,"El numerador " & num & " no existe."
+		End if
+		
+		nombreNumerador = Ucase(num)		'Guardo el nombre del numerador
+		
+	End Sub
+	
+'********************************************************************************************************	
+	Public Function GetNumber() As Long
+		'Esta funcion retorna un nuevo numero
+		Dim docSol As NotesDocument, ID As String, intentos As Integer
+		Dim campoAutores As NotesItem, agente As NotesAgent
+		
+		Set docSol = New NotesDocument(db)		'Creo el documento de solicitud de numero en la base de numeracion
+		
+		'Cargo los campos necesarios para que el numerador genere el numero correctamente
+		docSol.ReplaceItemValue "Form",NOMBRE_FORM_SOLNUM
+		docSol.ReplaceItemValue SOLNUMERO_CAMPO_OPERACION,PROTOCOL_REQUEST_NUMBER
+		docSol.ReplaceItemValue SOLNUMERO_CAMPO_NUMERO,NUMBER_NOT_ASIGNED
+		docSol.ReplaceItemValue SOLNUMERO_CAMPO_NUMERADOR,nombreNumerador
+		docSol.ReplaceItemValue SOLNUMERO_CAMPO_USUARIO,s.CommonUserName
+		Set campoAutores = New NotesItem(docSol,SOLNUMERO_CAMPO_AUTORES,s.UserName,AUTHORS)
+		If Not docSol.Save(False,False) Then Error ERROR_NUMCLIENT_SOLNUM_SAVE_FAILED,"Falló e salvado de la solicitud de número. Checkear permisos."
+		ID = docSol.NoteID
+		Set docSol = Nothing	'Elimino la referencia para borrar la memoria del cliente y volver a actualizar
+							'la informacion del documento de solicitud al obtener una nueva referencia
+		
+		Set agente = db.GetAgent(AGENTE_NUMERADOR)
+		If agente Is Nothing Then Error ERROR_NUMCLIENT_AGENT_NOT_FOUND,"No se encontró el agente <" & AGENTE_NUMERADOR & "> en la base de numeración."
+		If agente.RunOnServer() <> 0 Then Error ERROR_NUMCLIENT_NUMERATOR_INTERNAL_ERROR,"Fallo en la ejecución del agente de numeración en el servidor." & _
+		"Checkee permisos de ejecución de agentes en el servidor por parte de la persona que lo firmó."
+		
+		Set docSol = db.GetDocumentByID(ID)
+		If docSol Is Nothing Then Error ERROR_NUMCLIENT_SOLNUM_NOT_FOUND,"No se encontro la solicitud de numero."
+		
+		GetNumber = docSol.getItemValue(SOLNUMERO_CAMPO_NUMERO)(0)
+		
+		'Si no asignó numero retorno error
+		If GetNumber = NUMBER_NOT_ASIGNED Then
+			Error ERROR_NUMCLIENT_ERROR_NUMBER_NOT_ASIGNED,"El numerador no pudo asignar número."
+		Elseif GetNumber = EMPTY_NUMBER Then
+			Error ERROR_NUMCLIENT_NUMERATOR_INTERNAL_ERROR,"Se produjo un error interno al solicitar el numero."
+		End If
+		
+		'Statistic and Debug purpous
+		docSol.ReplaceItemValue SOLNUMERO_CAMPO_CHECKEDOUT,"1"		'El cliente retiró el numero del servidor
+														'Si no lo hubiera retirado, esta funcion sale por el ERROR anterior
+		docSol.ReplaceItemValue SOLNUMERO_CAMPO_CANT_INTENTOS,intentos	'Cantidad de intentos del cliente para retirar el numero
+		If Not docSol.Save(False,False) Then
+			'--DO SOMETHING (let's do not make another replication-save conflict)
+			' No vale la pena retornar un mensaje de error en este caso ya que el
+			' número se obtuvo correctamente, solo no se espa pudiente registrar en la
+			' aplicación de numeración este hecho.
+		End If
+		
+	End Function	
+	
+'********************************************************************************************************			
+	Private Function ObtenerDocumentoSolicitud(Byval numero As Long) As NotesDocument
+	End Function
+	
+'********************************************************************************************************		
+	Public Sub ReturnNumber(Byval numero As Long)
+		'Devuelve el numero de parametro al pool de numeros del objeto numerador
+		'Trata de obtener el documento de solicitud generado por el usuario actual
+		'para este numerador. Si no lo encuentra genera un nuevo documento de retorno de numero
+		
+		Dim col As NotesDocumentCollection, query As String, docRet As NotesDocument
+%REM		
+		query = "(Form = """ & NOMBRE_FORM_SOLNUM & """) & (" & SOLNUMERO_CAMPO_USUARIO & " = """ & _
+		s.CommonUserName & """) & (" & SOLNUMERO_CAMPO_NUMERO & " = " & Cstr(numero) & ") & (" & _
+		SOLNUMERO_CAMPO_NUMERADOR & " = """ & nombreNumerador & """)"
+		Set col = db.Search(query,Nothing,0)
+		
+		If col.count = 1 Then 	'Si existe uno y solo un documento con las caracteristicas 
+			Set docRet = col.getFirstDocument	'anteriores lo reutilizo
+			docRet.ReplaceItemValue SOLNUMERO_CAMPO_OPERACION,PROTOCOL_RETURN_NUMBER			
+			docRet.ReplaceItemValue SOLNUMERO_CAMPO_DEVUELTO,NOT_RETURNED			
+			If docRet.Save(False,False) Then	'Falla el save creo uno nuevo
+				Exit Sub
+			End If
+		End If
+%END REM
+		
+		'Sino creo un nuevo documento de retorno de numero
+		Set docRet = New NotesDocument(db)		'Creo el documento de solicitud de numero en la base de numeracion
+		
+		'Cargo los campos necesarios para que el numerador genere el numero correctamente
+		docRet.ReplaceItemValue "Form",NOMBRE_FORM_SOLNUM		
+		docRet.ReplaceItemValue SOLNUMERO_CAMPO_OPERACION,PROTOCOL_RETURN_NUMBER
+		docRet.ReplaceItemValue SOLNUMERO_CAMPO_NUMERO,numero
+		docRet.ReplaceItemValue SOLNUMERO_CAMPO_NUMERADOR,nombreNumerador
+		docRet.ReplaceItemValue SOLNUMERO_CAMPO_DEVUELTO,NOT_RETURNED
+		docRet.ReplaceItemValue SOLNUMERO_CAMPO_USUARIO,s.CommonUserName		
+		docRet.Save True,False
+		
+	End Sub
+	
+'********************************************************************************************************	
+End Class
+'********************************************************************************************************
+'********************************************************************************************************

@@ -1,0 +1,9 @@
+ #menu li { 
+ display: inline-block; 
+ /*display: inline;*/
+ width: auto; 
+ }
+ #menu li.sub { 
+ display: block; 
+ width: auto;
+ } 

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF800649717'>
+<noteinfo noteid='121a' unid='560352BA45031446832579F3005845C3' sequence='13'>
+<created><datetime>20120503T130410,27-03</datetime></created>
+<modified><datetime>20150309T094534,67-03</datetime></modified>
+<revised><datetime>20150309T094534,66-03</datetime></revised>
+<lastaccessed><datetime>20150309T094534,67-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T161904,38-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=Guillermo Zana/O=ISA</name><name>CN=WebApp Manager/O=1871</name><name
+>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
++f8gAAAAAAAPAAQAPQEAAAAAAAAAAAAAAAAAAAAAAADc/1AB+f8+ASBOAAAAAAAAAAAvKgkkKGZ1
+bmN0aW9uKCkgew0JCSQoIiNkaWFsb2dfcGF1c2EiKS5kaWFsb2coew0JCQliZ2lmcmFtZTogdHJ1
+ZSwNCQkJYXV0b09wZW46ZmFsc2UsDQkJCXJlc2l6YWJsZTpmYWxzZSwNCQkJZHJhZ2dhYmxlOmZh
+bHNlLA0JCQloZWlnaHQ6IDIwMCwNCQkJbW9kYWw6IHRydWUsDQkJCW9wZW46IGZ1bmN0aW9uKGV2
+ZW50LCB1aSkgew0JCQkJJCgnYS51aS1kaWFsb2ctdGl0bGViYXItY2xvc2UsIGEudWktY29ybmVy
+LWFsbCwgYS51aS1zdGF0ZS1mb2N1cycgKS5yZW1vdmUoKTsNCQkJCS8vJCgiIikucmVtb3ZlKCk7
+DQkJCX0NCQl9KTsNCX0pOw0gICAgICovAP9f/xAAAgAPAAcAAAAAAAAA
+</rawitemdata></item>
+<item name='$TITLE'><text>Procesando</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>Procesando</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/wsAAQAACiAg
+IACBAoMEAQCF/1oAAQAACjwhLS0gPGxpbmsgdHlwZT0idGV4dC9jc3MiIGhyZWY9Ii4uLy4uL3Ro
+ZW1lcy9iYXNlL3VpLmFsbC5jc3MiIHJlbD0ic3R5bGVzaGVldCIgLz6BAoMEAQCF/0wAAQAACjxz
+Y3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9Ii4uLy4uL2pxdWVyeS0xLjMuMi5qcyI+
+PC9zY3JpcHQ+gQKDBAEAhf9KAAEAAAo8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCIgc3Jj
+PSIuLi8uLi91aS91aS5jb3JlLmpzIj48L3NjcmlwdD6BAoMEAQCF/wkAAQAACiAAgQKDBAEAhf9M
+AAEAAAo8c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCIgc3JjPSIuLi8uLi91aS91aS5kaWFs
+b2cuanMiPjwvc2NyaXB0PoECgwQBAIX/YQABAAAKPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3Jp
+cHQiIHNyYz0iLi4vLi4vZXh0ZXJuYWwvYmdpZnJhbWUvanF1ZXJ5LmJnaWZyYW1lLmpzIj48L3Nj
+cmlwdD4AgQKDBAEAhf9KAAEAAAo8bGluayB0eXBlPSJ0ZXh0L2NzcyIgaHJlZj0iLi4vZGVtb3Mu
+Y3NzIiByZWw9InN0eWxlc2hlZXQiIC8+IC0tPiCBAoMEAQCF/wkAAQAACiAAgQKDBAEAhf8JAAEA
+AAogAIECgwQBAIX/GgABAAAKPGRpdiBjbGFzcz0iZGVtbyI+gQKDBAEAhf8JAAEAAAogAIECgwQB
+AN0GAACF/4X/RwABAAoKPGRpdiBpZD0iZGlhbG9nX3BhdXNhIiB0aXRsZT0iUHJvY2VzYW5kbyIg
+c3R5bGU9ImRpc3BsYXk6bm9uZSI+ANIIAQAAAIAA3gYAAIX/gQKDBAEA3QYAAIX/hf8NAAEACgoJ
+PGJyPgDSCAEAAACAAN4GAACF/4ECgwQBAN0GAACF/4X/SwABAAoKCTxwIGFsaWduPSJjZW50ZXIi
+PlNlIGVzdKAgZWplY3V0YW5kbyBsYSBhY2Npom4sIGVzcGVyZSB1biBtb21lbnRvLgDSCAEAAACA
+AN4GAACF/4ECgwQBAN0GAACF/4X/DQABAAoKCTxicj4A0ggBAAAAgADeBgAAhf+BAoMEAQDdBgAA
+hf+F/w0AAQAKCgk8YnI+ANIIAQAAAIAA3gYAAIX/gQKDBAEA3QYAAIX/hf8UAAEACgoJPGltZyBz
+cmM9IiDSCAEAAACAAN4GAACF/90GAACt/6n/TAABABgABABAAEAAAAA0AAEAAQAvAIsAAAAAAAAA
+AADwPxABawIBAAEAXAABAAEALwCEAyICAQABAC8AIgIDAAcACgADAAkxUwCF/wgAAQAACqoC3gYA
+AK4A3QYAAIX/hf8YAAEACgppbmRpY2F0b3IuZ2lmIi8+0ggBAAAAgADeBgAAhf+BAoMEAQDdBgAA
+hf+F/w0AAQAKCgk8L3A+ANIIAQAAAIAA3gYAAIX/gQKDBAEA3QYAAIX/hf8OAAEACgo8L2Rpdj7S
+CAEAAACAAN4GAACF/4ECgwQBAN0GAACF/4X/DgABAAoKPC9kaXY+0ggBAAAAgADeBgAAhf+BAoME
+AQCF/wgAAQAACoECgwQBAIX/CAABAAAKgQKDBAEA3QYAAIX/hf8IAAEACgrSCAEAAACAAN4GAACF
+/4ECgwQBAIX/CAABAAAKgQKDBAEAhf8IAAEAAArN/wgAAAAAAA==
+</rawitemdata></item></note>
+

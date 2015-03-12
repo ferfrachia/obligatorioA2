@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050058D89B" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="5ea" sequence="16" unid="B8EAF446488C189C032571EE0074FA58">
+<created><datetime>20060919T181742,64-03</datetime></created>
+<modified><datetime>20150311T131032,43-03</datetime></modified>
+<revised><datetime>20150309T094412,31-03</datetime></revised>
+<lastaccessed><datetime>20150311T131032,43-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131032,43-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20061013T104013,94-03</datetime><datetime dst="true">20061101T113029,07-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>paquete.png</text></item>
+<item name="$Flags"><text>345CgQ</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+
+<item name="$FileModDT" sign="true"><datetime>20060919T175014,72-03</datetime></item>
+
+<item name="$FileNames" sign="true"><text>paquete.png</text></item>
+<item name="$DesignerVersion" sign="true"><text>6.5</text></item>
+<item name="$$ScriptName" sign="true" summary="false"><text>paquete.png</text></item></note>

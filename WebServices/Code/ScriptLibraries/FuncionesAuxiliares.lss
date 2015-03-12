@@ -1,0 +1,74 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library FuncionesAuxiliares
+	Created Nov 18, 2010 by Rodrigo Aratti/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+Use "Configuracion Formularios"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Function getWebServicesHost() As String
+Declare Function getWebServicesPort() As String
+
+'++LotusScript Development Environment:2:5:(Declarations):0:2
+
+'++LotusScript Development Environment:2:1:getWebServicesHost:5:8
+%REM
+	Function getHostWebServices
+	Description: Comments for Function
+%END REM
+Function getWebServicesHost() As String
+	On Error GoTo handler
+	
+	Dim ses As New NotesSession
+	Dim conf As ConfigForms 
+	Dim dbExt As NotesDatabase
+	Dim vDocumentos As NotesView
+	Dim docPuerto As NotesDocument
+
+	Set conf = New ConfigForms 
+	Set dbExt = conf.ReferenciarBaseDeDatos("DATOSEXTERNOS")
+	Set vDocumentos = dbExt.Getview("(BusquedaDatoPorClave)")
+	Set docPuerto = vDocumentos.Getdocumentbykey("SERVERS-WEBSERVICESHOST#", True)
+	If Not docPuerto Is Nothing Then
+		getWebServicesHost = docPuerto.Getitemvalue("valor")(0)
+	Else
+		Error 555, "No se pudo encontrar el documento de Host"
+	End If
+	Exit Function 
+handler:
+	MsgBox "ERROR - FuncionesAuxiliares getWebServicesHost" & Erl & " - " & Error$
+	getWebServicesHost=""
+End Function
+
+
+'++LotusScript Development Environment:2:1:getWebServicesPort:5:8
+%REM
+	Function getPortWebServices
+	Description: Comments for Function
+%END REM
+Function getWebServicesPort() As String
+	On Error GoTo handler
+	
+	Dim ses As New NotesSession
+	Dim conf As ConfigForms 
+	Dim dbExt As NotesDatabase
+	Dim vDocumentos As NotesView
+	Dim docPuerto As NotesDocument
+
+	Set conf = New ConfigForms 
+	Set dbExt = conf.ReferenciarBaseDeDatos("DATOSEXTERNOS")
+	Set vDocumentos = dbExt.Getview("(BusquedaDatoPorClave)")
+	Set docPuerto = vDocumentos.Getdocumentbykey("SERVERS-WEBSERVICESPORT#", true)
+	If Not docPuerto Is Nothing Then
+		getWebServicesPort = docPuerto.Getitemvalue("valor")(0)
+	Else
+		Error 555, "No se pudo encontrar el documento de Puerto"
+	End If
+	Exit Function 
+handler:
+	MsgBox "ERROR - FuncionesAuxiliares getWebServicesPort" & Erl & " - " & error$
+End Function

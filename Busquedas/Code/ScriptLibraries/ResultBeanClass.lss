@@ -1,0 +1,666 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+Use "ConstantesBusquedas"
+Use "ConstantesDBGestionDoc"
+Use "UnidadExp Class"
+Use "ConstantesContratos"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ResultBean
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'**********************************************************************************************************************************
+'**********************************************************************************************************************************
+
+Public Class ResultBean
+	
+	Private strHost As String
+	Private strNumeroDoc As String
+	Private strTipoDoc As String
+	Private strTituloDoc As String
+	Private strEstado As String
+	Private strOficinaActual As String
+	Private strForm As String
+	Private campos As Vector
+	Private tipos As Vector
+	Private values As vector
+	
+'**********************************************************************************************************************************
+	Public Sub New (doc As NotesDocument, strHostTemp As String, pCampos As Vector, pTipos As Vector)
+		On Error GoTo handler
+		Dim strAux As String
+		
+		Dim db As NotesDatabase
+		Dim viewBusAct As NotesView
+		Dim docAux As NotesDocument
+		Dim oUnidad As UnidadExp
+		Dim session As New NotesSession
+		
+		Set values = New Vector(0)
+		' Campos que se cargaban antes
+		If Not doc Is Nothing Then
+			strForm = doc.GetItemValue("Form")(0)
+			Dim vectornombres As Vector
+			Set vectornombres = New Vector(0)
+			Dim dbaux As NotesDatabase
+			Set dbaux = session.Currentdatabase
+			vectornombres.values = dbaux.Getprofiledocument("IGDocConfig").Getitemvalue("sNombreForm")
+			Dim pos As Long
+			'MsgBox "busqueda strform  "&strform
+			'MsgBox pcampos.ToString("")
+			'MsgBox pcampos.cantElem
+			'MsgBox "foooorrrmmmm "&strform
+			If vectornombres.isMember(strform, Pos,true) Then
+				'strNumeroDoc = doc.Getitemvalue("ccNumeroExp")(0)
+				'strTituloDoc = doc.Getitemvalue("Numero")(0)
+				'strTipoDoc= doc.Getitemvalue("Texto")(0)
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+			ElseIf strForm = "FCaratula" Then
+				strTipoDoc="Caratula"
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0)
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)
+				
+				If strEstado <> "Archivado" And strEstado <>"Agregado"  Then
+					Set db = doc.ParentDatabase
+					Set viewBusAct = db.GetView(DBSGD_VISTA_BUSQ_ACTUACION_NRO)
+					Set docAux = viewBusAct.GetDocumentByKey(CStr(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_CANT_ACT)(0)) & doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), True)
+					If Not docAux Is Nothing Then
+						strEstado = docAux.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0)
+						strEstado = EstadoActuacion(strEstado,docAux)								
+					ElseIf strEstado="En Tránsito" Then
+						Set oUnidad = New UnidadExp(doc.GetItemValue("ccOficinaActual")(0))
+						If Not oUnidad Is Nothing Then
+							strEstado=strEstado+".- "+oUnidad.NombreActual
+						End If
+					End If
+				ElseIf strEstado="Agregado" Then
+					strEstado = strEstado & " a  -> " &  doc.GetItemValue(DBSGD_CAMPO_FCARATULA_PADRE_DE_AGREGADO)(0)
+				End If
+				
+				If doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)="En Tránsito" Then
+					
+					Set oUnidad = New UnidadExp(doc.getItemValue("ccOficinaAnterior")(0))
+					If Not oUnidad Is Nothing Then
+						strOficinaActual = oUnidad.NombreActual
+					Else 
+						strOficinaActual= " "
+					End If
+					Set oUnidad = New UnidadExp( doc.getItemValue("ccOficinaActual")(0))
+					If Not oUnidad Is Nothing Then
+						strOficinaActual = strOficinaActual &  " -> " & oUnidad.NombreActual
+					Else
+						strOficinaActual = strOficinaActual &  " -> " 
+					End If
+				Else
+					Set oUnidad = New UnidadExp(doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL)(0))
+					If Not oUnidad Is Nothing Then
+						strOficinaActual = oUnidad.NombreActual	
+					Else
+						strOficinaActual=" "
+					End If
+				End If
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+				
+			ElseIf strform = "FActuacion" Then
+				strTipoDoc="Actuación"
+				strAux = "000" & doc.getItemValue("ccnNroAct")(0)
+				strAux = Right(strAux,3)
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0) & "-" & strAux
+				
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO)(0)
+				If strTituloDoc = "" Then
+					Set db = doc.ParentDatabase
+					Set viewBusAct = db.GetView(DBSGD_VISTA_BUSQ_CARATULA)
+					Set docAux = viewBusAct.GetDocumentByKey(doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0) ,True)
+					If Not docAux Is Nothing Then
+						strTituloDoc = docAux.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+					End If
+				End If
+				
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0)
+				strEstado = EstadoActuacion(strEstado,doc)
+				
+				Set oUnidad = New UnidadExp(doc.getItemValue("ccOficina")(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				Else
+					strOficinaActual=" "
+				End If
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+			ElseIf strform = "FCarta" Then
+				strTipoDoc = "Carta de servicio"			
+				strAux = "000" + doc.getItemValue("ccnNroAct")(0)
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) + "-" + Right(strAux,3)
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)
+				Set oUnidad = New UnidadExp(doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADDESTINO)(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				End If
+				
+				
+				'If doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) ="" Then 
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+				'Else
+					'strHost="javascript:AbrirCarta('" & strHostTemp & "','" & doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) & "-" + Right(strAux,3) & "')"
+				'	strHost = strHostTemp + "/(AbrirCarta)?OpenAgent&idCarta="+doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0)+ "-" + Right(strAux,3) '"javascript:AbrirCarta('"+doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0)+ "-" + Right(strAux,3)+"')"
+				'End If
+			ElseIf strform = "FContrato" Then
+				strTipoDoc = "Contrato"
+				
+				If doc.GetItemValue("ccNroContrato")(0) <> "" Then
+					strNumeroDoc = doc.GetItemValue("ccNroContrato")(0)
+				Else
+					strNumeroDoc = " - "
+				End If
+				
+				If doc.GetItemValue("sObjetoContrato")(0) <> "" Then
+					strTituloDoc = doc.GetItemValue("sObjetoContrato")(0)
+				Else
+					strTituloDoc = " - "
+				End If
+				
+				Select Case doc.GetItemValue("ccEstado")(0)
+				Case IGDOC_CONTRATOS_ESTADO_BORRADOR
+					strEstado = "Borrador"
+				Case IGDOC_CONTRATOS_BORRADOR_CON_PRORROGA
+					strEstado = "Borrador"
+				Case IGDOC_CONTRATOS_BORRADOR_CON_AMPLIACION
+					strEstado = "Borrador"
+				Case IGDOC_CONTRATOS_ESTADO_RESERVADO
+					strEstado = "Reservado"
+				Case IGDOC_CONTRATOS_ESTADO_ACTIVO			
+					strEstado = "Activo"
+				Case IGDOC_CONTRATOS_ESTADO_FINALIZADO 
+					strEstado = "Finalizado"
+				Case Else
+					strEstado = " - "
+				End Select
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"	
+				
+				Set oUnidad = New UnidadExp(doc.GetItemValue("cAreaResponsable")(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				Else	
+					strOficinaActual = " - "
+				End If
+			ElseIf strform = "FPunto" Then
+				strTipoDoc = "Punto"
+				If doc.hasitem("ccnNroRes") Then
+					strNumeroDoc = doc.Getitemvalue("ccnNroRes")(0)
+				ElseIf doc.Hasitem("sNroSesion") Then
+					strNumeroDoc = doc.Getitemvalue("sNroSesion")(0)& "#" & CStr(doc.Getitemvalue("ccnNroPunto")(0)) 
+				End If	
+				
+				If doc.hasitem("sAsunto") Then
+					strTituloDoc=doc.getItemValue("sAsunto")(0)
+				End If
+				strEstado = doc.getItemValue("ccEstado")(0)
+				strOficinaActual = "-"
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"	
+			
+				
+			ElseIf strform = "FSesion" Then
+				strTipoDoc = "Sesion"
+				strNumeroDoc = doc.Getitemvalue("sNroSesion")(0)
+				strEstado = doc.getItemValue("ccEstado")(0)
+				strOficinaActual = "-"
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"	
+			Else
+				strTipoDoc = "Formulario"			
+				strNumeroDoc = doc.GetItemValue("Numero")(0)
+				
+				' Cambiar
+				strTituloDoc = doc.GetItemValue("sNombreForm")(0)
+				
+				strEstado = doc.GetItemValue("sEstado")(0)
+				
+				Set oUnidad = New UnidadExp(doc.getItemValue("UnidadActual")(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				Else	
+					strOficinaActual = doc.GetItemValue("UnidadActual")(0)
+				End If
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"	
+							
+			
+					
+			End If
+			' Cargo los campos de la configuración 
+			Dim i As Integer			
+			
+			Set values = New Vector(0)
+			Set campos = pCampos
+			Set tipos = pTipos
+			For i = 1 To campos.cantElem
+				
+				
+				Dim valor As New Vector(0)
+				If tipos.getElement(i) = "Texto" Then
+					If strForm="FActuacion" Then
+						If Not doc.hasitem(campos.getElement(i)) Then
+							If Not docAux Is Nothing Then
+								valor.values = docAux.GetItemValue(campos.getElement(i))
+							Else
+								valor.values = doc.GetItemValue(campos.getElement(i))
+							End If	
+						Else
+							valor.values = doc.GetItemValue(campos.getElement(i))		
+						End If
+						
+					Else
+						
+						valor.values = doc.GetItemValue(campos.getElement(i))
+					End If
+					
+				ElseIf tipos.getElement(i) = "Unidad" Then
+					Dim oUnidadCampo As UnidadExp
+					Dim unidades As New Vector(0)
+					If strForm="FActuacion" Then
+						If Not doc.hasitem(campos.getElement(i)) Then
+							If Not docAux Is Nothing Then
+								unidades.values = docaux.GetItemValue(campos.getElement(i))
+							Else
+								unidades.values = doc.GetItemValue(campos.getElement(i))
+							End If	
+						Else							
+							unidades.values = doc.GetItemValue(campos.getElement(i))
+						End If
+					Else
+						unidades.values = doc.GetItemValue(campos.getElement(i))
+					End If	
+					
+						
+					
+					Dim u As Integer
+					For u = 1 To unidades.cantElem 
+						Dim numuni As New Vector(0)
+						
+						Set oUnidadCampo = New UnidadExp(unidades.getElement(u))
+						
+						If Not oUnidadCampo Is Nothing Then
+							valor.insertElement oUnidadCampo.NombreActual, valor.cantElem + 1
+						End If					
+					Next
+					
+				ElseIf tipos.getElement(i) = "Usuario" Then
+					Dim username As NotesName
+					ForAll user In doc.GetItemValue(campos.getElement(i))					
+						Set username = session.CreateName(user)
+						valor.insertElement username.Common, valor.cantElem + 1 
+					End ForAll
+				ElseIf tipos.getElement(i) = "Estado" Then
+					If strForm="FActuacion" Then
+						If Not doc.hasitem(campos.getElement(i)) Then
+							If Not docAux Is Nothing Then
+								valor.values = docAux.GetItemValue(campos.getElement(i))
+							Else
+								valor.values = doc.GetItemValue(campos.getElement(i))
+							End If	
+						Else
+							valor.values = doc.GetItemValue(campos.getElement(i))
+						End If
+					Else
+						valor.values = doc.GetItemValue(campos.getElement(i))
+					End If	
+
+				ElseIf tipos.getElement(i) = "Formula" Then
+					valor.values = Evaluate(campos.getElement(i), doc)
+				End If
+				Call values.insertElement(valor.toString(","), i)
+			Next
+		End If
+		
+		Exit Sub		
+handler:
+		
+		'Msgbox "ResultBean "& Error & " - " & Erl
+		If Err= ERROR_DOCUMENT_NOT_FOUND Then
+			Dim eh As New ErrorHandler(Err,Error$, "Expediente Electrónico","ResultBean",Erl, "BúsquedaNEW")
+			Call eh.registrar ("ERROR POR UNIDAD MAL MIGRADA")
+			Dim dbBusq As NotesDatabase
+			Dim ses As New NotesSession
+			Set dbBusq = ses.GetDatabase(ses.CurrentDatabase.Server,"mail.box")
+			Dim mail As NotesDocument
+			Set mail = dbBusq.CreateDocument
+			Call mail.ReplaceItemValue("Subject", "ERROR UNIDAD " & doc.GetItemValue("ccNroExp")(0))
+			Call mail.ReplaceItemValue("BlindCopyTo","Administrador")
+			Call mail.Save(True,False)
+			'Call mail.Send(False,"Usuario Uno/DesarrolloISA")
+			Resume Next
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase ResultBean - Sub new","","")
+		End If
+		
+		Exit Sub
+	End Sub
+	
+'**********************************************************************************************************************************
+	
+	Public Function getDatos() As Vector
+		Set getDatos = values		
+	End Function
+	
+'**********************************************************************************************************************************
+	Public Function getCampo(nombre As String) As String
+		Dim pos As Vector
+		Dim result As String
+		
+		result = ""
+		Set pos = campos.getIndex(nombre)
+		If pos.cantElem >= 1 Then
+			result = values.getElement(pos.getElement(1))
+		End If
+		
+		getCampo = result		
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Sub new3 (doc As NotesDocument, strHostTemp As String)
+		On Error GoTo handler
+		
+		Dim strAux As String
+		Dim db As NotesDatabase
+		Dim viewBusAct As NotesView
+		Dim docAux As NotesDocument
+		Dim oUnidad As UnidadExp
+		
+		If Not doc Is Nothing Then
+			strForm = doc.GetItemValue("Form")(0)
+			If strForm = "FCaratula" Then
+				strTipoDoc="Caratula"
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0)
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)
+				If strEstado <> "Archivado" And strEstado <>"Agregado"  Then
+					Set db = doc.ParentDatabase
+					Set viewBusAct = db.GetView(DBSGD_VISTA_BUSQ_ACTUACION_NRO)
+					Set docAux = viewBusAct.GetDocumentByKey(CStr(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_CANT_ACT)(0)) & doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), True)
+					If Not docAux Is Nothing Then
+						strEstado = docAux.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0)
+						strEstado = EstadoActuacion(strEstado,docAux)								
+					ElseIf strEstado="En Tránsito" Then
+						Set oUnidad = New UnidadExp(doc.GetItemValue("ccOficinaActual")(0))
+						If Not oUnidad Is Nothing Then
+							strEstado=strEstado+".- "+oUnidad.NombreActual
+						End If
+					End If
+				ElseIf strEstado="Agregado" Then
+					strEstado = strEstado & " a  -> " &  doc.GetItemValue(DBSGD_CAMPO_FCARATULA_PADRE_DE_AGREGADO)(0)
+				End If
+				
+				If doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)="En Tránsito" Then
+					
+					Set oUnidad = New UnidadExp(doc.getItemValue("ccOficinaAnterior")(0))
+					If Not oUnidad Is Nothing Then
+						strOficinaActual = oUnidad.NombreActual
+					Else 
+						strOficinaActual= " "
+					End If
+					Set oUnidad = New UnidadExp( doc.getItemValue("ccOficinaActual")(0))
+					If Not oUnidad Is Nothing Then
+						strOficinaActual = strOficinaActual &  " -> " & oUnidad.NombreActual
+					Else
+						strOficinaActual = strOficinaActual &  " -> " 
+					End If
+				Else
+					Set oUnidad = New UnidadExp(doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL)(0))
+					If Not oUnidad Is Nothing Then
+						strOficinaActual = oUnidad.NombreActual	
+					Else
+						strOficinaActual=" "
+					End If
+				End If
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+				
+			ElseIf strform = "FActuacion" Then
+				strTipoDoc="Actuación"
+				strAux = "000" & doc.getItemValue("ccnNroAct")(0)
+				strAux = Right(strAux,3)
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0) & "-" & strAux
+				
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO)(0)
+				If strTituloDoc = "" Then
+					Set db = doc.ParentDatabase
+					Set viewBusAct = db.GetView(DBSGD_VISTA_BUSQ_CARATULA)
+					Set docAux = viewBusAct.GetDocumentByKey(doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0) ,True)
+					If Not docAux Is Nothing Then
+						strTituloDoc = docAux.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+					End If
+				End If
+				
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0)
+				strEstado = EstadoActuacion(strEstado,doc)
+				
+				Set oUnidad = New UnidadExp(doc.getItemValue("ccOficina")(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				Else
+					strOficinaActual=" "
+				End If
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+			ElseIf strform = "FCarta" Then
+				strTipoDoc = "Carta de servicio"			
+				strAux = "000" + doc.getItemValue("ccnNroAct")(0)
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) + "-" + Right(strAux,3)
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)
+				Set oUnidad = New UnidadExp(doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADDESTINO)(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				End If
+				
+				
+				'If doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) ="" Then 
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+				'Else
+					'strHost="javascript:AbrirCarta('" & strHostTemp & "','" & doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) & "-" + Right(strAux,3) & "')"
+				'	strHost = strHostTemp + "/(AbrirCarta)?OpenAgent&idCarta="+doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0)+ "-" + Right(strAux,3) '"javascript:AbrirCarta('"+doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0)+ "-" + Right(strAux,3)+"')"
+				'End If
+			ElseIf strform = "FContrato" Then
+				strTipoDoc = "Contrato"
+				
+				If doc.GetItemValue("ccNroContrato")(0) <> "" Then
+					strNumeroDoc = doc.GetItemValue("ccNroContrato")(0)
+				Else
+					strNumeroDoc = " - "
+				End If
+				
+				If doc.GetItemValue("sObjetoContrato")(0) <> "" Then
+					strTituloDoc = doc.GetItemValue("sObjetoContrato")(0)
+				Else
+					strTituloDoc = " - "
+				End If
+				
+				Select Case doc.GetItemValue("ccEstado")(0)
+				Case IGDOC_CONTRATOS_ESTADO_BORRADOR
+					strEstado = "Borrador"
+				Case IGDOC_CONTRATOS_BORRADOR_CON_PRORROGA
+					strEstado = "Borrador"
+				Case IGDOC_CONTRATOS_BORRADOR_CON_AMPLIACION
+					strEstado = "Borrador"
+				Case IGDOC_CONTRATOS_ESTADO_RESERVADO
+					strEstado = "Reservado"
+				Case IGDOC_CONTRATOS_ESTADO_ACTIVO			
+					strEstado = "Activo"
+				Case IGDOC_CONTRATOS_ESTADO_FINALIZADO 
+					strEstado = "Finalizado"
+				Case Else
+					strEstado = " - "
+				End Select
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"	
+				
+				Set oUnidad = New UnidadExp(doc.GetItemValue("cAreaResponsable")(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				Else	
+					strOficinaActual = " - "
+				End If
+			Else
+				
+				strTipoDoc = "Formulario"			
+				strNumeroDoc = doc.GetItemValue("Numero")(0)
+				
+				' Cambiar
+				strTituloDoc = doc.GetItemValue("sNombreForm")(0)
+				
+				strEstado = doc.GetItemValue("sEstado")(0)
+				
+				Set oUnidad = New UnidadExp(doc.getItemValue("UnidadActual")(0))
+				If Not oUnidad Is Nothing Then
+					strOficinaActual = oUnidad.NombreActual
+				Else	
+					strOficinaActual = doc.GetItemValue("UnidadActual")(0)
+				End If
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"				
+				
+			End If
+			Dim pos As Long 
+			Dim ite As Integer
+			ite=0
+			pos = InStr(strTituloDoc, "&")
+			While pos >0 And pos< Len(strTituloDoc) And ite<10
+				strTituloDoc = Left(strTituloDoc,pos-1) + "y" + Right(strTituloDoc,Len(strTituloDoc)-pos)
+				pos = InStr(pos+1,strTituloDoc, "&")
+				ite=ite+1
+			Wend
+		End If
+		
+		Exit Sub
+handler:
+		If Err= ERROR_DOCUMENT_NOT_FOUND Then
+			Dim eh As New ErrorHandler(Err,Error$, "Expediente Electrónico","ResultBean",Erl, "BúsquedaNEW")
+			Call eh.registrar ("ERROR POR UNIDAD MAL MIGRADA")
+			Dim dbBusq As NotesDatabase
+			Dim ses As New NotesSession
+			Set dbBusq = ses.GetDatabase(ses.CurrentDatabase.Server,"mail.box")
+			Dim mail As NotesDocument
+			Set mail = dbBusq.CreateDocument
+			Call mail.ReplaceItemValue("Subject", "ERROR UNIDAD " & doc.GetItemValue("ccNroExp")(0))
+			Call mail.ReplaceItemValue("BlindCopyTo","Administrador")
+			Call mail.Save(True,False)
+			'Call mail.Send(False,"Usuario Uno/DesarrolloISA")
+			Resume Next
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase ResultBean - Sub new","","")
+		End If
+		Exit Sub
+	End Sub
+	
+'**********************************************************************************************************************************
+	Private Function EstadoActuacion (strEstado As String, doc As NotesDocument) As String
+		'devuelve el estado dado su codigo
+		On Error GoTo handler
+		Dim oUnidad As UnidadExp
+		
+		If strEstado="10" Then
+			Set oUnidad = New UnidadExp(doc.GetItemValue("ccOficina")(0))
+			EstadoActuacion ="En Tránsito .-" & oUnidad.NombreActual
+		ElseIf strEstado="15" Then
+			EstadoActuacion = "Para Actuar"
+		ElseIf strEstado = "20" Then
+			Dim nName As New NotesName(doc.getItemValue("sReservadoPor")(0))
+			EstadoActuacion = "Reservado por: " & nName.Common 
+		ElseIf strEstado= "25" Then
+			If doc.hasItem("nCantidadFirmas") Then
+				If CInt(doc.getItemValue("nCantidadFirmas")(0))>0 Then
+					Dim vFirmas As New Vector(0)
+					vFirmas.values =Evaluate("@name([CN];sUsuarioFirma)",doc)	
+					EstadoActuacion="Firmado por: " & vFirmas.ToString(", ")					
+				Else
+					Dim vFirmantes As New Vector(0)
+					vFirmantes.values = Evaluate("@name([CN];sFirmantes)",doc)'doc.GetItemValue("sFirmantes")
+					EstadoActuacion="Para Firmar: "	& vFirmantes.ToString(", ")					
+				End If
+			Else
+				Dim vFirman As New Vector(0)
+				vFirman.values =  Evaluate("@name([CN];sFirmantes)",doc) 'doc.GetItemValue("sFirmantes")
+				EstadoActuacion = "Para Firmar: " & vFirman.ToString(", ")
+			End If
+		ElseIf strEstado="30" Then
+			EstadoActuacion = "Para dar pase"
+		ElseIf strEstado="35" Then
+			EstadoActuacion = "Cursado"
+		ElseIf strEstado ="40" Then
+			EstadoActuacion = "Anulado"
+		ElseIf strEstado = "45" Then
+			EstadoActuacion = "Archivado"
+		ElseIf strEstado = "50" Then
+			EstadoActuacion = "Agregado"
+		End If
+		Exit Function
+handler:
+		
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase EstadoACtuacion - Sub new","","")	
+		
+		
+		Exit Function
+	End Function
+'**********************************************************************************************************************************	
+	
+	Public Sub new2(host As String,numero As String,titulo As String,estado As String,oficina As String)
+		strHost = host
+		strNumeroDoc = numero 
+		strTituloDoc = titulo
+		strEstado=estado
+		strOficinaActual = oficina
+	End Sub
+	
+'**********************************************************************************************************************************
+	
+	Public Function getHost() As String
+		getHost = strHost
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getNumeroDoc() As String
+		getNumeroDoc=strNumeroDoc
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getTipoDoc() As String
+		getTipoDoc = strTipoDoc
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getEstado() As String
+		getEstado = strEstado		
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getTituloDoc() As String
+		getTituloDoc = strTituloDoc
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getOficinaActual() As String
+		getOficinaActual = strOficinaActual
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getForm() As String
+		getForm = strForm
+	End Function
+	
+'**********************************************************************************************************************************
+
+End Class
+'**********************************************************************************************************************************
+'**********************************************************************************************************************************

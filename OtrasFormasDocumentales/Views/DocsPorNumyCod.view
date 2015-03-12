@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF80042C028'>
+<noteinfo noteid='45e' unid='BAF314304CCD46B4032573A300471025' sequence='43'>
+<created><datetime>20071130T095611,89-03</datetime></created>
+<modified><datetime>20150309T094356,78-03</datetime></modified>
+<revised><datetime>20150309T094356,77-03</datetime></revised>
+<lastaccessed><datetime>20150309T094356,78-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T100909,73-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Acosta/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name
+>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name
+>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071130T095611,90-03</datetime><datetime>20071130T095612,05-03</datetime><datetime
+>20071130T100206,06-03</datetime><datetime>20071130T100316,96-03</datetime><datetime
+>20071130T100704,76-03</datetime><datetime>20080515T161623,03-03</datetime><datetime
+>20080912T113214,04-03</datetime><datetime>20081029T161705,81-03</datetime><datetime
+>20081029T171214,30-03</datetime><datetime dst='true'>20081119T162409,64-02</datetime><datetime
+ dst='true'>20081122T153312,05-02</datetime><datetime dst='true'>20081124T104333,19-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>DocsPorNumyCod</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+kgACABwABwBuTnVtZXJvAAUABwBuTnVtZXJvAAMAAgAYAAYAY29kaWdvBQAGAGNvZGlnbwMABQAq
+ACYABAAHAAYACQAEAG5OdW1lcm9jb2RpZ28kQ29uZmxpY3QkUkVGBAAEAAAAIgAFAAQARm9ybQEA
+CQBEb2N1bWVudG8ACgIEAAQAAwAHAAwABQAJM1M0UwA=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+IQACAABEAGYAAAAHAABmAAcABgBuTnVtZXJvY29kaWdv
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAIACAAAAFZDAQAHAAYAHgAAAFAAAQAACgAAAAAAAAAAAAICAAAAVkMBAAYABgAaAAAAUAAB
+AAAKAAAAAAAAAAAAAgIAAABuTnVtZXJvTnVtZXJvHgACABwABwBuTnVtZXJvAAUABwBuTnVtZXJv
+AAMAY29kaWdvQ29kaWdvGgACABgABgBjb2RpZ28FAAYAY29kaWdvAwAmAAEAAAABAQAJAQAACgEB
+DgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAP//AAAA
+AAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAA
+QgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAAAAA
+AAEAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$SelQuery' sign='true'>
+<rawitemdata type='f'>
+gQYAAAAAif8VAAAAAAABAAkARG9jdW1lbnRvAA==
+</rawitemdata></item>
+<item name='$Flags'><text>Y</text></item></note>
+

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A126E'>
+<noteinfo noteid='1f6' unid='9AF3E4AFE329671643256DE800141CBD' sequence='184'>
+<created><datetime>20031124T063940,77+03</datetime></created>
+<modified><datetime>20150311T132350,93-03</datetime></modified>
+<revised><datetime>20150309T094433,24-03</datetime></revised>
+<lastaccessed><datetime>20150311T132350,93-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132350,93-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Alejandro Zinemanas/O=ISA</name><name
+>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=DNII</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Guillermo Segalerba/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060210T175840,25-03</datetime><datetime>20060410T180318,15-03</datetime><datetime
+>20060411T105206,17-03</datetime><datetime>20060411T133937,50-03</datetime><datetime
+>20060411T140621,41-03</datetime><datetime>20060412T173142,92-03</datetime><datetime
+ dst='true'>20061103T100659,44-02</datetime><datetime>20070201T132021,39-03</datetime><datetime
+>20070201T132351,12-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$DBAction1' sign='true'><formula>@Command([FileCloseWindow])</formula></item>
+<item name='$TITLE' sign='true'><text>Database Script</text></item>
+<item name='$Flags'><text>t34Q</text></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item>
+<item name='$POID'><datetime>20120418T113618,48-03</datetime></item></note>
+

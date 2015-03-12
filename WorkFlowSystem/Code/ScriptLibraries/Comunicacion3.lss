@@ -1,0 +1,2340 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library Clase Comunicacion 3
+	Created Oct 28, 2011 by Guillermo Segalerba/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+Use "VectorClass 2.05"
+Use "Configuracion Comunicaciones"
+Use "NumeradorClient"
+Use "Roles Class"
+Use "IGDocConfig"
+Use "Usuario Comunicacion" 
+Use "ConstantesSistema"
+Use "UnidadCom Class"
+
+'Use "MXGraph 1.02"
+Use "ClaseIndiceComunicaciones"
+Use "ClaseDosListasConCorrespondencia"
+Use "FuncionesGenerales"
+Use "ClaseAuditoriaComunicaciones"
+'******************************************************************************************************************	
+'*                                                 
+'*								CLASS <Comunicación>
+'* 
+'******************************************************************************************************************	
+
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Comunicacion3
+Declare Private Sub actualizarIndice(ByVal numero As String)
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Const V_TM_POR_ID			="VTiposMarcaxId"
+Public Const CMP_M_FORM			="FMarca"
+Public Const CMP_M_USUARIO		="sUsuario"
+Public Const CMP_M_USUARIO_AUT	="sUsuarioAutor"
+Public Const CMP_M_LECT_PER		="sLectPer"
+Public Const CMP_M_ID_TIPO_MARCA	="nIdMarca"
+Public Const CMP_M_TEXTO			="sTexto"
+Public Const CMP_M_COLOR			="sColor"
+Public Const CMP_M_NRO_EXP		="sNroExp"
+Public Const CMP_M_TEXTO_EXP		="sTextoExp"
+Public Const CMP_M_UNIDAD		="sUnidad" 
+Const CMP_TM_FORM			="FTipoMarca"
+Const CMP_TM_USUARIO		="sUsuario"
+Const CMP_TM_NRO_EXP		="sNroExp"
+Const CMP_TM_ID			="nId"
+Const CMP_TM_TEXTO			="sTextoMarca"
+Const CMP_TM_COLOR			="sColorMarca"
+
+Public Const ESTADO_EN_GENERACION			= "En Generación"
+Public Const ESTADO_RESERVADO				= "Reservado"
+Public Const ESTADO_BORRADOR				= "Borrador"
+Public Const ESTADO_PARA_FIRMAR			= "Para Firmar"
+Public Const ESTADO_FIRMADO				= "Firmado"
+Public Const ESTADO_PARA_ENVIAR			= "Para Enviar"
+Public Const ESTADO_ENVIADO				= "Enviado"
+Public Const ESTADO_ARCHIVADO				= "Archivado"
+Public Const ESTADO_RECIBIDO				= "Recibido"
+Public Const ESTADO_FIRMADO_PARA_FIRMAR 	= "Firmado para Firmar"
+Public Const NOMBRE_APLICACION_COMUNICACIONES = "IGDoc Comunicaciones"
+'NOMBRES DE CAMPOS
+Public Const VISTACOMUNIDADYTIPO			= "MiembrosComXUniCom"
+Public Const DEFCOM_REMITENTE		="sRemitente"
+Public Const DEFCOM_CAMPO_TIENE_NUMERO		="tieneNumero"
+Public Const DEFCOM_DESTINATARIOS			= "sDestinatarios"
+Public Const COMDEF_CAMPO_ASUNTO			="sAsunto"
+Public Const CAMPO_DEFCOM_FORMATONUMERACION = "sNumeracionFormato"
+Public Const COM_ROL_DESARROLLO			= "[Desarrollo]"
+Public Const COM_ROL_VER_TODOS			= "[Ver Todos]"
+Public Const COM_CAMPO_ACCION				= "sAccion"
+Public Const COM_CAMPO_REMITENTE			= "remitente"
+Public Const COM_CAMPO_LECTORES_PERMANENTES	= "LectoresPermanentes"
+Public Const COM_CAMPO_LECTORES			= "Lectores"
+Public Const COM_CAMPO_AUTORES			= "Autores"
+Public Const COM_CAMPO_REQUIERE_FIRMA			= "requiereFirmas"
+Public Const COM_CAMPO_ESTADO				= "sEstado"
+Public Const COM_CAMPO_NUMERO				= "nNumero"
+Public Const COM_CAMPO_ASUNTO				= "asunto"
+Public Const COM_CAMPO_CUERPO				= "cuerpo"
+Public Const COM_CAMPO_USUARIO			= "sUsuario"
+Public Const COM_CAMPO_DESTINATARIO		= "destinatario"
+Public Const COM_CAMPO_CC_DESTINATARIOS		= "ccDestinatarios"
+Public Const COM_DESTINATARIOS_UNIDAD		= "sDestinatariosUnidad"
+Public Const COM_CAMPO_FIRMANTE			= "sFirmante"
+Public Const COM_CAMPO_FIRMA				= "sFirma"
+Public Const COM_CAMPO_FECHA_FIRMA			= "fFechaFirma"
+Public Const COM_CAMPO_A_FIRMAR			= "sFirmar"
+Public Const COM_CAMPO_FIRMADO_ENVIAR		="sSePuedeEnviar"
+Public Const COM_CAMPO_FECHA_ENVIO			= "fFechasEnvio"
+Public Const COM_CAMPO_RESERVADO_POR		= "sReservadoPor"
+Public Const COM_CAMPO_CODIGO				= "codigo"
+Public Const COM_CAMPO_ID				= "sCodigo"
+Public Const COM_CAMPO_FECHA_FIN			= "fFinalizacion"
+Public Const COM_CAMPO_USUARIO_FIN			= "sUsuarioFin"
+Public Const COM_CAMPO_USUARIO_INICIO		= "sUsuarioInicio"
+Public Const COM_CAMPO_UNIDAD				= "sUnidad"
+Public Const COM_UNIDAD_ACTUAL			= "unidadActual"
+Public Const COM_CAMPO_USUARIO_FIRMAR		= "sUsuarioFirmar"
+Public Const COM_CAMPO_ARCHIVOS_ADJUNTOS	= "sNombresArchivos"
+Public Const COM_CAMPO_RESPUESTA_DE		= "nRespuestaDe"
+Public Const COM_CAMPO_RESPUESTA_DE_UID		= "nRespuestaDeUid"
+Public Const COM_CAMPO_LISTA_DESTINATARIOS	= "listaDestinatarios"
+Public Const COM_CAMPO_LISTA_RECIBIDOS		= "listaRecibidos"
+Public Const COM_CAMPO_TEMA					= "tema"
+Public Const COM_CAMPO_EXTERNO			= "sExterno"
+Public Const COM_CAMPO_NRO_EXTERNO	= "sNroExterno"
+Public Const COM_CAMPO_LISTA_ARCHIVADOS		= "listaArchivados"
+Public Const COM_CAMPO_RESPUESTAID			="idDeResp"
+Public Const COM_CAMPO_RESPUESTA_DE_NRO			="respuestaDeNro"
+
+Public Const CAMPO_COMUNICACION_FORMATONUMERACION = "sNumeracionFormato"
+Public Const FORMATO_COM_CODIGO = "IGDOC_COM_c_yy"
+Public Const SI_SE_FIRMA					="Sí"
+Public Const COMDEF_CAMPO_SE_FIRMA			="sFirma"
+Public Const COMDEF_CAMPO_DESTUNICO			= "sDestUnico"
+'ERRORES
+
+Private Const ERROR_ID_COM_NOTHING				= 16000
+Private Const MSG_ERROR_ID_COM_NOTHING				= "El id de formulario no está seteado"
+
+Private Const ERROR_CREADO_COM_NOTHING				= 16001
+Private Const MSG_ERROR_CREADO_FORM_NOTHING			= "La varibale creado no está seteada"
+
+Private Const ERROR_COD_COM_NOTHING				= 16002
+Private Const MSG_ERROR_COD_COM_NOTHING			= "El código de formulario no está seteado"
+
+Private Const ERROR_DEF_COM_NOTHING				= 16003
+Private Const MSG_ERROR_DEF_COM_NOTHING			= "No se encontró la definición del formulario"
+
+Private Const ERROR_USUARIO_NOTHING				= 16004
+Private Const MSG_ERROR_USUARIO_NOTHING				= "El usuario no está seteado"
+
+Private Const ERROR_OFICINA_CREAR					= 16005
+Private Const MSG_ERROR_OFICINA_CREAR				= "La unidad no está en la lista de unidades que pueden crear el formulario"
+
+Private Const ERROR_USUARIO_OFICINA				= 16006
+Private Const MSG_ERROR_USUARIO_OFICINA				= "El usuario no pertenece a la unidad o no tiene acceso al formulario"
+
+Private Const ERROR_ROL_USUARIO_CREADOR				= 16007
+Private Const MSG_ERROR_ROL_USUARIO_CREADOR			= "El usuario no cuenta con el rol de creador dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_EDITOR				= 16008
+Private Const MSG_ERROR_ROL_USUARIO_EDITOR			= "El usuario no cuenta con el rol de edicion dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_RECEPTOR			= 16009
+Private Const MSG_ERROR_ROL_USUARIO_RECEPTOR			= "El usuario no cuenta con el rol de receptor dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_FIRMAR				= 16010
+Private Const MSG_ERROR_ROL_USUARIO_FIRMAR			= "El usuario no cuenta con el rol de firmar dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_PASE				= 16011
+Private Const MSG_ERROR_ROL_USUARIO_PASE			= "El usuario no cuenta con el rol de dar pase dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_ARCHIVAR			= 16012
+Private Const MSG_ERROR_ROL_USUARIO_ARCHIVAR			= "El usuario no cuenta con el rol de archivar dentro de la unidad"
+
+Private Const ERROR_USUARIO_OFICINAACTUAL			= 16013
+Private Const MSG_ERROR_USUARIO_OFICINAACTUAL		= "El usuario no pertenece a la unidad actual"
+
+Private Const ERROR_COM_ESTADO				= 16014
+Private Const MSG_ERROR_COM_ESTADO			= "El estado del formulario no es "
+
+Private Const ERROR_COM_RESERVADOPOR			= 16015
+Private Const MSG_ERROR_COM_RESERVADOPOR		= "El formulario no está reservado por el usuario "
+
+Private Const ERROR_ROL_USUARIO_EDITORAASIGNAR		= 16016
+Private Const MSG_ERROR_ROL_USUARIO_EDITORAASIGNAR	= "El usuario a asignarle el formulario no tiene rol de editor"
+
+Private Const ERROR_USUARIO_OFICINAACTUAL2			= 16017
+Private Const MSG_ERROR_USUARIO_OFICINAACTUAL2		= "El usuario al que se quiere asignar el formulario no pertenece a la unidad actual"
+
+Private Const ERROR_FORMULARIO_ESTADO_ENTRANSITO		= 16018
+Private Const MSG_ERROR_FORMULARIO_ESTADO_ENTRANSITO	= "El formulario no puede asignarse cuando su estado está en tránsito"
+
+Private Const ERROR_FORMULARIO_ESTADO_FINALIZADO		= 16019
+Private Const MSG_ERROR_FORMULARIO_ESTADO_FINALIZADO	= "El formulario no puede asignarse cuando su estado está en finalizado"
+
+Private Const ERROR_UNIDAD_RECEPTOR				= 16020
+Private Const MSG_ERROR_UNIDAD_RECEPTOR				= "La oficina de destino no tiene miembros con rol de receptor"
+
+Private Const ERROR_FORMULARIO_SECCION				= 16021
+Private Const MSG_ERROR_FORMULARIO_SECCION			= "No se puede devolver cuando es la primera o la segunda sección del formulario"
+
+Private Const ERROR_ROL_USUARIO_FINALIZAR			= 16022
+Private Const MSG_ERROR_ROL_USUARIO_FINALIZAR		= "El usuario no cuenta con el rol de finalizar dentro de la unidad"
+
+Private Const ERROR_UNIDAD_DARPASE					= 16023
+Private Const MSG_ERROR_UNIDAD_DARPASE				= "La unidad no está habilitada para dar pase"
+
+Private Const ERROR_UNIDADDESTINO_VACIA				= 16024
+Private Const MSG_ERROR_UNIDADDESTINO_VACIA			= "La unidad de destino no puede ser vacía"
+
+Public Const ERROR_UNIDAD_ARCHIVAR					= 16025
+Public Const MSG_ERROR_UNIDAD_ARCHIVAR_1			= "La siguiente unidad no está habilitada a realizar Archivado de Expedientes: "
+
+Private Const ERROR_ACCESO_FORMULARIO				= 16026
+Private Const MSG_ERROR_ACCESO_FORMULARIO			= "La oficina no tiene acceso al formulario"
+
+Private Const ERROR_FORMULARIO_NO_ENCONTRADO_1		= 16027
+Private Const MSG_ERROR_FORMULARIO_NO_ENCONTRADO_1	= "No se encontró el formulario de número "
+
+Private Const ERROR_FORMULARIO_NO_ENCONTRADO_2		= 16028
+Private Const MSG_ERROR_FORMULARIO_NO_ENCONTRADO_2	= "No se encontró el formulario de UNID "
+
+Private Const ERROR_NUMERACION_NROUNIDAD			= 16029
+Private Const MSG_ERROR_NUMERACION_NROUNIDAD			= "El formato de numeración no puede contener un número de unidad si éste está definido como externo"
+
+Private Const ERROR_UNDIDAD_CREACION				= 16030
+Private Const MSG_ERROR_UNIDAD_CREACION				= "La unidad en la que se encuentra no es la unidad de inicio en la definición del flujo del formulario"
+
+Private Const ERROR_USUARIO_ANONIMO				= 16031
+Private Const MSG_ERROR_USUARIO_ANONIMO				= "No se permite la creación de este formulario por parte de usuario anónimos"
+
+Private Const ERROR_UNIDAD_A_ENVIAR				= 16032
+Private Const MSG_ERROR_UNIDAD_A_ENVIAR				= "No existe una unidad para enviar en la definición del flujo del formulario"
+
+Private Const ERROR_PASE_UNIDAD_SUPERIOR			= 16033
+Private Const MSG_ERROR_PASE_UNIDAD_SUPERIOR			= "Error al dar pase. Según la definición del flujo del formulario debe darse pase a la unidad superior y no existe tal."
+
+Private Const ERRROR_COM_ENVIAR						= 16034
+Private Const MSG_ERROR_COM_ENVIAR					= "Error al enviar, faltan firmas"
+
+Private Const ERRROR_COM_ASIGNAR						= 16035
+Private Const MSG_ERROR_COM_ASIGNAR					= "Error al asignar, faltan permisos"
+
+Private Const ERRROR_COM_LIBERAR						= 16036
+Private Const MSG_ERROR_COM_LIBERAR					= "Error al asignar, faltan permisos"
+
+Private Const ERROR_COM_ELIMINAR						= 16037
+Private Const MSG_ERROR_COM_ELIMINAR					= "Error al eliminar, faltan permisos"
+
+
+Private Const ERROR_COM_NEW						= 16038
+Private Const MSG_ERROR_COM_NEW					= "Error al hacer el new, no se encontró la comunicación"
+
+Private Const ERROR_COM_ENVIAR_DEST						= 16039
+Private Const MSG_ERROR_COM_ENVIAR_DEST					= "Error al enviar, no hay destinatarios"
+
+Private Const ERROR_COM_CREAR						= 16040
+Private Const MSG_ERROR_COM_CREAR					= "Error al crear, no hay permisos suficientes"
+
+Private Const ERROR_COM_CREAR1						= 16041
+Private Const MSG_ERROR_COM_CREAR1					= "El campo destinatarios debe tener un único destinatario"
+
+
+
+Private Const ERROR_COM_ASUNTO						= 16042
+Private Const MSG_ERROR_COM_ASUNTO					= "El asunto es vacio"
+
+Private Const ERROR_COM_RESPCC						= 16043
+Private Const MSG_ERROR_COM_RESPCC					= "Esta comunicacion fue enviada como copia, no se puede responder"
+
+Private Const ERROR_COM_RECIBIR						= 16044
+Private Const MSG_ERROR_COM_RECIBIR					= "El usuario no tiene rol RolReceptor"
+
+Private Const ERROR_COM_EDIT						= 16045
+Private Const MSG_ERROR_COM_EDIT					= "El usuario no tiene permiso para editar esta comunicación"
+
+Private Const ERRROR_COM_VOLVERABORRADOR						= 16046
+Private Const MSG_ERROR_COM_VOLVERABORRADOR					= "No se puede volver a borrador esta comunicación"
+
+Private Const ERROR_COM_ANEXOSSIZE						= 16047
+Private Const MSG_ERROR_COM_ANEXOSSIZE					= "El tamaño de los anexos excede el máximo permitido"
+
+Private Const ERROR_COM_ANEXOSEXTENCION						= 16048
+
+Private Const ERROR_COM_ENVIASINRECEP						= 16049
+Private Const MSG_ERROR_COM_ENVIASINRECEP					= "La unidad destinataria no tiene receptores para este tipo de comunicación"
+
+Private Const ERRROR_COM_RESP_NO_UNICO						= 16050
+Private Const MSG_ERRROR_COM_RESP_NO_UNICO					= "No se permite responder comunicaciónes que permiten multiples destinatarios"
+
+Private Const ERROR_COM_DISTINTOTIPO						= 16051
+Private Const MSG_ERROR_COM_DISTINTOTIPO					= "El destinatario es de distinto tipo de el remitente, no se admite responder"
+
+
+Private Const ERROR_COM_MARCAR						= 16052
+Private Const MSG_ERROR_COM_MARCAR					= "Esta comunicación no puede ser marcada por este usuario"
+'METODO CREAR¿?
+%REM
+	Class Comunicacion
+	Description: Comments for Class
+%END REM
+Public Class Comunicacion3
+	'**************************************************************
+	'MIEMBROS PRIVADOS
+	
+	Private nroComu As String
+	Private usuarioComuni As String
+	Private ss As NotesSession
+	Private db As NotesDatabase
+	Private docCom As NotesDocument	
+	Private igdocConf As IGDocConfig	
+	Private dbComs As NotesDatabase
+	Private config As ConfigComunicaciones
+	Private auditoria As AuditoriaComunicaciones
+	'Private vistaCom As NotesView
+	'**************************************************************
+	'CONSTRUCTOR
+	%REM
+		Sub New
+		Description: Comments for Sub
+	%END REM
+	
+	Public Sub New (ByVal unid As String,creado As Boolean ,usuarioAccionE As String)   
+		On Error GoTo Handler
+		Set igdocConf = New IGDocConfig()
+		
+		
+		Set config = New ConfigComunicaciones()
+		Set ss = New NotesSession
+		Set db = ss.CurrentDatabase
+		dim vComs As NotesView
+		Dim dbComArch As NotesDatabase
+		Dim viewArch As NotesView
+		
+		Set auditoria = New AuditoriaComunicaciones()
+		Auditoria.usuario = usuarioAccionE
+		
+		usuarioComuni = usuarioAccionE
+		
+		Set dbComs = config.ReferenciarBaseDeDatos("COMUNICACIONES")
+		If (Not creado) Then
+			'Metodo que vuelve a setear un objeto config y que cambia la base de datos db por lo que lo comente
+			'Set docCom = getComunicacionByUnid(unid)
+			Set docCom = dbComs.Getdocumentbyunid(unid)
+		Else			
+			'Busco el documento por número en la base dbFormularios
+						 
+			Set vComs = dbComs.Getview("TodosxNro")
+			Set docCom = vComs.Getdocumentbykey(unid, true)		
+		End If
+		
+		If docCom Is Nothing Then
+			Set dbComArch =config.ReferenciarBaseDeDatos("ARCHIVO")
+			Set viewArch=dbComArch.Getview("TodosPorNumyCod")
+			Set docCom = viewArch.Getdocumentbykey(unid,true)
+			If docCom Is Nothing Then
+				Error ERROR_COM_NEW,MSG_ERROR_COM_NEW
+				MessageBox "La Comunicacion no se encontro en la base Comunicaciones vista TodosXNro"	
+			End If
+			
+		End If
+		
+		Auditoria.numeroDoc = unid
+		Auditoria.tipoDoc = docCom.Getitemvalue("sNombreCom")(0)
+		
+		Exit Sub
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - sub new","",usuarioComuni)	
+		Exit Sub
+	End Sub
+	'*****************************************************************************************************************	
+	%REM
+	'PROPIEDADES
+	
+	%END REM
+	Private Function getComunicacionByUnid(id As String) As NotesDocument
+		On Error GoTo handler
+		Dim conf As ConfigComunicaciones
+		Set conf = New ConfigComunicaciones()
+		'TAMBIENA ACORDARSE DE BUSCAR EN LA BASE DE ARCHIVADOS PORQE SE AHCE EN DIFERIDO ENTONCES PUEDE ESTAR ACTIVO 
+		'HAY QE ESTE AHI PUES UEDE ESTAR AHI Y HABERSE dESARCHIVADO X ENDE ESTAR ACTIVA.
+		Set db=conf.ReferenciarBaseDeDatos("COMUNICACIONES")
+		Set getComunicacionByUnid = db.GetDocumentByUNID(id)
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion new","",usuarioComuni)
+		Exit Function
+	End Function
+	'******************************************************************************************************************	
+	
+	'MÉTODOS PÚBLICOS
+
+	Private Sub copiarDestinatarios()
+		'copia los destinatarios a los campos listaDestinatarios y listaRecibidos
+		On Error GoTo HANDLER
+		Dim lista As Vector
+		Dim auxLista As Vector
+		Dim i As Integer
+		
+		'inicializo los vectores a usar
+		Set lista = New Vector(0)
+		lista.values = docCom.GetItemValue(COM_CAMPO_DESTINATARIO)
+		Set auxLista = New Vector(0)
+		auxLista.values = docCom.GetItemValue(COM_CAMPO_CC_DESTINATARIOS)
+		
+		'armo una única lista de destinatarios
+		For i=1 To auxLista.CantElem
+			Call lista.insertElement(auxLista.getElement(i), lista.CantElem+1)
+		Next
+		
+		'guardo copia de los destinatarios en los campos necesarios
+		Call docCom.ReplaceItemValue(COM_CAMPO_LISTA_DESTINATARIOS,lista.values)
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Sub copiarDestinatarios","",usuarioComuni)	
+		Exit Sub
+	End Sub
+	%REM
+		Function Asignar
+		Description: Se reserva dicha comunicacion para dicho usuario, la realizan solo losusuarios Firmante
+Reservar implica cambiar los permisos del usuario sobre el documento, pasando de lectura a lectura-escritura
+	%END REM
+	
+	Public Function Asignar (asignadoA As String) As String
+		On Error GoTo Handler
+		
+		Dim dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim v As Vector
+		Dim nName As NotesName
+		Set nName= New NotesName(asignadoA)
+		Set v=New Vector(0)
+		Set conf = New ConfigComunicaciones()
+		Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		
+		Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+		
+		Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+		
+		v.Values=docGrupo.Getitemvalue("RolFirmante")
+		If(v.isMember(usuarioComuni,-1,False))Then
+			If docCom.Hasitem(COM_CAMPO_A_FIRMAR) Then
+				Call docCom.Removeitem(COM_CAMPO_A_FIRMAR)
+			End If
+			 
+			If docCom.Hasitem(COM_CAMPO_FIRMANTE) Then
+				Call docCom.RemoveItem(COM_CAMPO_FIRMANTE)'Borrar las firmas
+			End If
+			If docCom.Hasitem(COM_CAMPO_FIRMA) Then
+				Call docCom.RemoveItem(COM_CAMPO_FIRMA)
+			End If 
+			If docCom.Hasitem(COM_CAMPO_FECHA_FIRMA) Then
+				Call docCom.RemoveItem(COM_CAMPO_FECHA_FIRMA)
+			End If
+			
+			Call docCom.Replaceitemvalue(COM_CAMPO_AUTORES,nName.Canonical)
+			Call docCom.Replaceitemvalue(COM_CAMPO_RESERVADO_POR,asignadoA)
+			'Call docCom.Replaceitemvalue(COM_CAMPO_RESERVADO_POR,nName.Canonical)
+			Call docCom.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_RESERVADO)
+			'Guardo los cambios de la comunicación
+			Call docCom.Save(True, False)
+			' Actualizo el indice para desplegar el formulario en las bandejas
+			Call actualizarIndice(docCom.Universalid)
+		Else
+			Error ERRROR_COM_ASIGNAR,MSG_ERROR_COM_ASIGNAR
+		End If
+		Me.Auditoria.paramOperacion = asignadoA
+		Me.Auditoria.operacion = "acc_asignar_com"
+		Call Auditoria.registrar
+		Asignar=""
+		Exit Function
+Handler:
+		
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Sub Asignar","",usuarioComuni)
+		MsgBox "Comunicacion3 - Asignar: " & Error$ & " " & Erl
+		Asignar = Error$	
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+	%REM
+		Function Asignar
+		Description: Se reserva dicha comunicacion para dicho usuario, la realizan solo losusuarios Firmante
+Reservar implica cambiar los permisos del usuario sobre el documento, pasando de lectura a lectura-escritura
+	%END REM
+	
+	Public Function Marcar (tipoMarca As String,usr As String,MsgMarca As String,fechaMarca As String) As String
+		On Error GoTo Handler
+		Dim baseEstructu As NotesDatabase
+		Dim docEstructu As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim docMarca As NotesDocument
+		Dim nNombre As NotesName
+		Set nNombre=New NotesName(usr)
+		Set conf = New ConfigComunicaciones()
+		Set baseEstructu =conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set docEstructu=baseEstructu.Createdocument()
+		Call docEstructu.Replaceitemvalue("nIdMarca",tipoMarca)
+		Call docEstructu.Replaceitemvalue("fechaRecordatorio",fechaMarca)
+		'MsgBox usr
+		If(fechaMarca<>"")Then
+			Call docEstructu.Replaceitemvalue("sRecordEnviado","0")
+		Else
+			Call docEstructu.Replaceitemvalue("sRecordEnviado","1")
+		End If
+		
+		Dim itLectSiempre As New NotesItem(docEstructu,CMP_M_LECT_PER,"[Desarrollo]",Readers)
+		Dim itUsrLect As New NotesItem(docEstructu,CMP_M_USUARIO,"",Readers)
+		Dim itUsrAuto As New NotesItem(docEstructu,"sUsuarioAutor",nNombre.Canonical,Authors)
+		
+		Call docEstructu.Replaceitemvalue("sMsgRecordatorio",MsgMarca)
+		Call docEstructu.Replaceitemvalue("AsuntoCom",docCom.Getitemvalue(COM_CAMPO_ASUNTO)(0))
+		Call docEstructu.Replaceitemvalue("nroCom",docCom.Getitemvalue(COM_CAMPO_NUMERO)(0))
+		Call docEstructu.Replaceitemvalue("form","MarcaComunic")
+		Call docEstructu.Replaceitemvalue("sUnidad",docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0))
+		Call docEstructu.ReplaceitemValue("unidCom",docCom.Universalid)
+		Call docCom.Replaceitemvalue("Marcas","1")
+		'Guardo los cambios de la comunicación
+		
+		
+		'Dim itUsrLect As New NotesItem(newMarca,CMP_M_USUARIO,"",Readers)
+		'Dim itUsrAuto As New NotesItem(newMarca,CMP_M_USUARIO_AUT,Me.Usuario,Authors)
+		
+		'Dim itLectSiempre As New NotesItem(newMarca,CMP_M_LECT_PER,"[Desarrollo]",Readers)
+		
+		Dim org As NotesDatabase
+		Set org=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Dim vistaOrg As NotesView
+		Set vistaOrg=org.Getview("VTiposMarcaxId")
+		If vistaOrg Is Nothing Then
+			'MsgBox "el error es con la vistaOrg"
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_TM_POR_ID
+		End If
+		Dim tipoMarcaD As NotesDocument
+		Set tipoMarcaD =vistaOrg.GetDocumentByKey(tipoMarca,True)
+		Dim docAux As NotesDocument
+		Set docAux =vistaOrg.Getfirstdocument()
+		While Not docAux Is Nothing
+			If CStr(docAux.Getitemvalue("nId")(0))=tipoMarca Then
+				Set tipoMarcaD=docAux				
+			End If
+			Set docAux=vistaOrg.Getnextdocument(docAux)
+		Wend
+		'MsgBox tipoMarcaD.Universalid
+		If tipoMarcaD Is Nothing Then
+			Error ERROR_COM_MARCAR,MSG_ERROR_COM_MARCAR	 & ": Marca con código " & CStr(tipoMarca) & " para la comunicación cuyo número es " & docCom.Getitemvalue(COM_CAMPO_NUMERO)(0)
+		End If
+		'MsgBox tipoMarcaD.GetItemValue(CMP_TM_TEXTO)(0)
+		'MsgBox tipoMarcaD.GetItemValue(CMP_TM_COLOR)(0)
+		Call docEstructu.Replaceitemvalue(CMP_M_TEXTO,tipoMarcaD.GetItemValue(CMP_TM_TEXTO))
+		Call docEstructu.Replaceitemvalue(CMP_M_COLOR,tipoMarcaD.GetItemValue(CMP_TM_COLOR))
+		
+		'newMarca.ReplaceItemValue CMP_M_FECHA_RECORDAR,fRecordar
+		'newMarca.ReplaceItemValue CMP_M_MSG_RECORDAR,msgRecordar
+		'If flagRecordar Then
+		'	newMarca.ReplaceItemValue CMP_M_RECORD_ENVIADO,"0"	
+		'Else
+		''	newMarca.ReplaceItemValue CMP_M_RECORD_ENVIADO,"1"
+		'End If
+		
+		
+		'Algún dato mas del Expediente??
+		'newMarca.ReplaceItemValue CMP_M_NRO_EXP,oExp.Caratula.NroExp
+		'newMarca.ReplaceItemValue CMP_M_TEXTO_EXP,oExp.Caratula.Asunto
+		'newMarca.ReplaceItemValue CMP_M_UNIDAD,oExp.Caratula.OficinaActual
+		
+		
+		Call docCom.Save(True, False)
+		Call docEstructu.Save(True,False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+		Call actualizarIndice(docCom.Universalid)
+		Marcar=""
+		Exit Function
+Handler:
+		
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Marcar","",usuarioComuni)
+		MsgBox "Comunicacion3 - Marcar: " & Error$ & " " & Erl
+		Marcar = Error$	
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+	%REM
+		Function Liberar
+		Description:La desasigna, cualquiera puede tomarla  QUIEN PUEDE LIBERAR????????
+	%END REM
+	Public Function Liberar()
+		On Error GoTo Handler
+		Dim dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		
+		If( docCom.GetItemValue(COM_CAMPO_RESERVADO_POR)(0) = usuarioComuni ) Then
+			Call docCom.Replaceitemvalue(COM_CAMPO_RESERVADO_POR,"")
+			Call docCom.Replaceitemvalue(COM_CAMPO_AUTORES,"")
+			Call docCom.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_BORRADOR)
+			'Guardo los cambios de la comunicación
+			Call docCom.Save(True, False)
+			' Actualizo el indice para desplegar el formulario en las bandejas
+			Call actualizarIndice(docCom.Universalid)
+			
+			Me.Auditoria.operacion = "acc_liberar_com"
+			Call Auditoria.registrar
+			
+			Liberar=""
+		Else
+			Error ERRROR_COM_LIBERAR,MSG_ERROR_COM_LIBERAR
+		End If
+		
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Liberar","",usuarioComuni)
+		MsgBox "Comunicacion3 - Liberar: " & Error$ & " " & Erl
+		Liberar = Error$		
+		Exit Function
+	End Function
+		'******************************************************************************************************************
+	%REM
+		Function Eliminar
+		Description: elimina la comunicacion
+cuidar que no este relacionada con otra comunicaciòn y que no estè enviada.
+	%END REM
+
+	Public Function Eliminar()
+		On Error GoTo Handler
+		
+		If(docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_BORRADOR Or docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_RESERVADO) Then
+			Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,"Eliminado")
+			Call docCom.Replaceitemvalue("Form","aBorrar"+docCom.Getitemvalue("Form")(0))
+			
+			'Guardo los cambios de la comunicación
+			Call docCom.Save(True, False)
+			
+			'Me fijo si es respuesta de alguien y borro la respuesta en el doc
+			If docCom.Getitemvalue(COM_CAMPO_RESPUESTA_DE_UID)(0)<> "" Then
+				Dim docOrig As notesdocument
+				Set docOrig = dbComs.Getdocumentbyunid(docCom.Getitemvalue(COM_CAMPO_RESPUESTA_DE_UID)(0))
+				If Not docOrig Is Nothing Then
+					Call docOrig.Replaceitemvalue(COM_CAMPO_RESPUESTAID,"")					
+					Call docOrig.Save(true,false)
+				End If
+			End If
+			' Actualizo el indice para desplegar el formulario en las bandejas
+			Dim i As Indice
+			Set i=New Indice("COMUNICACIONES","")
+			Dim clave As String
+			clave=docCom.GetItemValue(COM_CAMPO_NUMERO)(0)
+			Call i.BorrarIndice(docCom.Universalid)
+		Else
+			Error ERROR_COM_ELIMINAR,MSG_ERROR_COM_ELIMINAR
+		End If
+		
+		Me.Auditoria.operacion = "acc_eliminar_com"
+		Call Auditoria.registrar
+		
+		Eliminar=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Eliminar","",usuarioComuni)	
+		MsgBox "Comunicacion3 - Eliminar: " & Error$ & " " & Erl
+		Eliminar = Error$	
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+	%REM
+		Function VolveraBorrador
+		Description:Se vuelve a borrador dicha comunicacion si es firmante
+	%END REM
+
+	Public Function VolveraBorrador()
+		On Error GoTo Handler
+		
+		Dim dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim v As Vector
+		Set v=New Vector(0)
+		Set conf = New ConfigComunicaciones()
+		If(docCom.getitemvalue(COM_DESTINATARIOS_UNIDAD)(0)="No") Then
+			If(docCom.getITemvalue(COM_CAMPO_ESTADO)(0)<>ESTADO_ARCHIVADO And docCom.getITemvalue(COM_CAMPO_ESTADO)(0)<>ESTADO_RECIBIDO) Then
+				
+				Call docCom.replaceItemVAlue(COM_CAMPO_ESTADO,ESTADO_BORRADOR)
+				
+				
+				If docCom.HasItem(COM_CAMPO_AUTORES) Then
+					Call docCom.replaceItemVAlue(COM_CAMPO_AUTORES,"")
+				End If
+				If docCom.HasItem(COM_CAMPO_RESERVADO_POR) Then
+					docCom.RemoveItem(COM_CAMPO_RESERVADO_POR)
+				End If
+				If docCom.HasItem(COM_CAMPO_FECHA_FIRMA) Then
+					docCom.RemoveItem(COM_CAMPO_FECHA_FIRMA)
+				End If
+				If docCom.HasItem(COM_CAMPO_FIRMANTE) Then
+					docCom.RemoveItem(COM_CAMPO_FIRMANTE)
+				End If
+				If docCom.HasItem(COM_CAMPO_FIRMA) Then
+					docCom.RemoveItem(COM_CAMPO_FIRMA)
+				End If
+				If docCom.HasItem(COM_CAMPO_A_FIRMAR) Then
+					docCom.RemoveItem(COM_CAMPO_A_FIRMAR)
+				End If
+				'Guardo los cambios de la comunicación
+				Call docCom.Save(True, False)
+				' Actualizo el indice para desplegar el formulario en las bandejas
+				Call actualizarIndice(docCom.Universalid)
+			Else
+				Error ERRROR_COM_VOLVERABORRADOR,MSG_ERROR_COM_VOLVERABORRADOR
+			End If
+		Else
+			Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+			Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+			Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+			
+			v.Values=docGrupo.Getitemvalue("RolFirmante")
+			If(v.isMember(usuarioComuni,-1,False))Then	
+				If(docCom.getITemvalue(COM_CAMPO_ESTADO)(0)<>ESTADO_ARCHIVADO And docCom.getITemvalue(COM_CAMPO_ESTADO)(0)<>ESTADO_RECIBIDO) Then
+					
+					Call docCom.replaceItemVAlue(COM_CAMPO_ESTADO,ESTADO_BORRADOR)
+					
+					
+					If docCom.HasItem(COM_CAMPO_AUTORES) Then
+						Call docCom.replaceItemVAlue(COM_CAMPO_AUTORES,"")
+					End If
+					If docCom.HasItem(COM_CAMPO_RESERVADO_POR) Then
+						docCom.RemoveItem(COM_CAMPO_RESERVADO_POR)
+					End If
+					If docCom.HasItem(COM_CAMPO_FECHA_FIRMA) Then
+						docCom.RemoveItem(COM_CAMPO_FECHA_FIRMA)
+					End If
+					If docCom.HasItem(COM_CAMPO_FIRMANTE) Then
+						docCom.RemoveItem(COM_CAMPO_FIRMANTE)
+					End If
+					If docCom.HasItem(COM_CAMPO_FIRMA) Then
+						docCom.RemoveItem(COM_CAMPO_FIRMA)
+					End If
+					If docCom.HasItem(COM_CAMPO_A_FIRMAR) Then
+						docCom.RemoveItem(COM_CAMPO_A_FIRMAR)
+					End If
+					'Guardo los cambios de la comunicación
+					Call docCom.Save(True, False)
+					' Actualizo el indice para desplegar el formulario en las bandejas
+					Call actualizarIndice(docCom.Universalid)
+				Else
+					Error ERRROR_COM_VOLVERABORRADOR,MSG_ERROR_COM_VOLVERABORRADOR
+				End If
+			Else
+				Error ERRROR_COM_VOLVERABORRADOR,MSG_ERROR_COM_VOLVERABORRADOR
+			End If
+		End If
+		
+		Me.Auditoria.operacion = "acc_pasar_borrador_com"
+		Call Auditoria.registrar
+		
+		VolveraBorrador=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion VolverABorrador","",usuarioComuni)	
+		MsgBox "Comunicacion3 - VolveraBorrador: " & Error$ & " " & Erl
+		VolveraBorrador = Error$	
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	%REM
+		Function GuardarYLiberar
+		Description: Comments for Function
+	%END REM
+	Public Function GuardarYLiberar() As string
+		On Error GoTo HANDLER
+		Dim msgError As String
+		
+		msgError = Guardar
+		If Not "" = msgError Then
+			GuardarYLiberar = msgError
+			Exit Function
+		End If
+		
+		msgError = Liberar
+		If Not "" = msgError Then
+			GuardarYLiberar = msgError
+			Exit Function
+		End If
+		
+		Me.Auditoria.operacion = "acc_guardar_liberar_com"
+		Call Auditoria.registrar
+		
+		GuardarYLiberar = ""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion GuardarYLiberar","",usuarioComuni)
+		MsgBox "Comunicacion3 - GuardarYLiberar: " & Error$ & " " & Erl
+		GuardarYLiberar = Error$
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	%REM
+		Function GuardarYSalir
+		Description: Comments for Function
+	%END REM
+	Public Function GuardarYSalir() As String
+		On Error GoTo HANDLER
+		
+		Me.Auditoria.operacion = "acc_guardar_salir_com"
+		Call Auditoria.registrar
+		
+		GuardarYSalir = Guardar
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion GuardarYSalir","",usuarioComuni)
+		MsgBox "Comunicacion3 - GuardarYSalir: " & Error$ & " " & Erl
+		GuardarYSalir = Error$
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	%REM
+		Function Guardar
+		Description: Comments for Function
+	%END REM
+	Public Function Guardar() As string
+		On Error GoTo HANDLER
+		Dim nName As NotesName
+		Dim nombreGrupo As String
+		Dim vNombresArchivos As Vector
+		
+		Dim anexosSize As Vector
+		Dim i As Integer
+		Dim j As integer
+		Dim total As long
+		Dim maxAnexos As Long
+		Dim anexosExtenciones As Vector
+		Dim extenciones As Vector
+		
+		Set anexosSize = New Vector(0)
+		'COM_CAMPO_CUERPO   no seria necesario modificar el cuerpo tambien y el Asunto? como los conozco? o se hace directamente en el save del document??
+		anexosSize.values=Evaluate("@AttachmentLengths", docCom)
+		maxAnexos=CLng(db.Getprofiledocument("ConfComunicaciones").Getitemvalue("TamanoAnexo")(0))
+		For i=1 To anexosSize.cantElem
+			total=total + anexosSize.getElement(i)	
+		'	MsgBox total
+		'	MsgBox maxAnexos
+		Next
+		If(total>=maxAnexos) Then
+			Error ERROR_COM_ANEXOSSIZE,MSG_ERROR_COM_ANEXOSSIZE
+		End If
+		
+		Set anexosExtenciones = New Vector(0)
+		Set extenciones = New Vector(0)
+		Dim tieneAlgunaValida As Boolean
+		anexosExtenciones.values=Evaluate("@AttachmentNames",docCom)
+		extenciones.values=(db.Getprofiledocument("ConfComunicaciones").Getitemvalue("sTiposPermitidosAnexos"))
+		For i=1 To anexosExtenciones.cantElem
+			For j=1 To extenciones.cantElem
+			'	MsgBox extenciones.getElement(j)
+				If(StrLeft(anexosExtenciones.getElement(i),extenciones.getElement(j),5)<>"") Then
+					tieneAlgunaValida=true
+				End If	
+			Next
+			If(tieneAlgunaValida=False)Then
+				Error ERROR_COM_ANEXOSEXTENCION,"El anexo:  "+ anexosExtenciones.getElement(i) + " no tiene una extención válida"
+			End If
+			tieneAlgunaValida=False
+			'MsgBox anexosExtenciones.getElement(i)
+		Next
+		
+		'Autor (el usuario)
+		Set nName = New NotesName(usuarioComuni)
+		'Call docCom.replaceItemValue(COM_CAMPO_AUTORES,nName.Canonical)
+		
+		'Lectores (la unidad a la que pertenece el usuario)
+		nombreGrupo = "COM_" & docCom.GetItemValue(COM_CAMPO_UNIDAD)(0) & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+		Call docCom.ReplaceItemValue(COM_CAMPO_LECTORES,nombreGrupo)
+		
+		'Estado
+		'Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,"Reservado")
+		'Reservado por
+		'Call docCom.ReplaceItemValue(COM_CAMPO_RESERVADO_POR,nName.Abbreviated)
+		
+		'Cargo el usuario y la unidad de origen
+		If usuarioComuni<>"Anonymous" Then
+			Call docCom.ReplaceItemValue(COM_CAMPO_USUARIO_INICIO,usuarioComuni)
+			Call docCom.ReplaceItemValue(COM_CAMPO_UNIDAD,docCom.GetItemValue(COM_CAMPO_UNIDAD)(0))
+		End If
+		'Nombres de archivos adjuntos
+		Set vNombresArchivos = New Vector(0)
+		vNombresArchivos.values = Evaluate({@AttachmentNames}, docCom)
+		Call docCom.ReplaceItemValue(COM_CAMPO_ARCHIVOS_ADJUNTOS,vNombresArchivos.values)
+		'listas auxiliares con los destinatarios
+		Call copiarDestinatarios()
+		'Guardo los cambios de la comunicación
+		Call docCom.Save(True, False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+		Call actualizarIndice(docCom.Universalid)
+		
+		Me.Auditoria.operacion = "acc_guardar_com"
+		Call Auditoria.registrar
+		
+		Guardar = ""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Sub Guardar","",usuarioComuni)
+		'RegistrarYGenerarError NOMBRE_APLICACION_COMUNICACIONES," Function Guardar " ,""
+		'msgbox "Comunicacion3 - Guardar: " & Error$ & " " & Erl
+		Guardar = Error$		
+		Exit Function
+	End Function
+	
+	%REM
+		Function EnviarParaFirmar
+		Description: Comments for Function
+	%END REM
+	Public Function FirmarEnviar(firma As String)
+		On Error GoTo Handler
+		'msgbox "estamosen la fucnion"
+		Firmar(firma)
+		Enviar
+		
+		Me.Auditoria.operacion = "acc_firmar_enviar_com"
+		Call Auditoria.registrar
+		
+		FIRMARENVIAR=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion FirmarEnviar","",usuarioComuni)
+		FIRMARENVIAR = Error$		
+		Exit Function
+	End Function
+	'****************************************************************************************************************************
+	%REM
+		Function Firmar
+		Description: Guardar en un campo la firma, en otro el firmante y en otro la fecha y hora de la firma, y valida roles
+		
+	%END REM
+	
+	Public Function Firmar(firma As String)
+		On Error GoTo Handler
+		Dim dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim vFirmantes As Vector
+		Dim dbadmin As NotesDatabase
+		Dim vDocConfig As NotesView
+		Dim docDefCom As NotesDocument
+		Dim vRolesFirmantes As Vector
+		Dim vAuxiliar As Vector
+		Dim vAFirmar As Vector
+		Dim pos As Long
+	
+		Set conf = New ConfigComunicaciones()
+		Set dbadmin = New NotesDatabase(conf.ServidorDomino(CLAVE_DBADMINCONF),conf.BasedeDatos(CLAVE_DBADMINCONF))
+		Set vDocConfig = dbadmin.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(docCom.getItemValue(COM_CAMPO_CODIGO)(0), True)
+
+		Set vFirmantes=New Vector(0)
+		vFirmantes.Values=docCom.Getitemvalue(COM_CAMPO_FIRMANTE)
+		
+		Set vAFirmar = New Vector(0)
+		vAFirmar.values = docCom.Getitemvalue(COM_CAMPO_A_FIRMAR)
+		If docCom.getItemValue(COM_CAMPO_REMITENTE)(0)<>0 Then
+		
+			If Not (vFirmantes.isMember(usuarioComuni,-1,False))Then
+			Set vAuxiliar = New Vector(0)
+			vAuxiliar.Values = docCom.Getitemvalue(COM_CAMPO_FIRMANTE)
+			Call vAuxiliar.insertElement(usuarioComuni, vAuxiliar.cantElem+1)
+			Call docCom.Replaceitemvalue(COM_CAMPO_FIRMANTE, vAuxiliar.Values)
+
+			Set vAuxiliar = New Vector(0)
+			vAuxiliar.Values = docCom.Getitemvalue(COM_CAMPO_FECHA_FIRMA)
+			Call vAuxiliar.insertElement(Now, vAuxiliar.cantElem+1)
+			Call docCom.Replaceitemvalue(COM_CAMPO_FECHA_FIRMA, vAuxiliar.Values)
+			
+			Set vAuxiliar = New Vector(0)
+			vAuxiliar.Values = docCom.Getitemvalue(COM_CAMPO_FIRMA)
+			Call vAuxiliar.insertElement(firma, vAuxiliar.cantElem+1)
+			Call docCom.Replaceitemvalue(COM_CAMPO_FIRMA, vAuxiliar.Values)
+						
+			If(vAFirmar.isMember(usuarioComuni,pos,False)) Then
+				vAFirmar.deleteElement(pos)
+				Call docCom.Replaceitemvalue(COM_CAMPO_A_FIRMAR, vAFirmar.Values)
+			End If
+			MsgBox "sigo vivo"
+			Call docCom.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_FIRMADO)
+			MsgBox "estado firmatti"
+			Call docCom.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_FIRMADO)
+			'Guardo los cambios de la comunicación
+			Call docCom.Save(True, False)
+			' Actualizo el indice para desplegar el formulario en las bandejas
+			Call actualizarIndice(docCom.Universalid)
+			Else
+				Error 00002 , "Usted ya firmó la comunicación. Solo puede firmarla una vez."
+			End If
+		Else
+			Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+			Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+			Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+			Set vRolesFirmantes = New Vector(0)
+			vRolesFirmantes.Values=docGrupo.Getitemvalue("RolFirmante")
+			
+		If Not (vFirmantes.isMember(usuarioComuni,-1,False))Then
+			If(vRolesFirmantes.isMember(usuarioComuni, -1, False)) Then
+				If (docDefCom.getItemvalue(COMDEF_CAMPO_SE_FIRMA)(0)=SI_SE_FIRMA) Then
+				
+				Set vAuxiliar = New Vector(0)
+				vAuxiliar.Values = docCom.Getitemvalue(COM_CAMPO_FIRMANTE)
+				Call vAuxiliar.insertElement(usuarioComuni, vAuxiliar.cantElem+1)
+				Call docCom.Replaceitemvalue(COM_CAMPO_FIRMANTE, vAuxiliar.Values)
+
+				Set vAuxiliar = New Vector(0)
+				vAuxiliar.Values = docCom.Getitemvalue(COM_CAMPO_FECHA_FIRMA)
+				Call vAuxiliar.insertElement(Now, vAuxiliar.cantElem+1)
+				Call docCom.Replaceitemvalue(COM_CAMPO_FECHA_FIRMA, vAuxiliar.Values)
+				
+				Set vAuxiliar = New Vector(0)
+				vAuxiliar.Values = docCom.Getitemvalue(COM_CAMPO_FIRMA)
+				Call vAuxiliar.insertElement(firma, vAuxiliar.cantElem+1)
+				Call docCom.Replaceitemvalue(COM_CAMPO_FIRMA, vAuxiliar.Values)
+				
+				
+				If(vAFirmar.isMember(usuarioComuni,pos,False)) Then
+					vAFirmar.deleteElement(pos)
+					Call docCom.Replaceitemvalue(COM_CAMPO_A_FIRMAR, vAFirmar.Values)
+				End If
+				
+					Call docCom.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_FIRMADO)
+					'Guardo los cambios de la comunicación
+					Call docCom.Save(True, False)
+					' Actualizo el indice para desplegar el formulario en las bandejas
+					Call actualizarIndice(docCom.Universalid)
+					
+			Else
+				Error 00002, "Esta comunicación no se firma"
+			End IF
+			Else
+				Error 00001 , "Usted no posee el rol [RolFirmante]."
+			End If
+		
+		Else
+			Error 00002 , "Usted ya firmó la comunicación. Solo puede firmarla una vez."
+		End If
+		
+		End If
+		
+		Me.Auditoria.operacion = "acc_firmar_com"
+		Call Auditoria.registrar
+		
+		Firmar=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Firmar","",usuarioComuni)
+		'msgbox "Comunicacion3 - Firmar: " & Error$ & " " & Erl
+		Firmar = Error$		
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+	%REM
+		Function Enviar
+		Description:Envia el documento a los destinatarios 
+Setea el nroComunicacion
+sepuede si esta firmado o no precisa firma
+Aparece en buzon de salida y su estado es Enviado
+Solo lo hacen usuarios con el ro l Enviar
+podrìa enviar notificacion via mail a los destinatarios
+	%END REM
+	Public Function Enviar()
+		On Error GoTo Handler
+		
+		Dim numero As String
+		Dim nroUnidad As String
+		Dim formato As String
+		Dim formato_com As String
+		Dim secuencia As Long
+		Dim largoSec As Integer
+		Dim dbC As NotesDatabase
+		Dim dbadmin As NotesDatabase
+		Dim view As NotesView
+		Dim docDefCom As NotesDocument
+		Dim vDocConfig As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim viewB As NotesView
+		Dim docUnid As NotesDocument
+		Dim vec As Vector
+		Dim destinatarios As String
+		Dim anexosSize As Vector
+		Dim i As Integer
+		Dim j As Integer
+		Dim total As Long
+		Dim maxAnexos As Long
+		Dim anexosExtenciones As Vector
+		Dim extenciones As Vector
+		Dim docGrupoAux As NotesDocument
+		Dim vReceptores As Vector
+		Dim link As string	
+		Dim vLectores As Vector
+		Set conf = New ConfigComunicaciones()
+		
+		formato_com = FORMATO_COM_CODIGO
+		Set vec=New Vector(0)		
+		Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+		Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+		Set dbadmin = New NotesDatabase(conf.ServidorDomino(CLAVE_DBADMINCONF),conf.BasedeDatos(CLAVE_DBADMINCONF))
+		Set vDocConfig = dbadmin.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(docCom.getItemValue(COM_CAMPO_CODIGO)(0), True)
+		destinatarios = docDefCom.Getitemvalue("sDestinatarios")(0)
+		vec.Values=docGrupo.Getitemvalue("RolEnviar")
+		
+		'Validacion de anexos
+		Set anexosSize = New Vector(0)
+		'COM_CAMPO_CUERPO   no seria necesario modificar el cuerpo tambien y el Asunto? como los conozco? o se hace directamente en el save del document??
+		anexosSize.values=Evaluate("@AttachmentLengths", docCom)
+		maxAnexos=CLng(db.Getprofiledocument("ConfComunicaciones").Getitemvalue("TamanoAnexo")(0))
+		For i=1 To anexosSize.cantElem
+			total=total + anexosSize.getElement(i)	
+			'	MsgBox total
+			'	MsgBox maxAnexos
+		Next
+		If(total>=maxAnexos) Then
+			Error ERROR_COM_ANEXOSSIZE,MSG_ERROR_COM_ANEXOSSIZE
+		End If
+		
+		Set anexosExtenciones = New Vector(0)
+		Set extenciones = New Vector(0)
+		Dim tieneAlgunaValida As Boolean
+		anexosExtenciones.values=Evaluate("@AttachmentNames",docCom)
+		extenciones.values=(db.Getprofiledocument("ConfComunicaciones").Getitemvalue("sTiposPermitidosAnexos"))
+		For i=1 To anexosExtenciones.cantElem
+			For j=1 To extenciones.cantElem
+					'MsgBox extenciones.getElement(j)
+				If(StrLeft(anexosExtenciones.getElement(i),extenciones.getElement(j),5)<>"") Then
+					tieneAlgunaValida=True
+				End If	
+			Next
+			If(tieneAlgunaValida=False)Then
+				Error ERROR_COM_ANEXOSEXTENCION,"El anexo:  "+ anexosExtenciones.getElement(i) + " no tiene una extención válida"
+			End If
+			tieneAlgunaValida=False
+			'MsgBox anexosExtenciones.getElement(i)
+		Next
+				
+		
+				
+		If(docCom.Getitemvalue(COM_CAMPO_REMITENTE)(0)<>0)Then
+			'Verifico que exista Remitente en la unidad destinataria
+			
+			Set vLectores=New Vector(0)
+			If (docDefCom.getItemvalue(COMDEF_CAMPO_SE_FIRMA)(0)=SI_SE_FIRMA) Then
+				If(docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_FIRMADO Or docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_PARA_ENVIAR)Then
+					If  docDefCom.getItemValue("sCantidadFirmas")(0)="Una" And CStr(UBound(docCom.getItemvalue(COM_CAMPO_FIRMANTE)))+1>=1 Then
+						Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_ENVIADO)
+						
+						ForAll v In docCom.GetItemValue(COM_CAMPO_LISTA_DESTINATARIOS)
+							Call vLectores.InsertElement("COM_" & v & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0),vLectores.CantElem+1)
+						End ForAll
+						Call docCom.Replaceitemvalue(COM_CAMPO_LECTORES,vLectores.Values)
+					
+					ElseIf (docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_FIRMADO Or docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_PARA_ENVIAR) And CStr(UBound(docCom.getItemvalue(COM_CAMPO_FIRMANTE)))>=docDefCom.GetItemValue("sCantidadFirmasObligatorias")(0) Then
+						Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO	,ESTADO_ENVIADO)
+						ForAll v In docCom.GetItemValue(COM_CAMPO_LISTA_DESTINATARIOS)
+							Call vLectores.InsertElement("COM_" & v & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0),vLectores.CantElem+1)
+						End ForAll
+						Call docCom.Replaceitemvalue(COM_CAMPO_LECTORES,vLectores.Values)
+					Else
+						Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+					End If
+				Else
+					Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+				End If
+				
+			ElseIf(docCOM.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_PARA_ENVIAR Or docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_RESERVADO) Then
+				Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_ENVIADO)
+				Set vLectores=New Vector(0)
+				ForAll v In docCom.GetItemValue(COM_CAMPO_LISTA_DESTINATARIOS)
+					Call vLectores.InsertElement("COM_" & v & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0),vLectores.CantElem+1)
+				End ForAll
+				Call docCom.Replaceitemvalue(COM_CAMPO_LECTORES,vLectores.Values)
+			
+			Else
+				Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+			End If
+		
+		Else
+		
+			
+			Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+			Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+			ForAll v In docCom.getItemValue(COM_CAMPO_LISTA_DESTINATARIOS)
+				Set docGrupoAux = view.GetDocumentByKey(v+"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+				If Not docGrupoAux Is Nothing Then
+					If(docGrupoAux.getItemValue("RolReceptor")(0)="")Then
+						Error ERROR_COM_ENVIASINRECEP,MSG_ERROR_COM_ENVIASINRECEP
+					Else
+						Set vReceptores = New Vector(0)
+						vReceptores.values=	docGrupoAux.getItemValue("RolReceptor")
+							If conf.NotificacionEnviar Then
+						
+								'Envio un mail a los miembros con rol receptor de la unidad de destino
+								link = igDocConf.Protocolo + "://" + conf.Host("PORTAL") + ":" + igDocConf.Puerto + "/" + Replace(conf.BasedeDatos("COMUNICACIONES"), {\}, "/") + "/AbrirCom?OpenAgent&id=" + docCom.UniversalID + "&numero=" + docCom.GetItemValue(COM_CAMPO_NUMERO)(0) + "&codigo=" + docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+								Call enviarMail(vReceptores,"Comunicaciones","Usted tiene una comunicación para recibir:               "+link)
+							End If
+								
+						
+						
+					End If
+				Else
+					
+				End If	
+			End ForAll
+		
+		If(vec.isMember(usuarioComuni,-1,False))Then
+			If(docCom.getItemValue(COM_CAMPO_DESTINATARIO)(0)<>"") Then
+				Set vLectores=New Vector(0)
+			
+				If (docDefCom.getItemvalue(COMDEF_CAMPO_SE_FIRMA)(0)=SI_SE_FIRMA) Then
+						If(docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_FIRMADO Or docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_PARA_ENVIAR) Then
+							If docDefCom.getItemValue("sCantidadFirmas")(0)="Una" And docCom.getItemvalue(COM_CAMPO_FIRMANTE)(0)<>"" Then
+								Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_ENVIADO)
+								ForAll v In docCom.GetItemValue(COM_CAMPO_LISTA_DESTINATARIOS)
+									Call vLectores.InsertElement("COM_" & v & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0),vLectores.CantElem+1)
+								End ForAll
+								Call docCom.Replaceitemvalue(COM_CAMPO_LECTORES,vLectores.Values)
+							
+							ElseIf CInt(UBound(docCom.getItemvalue(COM_CAMPO_FIRMANTE)))+1>=docDefCom.GetItemValue("sCantidadFirmasObligatorias")(0) Then
+								Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO	,ESTADO_ENVIADO)
+								ForAll v In docCom.GetItemValue(COM_CAMPO_LISTA_DESTINATARIOS) 
+										Call vLectores.InsertElement("COM_" & v & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0),vLectores.CantElem+1)
+								End ForAll
+								Call docCom.Replaceitemvalue(COM_CAMPO_LECTORES,vLectores.Values)
+							Else
+								Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+							End If						
+						Else
+							Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+						End If
+				Else 
+					If(docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_RESERVADO Or docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_PARA_ENVIAR ) Then
+							Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO	,ESTADO_ENVIADO)
+							ForAll v In docCom.GetItemValue(COM_CAMPO_LISTA_DESTINATARIOS) 
+								Call vLectores.InsertElement("COM_" & v & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0),vLectores.CantElem+1)
+							End ForAll
+							Call docCom.Replaceitemvalue(COM_CAMPO_LECTORES,vLectores.Values)
+					Else
+							Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+					End If
+				End If			
+			Else
+				Error ERROR_COM_ENVIAR_DEST,MSG_ERROR_COM_ENVIAR_DEST
+			End If
+		End If
+		End If
+		
+			'NUMERACIÓN
+			'**********************************************************************************************
+			'Obtengo el formato de la numeración del formulario, a partir de la definición del formulario
+			formato = docDefCom.GetItemValue(CAMPO_COMUNICACION_FORMATONUMERACION)(0)
+		
+			''msgbox formato & " FORMATOOOOO"
+			formato_com = conf.SustituirAnio(formato_com)
+			formato_com = conf.SustituirCodigoFormulario(formato_com, CInt(docCom.getItemValue(COM_CAMPO_CODIGO)(0)))
+		
+			'Obtengo el código de la unidad
+			nroUnidad = docCom.GetItemValue(COM_CAMPO_UNIDAD)(0)		
+			'Obtengo el número para sustituir los la secuencia de numerales
+			secuencia = conf.PedirNumero(formato_com)
+		
+			largoSec = Len(CStr(secuencia))
+			
+			'Sustituyo la secuencia
+			numero = conf.SustituirNumeroSecuencia(formato, secuencia)	
+			'Sustituyo el indicador de año por el año actual
+			numero = conf.SustituirAnio(numero)
+			'Sustituir el codigo de formulario
+			numero = conf.SustituirCodigoFormulario(numero,CInt(docCom.GetItemValue(COM_CAMPO_CODIGO)(0)))	
+			'Sustituir el codigo de la unidad
+			numero = conf.SustituirCodigoUnidad(numero, nroUnidad)
+			'Seteo la numeración del formulario en el documento del formulario
+		Call docDefCom.ReplaceItemValue(DEFCOM_CAMPO_TIENE_NUMERO,"Sí")
+		Call docCom.ReplaceItemValue(COM_CAMPO_NUMERO, numero)
+		'Guardo los cambios de la comunicación
+		Call docCom.Save(True, False)
+		Call docDefCom.Save(True, False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+		Call actualizarIndice(docCom.Universalid)
+		
+		Me.Auditoria.operacion = "acc_enviar_com"
+		Call Auditoria.registrar
+		
+		Enviar=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Enviar","",usuarioComuni)
+		'msgbox "Comunicacion3 - Enviar: " & Error$ & " " & Erl
+		Enviar = Error$		
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+	%REM
+		Function EnviarparaFirmar
+		Description:Despues de firmarlo, un usuario con el rol Firmante puede enviarla para que sea firmado por otro usuario en caso que hagan faltas mas firmas
+		
+	%END REM
+	Public Function ParaFirmar (s As String)
+		
+		On Error GoTo Handler
+		Dim dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim config As ConfigComunicaciones
+		Dim vReceptoresDestinatarios As Vector
+		Dim link As String
+		Dim vUsuariosAFirmar As Vector
+		Dim vRolesFirmante As Vector
+		Dim variantSplit As Variant
+		Dim i As Integer
+		Dim vUsuariosSinRoles As New Vector(0)
+		Set vRolesFirmante=New Vector(0)
+		Set vUsuariosAFirmar=New Vector(0)
+		
+		If s = "" Then
+			Error 1003,"Debe seleccionar algún firmante."
+		End If
+		
+		Set config = New ConfigComunicaciones()
+		Set dbC=config.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+		Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+		vRolesFirmante.Values=docGrupo.Getitemvalue("RolFirmante")
+		
+		variantSplit=Split(s,",")
+		ForAll usuario In variantSplit
+			If Not (vRolesFirmante.isMember(usuario,-1,False))Then
+				Call vUsuariosSinRoles.insertElement(usuario, vUsuariosSinRoles.cantElem)
+			End If
+			Call vUsuariosAFirmar.insertElement(usuario,vUsuariosAFirmar.cantElem+1)
+		End ForAll
+		
+		If Not vUsuariosSinRoles.cantElem = 0 Then
+			Error 1001,"Los siguientes usuarios seleccionados no poseen el rol [RolFirmante]: " & vUsuariosSinRoles.ToString(", ")
+		End If
+		
+		If(vRolesFirmante.isMember(usuarioComuni,-1,false))Then
+			Call docCom.ReplaceItemValue(COM_CAMPO_A_FIRMAR,vUsuariosAFirmar.Values)
+			If Not docCom.Getitemvalue(COM_CAMPO_ESTADO)(0) = ESTADO_FIRMADO then
+				Call docCom.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_PARA_FIRMAR)
+			End If
+			If config.NotificacionFirmar Then
+				Set vReceptoresDestinatarios = New Vector(0)
+				vReceptoresDestinatarios.values = vUsuariosAFirmar.values
+				
+				link = igDocConf.Protocolo + "://" + config.Host("PORTAL") + ":" + igDocConf.Puerto + "/" + Replace(config.BasedeDatos("COMUNICACIONES"), {\}, "/") + "/AbrirCom?OpenAgent&id=" + docCom.UniversalID + "&numero=" + docCom.GetItemValue(COM_CAMPO_NUMERO)(0) + "&codigo=" + docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+				
+				Call enviarMail(vReceptoresDestinatarios, "Notificación de firmar", link)
+			End If
+			'CAMBIAR ESTADO A CONFIRMAR
+			'Guardo los cambios de la comunicación
+			Call docCom.Save(True, False)
+			' Actualizo el indice para desplegar el formulario en las bandejas
+			Call actualizarIndice(docCom.Universalid)
+		End If
+		
+		Me.auditoria.paramOperacion = s
+		Me.Auditoria.operacion = "acc_para_firmar_com"
+		Call Auditoria.registrar
+		
+		Parafirmar=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion ParaFirmar","",usuarioComuni)	
+		'msgbox "Comunicacion3 - ParaFirmar: " & Error$ & " " & Erl
+		ParaFirmar = Error$	
+		Exit Function
+	End Function
+	%REM
+		Function Editar
+		Description: Comments for Function
+	%END REM
+	Public Function Editar() As String
+		On Error GoTo Handler
+		Dim vRoles As Vector
+		Dim nName As NotesName
+		Dim nombreGrupo As String
+		Set vRoles=New Vector(0)
+		If(usuarioComuni=docCom.GetItemvalue("sReservadoPor")(0)) Then
+			
+		
+		Call docCom.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_RESERVADO)
+		If docCom.Hasitem(COM_CAMPO_A_FIRMAR) then
+			Call docCom.Removeitem(COM_CAMPO_A_FIRMAR)
+		End if
+		'Guillermo agregue estas dos lineas porque me parece que faltaban, chequealo 
+		If docCom.Hasitem(COM_CAMPO_FIRMANTE) Then
+			Call docCom.RemoveItem(COM_CAMPO_FIRMANTE)'Borrar las firmas
+		End if
+		Call docCom.Replaceitemvalue(COM_CAMPO_RESERVADO_POR,usuarioComuni)'Reservar para el usuario que edita.
+		''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+		If docCom.Hasitem(COM_CAMPO_FIRMA) Then
+			Call docCom.RemoveItem(COM_CAMPO_FIRMA)
+		End If 
+		If docCom.Hasitem(COM_CAMPO_FECHA_FIRMA) Then
+			Call docCom.RemoveItem(COM_CAMPO_FECHA_FIRMA)
+		End if
+				
+		Set vRoles = New Vector(0)
+		Call vRoles.insertElement(COM_ROL_DESARROLLO, 1)
+		Call vRoles.insertElement(COM_ROL_VER_TODOS, 2)
+		Call docCom.ReplaceItemValue(COM_CAMPO_LECTORES_PERMANENTES,vRoles.Values)
+		
+		
+		'Autor (el usuario)
+		Set nName = New NotesName(usuarioComuni)
+		Call docCom.replaceItemValue(COM_CAMPO_AUTORES,nName.Canonical)
+		'Lectores (la unidad a la que pertenece el usuario)
+		nombreGrupo = "COM_" & docCom.GetItemValue(COM_CAMPO_UNIDAD)(0) & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+		Call docCom.ReplaceItemValue(COM_CAMPO_LECTORES,nombreGrupo)
+		Call docCom.Save(True, False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+		
+		Call actualizarIndice(docCom.Universalid)
+		
+		Else
+			Error ERROR_COM_EDIT,MSG_ERROR_COM_EDIT
+		End If
+		
+		Me.Auditoria.operacion = "acc_editar_com"
+		Call Auditoria.registrar
+		
+		Editar=""
+		
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Editar","",usuarioComuni)
+		'msgbox "Comunicacion3 - Editar: " & Error$ & " " & Erl
+		Editar = Error$
+		Exit Function
+	End Function
+	%REM
+		Function Crear
+		Description: Comments for Function
+	%END REM
+	Public Function Crear(codigoComunic As String) As String
+		On Error GoTo Handler
+		
+		Dim vRoles As Vector
+		Dim nombreGrupo As String
+		Dim dbAdmin As NotesDatabase
+		Dim vDocConfig As NotesView
+		Dim docDefCom As NotesDocument
+		Dim vNombresArchivos As Vector
+		Dim nName As NotesName
+		Dim config As ConfigComunicaciones
+		Dim nroUnidad As String
+		Dim defcomdest As String 
+		Dim dest As Vector
+		Dim dbc As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim vec As Vector
+		Set config = New ConfigComunicaciones()
+		
+		
+		'Hallo la configuración de este tipo de comunicación
+		Set dbadmin = New NotesDatabase(config.ServidorDomino(CLAVE_DBADMINCONF),config.BasedeDatos(CLAVE_DBADMINCONF))
+		Set vDocConfig = dbadmin.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(CStr(codigoComunic), True)
+		Dim anexosSize As Vector
+		Dim i As Integer
+		Dim j As Integer
+		Dim total As Long
+		Dim maxAnexos As Long
+		Dim anexosExtenciones As Vector
+		Dim extenciones As Vector
+		
+		Set anexosSize = New Vector(0)
+		'COM_CAMPO_CUERPO   no seria necesario modificar el cuerpo tambien y el Asunto? como los conozco? o se hace directamente en el save del document??
+		anexosSize.values=Evaluate("@AttachmentLengths", docCom)
+		maxAnexos=CLng(db.Getprofiledocument("ConfComunicaciones").Getitemvalue("TamanoAnexo")(0))
+		For i=1 To anexosSize.cantElem
+			total=total + anexosSize.getElement(i)	
+			'	MsgBox total
+			'	MsgBox maxAnexos
+		Next
+		If(total>=maxAnexos) Then
+			Error ERROR_COM_ANEXOSSIZE,MSG_ERROR_COM_ANEXOSSIZE
+		End If
+		
+		Set anexosExtenciones = New Vector(0)
+		Set extenciones = New Vector(0)
+		Dim tieneAlgunaValida As Boolean
+		anexosExtenciones.values=Evaluate("@AttachmentNames",docCom)
+		extenciones.values=(db.Getprofiledocument("ConfComunicaciones").Getitemvalue("sTiposPermitidosAnexos"))
+		For i=1 To anexosExtenciones.cantElem
+			For j=1 To extenciones.cantElem
+				'	MsgBox extenciones.getElement(j)
+				If(StrLeft(anexosExtenciones.getElement(i),extenciones.getElement(j),5)<>"") Then
+					tieneAlgunaValida=True
+				End If	
+			Next
+			If(tieneAlgunaValida=False)Then
+				Error ERROR_COM_ANEXOSEXTENCION,"El anexo:  "+ anexosExtenciones.getElement(i) + " no tiene una extención válida"
+			End If
+			tieneAlgunaValida=False
+			'MsgBox anexosExtenciones.getElement(i)
+		Next
+		If(docDefCom.getITemVAlue("sremitente")(0)="Unidad") Then
+		
+			Set dbC=config.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+			Set vec= New Vector(0)
+			Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+			Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+			
+			vec.values=docgrupo.getItemValue("RolCreador")
+			If(Not vec.isMember(usuarioComuni,-1,False))Then
+				Error ERROR_COM_CREAR,MSG_ERROR_COM_CREAR
+			End If
+		End If
+		Set dest = New Vector(0)
+		dest.Values=docCom.getItemvalue(COM_CAMPO_DESTINATARIO)
+		If docDefCom.getItemValue(COMDEF_CAMPO_DESTUNICO)(0)="Si" And dest.cantElem>1 Then
+				Error ERROR_COM_CREAR1,MSG_ERROR_COM_CREAR1
+		Else
+			If docCom.Getitemvalue(COM_CAMPO_ASUNTO)(0)="" And docDefCom.getItemValue(COMDEF_CAMPO_ASUNTO)(0)="Sí" Then
+			Error ERROR_COM_ASUNTO,MSG_ERROR_COM_ASUNTO
+		Else
+		
+		'Marco si el documento es destinado a unidades o personas
+		If docDefCom.getItemValue(DEFCOM_DESTINATARIOS)(0)<>"Unidades" Then
+			Call docCom.replaceItemValue(COM_DESTINATARIOS_UNIDAD,"No")
+		Else
+			Call docCom.replaceItemValue(COM_DESTINATARIOS_UNIDAD,"Si")
+		End If
+		'Lectores Permanentes (desarrollo, ver todos)
+		If docDefCom.getitemvalue(DEFCOM_REMITENTE)(0)<>"Persona" Then
+			Call docCom.Replaceitemvalue(COM_CAMPO_REMITENTE,0)
+		Else
+			Call docCom.Replaceitemvalue(COM_CAMPO_REMITENTE,1)
+		End If
+		If docDefCom.getItemvalue(COMDEF_CAMPO_SE_FIRMA)(0)=SI_SE_FIRMA Then
+			Call docCom.replaceitemvalue(COM_CAMPO_REQUIERE_FIRMA,"Si")
+		Else
+			Call docCom.replaceitemvalue(COM_CAMPO_REQUIERE_FIRMA,"No")
+		End If
+		
+		Set vRoles = New Vector(0)
+		Call vRoles.insertElement(COM_ROL_DESARROLLO, 1)
+		Call vRoles.insertElement(COM_ROL_VER_TODOS, 2)
+		Call docCom.ReplaceItemValue(COM_CAMPO_LECTORES_PERMANENTES,vRoles.Values)
+		Call docCom.ReplaceItemValue(COM_CAMPO_RESPUESTA_DE_UID,"")
+		Call docCom.Replaceitemvalue(COM_CAMPO_RESPUESTAID,"")
+		
+		
+		'Autor (el usuario)
+		Set nName = New NotesName(usuarioComuni)
+		Call docCom.replaceItemValue(COM_CAMPO_AUTORES,nName.Canonical)
+		
+		'Lectores (la unidad a la que pertenece el usuario)
+		nombreGrupo = "COM_" & docCom.GetItemValue(COM_CAMPO_UNIDAD)(0) & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+		Call docCom.ReplaceItemValue(COM_CAMPO_LECTORES,nombreGrupo)
+		
+		'Estado
+		Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,"Reservado")
+		'Reservado por
+		Call docCom.ReplaceItemValue(COM_CAMPO_RESERVADO_POR,nName.Abbreviated)
+		
+		'Cargo el usuario y la unidad de origen
+		If usuarioComuni<>"Anonymous" Then
+			Call docCom.ReplaceItemValue(COM_CAMPO_USUARIO_INICIO,usuarioComuni)
+			Call docCom.ReplaceItemValue(COM_CAMPO_UNIDAD,docCom.GetItemValue(COM_CAMPO_UNIDAD)(0))
+		End If
+		'Nombres de archivos adjuntos
+		Set vNombresArchivos = New Vector(0)
+		vNombresArchivos.values = Evaluate({@AttachmentNames}, docCom)
+		Call docCom.ReplaceItemValue(COM_CAMPO_ARCHIVOS_ADJUNTOS,vNombresArchivos.values)
+		'listas auxiliares con los destinatarios
+		Call copiarDestinatarios()
+		'Guardo los cambios de la comunicación
+		Call docCom.Save(True, False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+		Call actualizarIndice(docCom.Universalid)
+			
+		End If
+		End If
+		
+		Me.Auditoria.operacion = "acc_crear_com"
+		Call Auditoria.registrar
+		
+		Crear=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Crear","","")
+		'RegistrarYGenerarError NOMBRE_APLICACION_COMUNICACIONES," Function Crear " ,""
+		'msgbox "Comunicacion3 - Crear: " & Error$ & " " & Erl
+		Crear = Error$
+		Exit Function
+	End Function
+	
+	%REM
+		Function DejarparaEnviar
+		Description: Despues de firmarlo se deja para enviar rol Firmante
+		
+	%END REM
+	Public Function ParaEnviar(s As String)
+		On Error GoTo Handler
+		Dim	 dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim vReceptoresDestinatarios As Vector
+		Dim vRolesFirmantes As Vector
+		Dim vEnviar As Vector
+		Dim dbadmin As NotesDatabase
+		Dim vDocConfig As NotesView
+		Dim docDefCom As NotesDocument
+		Dim link As String
+		Set vEnviar=New Vector(0)
+		Set vRolesFirmantes = New Vector(0)
+		Set conf = New ConfigComunicaciones()
+		Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+		
+		Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_UNIDAD)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+		Set dbadmin = New NotesDatabase(conf.ServidorDomino(CLAVE_DBADMINCONF),conf.BasedeDatos(CLAVE_DBADMINCONF))
+		Set vDocConfig = dbadmin.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(docCom.getItemValue(COM_CAMPO_CODIGO)(0))
+		vRolesFirmantes.Values=docGrupo.Getitemvalue("RolFirmante")
+		vEnviar.Values=docGrupo.Getitemvalue("RolEnviar")
+		If(vRolesFirmantes.isMember(usuarioComuni,-1,False))Then
+			If(vEnviar.isMember(s,-1,False)) Then
+		
+				If(docDefCom.hasItem(COMDEF_CAMPO_SE_FIRMA)) Then 
+				If (docDefCom.getItemvalue(COMDEF_CAMPO_SE_FIRMA)(0)=SI_SE_FIRMA) Then
+					If(docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_FIRMADO) Then
+						If docDefCom.getItemValue("sCantidadFirmas")(0)="Una" And docCom.getItemvalue(COM_CAMPO_FIRMANTE)(0) <> "" Then
+							Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_PARA_ENVIAR)
+						ElseIf CInt(UBound(docCom.getItemvalue(COM_CAMPO_FIRMANTE)))+1>=CInt(docDefCom.GetItemValue("sCantidadFirmasObligatorias")(0)) Then
+							Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_PARA_ENVIAR)
+						Else
+							Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+						End If
+					Else 
+						Error ERRROR_COM_ENVIAR,MSG_ERROR_COM_ENVIAR
+					End IF
+				ElseIf(docCom.Getitemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_RESERVADO) Then
+					Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_PARA_ENVIAR)
+					
+					'si el campo no se firma y no esta en paraEnviar que no haga nada
+				End If
+				End If
+				If conf.NotificacionEnviar Then
+					Set vReceptoresDestinatarios = New Vector(0)
+					'Envio un mail a los miembros con rol receptor de la unidad de destino
+					Call vReceptoresDestinatarios.insertElement(s, vReceptoresDestinatarios.cantElem+1)
+					link = igDocConf.Protocolo + "://" + conf.Host("PORTAL") + ":" + igDocConf.Puerto + "/" + Replace(conf.BasedeDatos("COMUNICACIONES"), {\}, "/") + "/AbrirCom?OpenAgent&id=" + docCom.UniversalID + "&numero=" + docCom.GetItemValue(COM_CAMPO_NUMERO)(0) + "&codigo=" + docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+					Call enviarMail(vReceptoresDestinatarios, "Notificación de envio", link)
+				End If
+				
+				
+			Else
+				Error 0002, "El usuario no tiene el [RolEnviar]"
+			End If
+		Else
+			Error 0001 , "El usuario no tiene rol [RolFirmante]."
+		End If
+		'Guardo los cambios de la comunicación
+		Call docCom.Save(True, False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+		Call actualizarIndice(docCom.Universalid)
+		
+		Me.auditoria.paramOperacion = s
+		Me.Auditoria.operacion = "acc_para_enviar_com"
+		Call Auditoria.registrar
+		
+		ParaEnviar=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion ParaEnviar","",usuarioComuni)
+		'msgbox "Comunicacion3 - ParaEnviar: " & Error$ & " " & Erl
+		ParaEnviar = Error$		
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+	%REM
+		Function Recibir
+		Description:Da la comunicacion por Recibida 
+Se mueven de la bandeja de entrada al ser leidas a la bandeja de recibidos    (Hasta que los usuarios que deben recibir la comunicaion no la reciban el creador no podra sacarla de su bandeja de salida)
+	%END REM
+	Public Function Recibir(unidadActual As String)
+		On Error GoTo Handler
+		Dim vRecibidos As New Vector(0)
+		Dim dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim vReceptoresDestinatarios As Vector
+		Dim link As String
+		Dim dbadmin As NotesDatabase
+		Dim vDocConfig As NotesView
+		Dim docDefCom As NotesDocument
+		Dim vRolesReceptores As Vector
+		Dim v As New Vector(0)
+		Dim i As Long
+		Dim pos As Long
+		Dim vAuxiliar As Vector
+		i=-1
+		
+		v.Values=docCom.Getitemvalue(COM_CAMPO_LISTA_DESTINATARIOS)
+		vRecibidos.values = docCom.getItemvalue(COM_CAMPO_LISTA_RECIBIDOS)
+		
+		Set conf = New ConfigComunicaciones()
+		Set vReceptoresDestinatarios = New Vector(0)
+		
+		
+		Set dbadmin = New NotesDatabase(conf.ServidorDomino(CLAVE_DBADMINCONF),conf.BasedeDatos(CLAVE_DBADMINCONF))
+		Set vDocConfig = dbadmin.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(docCom.getItemValue(COM_CAMPO_CODIGO)(0), True)
+		
+		Set vAuxiliar = New Vector(0)
+		
+		vAuxiliar.values = docCom.getItemValue(COM_CAMPO_LISTA_DESTINATARIOS)
+	
+		
+		If docCom.GetItemValue(COM_DESTINATARIOS_UNIDAD)(0) <> "Si" Then
+		If(docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_ENVIADO And  vAuxiliar.isMember(usuarioComuni,-1,False)) Then
+			Call docCom.ReplaceItemValue("Bandeja","Recibidos")
+			
+			If v.isMember(usuarioComuni,pos,False) Then
+				Call vRecibidos.InsertElement(UCase(usuarioComuni),vRecibidos.cantElem+1)
+				Call v.deleteElement(pos)
+			End If
+			If conf.NotificacionRecibir Then
+				Set vReceptoresDestinatarios = New Vector(0)
+				vReceptoresDestinatarios.values = v.values
+				'Envio un mail a los miembros con rol receptor de la unidad de destino
+				link = igDocConf.Protocolo + "://" + conf.Host("PORTAL") + ":" + igDocConf.Puerto + "/" + Replace(conf.BasedeDatos("COMUNICACIONES"), {\}, "/") + "/AbrirCom?OpenAgent&id=" + docCom.UniversalID + "&numero=" + docCom.GetItemValue(COM_CAMPO_NUMERO)(0) + "&codigo=" + docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+				Call enviarMail(vReceptoresDestinatarios, "Notificación de recepción", link)
+			End If
+			Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_RECIBIDOS,vRecibidos.Values)
+			Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_DESTINATARIOS,v.values)
+			If v.CantElem = 0 Then
+				Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_RECIBIDO)
+			End If
+		End If
+		
+		Else
+			Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+			Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+			Set docGrupo = view.GetDocumentByKey(unidadActual+"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+			
+			Set vRolesReceptores = New Vector(0)
+			vRolesReceptores.Values=docGrupo.Getitemvalue("RolReceptor")
+			
+			
+		If (vRolesReceptores.isMember(usuarioComuni,-1,False))Then
+			If docCom.GetItemValue(COM_DESTINATARIOS_UNIDAD)(0) = "Si" Then
+				Set vAuxiliar = New Vector(0)
+				vAuxiliar.values = docCom.getItemValue(COM_CAMPO_LISTA_DESTINATARIOS)
+				If(docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_ENVIADO And vAuxiliar.isMember(unidadActual,-1,False)) Then
+					If v.isMember(unidadActual,pos,True) Then
+						Call vRecibidos.InsertElement(unidadActual,vRecibidos.cantElem+1)
+						Call v.deleteElement(pos)
+					End If
+				End If
+			
+			End If	
+				'como hacemos aca¿? qe no se modifique el estado ? pero cuando pasa a destinatarios vacios ahi??? que onda
+				'Call docCom.replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_RECIBIDO)
+				If conf.NotificacionRecibir Then
+				Set vReceptoresDestinatarios = New Vector(0)
+				vReceptoresDestinatarios.values = v.values
+				'Envio un mail a los miembros con rol receptor de la unidad de destino
+					link = igDocConf.Protocolo + "://" + conf.Host("PORTAL") + ":" + igDocConf.Puerto + "/" + Replace(conf.BasedeDatos("COMUNICACIONES"), {\}, "/") + "/AbrirCom?OpenAgent&id=" + docCom.UniversalID + "&numero=" + docCom.GetItemValue(COM_CAMPO_NUMERO)(0) + "&codigo=" + docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+					Call enviarMail(vReceptoresDestinatarios, "Notificación de recepción", link)
+				End If
+			Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_RECIBIDOS,vRecibidos.Values)
+			Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_DESTINATARIOS,v.values)
+			If v.CantElem = 0 Then
+				Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_RECIBIDO)
+			End If
+		Else
+			Error ERROR_COM_RECIBIR,MSG_ERROR_COM_RECIBIR
+		End If
+		End If
+		
+		
+		
+		'Guardo los cambios de la comunicación
+		Call docCom.Save(True, False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+		Call actualizarIndice(docCom.Universalid)
+		
+		Me.Auditoria.operacion = "acc_recibir_com"
+		Call Auditoria.registrar
+		
+		Recibir=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Recibir","",usuarioComuni)
+		'msgbox "Comunicacion3 - Recibir: " & Error$ & " " & Erl
+		Recibir = Error$		
+		Exit Function
+		
+	End Function
+	'******************************************************************************************************************
+	
+	
+	%REM
+		Function Responder
+		Description:Si se puede responder el documento recibido se siguen los mismos pasos que antes
+	%END REM
+	Public Function Responder(unidad As String)
+		On Error GoTo Handler
+		Dim vReceptoresDestinatarios As Vector
+		Dim link As String
+		
+		Dim dbOFDC As NotesDatabase
+		Dim viewOFDC As NotesView
+		Dim docAResp As NotesDocument
+		Dim listaDest As Vector
+		Dim dbOrg As NotesDatabase
+		Dim vUnidades As NotesView
+		Dim docUnidad As NotesDocument
+		Dim vRoles As Vector
+		Dim nombreGrupo As String
+		Dim asunto As String
+		Dim dbadmin As NotesDatabase
+		Dim vDocConfig As NotesView
+		Dim docDefCom As NotesDocument
+		Dim destinatarios As String
+		Dim ccVector As Vector
+		Dim nName As NotesName
+		Dim item As NotesItem
+		Dim docComResp As NotesDocument
+		Dim dbC As NotesDatabase
+		Dim vec As vector
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		
+		Set ccVector=New Vector(0)
+		
+		ccVector.Values=docCom.getitemvalue(COM_CAMPO_CC_DESTINATARIOS)
+		
+		
+		Set dbadmin = New NotesDatabase(config.ServidorDomino(CLAVE_DBADMINCONF),config.BasedeDatos(CLAVE_DBADMINCONF))
+		Set vDocConfig = dbadmin.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(docCom.getItemValue(COM_CAMPO_CODIGO)(0), True)
+		destinatarios = docDefCom.Getitemvalue("sDestinatarios")(0)
+		
+		If(docDefCom.Getitemvalue("sDestUnico")(0)<>"Si") Then
+			Error ERRROR_COM_RESP_NO_UNICO,MSG_ERRROR_COM_RESP_NO_UNICO
+		Else
+			If(docDefCom.getItemvalue("sRemintente")(0)<>docDefCom.getItemvalue("sDestinatario")(0))Then
+				Error ERROR_COM_DISTINTOTIPO,MSG_ERROR_COM_DISTINTOTIPO
+			Else						
+				If(docCom.getitemvalue(COM_DESTINATARIOS_UNIDAD)(0)="No") Then
+					
+					'validar qe el defcom lo tnga?
+					If(ccVector.isMember(usuarioComuni,1,False)) Then
+						Error ERROR_COM_RESPCC,MSG_ERROR_COM_RESPCC
+					Else
+						If docCom.getItemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_RECIBIDO Or docCom.getItemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_ENVIADO Then
+							If(docCom.GetItemvalue(COM_CAMPO_RESPUESTAID)(0)="") Then
+							
+								Set docComResp=DBcoms.Createdocument()
+								Call docComResp.replaceItemvalue("form","Documento")
+								Call docCom.Replaceitemvalue(COM_CAMPO_RESPUESTAID, docComResp.Universalid)
+								Call docComResp.Replaceitemvalue(COM_CAMPO_RESPUESTA_DE_UID,docCom.Universalid)
+								Call docComResp.ReplaceItemValue(COM_CAMPO_CODIGO,docCom.Getitemvalue(COM_CAMPO_CODIGO)(0))
+								Call docComResp.ReplaceItemValue(COM_CAMPO_RESPUESTA_DE_NRO,docCom.Getitemvalue(COM_CAMPO_NUMERO)(0))
+								Set listaDest = New Vector(0)
+								If destinatarios = "Unidades" Then
+									'hallo el documento con la unidad a la cual se envía la respuesta
+									Set dbOrg = New NotesDatabase(config.ServidorDomino(CLAVE_DBORGANIZACION),config.BasedeDatos(CLAVE_DBORGANIZACION))
+									Set vUnidades = dbOrg.GetView("vBusqUni")
+									Set docUnidad = vUnidades.GetDocumentByKey(docCom.GetItemValue(COM_CAMPO_UNIDAD)(0))
+									
+									'relleno los campos en la respuesta
+									Call docComResp.Replaceitemvalue(COM_DESTINATARIOS_UNIDAD,"Si")
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO,docCom.GetItemValue(COM_CAMPO_UNIDAD)(0))
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO & "Vis",docUnidad.GetItemValue("sUnidad")(0))
+									'Lectores Permanentes (desarrollo, ver todos)
+									Set vRoles = New Vector(0)
+									Call vRoles.insertElement(COM_ROL_DESARROLLO, 1)
+									Call vRoles.insertElement(COM_ROL_VER_TODOS, 2)
+									Call docComResp.ReplaceitemValue(COM_CAMPO_LECTORES_PERMANENTES,vRoles.values)
+									
+									Call listaDest.insertElement(docUnidad.GetItemValue("sNroUnidad")(0), listaDest.CantElem+1)
+									nombreGrupo = "COM_" & unidad & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+									
+									Call docComResp.Replaceitemvalue(COM_CAMPO_LECTORES,nombreGrupo)
+									
+								Else
+									
+									Call docComResp.ReplaceitemValue(COM_DESTINATARIOS_UNIDAD,"No")
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO,docCom.GetItemValue(COM_CAMPO_USUARIO_INICIO)(0))
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO & "Vis",docCom.GetItemValue(COM_CAMPO_USUARIO_INICIO)(0))
+									Call listaDest.insertElement(docCom.GetItemValue(COM_CAMPO_USUARIO_INICIO)(0), listaDest.CantElem+1)
+								End If
+								
+								
+								'Autor (el usuario)
+								
+								Set nName = New NotesName(usuarioComuni)
+								Set item = New NotesItem(docComResp,COM_CAMPO_AUTORES,nName.Canonical,Authors)
+
+								Call docComResp.replaceitemvalue(COM_CAMPO_TEMA,docCom.getItemvalue(COM_CAMPO_TEMA)(0))
+								Call docComResp.replaceitemvalue(COM_CAMPO_EXTERNO,docCom.getItemvalue(COM_CAMPO_EXTERNO)(0))
+								Call docComResp.replaceitemvalue(COM_CAMPO_NRO_EXTERNO,docCom.getItemvalue(COM_CAMPO_NRO_EXTERNO)(0))
+								'Lectores (la unidad a la que pertenece el usuario)
+								
+								'Estado
+								Call docComResp.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_RESERVADO)
+								
+								'Reservado por
+								
+								Call docComResp.replaceitemvalue(COM_CAMPO_RESERVADO_POR,usuarioComuni)
+								
+								Call docComResp.replaceitemvalue(COM_CAMPO_CODIGO,docCom.getItemValue(COM_CAMPO_CODIGO)(0))
+								'Cargo el usuario y la unidad de origen
+								If usuarioComuni<>"Anonymous" Then
+									Call docComResp.Replaceitemvalue(COM_CAMPO_USUARIO_INICIO,usuarioComuni)
+									Call docComResp.Replaceitemvalue(COM_CAMPO_UNIDAD,unidad)
+								End If
+								
+								'Asunto
+								asunto = "Re: " & docCom.GetItemValue(COM_CAMPO_ASUNTO)(0)
+								Call docComResp.Replaceitemvalue(COM_CAMPO_ASUNTO,asunto)
+								
+								Call docComResp.Replaceitemvalue(COM_CAMPO_REMITENTE,1)
+								
+								
+								
+								'End If
+								'Guardo los cambios de la comunicación
+								Call docComResp.Save(True, False)
+								Call docCom.Save(True, False)
+								' Actualizo el indice para desplegar el formulario en las bandejas
+								Call actualizarIndice(docCom.Universalid)
+								Call actualizarIndice(docComResp.Universalid)
+							Else 
+								Error 500,"Error esta comunicación ya fue respondida!"
+							End If
+						Else 
+							Error 501,"Estado Incorrecto!"
+						End If
+					End If
+				Else
+					If(docDefCom.getITemVAlue("sremitente")(0)="Unidad") Then
+						
+						Set dbC=config.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+						Set vec= New Vector(0)
+						Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+						Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_DESTINATARIO)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+						
+						vec.values=docgrupo.getItemValue("RolCreador")
+						
+						If(Not vec.isMember(usuarioComuni,1,False))Then
+							Error ERROR_COM_CREAR,MSG_ERROR_COM_CREAR
+						End If
+					End If
+					
+					If(ccVector.isMember(unidad,-1,False)) Then
+						Error ERROR_COM_RESPCC,MSG_ERROR_COM_RESPCC
+					Else
+						If docCom.getItemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_RECIBIDO Or docCom.getItemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_ENVIADO Then
+							If(docCom.GetItemvalue(COM_CAMPO_RESPUESTAID)(0)="") Then
+								
+								
+								Set docComResp=DBcoms.Createdocument()
+								Call docComResp.replaceItemvalue("form","Documento")
+								Call docCom.Replaceitemvalue(COM_CAMPO_RESPUESTAID, docComResp.Universalid)
+								Call docComResp.Replaceitemvalue(COM_CAMPO_RESPUESTA_DE_UID,docCom.Universalid)
+								Call docComResp.ReplaceItemValue(COM_CAMPO_CODIGO,docCom.Getitemvalue(COM_CAMPO_CODIGO)(0))
+								Call docComResp.ReplaceItemValue(COM_CAMPO_RESPUESTA_DE_NRO,docCom.Getitemvalue(COM_CAMPO_NUMERO)(0))
+								Set listaDest = New Vector(0)
+								If destinatarios = "Unidades" Then
+									'hallo el documento con la unidad a la cual se envía la respuesta
+									Set dbOrg = config.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)'New NotesDatabase(conf.ServidorDomino(CLAVE_DBORGANIZACION),conf.BasedeDatos(CLAVE_DBORGANIZACION))
+									Set vUnidades = dbOrg.GetView("vBusqUni")
+									Set docUnidad = vUnidades.GetDocumentByKey(docCom.GetItemValue(COM_CAMPO_UNIDAD)(0))
+									
+									'relleno los campos en la respuesta
+									Call docComResp.Replaceitemvalue(COM_DESTINATARIOS_UNIDAD,"Si")
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO,docCom.GetItemValue(COM_CAMPO_UNIDAD)(0))
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO & "Vis",docUnidad.GetItemValue("sUnidad")(0))
+									Call listaDest.insertElement(docUnidad.GetItemValue("sNroUnidad")(0), listaDest.CantElem+1)
+								Else
+									
+									Call docComResp.ReplaceitemValue(COM_DESTINATARIOS_UNIDAD,"No")
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO,docCom.GetItemValue(COM_CAMPO_USUARIO_INICIO)(0))
+									Call docComResp.ReplaceitemValue(COM_CAMPO_DESTINATARIO & "Vis",docCom.GetItemValue(COM_CAMPO_USUARIO_INICIO)(0))
+									Call listaDest.insertElement(docCom.GetItemValue(COM_CAMPO_USUARIO_INICIO)(0), listaDest.CantElem+1)
+								End If
+								
+								'Lectores Permanentes (desarrollo, ver todos)
+								Set vRoles = New Vector(0)
+								Call vRoles.insertElement(COM_ROL_DESARROLLO, 1)
+								Call vRoles.insertElement(COM_ROL_VER_TODOS, 2)
+								Call docComResp.ReplaceitemValue(COM_CAMPO_LECTORES_PERMANENTES,vRoles.values)
+								
+								'Autor (el usuario)
+								
+								Set nName = New NotesName(usuarioComuni)
+								
+								Set item = New NotesItem(docComResp,COM_CAMPO_AUTORES,nName.Canonical,Authors)
+
+								Call docComResp.replaceitemvalue(COM_CAMPO_TEMA,docCom.getItemvalue(COM_CAMPO_TEMA)(0))
+								Call docComResp.replaceitemvalue(COM_CAMPO_EXTERNO,docCom.getItemvalue(COM_CAMPO_EXTERNO)(0))
+								Call docComResp.replaceitemvalue(COM_CAMPO_NRO_EXTERNO,docCom.getItemvalue(COM_CAMPO_NRO_EXTERNO)(0))
+								'Lectores (la unidad a la que pertenece el usuario)
+								nombreGrupo = "COM_" & unidad & "_" & docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+								
+								Call docComResp.Replaceitemvalue(COM_CAMPO_LECTORES,nombreGrupo)
+								
+								'Estado
+								Call docComResp.Replaceitemvalue(COM_CAMPO_ESTADO,ESTADO_RESERVADO)
+								
+								'Reservado por
+								
+								Call docComResp.replaceitemvalue(COM_CAMPO_RESERVADO_POR,usuarioComuni)
+								
+								Call docComResp.replaceitemvalue(COM_CAMPO_CODIGO,docCom.getItemValue(COM_CAMPO_CODIGO)(0))
+								'Cargo el usuario y la unidad de origen
+								If usuarioComuni<>"Anonymous" Then
+									Call docComResp.Replaceitemvalue(COM_CAMPO_USUARIO_INICIO,usuarioComuni)
+									Call docComResp.Replaceitemvalue(COM_CAMPO_UNIDAD,unidad)
+								End If
+								
+								'Asunto
+								asunto = "Re: " & docCom.GetItemValue(COM_CAMPO_ASUNTO)(0)
+								Call docComResp.Replaceitemvalue(COM_CAMPO_ASUNTO,asunto)
+								Call docComResp.Replaceitemvalue(COM_CAMPO_REMITENTE,0)
+								'End If
+								'Guardo los cambios de la comunicación
+								Call docComResp.Save(True, False)
+								Call docCom.Save(True, False)
+								' Actualizo el indice para desplegar el formulario en las bandejas
+								Call actualizarIndice(docCom.Universalid)
+								Call actualizarIndice(docComResp.Universalid)
+							Else 
+								Error 500,"Error esta comunicacion ya fue respondida!"
+							End If
+						Else 
+							Error 501,"Estado Incorrecto!"
+						End If
+					End If
+				End If
+			End If
+		End If	
+		
+		Me.Auditoria.operacion = "acc_responder_com"
+		Call Auditoria.registrar
+		
+		Responder=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Funcion Responder","",usuarioComuni)
+		'msgbox "Comunicacion3 - Responder: " & Error$ & " " & Erl
+		Responder = Error$		
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	%REM
+		Function Archivar
+		Description:Si fue recibido entonces se puede archivar, dsepuse que todos los destinatarios archivan la comunicacion la misma es accedible unicamente mediante busquedas.
+	%END REM
+	Public Function Archivar(unidadActual As String) As String
+		On Error GoTo Handler
+		Dim vArchivados As Vector
+		Dim vEnviados As Vector
+		Dim dbC As NotesDatabase
+		Dim view As NotesView
+		Dim docGrupo As NotesDocument
+		Dim conf As ConfigComunicaciones
+		Dim vReceptoresDestinatarios As Vector
+		Dim link As String
+		Dim dbadmin As NotesDatabase
+		Dim vDocConfig As NotesView
+		Dim docDefCom As NotesDocument
+		Dim vRolesArchivadores As Vector
+		Dim v As Vector
+		Dim i As Long
+		Dim pos As Long
+		Dim vAuxiliar As Vector
+		Dim ind As Indice
+		Dim clave As String
+		Dim ccVector As Vector
+		Set ccVector=New Vector(0)
+		Set vEnviados = New Vector(0)
+		vEnviados.Values=docCom.Getitemvalue(COM_CAMPO_LISTA_DESTINATARIOS)
+		ccVector.Values=docCom.getitemvalue(COM_CAMPO_CC_DESTINATARIOS)
+		
+		ForAll var In vEnviados.values
+			If ccVector.isMember(var,pos,false) Then
+				vEnviados.deleteElement(pos)				
+			End If
+		End ForAll
+		Set ind=New Indice("COMUNICACIONES","")
+		i=-1
+		If docCom.getItemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_ARCHIVADO Or docCom.getItemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_RECIBIDO Or docCom.getItemvalue(COM_CAMPO_ESTADO)(0)=ESTADO_ENVIADO Then
+		Set v = New Vector(0)
+		
+		If docCom.Hasitem(COM_CAMPO_LISTA_RECIBIDOS) Then
+		
+			v.Values=docCom.Getitemvalue(COM_CAMPO_LISTA_RECIBIDOS)	
+		End If
+		
+		If docCom.Hasitem(COM_CAMPO_LISTA_ARCHIVADOS) Then
+			
+			Set vArchivados=New Vector(0)
+			
+			vArchivados.Values=docCom.getItemvalue(COM_CAMPO_LISTA_ARCHIVADOS)
+		Else
+			Set vArchivados= New Vector(0)
+		End If
+		
+		Set conf = New ConfigComunicaciones()
+		Set vReceptoresDestinatarios = New Vector(0)
+		Set dbC=conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set view=dBc.Getview(VISTACOMUNIDADYTIPO)
+		Set dbadmin = New NotesDatabase(conf.ServidorDomino(CLAVE_DBADMINCONF),conf.BasedeDatos(CLAVE_DBADMINCONF))
+		Set vDocConfig = dbadmin.getView("vDefComxCodigo")
+		Set docDefCom = vDocConfig.GetDocumentByKey(docCom.getItemValue(COM_CAMPO_CODIGO)(0), True)
+		
+		If docCom.GetItemValue(COM_DESTINATARIOS_UNIDAD)(0) <> "Si" Then
+			Set vAuxiliar = New Vector(0)
+			vAuxiliar.values = docCom.getItemValue(COM_CAMPO_LISTA_RECIBIDOS)
+			If(docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_ENVIADO Or docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_RECIBIDO And vAuxiliar.isMember(usuarioComuni,-1,False)) Then
+				If v.isMember(usuarioComuni,pos,False) Then
+					Call vArchivados.InsertElement(usuarioComuni,vArchivados.cantElem+1)
+					Call v.deleteElement(pos)
+				End If
+				If conf.NotificacionRecibir Then
+					Set vReceptoresDestinatarios = New Vector(0)
+					vReceptoresDestinatarios.values = v.values
+					
+					link = igDocConf.Protocolo + "://" + conf.Host("PORTAL") + ":" + igDocConf.Puerto + "/" + Replace(conf.BasedeDatos("COMUNICACIONES"), {\}, "/") + "/AbrirCom?OpenAgent&id=" + docCom.UniversalID + "&numero=" + docCom.GetItemValue(COM_CAMPO_NUMERO)(0) + "&codigo=" + docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+					Call enviarMail(vReceptoresDestinatarios, "Notificación de recepción", link)
+				End If
+				Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_RECIBIDOS,v.Values)
+				Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_Archivados,vArchivados.values)
+				If v.CantElem = 0 And vEnviados.cantElem=0 Then
+					Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_ARCHIVADO)
+					Call ind.BorrarIndice(docCom.Universalid)
+				Else
+					
+				End If
+			End If
+		Else
+			Set docGrupo = view.GetDocumentByKey(docCom.Getitemvalue(COM_CAMPO_DESTINATARIO)(0)&"##"&docCom.Getitemvalue(COM_CAMPO_CODIGO)(0),True)
+			Set vRolesArchivadores = New Vector(0)
+			vRolesArchivadores.Values=docGrupo.Getitemvalue("RolArchivo")
+			
+			
+		If (vRolesArchivadores.isMember(usuarioComuni,-1,False))Then
+			
+			If docCom.GetItemValue(COM_DESTINATARIOS_UNIDAD)(0) = "Si" Then
+				
+				Set vAuxiliar = New Vector(0)
+				vAuxiliar.values = docCom.getItemValue(COM_CAMPO_LISTA_RECIBIDOS)
+				If((docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_ENVIADO Or docCom.getItemValue(COM_CAMPO_ESTADO)(0)=ESTADO_RECIBIDO) And vAuxiliar.isMember(unidadActual,-1,False)) Then
+					'Destinatarios unidades, quito de la lista la unidad actual
+					
+					If v.isMember(unidadActual,pos,True) Then
+						'If(Not ccVector.isMember(unidadActual,-1,False)) Then
+							Call vArchivados.InsertElement(unidadActual,vArchivados.cantElem+1)
+							Call v.deleteElement(pos)
+				'		Else
+							Call vArchivados.InsertElement(unidadActual,vArchivados.cantElem+1)
+				'		End If
+					End If
+				End If
+			Else
+				'Son personas!
+				Error 502,"No son unidades los destinatarios"
+				
+			End If
+			
+				If conf.NotificacionRecibir Then
+				Set vReceptoresDestinatarios = New Vector(0)
+				vReceptoresDestinatarios.values = v.values
+				
+					link = igDocConf.Protocolo + "://" + conf.Host("PORTAL") + ":" + igDocConf.Puerto + "/" + Replace(conf.BasedeDatos("COMUNICACIONES"), {\}, "/") + "/AbrirCom?OpenAgent&id=" + docCom.UniversalID + "&numero=" + docCom.GetItemValue(COM_CAMPO_NUMERO)(0) + "&codigo=" + docCom.GetItemValue(COM_CAMPO_CODIGO)(0)
+					Call enviarMail(vReceptoresDestinatarios, "Notificación de recepción", link)
+				End If
+				Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_RECIBIDOS,v.Values)
+				Call docCom.Replaceitemvalue(COM_CAMPO_LISTA_Archivados,vArchivados.values)
+				If v.CantElem = 0 And vEnviados.cantElem=0 Then
+					Call docCom.ReplaceItemValue(COM_CAMPO_ESTADO,ESTADO_ARCHIVADO)
+					Call ind.BorrarIndice(docCom.Universalid)
+				Else
+				
+				End If
+			End If
+			End If 
+			
+		
+			'Guardo los cambios de la comunicación
+		Call docCom.Save(True, False)
+		' Actualizo el indice para desplegar el formulario en las bandejas
+			
+			
+		
+		Call actualizarIndice(docCom.Universalid)
+		Else
+			Error 501,"Estado Incorrecto!"
+		End If
+		
+		Me.Auditoria.operacion = "acc_archivar_com"
+		Call Auditoria.registrar
+		
+		Archivar=""
+		Exit Function
+Handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION_COMUNICACIONES,"Clase Comunicacion - Sub Archivar","",usuarioComuni)
+		'RegistrarYGenerarError NOMBRE_APLICACION_COMUNICACIONES," Function Archivar " ,""
+		'msgbox "Comunicacion3 - Archivar: " & Error$ & " " & Erl
+		Archivar = Error$	
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	' Éste método permite enviar un mail controlando que el remitente no sea quien moificó el código de la clase
+	Private Sub enviarMail(destinatarios As Vector, asunto As String, body As String)
+		On Error GoTo HANDLER
+		Dim dbMailBox As NotesDatabase
+		Dim mail As NotesDocument
+		'Seteo la base de datos
+		Set dbMailBox = New NotesDatabase(db.Server, "mail.box")
+		'Creo un documento en la base Mail.box
+		Set mail = dbMailBox.CreateDocument
+		'Seteo los campos del mail
+		Call mail.ReplaceItemValue("From", igdocConf.EmailInstitucional)
+		Call mail.ReplaceItemValue("Principal", igdocConf.EmailInstitucional)
+		Call mail.ReplaceItemValue("Subject", asunto)
+		Call mail.ReplaceItemValue("Form", "Memo")
+		Call mail.ReplaceItemValue("SendTo", destinatarios.values)
+		Call mail.ReplaceItemValue("Body", body)
+		Call mail.ReplaceItemValue("Recipients", destinatarios.values)
+		Call mail.Save(True, False)
+		'	Call mail.Send(False)
+		Exit Sub
+HANDLER:
+		'msgbox "ClaseFormulario - enviarMail: " & Error$ & " " & Erl
+		If Not usuarioComuni="" Then
+			Call RegistrarYGenerarError2(Err, Error, "NOMBRE_APLICACION_COMUNICACIONES", "Clase Comunicacion - Sub enviarMail", "", usuarioComuni)
+		Else
+			Call RegistrarYGenerarError2(Err, Error, "NOMBRE_APLICACION_COMUNICACIONES", "Clase Comunicacion - Sub enviarMail", "", "")	
+		End If
+		Exit Sub
+	End Sub	
+
+
+
+End Class
+'++LotusScript Development Environment:2:2:actualizarIndice:1:8
+Private Sub actualizarIndice(ByVal numero As String)
+	On Error GoTo errorHandler
+	
+	Dim indiceCom As IndiceComunicaciones
+	Set indiceCom = New IndiceComunicaciones()
+	Call indiceCom.ActualizarIndiceComunicaciones(numero)
+	Exit Sub
+errorHandler:
+	MsgBox "ClaseComunicaciones - actualizarIndice: " & Error$ & " " & Erl
+	Exit Sub
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500631343'>
+<noteinfo noteid='38a' unid='1C2D8CA03BDA7EF6032573ED007021C0' sequence='19'>
+<created><datetime>20080212T172446,72-03</datetime></created>
+<modified><datetime>20150311T150213,14-03</datetime></modified>
+<revised><datetime>20150309T094353,27-03</datetime></revised>
+<lastaccessed><datetime>20150311T150213,14-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T150213,14-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070828T161015,72-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>NamePicker</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>NamePicker</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAzP8IAAAAAACF/xsAAQAACjwh
+LS0gTmFtZVBpY2tlciAtLT4AgQKC/1oAAgAAAAAAAAAAAKAFAACgBRQARAfoCIwKMAzUDXgPHBHA
+EmQUCBasF1AZ9BqYHDwe4B+EISgjzCRwJgABAAAAAJSAoAUKAKAFCgAwKmQAAQAAAAQAAACDBAIA
+hf9CAAEAAAo8ZGl2IGlkPSJOYW1lc1BpY2tlciIgc3R5bGU9InotaW5kZXg6MTAwMDsgZGlzcGxh
+eTpub25lOyI+gQKDBAEAhf8dAAEAAAoJPHNwYW4gY2xhc3M9InJpZ2h0Ij4AgQKDBAEAhf8hAAEA
+AAoJCTxpbWcgY2xhc3M9ImxpbmsiIHNyYz0iAN0GAACt/6n/1gABABgABADKAMoAAAC8AAEAEQAo
+Q29uZmlndXJhY2lvblJEKQABAAoAclByb3RvY29sb/cCAQADADovLwAiAgEAEQAoQ29uZmlndXJh
+Y2lvblJEKQABAAUAc0hvc3QA9wIAAAAAAAAAAPA/awIiAgEAAQA6ACICAQARAChDb25maWd1cmFj
+aW9uUkQpAAEABwBzUHVlcnRvAPcCIgIBAAEALwAiAosAAAAAAAAAAADwPxABawIBAAEAXAABAAEA
+LwCEAyICAwAHAAwABQAJMFMwRQCF/wgAAQAACqoC3gYAAK4Ahf9MAAEAAAovaW1hZ2VzL2ljb25z
+L2Nyb3NzLmdpZiIgYWx0PSJDbG9zZSIgb25jbGljaz0iTmFtZVBpY2tlci5jbG9zZSgpOyIvPoEC
+gwQBAIX/EAABAAAKCTwvc3Bhbj6BAoMEAQCF/zcAAQAACgk8c3BhbiBpZD0iTmFtZXNQaWNrZXJM
+YWJlbCI+UGlja2VyIEhlYWQ8L3NwYW4+AIECgwQBAIX/YwABAAAKCTxpbnB1dCBpZD0ic2VhcmNo
+X3RleHQiIGF1dG9jb21wbGV0ZT0ib2ZmIiBuYW1lPSJxIiBzaXplPSIyNSIgdGl0bGU9IlR5cGUg
+bmFtZSBvZiB1c2VyIiAvPgCBAoMEAQCF/zYAAQAACgkgPGltZyBhbHQ9IlNwaW5uZXIiIGlkPSJz
+ZWFyY2hfc3Bpbm5lciIgc3JjPSLdBgAArf+p/9YAAQAYAAQAygDKAAAAvAABABEAKENvbmZpZ3Vy
+YWNpb25SRCkAAQAKAHJQcm90b2NvbG/3AgEAAwA6Ly8AIgIBABEAKENvbmZpZ3VyYWNpb25SRCkA
+AQAFAHNIb3N0APcCAAAAAAAAAADwP2sCIgIBAAEAOgAiAgEAEQAoQ29uZmlndXJhY2lvblJEKQAB
+AAcAc1B1ZXJ0bwD3AiICAQABAC8AIgKLAAAAAAAAAAAA8D8QAWsCAQABAFwAAQABAC8AhAMiAgMA
+BwAMAAUACTBTMEUAhf8IAAEAAAqqAt4GAACuAIX/CQABAAAKLwCF/zYAAQAACmltYWdlcy9pbmRp
+Y2F0b3IuZ2lmIiBzdHlsZT0iZGlzcGxheTpub25lOyIgLz6BAoMEAQCF/yEAAQAACgk8ZGl2IGlk
+PSJzZWxCdXNxIj48L2Rpdj4AgQKDBAEAhf8NAAEAAAoJPGhyPgCBAoMEAQCF/0wAAQAACgk8ZGl2
+IGlkPSJzZWFyY2hfcmVzdWx0cyIgc3R5bGU9ImhlaWdodDoyMDBweDtvdmVyZmxvdzphdXRvOyI+
+PC9kaXY+gQKDBAEAhf8OAAEAAAo8L2Rpdj6BAoMEAQCF/ygAAQAACgk8c2NyaXB0IHR5cGU9InRl
+eHQvamF2YXNjcmlwdCI+gQKDBAEAhf8cAAEAAAoJCU5hbWVQaWNrZXIuaW5pdCgge4ECgwQBAIX/
+RAABAAAKCQkJcHJvbXB0OiAnPHA+U2VsZWNjaW9uZSBsYSBwZXJzb25hIHF1ZSBkZXNlYSBhZ3Jl
+Z2FyPC9wPicsgQKDBAEAhf8ZAAEAAAoJCQlhZGRyZXNzYm9vazogJwCF/xQAAQAACi9uYW1lcy5u
+c2YnLIECgwQBAIX/GAABAAAKICAJCQl2aWV3bmFtZTogJ4X/FgABAAAKKCRWSU1QZW9wbGUpJyyB
+AoMEAQCF/xQAAQAACgkJCWNvbHVtbjogMYECgwQBAIX/DQABAAAKCQl9KTsAgQKDBAEAhf8SAAEA
+AAoJPC9zY3JpcHQ+gQKDBAEAhf8cAAEAAAo8IS0tIC9OYW1lUGlja2VyIC0tPs3/CAAAAAAA
+</rawitemdata></item></note>
+

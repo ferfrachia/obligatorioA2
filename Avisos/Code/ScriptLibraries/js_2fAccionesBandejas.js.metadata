@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800416654" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="46e" sequence="37" unid="D8F80C2B0CCA1A4F832575D9006175B8">
+<created><datetime>20090618T144431,28-03</datetime></created>
+<modified><datetime>20150309T094342,00-03</datetime></modified>
+<revised><datetime>20150309T094341,99-03</datetime></revised>
+<lastaccessed><datetime>20150309T094342,00-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T095424,59-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090720T114910,42-03</datetime><datetime>20090720T114942,03-03</datetime><datetime>20090720T115125,82-03</datetime><datetime>20090720T115256,43-03</datetime><datetime>20090720T115406,71-03</datetime><datetime>20090720T115734,70-03</datetime><datetime>20090720T115800,08-03</datetime><datetime>20090720T115839,91-03</datetime><datetime>20090720T115935,74-03</datetime><datetime>20090720T115957,36-03</datetime><datetime>20090720T120031,32-03</datetime><datetime>20090720T120038,78-03</datetime><datetime>20090720T120241,86-03</datetime><datetime>20090720T120303,49-03</datetime><datetime>20090720T120335,91-03</datetime><datetime>20090924T100439,65-03</datetime><datetime dst="true">20100209T151323,74-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>js/AccionesBandejas.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+</note>

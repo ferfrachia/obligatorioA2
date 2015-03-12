@@ -1,0 +1,435 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*                                                 
+'*			 					CLASS <Documento>
+'* 
+'******************************************************************************************************************	
+%REM   
+Esta clase representa un objeto SOLICITUDAVISO
+
+CONSTRUCTOR
+Sub new(Byval titulo As String, desarrollo As Integer)
+'Setea las variables miembro del objeto
+Parámetros:
+	titulo			(IN) = 
+	desarrollo 			(IN) =
+ 
+
+ 
+ 
+PROPIEDADES       
+Public Property Get Desarrollo() As String
+		' Devuelve el desarrollo del documento.
+
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Titulo() As String
+		' Devuelve el titulo del documento.
+	
+'******************************************************************************************************************		
+	Public Property Set Desarrollo() As String
+		' Setea el desarrollo del documento.
+
+	
+'******************************************************************************************************************
+	
+	Public Property Set Titulo() As String
+		' Setea el titulo del documento.
+
+MÉTODOS
+-------		
+%END REM
+
+
+Option Declare
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Documento
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+
+
+'CAMPOS DEL DOCUMENTO
+Public Const CAMPO_DOC_DESARROLLO					="desarrollo"
+Public Const CAMPO_DOC_TITULO						="titulo"
+Public Const CAMPO_DOC_ID						="id"
+Public Const CAMPO_DOC_FECHA						="fecha"
+
+Public Const CAMPO_DOC_ESTADO						="estado"
+
+Public Const CAMPO_DOC_BORRADOR					="borrador"
+Public Const CAMPO_DOC_RESERVADO					="reservado"
+Public Const CAMPO_DOC_PARA_REVISAR				="paraRevisar"
+Public Const CAMPO_DOC_PARA_PUBLICAR				="paraPublicar"
+Public Const CAMPO_DOC_PUBLICADO					="publicado"
+Public Const CAMPO_DOC_FIRMADO					="firmado"
+Private Const CLAVE_NUMERADOR						="IGDOC_PDD_yy"
+Private Const CAMPO_DOC_NUMERO					= "numeroDocumento"
+
+Public Const CAMPO_DOC_UNIDAD 					="unidad"
+Public Const CAMPO_DOC_USUARIO					="usuario"
+Private Const CAMPO_DOC_USUARIOS_ASIGNACION 			="usuariosAsignacion"
+Private Const CAMPO_DOC_ACCION					= "sAccion"
+
+'AUDITORIA AVISOS
+Private Const ACC_AVISOS_CREAR				="acc_crear"
+Private Const ACC_PUBLICAR_DOC				="acc_publicar_doc"
+Private Const ACC_ARCHIVAR_DOC				="acc_archivar_doc"
+Private Const ACC_DESARCHIVAR_DOC				="acc_desarchivar_doc"
+Private Const ACC_CREAR_DOC					="acc_crear_doc"
+
+'ESTADOS DEL DOCUMENTO
+Private Const CAMPO_ESTADO_BORRADOR			=1
+Private Const CAMPO_ESTADO_RESERVADO			=21
+Private Const CAMPO_ESTADO_PARA_REVISAR			=3
+Private Const CAMPO_ESTADO_PARA_PUBLICAR		=4
+Private Const CAMPO_ESTADO_PUBLICADO			=5
+Private Const CAMPO_ESTADO_ARCHIVADO			=7
+
+
+'CONSTANTES DE ESTADO
+Public Const ESTADO_DOC_BORRADOR					= "borrador"
+Public Const ESTADO_DOC_RESERVADO					= "reservado"
+Public Const ESTADO_DOC_PARA_REVISAR				= "paraRevisar"
+Public Const ESTADO_DOC_PARA_PUBLICAR				= "paraPublicar"
+Public Const ESTADO_DOC_PUBLICADO					= "publicado"
+
+Public Const ESTADO_DOC_FIRMADO_NO					= "no"
+'******************************************************************************************************************	
+'*
+'*									CLASS <Documento>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Documento
+'******************************************************************************************************************		
+	
+'MIEMBROS PRIVADOS
+	Private db As notesDatabase
+	Public doc As notesDocument
+	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR	
+	
+	Sub new(id As String)
+		'Setea las variables miembro del objeto
+		On Error Goto HANDLER
+		
+		Dim session As New NotesSession
+		Set db = session.CurrentDatabase
+		
+		If id = "" Then
+			Set doc = New NotesDocument (db)
+			doc.Save True, False
+			doc.ReplaceItemValue CAMPO_DOC_ID, doc.UniversalID
+			doc.ReplaceItemValue CAMPO_DOC_FECHA,Date()
+			doc.ReplaceItemValue CAMPO_DOC_ESTADO,ESTADO_DOC_BORRADOR
+			doc.ReplaceItemValue CAMPO_DOC_FIRMADO,ESTADO_DOC_FIRMADO_NO
+			doc.ReplaceItemValue "form", "fDocumento"
+			doc.Save True, False
+		End If
+		
+		Exit Sub	
+HANDLER:
+		Msgbox "Error al instanciar el documento"
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************
+	Sub setMime(session As NotesSession)
+		'Setea las variables miembro del objeto
+		On Error Goto HANDLER
+		Dim stream As NotesStream
+		Dim mimeP As NotesMimeEntity, mimeres As NotesMimeEntity
+		Set db = session.CurrentDatabase
+		
+		'Entre estas marcas no puedo agregar codigo OJO
+		session.ConvertMime= False
+		
+		Set mimeP = doc.GetMIMEEntity("cuerpo")
+		Set mimeres = doc.GetMIMEEntity("cuerpoVis")
+		
+		If mimeres Is Nothing Then
+			Set mimeres = doc.CreateMIMEEntity("cuerpoVis")
+		End If
+		
+		Set stream = session.CreateStream
+		Call mimeP.GetContentAsBytes(stream)
+		Call mimeres.SetContentFromBytes(stream,"text/html; charset=UTF-8", 1730)
+		Call stream.Close
+		session.ConvertMime=True
+	'Terminio la marca, ahora si se puede codificar
+		doc.Save True, False
+		
+		
+		Exit Sub	
+HANDLER:
+		Msgbox "Error al instanciar el documento"
+		Exit Sub
+		
+	End Sub
+	
+'*****************************************************************************************************************	
+'Metodo - Save
+'*****************************************************************************************************************	
+	
+	Public Sub Save()
+		' Devuelve el numero de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.Save True, False			
+		Exit Sub
+HANDLER:
+		Msgbox "Error al salvar el documento"
+		Exit Sub
+	End Sub
+	
+	
+'*****************************************************************************************************************	
+'PROPIEDADES - Getters
+'*****************************************************************************************************************	
+	
+	Public Property Get Desarrollo() As String
+		' Devuelve el desarrollo de documento.
+		On Error Goto HANDLER
+		
+		Desarrollo=doc.GetItemValue(CAMPO_DOC_DESARROLLO)(0)	
+		
+		Exit Property
+HANDLER:
+		'Msgbox "Error al obtener el desarrollo del documento"
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Titulo() As String
+		' Devuelve el titulo de documento.
+		On Error Goto HANDLER
+		Titulo = doc.GetItemValue(CAMPO_DOC_TITULO)(0)	
+		
+		Exit Property
+HANDLER:
+		'Msgbox "Error al obtener el titulo del documento"
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Firmado() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		Firmado = doc.GetItemValue(CAMPO_DOC_FIRMADO)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Borrador() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		Borrador = doc.GetItemValue(ESTADO_DOC_BORRADOR)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Reservado() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		Reservado = doc.GetItemValue(ESTADO_DOC_RESERVADO)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get ParaRevisar() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		ParaRevisar = doc.GetItemValue(ESTADO_DOC_PARA_REVISAR)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get ParaPublicar() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		ParaPublicar = doc.GetItemValue(ESTADO_DOC_PARA_PUBLICAR)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Publicado() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		Publicado = doc.GetItemValue(ESTADO_DOC_PUBLICADO)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Unidad() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		Unidad = doc.GetItemValue(CAMPO_DOC_UNIDAD)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Usuario() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		Usuario = doc.GetItemValue(CAMPO_DOC_USUARIO)
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'**************************************************************************************************************
+'PROPIEDADES - Setters
+'******************************************************************************************************************
+	
+	Public Property Set Desarrollo() As String
+		' Setea el desarrollo del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_DOC_DESARROLLO, Desarrollo
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear el desarrollo del documento"
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Titulo() As String
+		' Setea el titulo del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_DOC_TITULO, Titulo
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear el titulo del documento"
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Firmado() As String
+		' Setea la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_DOC_FIRMADO,Firmado
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Borrador() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue  CAMPO_DOC_BORRADOR,Borrador
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set Reservado() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue  CAMPO_DOC_RESERVADO,Reservado
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set ParaRevisar() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue  CAMPO_DOC_PARA_REVISAR,ParaRevisar
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set ParaPublicar() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue  CAMPO_DOC_PARA_PUBLICAR,ParaPublicar
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Publicado() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue  CAMPO_DOC_PUBLICADO,Publicado
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Unidad() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue  CAMPO_DOC_UNIDAD,Unidad
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Usuario() As String
+		' Obtiene la firma del documento.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue  CAMPO_DOC_USUARIO,Usuario
+		Exit Property
+HANDLER:
+		'Msgbox "Error al setear la firma del documento"
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Function getDoc(id As String, anio As Integer) As NotesDocument
+		'el parametro anio es para poder buscar en la  base correspondiente a un anio, y no en la currentDatabase
+		On Error Goto HANDLER	
+		Dim ses As New NotesSession
+		Set getDoc=ses.CurrentDatabase.GetDocumentByUNID(id)
+		Exit Function
+HANDLER:
+		Msgbox "Error al setear El documento " & Erl
+		Exit Function
+	End Function
+'******************************************************************************************************************		
+End Class

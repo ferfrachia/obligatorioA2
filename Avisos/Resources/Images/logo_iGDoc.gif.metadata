@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF800416654" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1ea" sequence="11" unid="E05AB3F429BA32D3832575D00060EFBA">
+<created><datetime>20090609T143848,26-03</datetime></created>
+<modified><datetime>20150309T094340,60-03</datetime></modified>
+<revised><datetime>20150309T094340,59-03</datetime></revised>
+<lastaccessed><datetime>20150309T094340,60-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T095421,51-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090609T143851,11-03</datetime><datetime>20090611T102253,51-03</datetime><datetime>20090924T100448,86-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>logo_iGDoc.gif</text></item>
+<item name="$FlagsExt"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+<item name="$ImageNames" sign="true"><text>logo_iGDoc.gif</text></item>
+<item name="$DesignerVersion"><text>7</text></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime>20080820T185157,18-03</datetime></item>
+<item name="$EditFilePath"><text>C:\DOCUME~1\Sofia\CONFIG~1\Temp\notes72E869\~logo_iGDoc.gif</text></item>
+<item name="$Flags"><text>34CiQ$</text></item></note>

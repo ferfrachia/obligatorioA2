@@ -1,0 +1,17 @@
+p.MsoNormal, li.MsoNormal, div.MsoNormal {localeRef:mnuNorm;margin:0in;margin-bottom:.0001pt;font-size:12.0pt;font-family:Arial;}
+.TablaMsgActContenido { background-color: #F1F5F8; }
+.TextoFirmaOK { padding:1px; 	font-size:8pt; 	font-family: Tahoma, Verdana, Arial; 	font-weight:bold; 	color: #2E7BBD; }  
+.TextoFirmaSinValidar { 	padding:1px; 	font-size:8pt; 	font-family: Tahoma, Verdana, Arial; 	font-weight:bold; 	color: #2E7BBD; }
+.filaTituloActuacion{	border: 1px ridge #02468D;}
+.celdaTituloActuacion {	font-size:12pt;	font-family:Arial;}
+.textoProcesando {	font-size:8pt;	font-family:Arial;}
+.celdaCampoActuacion {font-size:10pt;font-family:Arial;}
+.filaTituloAttachs{border: 1px ridge #02468D;}
+.celdaTituloAttachs {font-size:10pt;font-family:Arial;color:white;}
+.celdaAttachs{font-size:10pt;	font-family:Arial;	color:black;}
+.LinkAttachOvr {font-size:10pt;font-family:Arial;color:black;}
+p {width:585px;}
+A:visited {color: black; font-size:10pt;font-familiy:Arial;text-decoration: none;}
+A:link {color: black; font-size:10pt;font-familiy:Arial;text-decoration: none; }
+A:active {  color:black; font-size:10pt;font-familiy:Arial;text-decoration: none;}
+A:hover {  color: orange; font-size:10pt;font-familiy:Arial;text-decoration: none;}

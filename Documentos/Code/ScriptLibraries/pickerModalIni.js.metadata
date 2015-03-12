@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A23D7" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1da" sequence="11" unid="04FA7FB2A7C5F91683257651004FEA5F">
+<created><datetime dst="true">20091016T123253,43-02</datetime></created>
+<modified><datetime>20150311T132435,32-03</datetime></modified>
+<revised><datetime>20150309T094401,10-03</datetime></revised>
+<lastaccessed><datetime>20150311T132435,32-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132435,32-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>pickerModalIni</text></item>
+<item name="$Flags"><text>h534QP</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+</note>

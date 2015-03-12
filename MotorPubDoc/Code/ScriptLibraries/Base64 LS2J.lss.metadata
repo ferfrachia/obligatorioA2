@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A126E" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="662" sequence="10" unid="71FBE42640CC7DC483257A0100606C73">
+<created><datetime>20120517T143312,19-03</datetime></created>
+<modified><datetime>20150311T132356,57-03</datetime></modified>
+<revised><datetime>20150309T094438,60-03</datetime></revised>
+<lastaccessed><datetime>20150311T132356,57-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132356,57-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Julian Robichaux/O=nsftools</name><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Administrador/O=URSEA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>Base64 LS2J</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$POID"><datetime>20120418T113625,23-03</datetime></item>
+
+</note>

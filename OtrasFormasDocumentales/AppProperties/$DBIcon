@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF80042C028'>
+<noteinfo noteid='8fe' unid='F0892873ED0529BA832579D5005A619B' sequence='27'>
+<created><datetime>20120403T132712,27-03</datetime></created>
+<modified><datetime>20150309T094400,94-03</datetime></modified>
+<revised><datetime>20150309T094400,93-03</datetime></revised>
+<lastaccessed><datetime>20150309T094400,94-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T100915,23-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name
+>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name
+>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE'><text>$DBIcon</text></item>
+<item name='$Flags'><text>34Ci~Q</text></item>
+<item name='$ImagesWide' sign='true'><number>1</number></item>
+<item name='$ImagesHigh' sign='true'><number>1</number></item>
+<item name='$ImagesColorize' sign='true'><number>0</number></item>
+<item name='$FileSize' sign='true'><number>1918</number></item>
+<item name='$ImageData' sign='true'>
+<rawitemdata type='1'>
+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
+</rawitemdata></item>
+<item name='$FileModDT' sign='true'><datetime>20120403T140007,32-03</datetime></item>
+<item name='$ImageNames' sign='true'><text>C:\Users\Ian\Desktop\letters.png</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item></note>
+

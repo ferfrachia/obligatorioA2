@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="54e" sequence="176" unid="5E69D00B6759F0CB03256F33005AF9B4">
+<created><datetime>20041020T133341,64-03</datetime></created>
+<modified><datetime>20150311T130910,73-03</datetime></modified>
+<revised><datetime>20150309T094450,54-03</datetime></revised>
+<lastaccessed><datetime>20150311T130910,73-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130910,73-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20080811T155043,62-03</datetime><datetime>20080814T072826,34-03</datetime><datetime>20080814T072933,60-03</datetime><datetime>20080814T073203,19-03</datetime><datetime>20080814T074213,29-03</datetime><datetime>20080814T074733,58-03</datetime><datetime>20080814T082349,52-03</datetime><datetime>20080814T082526,62-03</datetime><datetime>20080814T110345,60-03</datetime><datetime>20080820T120622,29-03</datetime><datetime>20080820T121345,78-03</datetime><datetime>20080820T130436,56-03</datetime><datetime>20080820T130439,55-03</datetime><datetime>20080820T130444,94-03</datetime><datetime>20080820T130445,08-03</datetime><datetime>20080820T130445,31-03</datetime><datetime>20080820T132310,76-03</datetime><datetime>20080820T132821,49-03</datetime><datetime>20080820T133710,76-03</datetime><datetime>20080820T134538,88-03</datetime><datetime>20080820T134740,10-03</datetime><datetime>20080820T134756,39-03</datetime><datetime>20080820T135241,22-03</datetime><datetime>20080821T091936,23-03</datetime><datetime>20080821T101355,44-03</datetime><datetime>20080821T134025,34-03</datetime><datetime>20080821T134420,24-03</datetime><datetime>20080821T141025,62-03</datetime><datetime>20080821T142050,26-03</datetime><datetime>20080822T092713,94-03</datetime><datetime>20080822T092954,62-03</datetime><datetime>20080822T094534,42-03</datetime><datetime>20080822T095130,19-03</datetime><datetime>20080822T100641,18-03</datetime><datetime>20080822T100805,02-03</datetime><datetime>20080822T140554,72-03</datetime><datetime>20080822T154727,68-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>ClaseArchivo</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$Comment" sign="true"><text>Esta clase pertenece al Motor. La original debe estar en el Motor</text></item>
+
+
+<item name="$POID"><datetime>20150309T094450,54-03</datetime></item></note>

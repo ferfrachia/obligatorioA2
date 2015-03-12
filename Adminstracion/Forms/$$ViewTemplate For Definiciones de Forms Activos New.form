@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E9F2'>
+<noteinfo noteid='1166' unid='0865FAC3096EEE5283257CBA005EAFDB' sequence='32'>
+<created><datetime>20140414T141414,03-03</datetime></created>
+<modified><datetime>20150311T131130,57-03</datetime></modified>
+<revised><datetime>20150309T094332,08-03</datetime></revised>
+<lastaccessed><datetime>20150311T131130,57-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131130,57-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$BackgroundR5' sign='true'>
+<rawitemdata type='1'>
+mQAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA==
+</rawitemdata></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/9KAAIABTVDb3VyaWVyIE5ldwAAAAAAAAAAAAAAAAAAAAAAAAAAAAYmQXJpYWwAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+d/8qAAAAAAABAAAAgAABAP+fcQABAAAAgAAAAAAAAAAAAAAAAAAAAAAAX/8QAAIADwAHAAAAAAAA
+AA==
+</rawitemdata></item>
+<item name='$TITLE'><text>$$ViewTemplate For Definiciones de Forms Activos New</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>db:= @ReplaceSubstring(@Subset(@DbName;1)+"/"+@Subset(@DbName;-1);@Char(92);"/");
+css:=@GetProfileField("fConfiguracion";"sCSS");
+"[&lt;META  http-equiv='Expires' content='0'&gt;&lt;META HTTP-EQUIV='Cache-Control' CONTENT='no-cache'&gt;&lt;META HTTP-EQUIV='Pragma'  CONTENT='no-cache'&gt; &lt;SCRIPT LANGUAGE=\"JavaScript\"    SRC=\""+db+"/LibJS\"&gt;&lt;/script&gt; &lt;SCRIPT LANGUAGE=\"JavaScript\"    SRC=\""+db+"/Tabla.js\"&gt;&lt;/script&gt; &lt;STYLE type=\"text/css\"&gt;"+ css + "&lt;/STYLE&gt;]"</formula></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$MimeType'><text>application/json; charset=utf-8</text></item>
+<item name='$MimeCharSet'><text>UTF-8</text></item>
+<item name='$WebFlags'><text>FH</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>$$ViewTemplate For VSeleccionImagenes</text></item>
+<item name='$$ViewBody' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>$$ViewBody</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gv9GAAEABAAAAAAAAACgBWICoAUIANACoAVwCEALEA7gELATgBYAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAACUAKYsAAAAAAEARE9fTk9UX1RBRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+gQKC/1oAAgAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAIAhf8IAAEAAAiBAoMEAgCF/xMA
+AQAACHsiZGF0YSIgOiBbAIECgv9aAAMAAAAAAAAAAACgBQAAoAUIAI4IXgsuDv4QzhOeFm4ZPhwA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAACUhwAAAAAAAAAAAAAAAAEAAAAEAAAAu/88AAMA
+EgDS1aRj6A8uAAAAIAAFAAkAVG90YWxIaXRzAAAAAAAAAAAAAAAKAgMABwAMAAUACTBTMEUAgwQD
+AIX/CAABAAAI3QYAAIr//v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK/y4AigAABQAwAgAAAAAAAAIB
+AAAIAAAAAAAAAAAKAAAAAAAkJFZpZXdCb2R5Yg4BAIQAAAAAAAAAAADeBgAAiv+F/wgAAQAACIEC
+gv9aAAQAAAAAAAAAAACgBQAAoAUIAI4IXgsuDv4QzhOeFm4ZPhwAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAQAAAACUhwAAAAAAAAAAAAAAAAEAAAAEAAAAu/84AAQAEgDS1aRj6A8qAAAAHAAFAAUA
+Q291bnQAAAAAAAAAAAAAAAoCAwAHAAwABQAJMFMwRQCDBAQAhf8lAAEAAAh7IkNvZGlnbyI6Ii0x
+IiwiTm9tYnJlIjoiTm8ifQCF/wwAAQAACF0gfQk=
+</rawitemdata></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL0c5wAAAAEAAQAAAIEAAAAA
+AAAABQABCQgAAgB5/2wAAQADO2oAAQAAAAAAAQD///8AAQADO2oAAAAfAAAAAAAAAAAAAwAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAD8/zoAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA
+AAAAAAAAvv8mAAAABQAAAJ0BAAALAAAAAAAAAENhdGVnb3JpX3plvgEATny+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX0VkaXQgRG9jdW1lbnQCAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAFNlbmQgRG9j
+dV9tZW50AwADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAQABAq+/ywAAAAFAAAAnQEA
+ABIAAAAAAAAAX01vdmUgVG8gRm9sZGVyLi4uBQA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVt
+b3ZlIEZyb20gRm9sZGVyAAYAPnw=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRznAAAAAQABAAAAgQAAAAAAAAARAAEJCAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABTZW5kIERvY3VfbWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcnoGAD58
+</rawitemdata></item></note>
+

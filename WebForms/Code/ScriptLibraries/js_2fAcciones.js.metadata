@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1616" sequence="4" unid="3E40D96A154D7CB783257DF1006E9D92">
+<created><datetime dst="true">20150219T180812,98-02</datetime></created>
+<modified><datetime>20150309T094533,63-03</datetime></modified>
+<revised><datetime>20150309T094533,62-03</datetime></revised>
+<lastaccessed><datetime>20150309T094533,63-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161909,32-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>js/Acciones.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+</note>

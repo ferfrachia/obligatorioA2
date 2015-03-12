@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E05005A40AC" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="276" sequence="8" unid="DE14C1A7A2C5E38C83257C98006660B5">
+<created><datetime>20140311T153814,29-03</datetime></created>
+<modified><datetime>20150311T132549,91-03</datetime></modified>
+<revised><datetime>20150309T094348,01-03</datetime></revised>
+<lastaccessed><datetime>20150311T132549,91-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132549,91-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Jorge Kleinman/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>bdja_asuntos_revisar_btn.png</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+<item name="$FileModDT" sign="true"><datetime dst="true">20101115T160820,12-02</datetime></item>
+<item name="$ImageNames" sign="true"><text>bdja_asuntos_revisar_btn.png</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+
+<item name="$Flags"><text>D34CiQ</text></item></note>

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF8003FF550'>
+<noteinfo noteid='59a' unid='2E19C7B05AF8966383257B090047143F' sequence='12'>
+<created><datetime dst='true'>20130205T105622,39-02</datetime></created>
+<modified><datetime>20150309T094523,49-03</datetime></modified>
+<revised><datetime>20150309T094523,48-03</datetime></revised>
+<lastaccessed><datetime>20150309T094523,49-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T093841,50-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Diego Ricca/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Eduardo Vecino/O=ISA</name><name
+>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>MxTipoAccion</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>8.5</text></item>
+<item name='MxCodigoAccion' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='MxTipoAccion' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>MxTipoAccion</text><text>MxCodigoAccion</text></textlist></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRw/AAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAPDw8AABAAAAAAAJAAAAAAABAPDw8AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/2IAAAABAAAAnwEAAA8AAAAAAAAAR3VhcmRhciB5IFNh
+bGlyBzwACAASAAIAxgsAAAAAAADtAQMABwAMAAUACTBTMEUAAAASAAIA/BEAAAAAAADtAQMABwAK
+AAMACTBSAA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>MxTipoAccion</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAAqBAoMEAQCF/wgA
+AQAACoECgwQBAIX/CAABAAAKgQKC/1oAAgAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAJSFAAAAAKAFCAAAAAAAAQAAAAQAAACDBAIA
+3QYBAPv/+/8sAAAAAAACAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAABc/z4AAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAABAAAKAAAAAAEAAAAAAN4G
+AQD7/6MOoAUoADwAAAAAAAIApBIAAKAFnhwAAEACABABAQAAgQKC/1oAAwAAAAAAAAAAAKAFnhyg
+BQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIYBAAAAAFSHAAAAAAAA
+AAAAAAAAAQAAAAQAAACDBAMAhf8XAAEAAApUaXBvIGRlIEFjY2mibjoApBIAAZ4cnDMAAEACABAB
+AQAAgQKC/1oABAAAAAAAAAAAAJ4cnDOeHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAIYBAAAAAFSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAQAhf8IAAEAAArdBgAAiv/+
+/1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AHgAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIr/MgCKAAAFADACAAAAAAAAAgEAAAoAAAAAAAAAAA4AAAAA
+AE14Q29kaWdvQWNjaW9uYg4BAIQAAAAAAAAAAADeBgAAiv+F/wgAAQAACqQSAQCgBZ4cAABQAgAR
+AQEAAIECgwQDAIX/HAABAAAKTm9tYnJlIGRlIGxhIEFjY2mibjqkEgEBnhycMwAAUAIAEQEBAACB
+AoMEBACF/wgAAQAACt0GAACK//7/UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AHgAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiv8wAIoAAAUAMAIAAAAA
+AAACAQAACgAAAAAAAAAADAAAAAAATXhUaXBvQWNjaW9uYg4BAIQAAAAAAAAAAADeBgAAiv+F/wgA
+AQAACqUGAAAAAIECgwQBAIX/CAABAAAKgQKDBAEAhf8JAAEAAAogAIECgwQBAIX/CAABAAAKgQKD
+BAEAhf8IAAEAAAo=
+</rawitemdata></item></note>
+

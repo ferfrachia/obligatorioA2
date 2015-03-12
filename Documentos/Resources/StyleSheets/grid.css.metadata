@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E05005A23D7" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="ade" sequence="18" unid="2C8D3875BC08040B832576A9004DFCF0">
+<created><datetime dst="true">20100112T121150,24-02</datetime></created>
+<modified><datetime>20150311T132446,52-03</datetime></modified>
+<revised><datetime>20150309T094411,44-03</datetime></revised>
+<lastaccessed><datetime>20150311T132446,52-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132446,52-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=DNII</name><name>CN=Juan Funez/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>grid.css</text></item>
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+
+<item name="$FileModDT" sign="true"><datetime dst="true">20100112T122025,00-02</datetime></item>
+
+<item name="$FileNames" sign="true"><text>grid.css</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item></note>

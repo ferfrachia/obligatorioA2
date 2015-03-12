@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="24a" sequence="74" unid="CF79C9C7E0CB3EA20325736B0042FBB3">
+<created><datetime>20071005T091138,11-03</datetime></created>
+<modified><datetime>20150309T094512,69-03</datetime></modified>
+<revised><datetime>20150309T094512,68-03</datetime></revised>
+<lastaccessed><datetime>20150309T094512,69-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161844,42-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=CURSO</name><name>CN=Admin ISA/O=VISION</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=WebApp Manager/O=1871</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071005T091508,76-03</datetime><datetime>20071005T091548,83-03</datetime><datetime>20071005T094826,18-03</datetime><datetime dst="true">20071030T143913,49-02</datetime><datetime dst="true">20081114T180438,50-02</datetime><datetime>20090430T141401,35-03</datetime><datetime>20090430T142427,29-03</datetime><datetime>20090430T143043,06-03</datetime><datetime>20090430T143118,70-03</datetime><datetime>20090430T143202,40-03</datetime><datetime>20090430T143413,32-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>Solicitud WorkFlow</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20140814T173024,10-03</datetime></item></note>

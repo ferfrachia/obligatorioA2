@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='view' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257E05005AC337'>
+<noteinfo noteid='11e' unid='EC42D6AEAE090CFD83257D8E0048A69E' sequence='5'>
+<created><datetime dst='true'>20141112T111332,46-02</datetime></created>
+<modified><datetime>20150311T133122,28-03</datetime></modified>
+<revised><datetime>20150309T094455,64-03</datetime></revised>
+<lastaccessed><datetime>20150311T133122,28-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133122,28-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Fabian Alvariza/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+HAAFAA4ACgABAAQAJCQkJAQABAAAAAgAZgADAA==
+</formula></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item></note>
+

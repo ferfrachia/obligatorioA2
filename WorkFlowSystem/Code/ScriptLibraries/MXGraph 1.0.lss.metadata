@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF8003FF550" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="50a" sequence="46" unid="FEDEC50CEF6DAF3E832577C2005F5819">
+<created><datetime dst="true">20101020T152124,73-02</datetime></created>
+<modified><datetime>20150309T094524,63-03</datetime></modified>
+<revised><datetime>20150309T094524,62-03</datetime></revised>
+<lastaccessed><datetime>20150309T094524,63-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T093840,84-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime dst="true">20101015T121957,80-02</datetime></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.3</text></item>
+<item name="$TITLE" sign="true"><text>MXGraph 1.0</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+</note>

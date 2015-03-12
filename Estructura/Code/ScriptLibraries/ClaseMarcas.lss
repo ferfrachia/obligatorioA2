@@ -1,0 +1,818 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "ClaseExpediente"
+Use "Errores Generales"
+Use "FuncionesGenerales"  
+Use "ConfEE 1.0"
+Use "ConstantesDBGestionDoc"
+Use "VectorClass 2.05"
+Use "Usuario"
+Use "ClaseNotificaciones"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Marcas
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Campos de Marca
+Public Const CMP_M_FORM			="FMarca"
+Public Const CMP_M_USUARIO		="sUsuario"
+Public Const CMP_M_USUARIO_AUT	="sUsuarioAutor"
+Public Const CMP_M_LECT_PER		="sLectPer"
+Public Const CMP_M_ID_TIPO_MARCA	="nIdMarca"
+Public Const CMP_M_TEXTO			="sTexto"
+Public Const CMP_M_COLOR			="sColor"
+Public Const CMP_M_NRO_EXP		="sNroExp"
+Public Const CMP_M_TEXTO_EXP		="sTextoExp"
+Public Const CMP_M_UNIDAD		="sUnidad"
+
+Public Const CMP_M_FECHA_RECORDAR	="fechaRecordatorio"
+Public Const CMP_M_MSG_RECORDAR	="sMsgRecordatorio"
+Public Const CMP_M_RECORD_ENVIADO	="sRecordEnviado"
+
+Public Const CMP_M_TFECHAS		="tFechas"
+Public Const CMP_M_TUNIDADES		="tUnidades"
+
+
+'Campos de Tipo de Marca
+Const CMP_TM_FORM			="FTipoMarca"
+Const CMP_TM_USUARIO		="sUsuario"
+Const CMP_TM_NRO_EXP		="sNroExp"
+Const CMP_TM_ID			="nId"
+Const CMP_TM_TEXTO			="sTextoMarca"
+Const CMP_TM_COLOR			="sColorMarca"
+
+
+'Vistas
+Const V_TM_POR_ID			="VTiposMarcaxId"
+Const V_M_POR_EXP			="vMarcasxNroExp"
+Const V_M_POR_USUARIO		="vMarcasxUsuario"
+Const V_M_POR_USUARIO2		="vMarcasxUsuario2"
+Const V_M_USER_NROEXP		="vMarcasUsuarioxNroExp"
+Const V_M_POR_TIPOMARCA		="vMarcasxTMarca"
+Const V_M_POR_TIPO_NROEXP_USR	="vMarcasxTipoExpUsuario"
+
+
+'Errores
+'Errores clase Marcas del Motor:	17200 - 17299
+Const ERROR_M_MARCAREXP			=17200
+Const MSG_ERROR_M_MARCAREXP_1		="Este expediente ya fue marcado por usted con la misma marca. "
+
+Const ERROR_M_COMPARTIR			=17201
+Const MSG_ERROR_M_COMPARTIR_1_a		="El usuario "
+Const MSG_ERROR_M_COMPARTIR_1_b		=" ya tiene una marca para el siguiente expediente: "
+
+Const ERROR_M_ACTUALIZAR				=17202
+Const MSG_ERROR_M_ACTUALIZAR_1		="No se pudo encontrar el documento de Tipo de Marca con id: "
+
+
+Public Class Marcas
+	Private dbOrg As NotesDatabase
+	Private sUsuario As String   'Usuario en formato canónico
+	
+	
+	Public Sub new(user As String)
+		On Error Goto errorHandler
+		sUsuario=user
+		
+		Dim c As New Configuracion,srv As String,path As String
+		srv = c.ServidorDomino(CLAVE_DBORGANIZACION)
+		path = c.BaseDeDatos(CLAVE_DBORGANIZACION)
+		Set dbOrg = New NotesDataBase ("","")		
+		If Not dbOrg.Open (srv,path) Then
+			Error ERROR_DB_NOT_OPEN,MSG_ERROR_DB_NOT_OPEN & " - " & NOMBRE_APLICACION & " - " & CLAVE_DBORGANIZACION
+		End If		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método new","")
+		Exit Sub
+	End Sub
+	
+'*********************************************************************************
+'*********************************************************************************
+'Propiedades
+	
+	Public Property Get Usuario As String
+		
+		Usuario=sUsuario		
+		
+	End Property
+	
+'*********************************************************************************
+'*********************************************************************************
+'Privadas
+	
+	Private Sub CompartirConUsuario(usuario As String,vMarcas As Vector)
+		On Error Goto errorHandler
+		
+		If vMarcas.cantElem > 0 Then
+			Dim marca As NotesDocument,i As Integer
+			For i=1 To vMarcas.cantElem
+				Set marca=vMarcas.getElement(i)
+				If Not marca Is Nothing Then
+					Dim uLectores As NotesItem
+					Set uLectores=marca.GetFirstItem(CMP_M_USUARIO)
+					Dim vLectores As New Vector(0)
+					vLectores.values = marca.GetItemValue(CMP_M_USUARIO)
+					If Not vLectores.ismember(usuario,0,False) Then
+						uLectores.AppendToTextList usuario	
+						marca.Save True,False	
+					End If					
+				End If					
+			Next
+		End If
+		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método CompartirConUsuario","")
+		Exit Sub			
+	End Sub
+	
+'*********************************************************************************
+	
+	Private Sub procesarMarcaRecordatorio(marca As NotesDocument)
+		On Error Goto errorHandler
+		
+		If marca.HasItem(CMP_M_RECORD_ENVIADO) Then
+			If marca.getItemValue(CMP_M_RECORD_ENVIADO)(0) = "1" Then
+				Exit Sub
+			End If
+		End If
+		If marca.hasItem(CMP_M_FECHA_RECORDAR) Then
+			If Not Isempty(marca.GetItemValue(CMP_M_FECHA_RECORDAR)) Then
+				If marca.HasItem(CMP_M_USUARIO_AUT) Then
+					If marca.GetItemValue(CMP_M_USUARIO_AUT)(0) <> "" Then
+						Dim fHoy As New NotesDateTime(Now)
+						Dim fRecordar As New NotesDateTime(marca.GetItemValue(CMP_M_FECHA_RECORDAR)(0))
+						Set fRecordar=New notesDateTime(fRecordar.DateOnly)
+						Dim oExp As New Expediente(marca.GetItemValue(CMP_M_NRO_EXP)(0),Nothing)
+						
+						If fHoy.TimeDifference(fRecordar) >=0 Then
+							Dim notif As New Notificacion,vDestinos As New Vector(0),vDestinos2 As New Vector(0)
+							vDestinos.values=marca.GetItemValue(CMP_M_USUARIO_AUT)
+							vDestinos2.values=marca.GetItemValue(CMP_M_USUARIO)
+							vDestinos.append vDestinos2,True
+							If vDestinos.cantElem > 0 Then
+								notif.NotifRecordatorioMarca  vDestinos.values,oExp ,marca.GetItemValue(CMP_M_MSG_RECORDAR)	
+								marca.replaceItemValue CMP_M_RECORD_ENVIADO,"1"
+								marca.save True,False
+							End If							
+						End If		
+					End If					
+				End If						
+			End If	
+		End If	
+		
+		Exit Sub
+errorHandler:
+		Msgbox "ERROR: Clase Marcas - Método procesarMarca - " & Error
+		GenerarErrorLog Err, Error, "", NOMBRE_APLICACION, "Clase Marcas - Método procesarMarca", Erl
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Private Sub Commit(vDocs As Vector)
+		On Error Goto errorHandler
+		
+		If vDocs Is Nothing Then
+			Exit Sub
+		End If
+		If vDocs.cantElem > 0 Then
+			Dim docSalvar As NotesDocument,i As Integer
+			If vDocs.cantElem > 0 Then
+				For i= 1 To vDocs.cantElem 
+					Set docSalvar = vDocs.getelement(i)
+					If Not docSalvar Is Nothing Then
+						docSalvar.Save True,False  
+					End If
+				Next	
+			End If			
+		End If
+		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método Commit","")
+		Exit Sub	
+	End Sub
+	
+	
+'*********************************************************************************
+'*********************************************************************************
+'Métodos Públicos
+	Public Function getColorMarca(idMarca As Long) As String
+		On Error Goto errorHandler
+		Dim tMarca As notesDocument
+		Dim VTMarcasId As NotesView
+		Set VTMarcasId=dbOrg.getView(V_TM_POR_ID)
+		If VTMarcasId Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_TM_POR_ID
+		End If
+		
+		Set tMarca =VTMarcasId.GetDocumentByKey(idMarca,True)
+		If tMarca Is Nothing Then
+			Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & ": Marca con código " & Cstr(idMarca) & " para el expediente cuyo número es "
+		End If
+		
+		getColorMarca = tMarca.GetItemValue(CMP_TM_COLOR)(0)
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método getColorMarca","")
+		Exit Function	
+	End Function
+	
+	
+	Public Function getTextoMarca(idMarca As Long) As String
+		On Error Goto errorHandler
+		Dim tMarca As notesDocument
+		Dim VTMarcasId As NotesView
+		Set VTMarcasId=dbOrg.getView(V_TM_POR_ID)
+		If VTMarcasId Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_TM_POR_ID
+		End If
+		
+		Set tMarca =VTMarcasId.GetDocumentByKey(idMarca,True)
+		If tMarca Is Nothing Then
+			Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & ": Marca con código " & Cstr(idMarca) & " para el expediente cuyo número es "
+		End If
+		
+		getTextoMarca = tMarca.GetItemValue(CMP_TM_TEXTO)(0)
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método getTextoMarca","")
+		Exit Function	
+	End Function
+	
+	Public Sub MarcarExpediente(nroExp As String,idMarca As Long, fRecordar As Variant,msgRecordar As Variant,flagRecordar As Integer)
+		On Error Goto errorHandler
+		
+		Dim vMarcasUserNroExpUsr As NotesView
+		Set vMarcasUserNroExpUsr=dbOrg.getView(V_M_POR_TIPO_NROEXP_USR)
+		If vMarcasUserNroExpUsr Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_M_POR_TIPO_NROEXP_USR
+		Else
+			Dim tmp As NotesDocument,key As String
+			key=Cstr(idMarca) & "&%&" & nroExp & "&%&" & Me.Usuario 
+			Set tmp=vMarcasUserNroExpUsr.GetDocumentByKey(key,True)
+			If Not tmp Is Nothing Then
+				Error ERROR_M_MARCAREXP,MSG_ERROR_M_MARCAREXP_1 & tmp.GetItemValue(CMP_M_TEXTO)(0)
+			End If	
+		End If
+		
+		
+		Dim oExp As New Expediente(nroExp,Nothing)
+		Dim tMarca As notesDocument,VTMarcasId As notesView
+		Set VTMarcasId=dbOrg.getView(V_TM_POR_ID)
+		If VTMarcasId Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_TM_POR_ID
+		End If
+		
+		Set tMarca =VTMarcasId.GetDocumentByKey(idMarca,True)
+		If tMarca Is Nothing Then
+			Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & ": Marca con código " & Cstr(idMarca) & " para el expediente cuyo número es " & nroExp
+		End If
+		
+		Dim newMarca As New notesDocument(dbOrg)
+		newMarca.form=CMP_M_FORM
+		
+		Dim itUsrLect As New notesItem(newMarca,CMP_M_USUARIO,"",Readers)
+		Dim itUsrAuto As New notesItem(newMarca,CMP_M_USUARIO_AUT,Me.Usuario,Authors)
+		
+		Dim itLectSiempre As New notesItem(newMarca,CMP_M_LECT_PER,"[Desarrollo]",Readers)
+		
+		newMarca.ReplaceItemValue CMP_M_ID_TIPO_MARCA,idMarca
+		newMarca.ReplaceItemValue CMP_M_TEXTO,tMarca.GetItemValue(CMP_TM_TEXTO)
+		newMarca.ReplaceItemValue CMP_M_COLOR,tMarca.GetItemValue(CMP_TM_COLOR)
+		
+		newMarca.ReplaceItemValue CMP_M_FECHA_RECORDAR,fRecordar
+		newMarca.ReplaceItemValue CMP_M_MSG_RECORDAR,msgRecordar
+		If flagRecordar Then
+			newMarca.ReplaceItemValue CMP_M_RECORD_ENVIADO,"0"	
+		Else
+			newMarca.ReplaceItemValue CMP_M_RECORD_ENVIADO,"1"
+		End If
+		
+		
+		'Algún dato mas del Expediente??
+		newMarca.ReplaceItemValue CMP_M_NRO_EXP,oExp.Caratula.NroExp
+		newMarca.ReplaceItemValue CMP_M_TEXTO_EXP,oExp.Caratula.Asunto
+		newMarca.ReplaceItemValue CMP_M_UNIDAD,oExp.Caratula.OficinaActual
+		
+		newMarca.save True,False
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método MarcarExpediente","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub AddPase(nroExp As String,sUnidad As String,fecha As Variant)
+		On Error Goto errorHandler
+		
+		Dim oExp As New Expediente(nroExp,Nothing)
+		
+		Dim VMarcasEXP As notesView
+		Set VMarcasEXP=dbOrg.getView(V_M_POR_EXP)
+		If VMarcasEXP Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_M_POR_EXP
+		End If
+		
+		Dim colM As NotesDocumentCollection
+		Set colM=VMarcasEXP.GetAllDocumentsByKey(nroExp,True)
+		If colM.Count > 0 Then
+			Dim i As Integer,marca As notesDocument
+			Dim itUnidades As NotesItem,vFechas As Vector
+			For i=1 To colM.Count
+				Set marca=colM.GetNthDocument(i)
+				
+				If marca.HasItem(CMP_M_TUNIDADES) Then
+					Set itUnidades=marca.getFirstItem(CMP_M_TUNIDADES)
+					itUnidades.AppendToTextList "Pase a " & sUnidad
+				Else
+					Set itUnidades=New NotesItem(marca,CMP_M_TUNIDADES,"Pase a " & sUnidad)
+				End If
+				If marca.HasItem(CMP_M_TFECHAS) Then
+					Set vFechas=New Vector(0)
+					vFechas.values=marca.GetItemValue(CMP_M_TFECHAS)
+					vFechas.insertElement fecha,vFechas.cantElem + 1
+					marca.ReplaceItemValue CMP_M_TFECHAS,vFechas.values
+				Else
+					marca.ReplaceItemValue CMP_M_TFECHAS,fecha
+				End If
+				marca.ReplaceItemValue CMP_M_UNIDAD,sUnidad
+				
+				marca.Save True,False
+			Next
+		End If		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método AddPase","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub AddRecibir(nroExp As String,fecha As Variant)
+		On Error Goto errorHandler
+		
+		Dim oExp As New Expediente(nroExp,Nothing)
+		
+		Dim VMarcasEXP As notesView
+		Set VMarcasEXP=dbOrg.getView(V_M_POR_EXP)
+		If VMarcasEXP Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_M_POR_EXP
+		End If
+		
+		Dim colM As NotesDocumentCollection
+		Set colM=VMarcasEXP.GetAllDocumentsByKey(nroExp,True)
+		If colM.Count > 0 Then
+			Dim i As Integer,marca As notesDocument
+			Dim itUnidades As NotesItem,vFechas As Vector
+			For i=1 To colM.Count
+				Set marca=colM.GetNthDocument(i)				
+				
+				If marca.HasItem(CMP_M_TUNIDADES) Then
+					Set itUnidades=marca.getFirstItem(CMP_M_TUNIDADES)
+					itUnidades.AppendToTextList "Recibido por " & oExp.Caratula.OficinaActual
+				Else
+					Set itUnidades=New NotesItem(marca,CMP_M_TUNIDADES,"Recibido de " & oExp.Caratula.OficinaActual)
+				End If
+				If marca.HasItem(CMP_M_TFECHAS) Then
+					Set vFechas=New Vector(0)
+					vFechas.values=marca.GetItemValue(CMP_M_TFECHAS)
+					vFechas.insertElement fecha,vFechas.cantElem + 1
+					marca.ReplaceItemValue CMP_M_TFECHAS,vFechas.values
+				Else
+					marca.ReplaceItemValue CMP_M_TFECHAS,fecha
+				End If				
+				marca.ReplaceItemValue CMP_M_UNIDAD,oExp.Caratula.OficinaActual
+				marca.Save True,False
+			Next
+		End If		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método AddRecibir","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub AnularPase(nroExp As String)
+		On Error Goto errorHandler
+		
+		Dim oExp As New Expediente(nroExp,Nothing)
+		
+		Dim VMarcasEXP As notesView
+		Set VMarcasEXP=dbOrg.getView(V_M_POR_EXP)
+		If VMarcasEXP Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_M_POR_EXP
+		End If
+		
+		Dim colM As NotesDocumentCollection
+		Set colM=VMarcasEXP.GetAllDocumentsByKey(nroExp,True)
+		If colM.Count > 0 Then
+			Dim i As Integer,marca As notesDocument
+			Dim itUnidades As NotesItem,vFechas As Vector
+			For i=1 To colM.Count
+				Set marca=colM.GetNthDocument(i)
+				
+				Dim vRecUni As New Vector(0),vRecFechas As New Vector(0)
+				If marca.HasItem(CMP_M_TUNIDADES) Then	
+					vRecUni.values=marca.getItemValue(CMP_M_TUNIDADES)
+					Dim pos As Long
+					pos=vRecUni.cantElem
+					If pos > 0 Then
+						vRecUni.deleteElement pos
+						
+						If marca.HasItem(CMP_M_TFECHAS) Then
+							vRecFechas.values=marca.getItemValue(CMP_M_TFECHAS)
+							If vRecFechas.cantElem >= pos Then
+								vRecFechas.deleteElement pos	
+								marca.replaceItemValue CMP_M_TFECHAS,vRecFechas.values					
+							End If
+						End If						
+						marca.replaceItemValue CMP_M_TUNIDADES,vRecUni.values						
+						marca.ReplaceItemValue CMP_M_UNIDAD,oExp.Caratula.OficinaActual
+						marca.Save True,False
+					End If								
+				End If								
+			Next
+		End If		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método AnularPase","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub DevolverExp(nroExp As String)
+		On Error Goto errorHandler
+		
+		Dim oExp As New Expediente(nroExp,Nothing)
+		Dim VMarcasEXP As notesView
+		Set VMarcasEXP=dbOrg.getView(V_M_POR_EXP)
+		If VMarcasEXP Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_M_POR_EXP
+		End If
+		
+		Dim colM As NotesDocumentCollection
+		Set colM=VMarcasEXP.GetAllDocumentsByKey(nroExp,True)
+		If colM.Count > 0 Then
+			Dim i As Integer,marca As notesDocument
+			Dim itUnidades As NotesItem,vFechas As Vector
+			For i=1 To colM.Count
+				Set marca=colM.GetNthDocument(i)
+				
+				Dim vRecUni As New Vector(0),vRecFechas As New Vector(0)
+				If marca.HasItem(CMP_M_TUNIDADES) Then	
+					vRecUni.values=marca.getItemValue(CMP_M_TUNIDADES)
+					Dim pos As Long
+					pos=vRecUni.cantElem
+					If pos > 0 Then
+						vRecUni.deleteElement pos	
+						If pos >=2 Then
+							vRecUni.deleteElement pos - 1
+						End If						
+						If marca.HasItem(CMP_M_TFECHAS) Then
+							vRecFechas.values=marca.getItemValue(CMP_M_TFECHAS)
+							If vRecFechas.cantElem >= pos Then
+								vRecFechas.deleteElement pos		
+								If pos >=2 Then
+									vRecFechas.deleteElement pos - 1	
+									marca.replaceItemValue CMP_M_TFECHAS,vRecFechas.values					
+								End If
+							End If
+						End If						
+						marca.replaceItemValue CMP_M_TUNIDADES,vRecUni.values						
+						marca.ReplaceItemValue CMP_M_UNIDAD,oExp.Caratula.OficinaActual
+						marca.Save True,False
+					End If					
+				End If				
+			Next
+		End If		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método DevolverExp","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub NotifMovimientos()
+		'Se llama de un agente diario por la madrugada y notifica
+		'de los pasos seguidos por un expediente en el día anterior
+		On Error Goto errorHandler
+		
+		Dim VMarcas As notesView
+		Set VMarcas=dbOrg.getView(V_M_POR_USUARIO2)
+		If VMarcas Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_M_POR_USUARIO
+		End If
+		
+		Dim i As Integer,docSalvar As NotesDocument
+		Dim vUnidades As Vector,vFechas As Vector,vNroExp As Vector  'Vectores
+		Dim mUnidades As Vector,mFechas As Vector,mNroExp As Vector	'Matrices
+		Dim marca As NotesDocument,usuarioActual As String,notificar As Integer
+		Dim notif As New Notificacion
+		
+		Dim vNav As Notesviewnavigator
+		Set vNav=VMarcas.CreateViewNav
+		Dim entry As Notesviewentry
+		Dim colVal As Variant
+		
+		Set entry=vNav.GetFirst
+		usuarioActual=""
+		While Not entry Is Nothing
+			Set marca=entry.Document
+			notificar = False
+			
+			'Notificar Pendientes?
+			colVal = entry.ColumnValues(0)
+			If Not Isempty(colVal) Then
+				If Isarray(colVal) Then
+					If Cstr(colval(0)) <> usuarioActual Then
+						notificar=True	
+					End If		
+				Else
+					If Cstr(colval) <> usuarioActual Then
+						notificar=True	
+					End If		
+				End If				
+			Else
+				notificar=True	
+			End If			
+			
+			If notificar Then
+				If usuarioActual <> "" Then
+					notif.NotificarMarcas usuarioActual,vNroExp,mUnidades,mFechas	
+				End If				
+				Set mUnidades=New Vector(0)
+				Set mFechas=New Vector(0)
+				Set vNroExp=New Vector(0)
+				If Isarray(colVal) Then
+					If Not Isempty(colVal) Then
+						usuarioActual=Cstr(colval(0))  
+					Else
+						usuarioActual=""
+					End If	
+				Else
+					usuarioActual=Cstr(colval)
+				End If				
+			End If			
+			'Actualizo Matriz de datos recopilados
+			Set vUnidades=New Vector(0)
+			If marca.HasItem(CMP_M_TUNIDADES) Then
+				vUnidades.values = marca.GetItemValue(CMP_M_TUNIDADES)	
+			End If			
+			mUnidades.insertElement vUnidades,mUnidades.cantelem + 1
+			Set vFechas=New Vector(0)						
+			If marca.HasItem(CMP_M_TFECHAS) Then
+				vFechas.values = marca.GetItemValue(CMP_M_TFECHAS)	
+			End If			
+			
+			mFechas.insertElement vFechas,mFechas.cantelem + 1
+			vNroExp.insertElement marca.GetItemValue(CMP_M_NRO_EXP)(0),vNroExp.cantelem + 1
+			
+			Set entry=vNav.GetNext(entry)
+		Wend
+		If usuarioActual <> "" Then
+			notif.NotificarMarcas usuarioActual,vNroExp,mUnidades,mFechas	
+		End If				
+		
+		'Reinicio tabla para nuevos registros
+		Set marca=VMarcas.GetFirstDocument
+		While Not marca Is Nothing
+			If marca.HasItem(CMP_M_TUNIDADES) Then
+				marca.RemoveItem CMP_M_TUNIDADES	
+			End If
+			If marca.HasItem(CMP_M_TFECHAS) Then
+				marca.RemoveItem CMP_M_TFECHAS
+			End If
+			marca.Save True,False
+			Set marca=VMarcas.GetNextDocument(marca)
+		Wend
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método NotifMovimientos","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub Recordatorios()
+		On Error Goto errorHandler
+		
+		Dim VMarcas As notesView
+		Set VMarcas=dbOrg.getView(V_M_POR_USUARIO)
+		If VMarcas Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & V_M_POR_USUARIO
+		End If
+		
+		Dim marca As NotesDocument
+		Set marca=VMarcas.GetFirstDocument
+		While Not marca Is Nothing
+			procesarMarcaRecordatorio marca
+			
+			Set marca=VMarcas.GetNextDocument(marca)
+		Wend	
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método Recordatorios","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub Exportar(vUsuarios As Vector,vMarcas As Vector)
+		On Error Goto errorHandler
+		'vUsuarios son los usuarios para los cuales se van a exportar las marcas
+		'vMarcas son los noteid's que identifican las marcas a exportar
+		
+		'La conclusión final fue que vamos a exportar las marcas mismas
+		'Luego, si se corre algún proceso por tipo de marca, no serán tomadas
+		'en cuenta las marcas que no estén asociadas a ningún tipo de marca
+		'por lo cual a las marcas que se exporten hay que eliminarles el id
+		'que las asocia con algún tipo de marca
+		
+		Dim vMarcasDoc As New Vector(0)
+		
+		If vMarcas.cantElem <= 0 Then
+			Exit Sub
+		Else	'busco los documentos de marcas una sola vez
+			Dim j As Integer,tmpdoc As NotesDocument
+			Dim vMarcasNroExpUsuario As NotesView
+			Set vMarcasNroExpUsuario=Me.dbOrg.getView(V_M_USER_NROEXP)
+			
+			For j= 1 To vMarcas.cantElem
+				Set tmpdoc=Me.dbOrg.GetDocumentByID(vMarcas.getElement(j))	
+				If Not tmpdoc Is Nothing Then
+					vMarcasDoc.insertElement tmpdoc,vMarcasDoc.cantElem + 1						
+%REM
+					Dim uComp As notesname,nroExp As String
+					Set uComp=New notesname(vUsuarios.getElement(j))
+					nroExp=tmpDoc.GetItemValue(CMP_M_NRO_EXP)(0)
+					Dim docBuscar As notesDocument
+					Set docBuscar=vMarcasNroExpUsuario.GetDocumentByKey(Trim(uComp.Canonical) & "&%&" & Trim(nroExp),True)
+					If Not  docBuscar Is Nothing Then
+						'Error ERROR_M_COMPARTIR,MSG_ERROR_M_COMPARTIR_1_a & uComp.Common & MSG_ERROR_M_COMPARTIR_1_b & nroExp						
+					End If
+%END REM					
+				End If
+			Next			
+		End If
+		
+%REM
+
+		Dim oCarta As CartaServicio
+		Dim i As Integer
+		If vUsuarios.CantElem > 0 Then
+			'Comparto
+			Dim oNotificar As Notificacion,oExp As Expediente
+			Set oNotificar=New Notificacion()
+			For i= 1 To vUsuarios.CantElem
+				If vUsuarios.getElement(i) <> "" Then
+					CompartirConUsuario vUsuarios.getElement(i),vMarcasDoc
+				End If
+			Next	
+			For j=1 To vMarcasDoc.CantElem
+				Set tmpDoc=vMarcasDoc.getElement(j)
+				If Not tmpDoc Is Nothing Then
+					If tmpDoc.GetItemValue("sTipo")(0)<>"Carta" Then
+						Set oExp=New Expediente(tmpDoc.GetItemValue(CMP_M_NRO_EXP)(0),Nothing)
+						If Not oExp Is Nothing Then
+							oNotificar.CompartirMarca vUsuarios.values,oExp,tmpDoc.GetItemValue(CMP_M_TEXTO)(0)
+						End If
+					Else 
+						Dim anio As Integer
+						anio = Cint(Strright(tmpDoc.GetItemValue(CMP_M_NRO_EXP)(0),"/"))
+						Set oCarta = New CartaServicio(tmpDoc.GetItemValue(CMP_M_NRO_EXP)(0),1,Nothing,False,anio)
+						If Not oCarta Is Nothing Then
+							oNotificar.CompartirMarcaCarta vusuarios.values,oCarta,tmpDoc.GetItemValue(CMP_M_TEXTO)(0)
+						End If
+					End If
+				End If	
+			Next
+		End If	
+%END REM
+		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método Exportar","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Function findTipoMarca(idTipoMarca As Long) As NotesDocument
+		On Error Goto errorHandler
+		'Busco Tipo de Marca
+		
+		Dim vTiposmarcaPorId As notesView
+		Set vTiposmarcaPorId=dbOrg.GetView(V_TM_POR_ID)
+		If vTiposmarcaPorId Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & V_TM_POR_ID
+		End If
+		Set findTipoMarca=vTiposmarcaPorId.GetDocumentByKey(idTipoMarca,True)
+		
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método findTipoMarca","")
+		Exit Function
+	End Function
+	
+'*********************************************************************************
+	
+	Public Function findMarcas(idTipoMarca As Long) As NotesDocumentCollection
+		On Error Goto errorHandler
+		
+		Dim vMarcasPorTipo As NotesView
+		Set vMarcasPorTipo=dbOrg.GetView(V_M_POR_TIPOMARCA)
+		If vMarcasPorTipo Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & V_M_POR_TIPOMARCA
+		End If
+		Set findMarcas=vMarcasPorTipo.GetAllDocumentsByKey(idTipoMarca,True)
+		
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método findMarcas","")
+		Exit Function
+	End Function	
+	
+'*********************************************************************************
+	
+	Public Sub ActualizarMarcados(idTipoMarca As Long)
+		On Error Goto errorHandler
+		'Soncroniza los datos del tipo de Marca con las marcas correspondientes
+		
+		Dim tMarca As notesDocument
+		Set tMarca=findTipoMarca(idTipoMarca)
+		If tMarca Is Nothing Then
+			Error ERROR_M_ACTUALIZAR,MSG_ERROR_M_ACTUALIZAR_1 & Cstr(idTipoMarca)
+		End If
+		'Busco Marcas dependientes
+		Dim colMarcas As NotesDocumentCollection,i As Integer
+		Set colMarcas=findMarcas(idTipoMarca)
+		If Not colMarcas.Count > 0 Then
+			Exit Sub
+		End If
+		
+		'Actualizo Marcas
+		Dim m As NotesDocument
+		For i=1 To colMarcas.Count
+			Set m=colMarcas.GetNthDocument(i)
+			
+			If tMarca.hasItem(CMP_TM_TEXTO) Then
+				m.ReplaceItemValue CMP_M_TEXTO,tMarca.GetItemValue(CMP_TM_TEXTO)	
+			End If
+			If tMarca.hasItem(CMP_TM_COLOR) Then
+				m.ReplaceItemValue CMP_M_COLOR,tMarca.GetItemValue(CMP_TM_COLOR)	
+			End If
+			m.Save True,False
+		Next		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método ActualizarMarcados","")
+		Exit Sub	
+	End Sub
+	
+'*********************************************************************************
+	
+	Public Sub QuitarMarcas(vIdsMarcas As Vector)
+		On Error Goto errorHandler
+	
+		If vIdsMarcas.cantElem  > 0 Then
+			Dim i As Integer,tmpDoc As notesDocument
+			For i = 1 To vIdsMarcas.cantElem 
+				If vIdsMarcas.getElement(i) <> "" Then
+					Set tmpDoc=dbOrg.GetDocumentByUNID(vIdsMarcas.getElement(i))	
+					If Not tmpDoc Is Nothing Then
+						tmpDoc.Remove True
+					End If
+				End If				
+			Next			
+		End If		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Marcas - Método QuitarMarcas","")
+		Exit Sub	
+	End Sub
+	
+	
+End Class

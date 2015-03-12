@@ -1,0 +1,110 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'ESTADOS
+Public Const IGDOC_CONTRATOS_ESTADO_BORRADOR			= "1"
+Public Const IGDOC_CONTRATOS_BORRADOR_CON_PRORROGA  	= "2"
+Public Const IGDOC_CONTRATOS_BORRADOR_CON_AMPLIACION  	= "3"
+Public Const IGDOC_CONTRATOS_ESTADO_RESERVADO		= "4"
+Public Const IGDOC_CONTRATOS_ESTADO_ACTIVO			= "5"
+Public Const IGDOC_CONTRATOS_ESTADO_FINALIZADO		= "6"
+
+'ACCIONES
+Public Const IGDOC_CONTRATOS_ACCION_CREACION				="acc_crear_contrato"
+Public Const IGDOC_CONTRATOS_ACCION_RESERVAR				="acc_reservar_contrato"
+Public Const IGDOC_CONTRATOS_ACCION_GUARDAR				="acc_guardar_contrato"
+Public Const IGDOC_CONTRATOS_ACCION_EDITAR				="acc_editar_contrato"
+Public Const IGDOC_CONTRATOS_ACCION_LIBERAR				="acc_liberar_contrato"
+Public Const IGDOC_CONTRATOS_ACCION_ACTIVAR				="acc_activar_contrato"
+Public Const IGDOC_CONTRATOS_ACCION_ACTIVAR_PRORROGA		="acc_activar_prorroga"
+Public Const IGDOC_CONTRATOS_ACCION_ACTIVAR_AMPLIACIO		="acc_activar_ampliacion"
+Public Const IGDOC_CONTRATOS_ACCION_AGREGAR_HITO			="acc_agregarhito"
+Public Const IGDOC_CONTRATOS_ACCION_MODIFICAR_HITO		="acc_modificar_hito"
+Public Const IGDOC_CONTRATOS_ACCION_CORRER_HITO			="acc_correr_hito"	
+Public Const IGDOC_CONTRATOS_ACCION_SOLIC_PRORROGA		="acc_solicitar_prorroga"
+Public Const IGDOC_CONTRATOS_ACCION_SOLIC_AMPLIACION		="acc_solicitar_ampliacion"
+Public Const IGDOC_CONTRATOS_ACCION_CONFIRMAR_HITO		="acc_confirmar_hito"
+Public Const IGDOC_CONTRATOS_ACCION_SOLIC_CORRIM_HITO		="acc_solic_corrim_hito"
+Public Const IGDOC_CONTRATOS_ACCION_CORRIMIENTO_HITO		="acc_corrimiento_hito"
+
+'Claves interop
+Public Const CLAVE_CONTRATOS_MOTOR				="MOTOR"
+Public Const CLAVE_CONTRATOS_CONTRATOS			="CONTRATOS"
+Public Const CLAVE_CONTRATOS_PORTAL			="PORTAL"
+
+'MARCAS DE HITOS
+Public Const IGDOC_HITOS_MARCA_ACTIVO					="1"
+Public Const IGDOC_HITOS_MARCA_PRORROGA					="2"
+Public Const IGDOC_HITOS_MARCA_AMPLIACION				="3"
+Public Const IGDOC_HITOS_MARCA_BORRADOR					="4"
+
+'Claves tipos de hito
+Public Const CLAVE_HITO_VENC_CONTRATO				="VENC_CONTRATO"
+Public Const CLAVE_HITO_VENC_PRORROGA				="VENC_PRORROGA"
+Public Const CLAVE_HITO_VENC_AMPLIACION				="VENC_AMPLIACION"
+Public Const CLAVE_HITO_PAGO						="HITO_PAGO"
+
+'Claves modificar hito
+Public Const IGDOC_HITOS_NO_MODIFICABLE						=0
+Public Const IGDOC_HITOS_MODIFICABLE						=1
+
+'Claves estados de hito
+Public Const IGDOC_HITOS_ESTADO_PENDIENTE					="1"
+Public Const IGDOC_HITOS_ESTADO_CONFIRMADO					="2"
+
+'Claves tipos de contrato
+Public Const CLAVE_CONTRATO_EXPEDIENTE				="EXPEDIENTE"
+Public Const CLAVE_CONTRATO_LICIT_PUBLICA			="LICIT_PUBLICA"
+Public Const CLAVE_CONTRATO_LICIT_ABREVIADA			="LICIT_ABREVIADA"
+
+'Vistas 
+Public Const IGDOC_CONTRATOS_V_CONTRATOS_POR_NRO			="ContratosxNro"
+Public Const IGDOC_CONTRATOS_V_HITOS_POR_CONTRATOHITO		="HitosXNroContratoxID"
+Public Const IGDOC_CONTRATOS_V_GRUPOS					="$VIMGroups"
+
+'Grupos
+Public Const IGDOC_CONTRATOS_GRUPO_GEST_CONTRATO			="CONT_GESTION"
+Public Const IGDOC_CONTRATOS_GRUPO_REGI_CONTRATO			="CONT_CARGA"
+Public Const IGDOC_CONTRATOS_GRUPO_ORDE_CONTRATO			="CONT_ORDENADOR"
+Public Const IGDOC_CONTRATOS_CAMPO_MEMBERS				="Members"
+Public Const IGDOC_CONTRATOS_PREFIJO_GERENTE				="CONT_GERE_"
+Public Const IGDOC_CONTRATOS_PREFIJO_LECTORES			="CONT_LECT_"
+
+'Roles
+Public Const IGDOC_CONTRATOS_ROL_GESTION				="[GesContrato]"
+Public Const IGDOC_CONTRATOS_ROL_REGISTRAR				="[RegContrato]"
+Public Const IGDOC_CONTRATOS_ROL_ORDENADOR				="[Ordenador]"
+Public Const IGDOC_CONTRATOS_ROL_DESARROLLO				="[Desarrollo]"
+Public Const IGDOC_CONTRATOS_ROL_ADMINISTRADOR			="[Administrador]"
+
+' Campos
+Public Const IGDOC_CONTRATOS_CAMPO_NRO_CONTRATO			="ccNroContrato"
+Public Const IGDOC_CONTRATOS_CAMPO_CATEGORIA				="sCategoria"
+Public Const IGDOC_CONTRATOS_CAMPO_SUB_CATEGORIA			="sSubCategoria"
+Public Const IGDOC_CONTRATOS_CAMPO_TIPO_CONTRATO			="rTipoContrato"
+Public Const IGDOC_CONTRATOS_CAMPO_AREA_CONTRATO			="cArea"
+Public Const IGDOC_CONTRATOS_CAMPO_AREA_RESPONSABLE		="cAreaResponsable"
+Public Const IGDOC_CONTRATOS_CAMPO_UNIDAD				="sUnidad"
+Public Const IGDOC_CONTRATOS_CAMPO_NRO_EXP				="ccNroExp"
+Public Const IGDOC_CONTRATOS_CAMPO_FECHA_REGISTRO			="fFechaRegistro"
+
+Public Const IGDOC_CONTRATOS_CAMPO_ESTADO				="ccEstado"
+Public Const IGDOC_CONTRATOS_CAMPO_ESTADO_ANTERIOR		="ccEstadoAnterior"
+Public Const IGDOC_CONTRATOS_CAMPO_SIGHITO				="nSiguienteHito"
+Public Const IGDOC_CONTRATOS_CAMPO_ARCHIVOS_ADJUNTOS		="Archivos"
+Public Const IGDOC_CONTRATOS_CAMPO_UNIDS_ADJUNTOS			="UnidsActuaciones"
+Public Const IGDOC_CONTRATOS_CAMPO_PATH_BASE_EXP			="pathBaseExp"
+Public Const IGDOC_CONTRATOS_CAMPO_LECTORES_PERM			="lectoresPerm"
+Public Const IGDOC_CONTRATOS_CAMPO_LECTORES				="lectores"
+Public Const IGDOC_CONTRATOS_CAMPO_AUTORES				="autores"
+Public Const IGDOC_CONTRATOS_CAMPO_RESERVADO_POR			="sReservadoPor"
+Public Const IGDOC_CONTRATOS_CAMPO_PROVEEDOR				="sProveedor"
+Public Const IGDOC_CONTRATOS_CAMPO_NRO_LLAMADO			="ccNroLlamado"
+Public Const IGDOC_CONTRATOS_CAMPO_CONFORMANTES			="sResponsables"
+
+Public Const IGDOC_CONTRATOS_CAMPO_OBJETO				="sObjetoContrato"
+Public Const IGDOC_CONTRATOS_CAMPO_TIENE_PARAMETRICA		="rTieneParametrica"

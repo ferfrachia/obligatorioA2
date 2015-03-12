@@ -1,0 +1,877 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+Use "VectorClass 2.05"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Elemento
+Declare Public Class Nodo As Elemento
+Declare Public Class Transicion As Elemento
+Declare Public Class MXController
+Declare Public Class InfoNodo
+Declare Sub Initialize
+Declare Sub obtenerNodos(domDoc As NotesDOMDocumentNode, nodos List As Nodo)
+Declare Sub obtenerSimbolos(domDoc As NotesDOMDocumentNode,  idInicio As String, idFin As String,nodos List As Nodo)
+Declare Sub obtenerTransiciones(domDoc As NotesDOMDocumentNode, nodos List As Nodo, indice As Vector,transiciones  As Vector)
+Declare Sub getTransicionesSalientes(idElemento As String, transiciones List As Transicion, transicionesSalientes List As Transicion)
+Declare Function validarNombreUnidades(nodos List As Nodo) As Boolean
+Declare Function validarUnidadesAlcanzables(nodos List As Nodo) As Boolean
+Declare Function validarUnidadesTienenConex(nodos List As Nodo) As Boolean
+Declare Function validarConexiones(nodos List As Nodo, vIndice  As Vector, transiciones As Vector, idInicio As String, idFin As String)'unidades List As Unidad, conexiones List As Conexion, forks As Vector) As Boolean
+Declare Function obtenerNodoInicial(nodos  List As Nodo,idInicio As String) As String
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Dim existenMultiplesNodosInicio As Boolean
+Dim existenMultiplesNodosFin As Boolean
+Dim cantSecciones As Integer
+
+
+' *************************************************************************************
+' ********* CLASS ELEMENTO
+' *************************************************************************************
+
+Public Class Elemento
+	Private idElemento As String
+	
+	Sub New(Byval id As String)
+		idElemento = id
+	End Sub
+	
+	Function getIdElemento() As String
+		getIdElemento = idElemento
+	End Function
+End Class
+
+
+' *************************************************************************************
+' ********* CLASS NODO
+' *************************************************************************************
+
+Public Class Nodo As Elemento
+	
+	Private idNodo As String
+	Private nombre As String
+	Private transicionesEntrantes As Vector
+	Private transicionesSalientes As Vector
+	Private alcanzable As Boolean
+	Private procesada As Boolean
+	Private tipo As String
+	Private pos_x As String
+	Private pos_y As String
+	
+	
+'********************************************************************************************************	
+	Sub New(Byval idElemento As String, Byval idN As String, Byval nombreU As String, tipoNodo As String), Elemento(idElemento)	
+		On Error Goto errorHandler
+		idNodo = idN
+		nombre = nombreU
+		procesada = False
+		tipo = tipoNodo
+		
+		Set transicionesEntrantes = New Vector(0)
+		Set transicionesSalientes = New Vector(0)
+		Exit Sub
+errorHandler:
+		Exit Sub
+	End Sub
+	
+'********************************************************************************************************
+	
+	Function getIdNodo() As String
+		getIdNodo = idNodo
+	End Function
+	
+'********************************************************************************************************
+	
+	Function getNombre() As String
+		getNombre = nombre
+	End Function
+	
+'********************************************************************************************************
+	
+	Function getTransicionesEntrantes() As Vector
+		Set getTransicionesEntrantes = transicionesEntrantes
+	End Function
+	
+'********************************************************************************************************
+	
+	Function getTransicionesSalientes() As Vector
+		Set getTransicionesSalientes = transicionesSalientes
+	End Function
+	
+'********************************************************************************************************
+	Function set_x(x As String)
+		pos_x = x
+	End Function
+'********************************************************************************************************
+	Function set_y(y As String)
+		pos_y=y
+	End Function
+'********************************************************************************************************
+	Function get_x() As String
+		get_x = pos_x
+	End Function
+'********************************************************************************************************
+	Function get_y() As String
+		get_y=pos_y
+	End Function
+'********************************************************************************************************	
+	Function getTipo() As String
+		getTipo = tipo
+	End Function
+'********************************************************************************************************
+	
+	Sub setTransicionesEntrantes(transiciones As Vector)
+		Set transicionesEntrantes = transiciones
+	End Sub
+	
+'********************************************************************************************************
+	
+	Sub setTransicionesSalientes(transiciones As Vector)
+		Set transicionesSalientes = transiciones
+	End Sub
+	
+'********************************************************************************************************
+	
+	Sub marcarProcesada()
+		procesada = True
+	End Sub
+	
+'********************************************************************************************************
+	
+	Sub setAlcanzable()
+		alcanzable = True
+	End Sub
+	
+'********************************************************************************************************
+	
+	Function tieneTransicionSaliente() As Boolean
+		tieneTransicionSaliente = transicionesSalientes.CantElem>0
+		
+	End Function
+	
+'********************************************************************************************************
+	
+	Function fueProcesada() As Boolean
+		fueProcesada = procesada
+		
+	End Function
+	
+'********************************************************************************************************
+	
+	Function esAlcanzable() As Boolean
+		If tipo="Inicio" Or tipo="Fin"Then
+			esAlcanzable = True
+		Else
+			esAlcanzable = alcanzable
+		End If
+	End Function
+	
+End Class
+
+
+
+' *************************************************************************************
+' ********* CLASS TRANSICION
+' *************************************************************************************
+
+Public Class Transicion As Elemento
+	Private origen As String
+	Private destino As String
+	Private condicion As String
+'********************************************************************************************************
+	Sub New(Byval idElemento As String, _
+	Byval orig As String, _
+	Byval dest As String, _
+	Byval cond As String), Elemento(idElemento)
+		origen = orig
+		destino = dest
+		If cond <> "" Then
+			condicion = cond	
+		End If
+	End Sub
+	
+'********************************************************************************************************
+	
+	Function getOrigen() As String
+		getOrigen = origen
+	End Function
+	
+'********************************************************************************************************  
+	
+	Function getDestino() As String
+		getDestino = destino
+	End Function
+	
+'********************************************************************************************************  
+	
+	Function getCondicion() As String
+		getCondicion = condicion
+	End Function
+	
+'********************************************************************************************************  
+	
+	Function tieneCondicion() As Boolean
+		If condicion = "" Then
+			tieneCondicion = False
+		Else
+			tieneCondicion = True
+		End If
+	End Function
+End Class
+
+
+' *************************************************************************************
+' ********* CLASS CONTROLLER
+' *************************************************************************************
+
+Public Class MXController
+	
+	' ******** Atributos
+	Public idInicio As String
+	Public idFin As String
+	Public nodos List As Nodo
+	Public transiciones As Vector
+	Public vIndice As Vector
+	Public idInicial As String
+	
+	'******* CONSTRUCTOR ****************************************************************************
+	
+	Public Sub New(xml As String)
+		On Error Goto handler
+		If xml <> "" Then
+			Dim parser As NotesDOMParser
+			Dim domdoc As NotesDOMDocumentNode
+			Dim session As New NotesSession
+			Set parser = session.CreateDOMParser(xml)
+			Call parser.Parse
+			Set domdoc = parser.Document
+			Set transiciones = New Vector(0)
+			Set vIndice = New Vector(0)
+			Call obtenerNodos(domdoc, nodos)
+			Call obtenerSimbolos(domdoc, idInicio, idFin,nodos)
+			Call obtenerTransiciones(domdoc, nodos, vIndice,transiciones)
+			idInicial = obtenerNodoInicial(nodos,idInicio)
+			Call validarDiagrama()
+		End If
+		Exit Sub
+handler:
+		
+		Msgbox Erl & Error$
+		
+	End Sub
+	
+	
+	'******** OBTENER INICIO ******************************************************************
+	
+	Public Function obtenerInicio(docFormulario As NotesDocument) As InfoNodo
+		Dim destino As String
+		
+	'	Forall trans In transiciones
+		'	If trans.getOrigen() = idInicio Then
+'			destino = trans.getDestino()
+	'		Exit Forall
+			'End If
+	'	End Forall
+		
+		Set obtenerInicio = siguiente(destino, docFormulario)		
+	End Function
+	
+	
+	'******** OBTENER ID FIN ******************************************************************
+	
+	Public Function obtenerIdFin() As String
+		obtenerIdFin = idFin
+	End Function
+	
+	'******** OBTENER SIGUIENTE ******************************************************************
+	
+	' Funcion recibe la instancia del formulario con el numero de seccion en el que se encuentra procesando y
+	' la oficina que lo tiene. Retorna el id de la oficina a la que se debe dar el pase segun el diagrama de transiciones
+	Public Function obtenerSiguiente(idElemento As String, docFormulario As NotesDocument) As InfoNodo
+		On Error Goto errorHandler
+		Dim unidadActual As Nodo
+		Dim conexion As Transicion
+		
+		Set unidadActual = nodos(idElemento)
+		Set conexion = unidadActual.getTransicionesSalientes().getElement(0)
+		Set obtenerSiguiente = siguiente(conexion.getDestino(), docFormulario)
+		Exit Function
+errorHandler:
+		Error Err, Error
+		Exit Function
+	End Function
+	
+	'******* VALIDAR DIAGRAMA ****************************************************************************
+	
+	Private Sub validarDiagrama()
+		If idInicio = "" Then
+			Error 1010, "No existe un nodo de Inicio."
+		Elseif existenMultiplesNodosInicio Then
+			Error 1000, "Existe más de un nodo Inicio."		
+		Elseif existenMultiplesNodosFin Then
+			Error 1001, "Existe más de un nodo Fin."
+		Elseif Not validarNombreUnidades(nodos) Then
+			Error 1002, "Falta al menos el nombre de una unidad."
+		Elseif Not validarUnidadesAlcanzables(nodos) Then
+			Error 1020, "Existe al menos una undidad que no tiene conexiones entrantes."
+		Elseif Not validarUnidadesTienenConex(nodos) Then
+			Error 1021, "Existe al menos una undidad que no tiene conexión saliente."
+		Elseif Not validarConexiones(nodos,vIndice,transiciones,idInicio,idFin) Then
+			Error 1022, "Conexiones entre unidades mal formadas."
+'		Elseif Not validarConexiones(nodos, transiciones, forks, idInicio, idFin) Then
+'			Error 1022, "Conexiones entre unidades mal formadas."
+		End If
+	End Sub
+	
+	Private Function siguiente(destino As String, docFormulario As NotesDocument) As InfoNodo
+		On Error Goto errorHandler
+%REM
+		Dim unidadSiguiente As Nodo
+		Dim transicionesSalientes List As Vector
+		Dim condicion As Condicion
+		Dim pos As Long
+		Dim encontre As Boolean
+		Dim valorReal As String
+		Dim posicion As InfoNodo
+		
+		If Iselement(nodos(destino)) Then
+			Set unidadSiguiente = nodos(destino)
+			Set posicion = New InfoNodo(unidadSiguiente.getIdElemento(), "1", unidadSiguiente.getIdNodo())
+		Elseif forks.isMember(destino, pos, True) Then
+			Call getTransicionesSalientes(forks.getElement(pos), transiciones, transicionesSalientes)
+			encontre = False
+			Forall trans In transicionesSalientes
+				Set condicion = True 'trans.getCondicion()
+				If condicion.Evaluar(docFormulario) Then
+'					Set unidadSiguiente = nodos(trans.getDestino())
+					encontre = True
+					Exit Forall
+				End If
+			End Forall
+			If encontre Then
+				Set posicion = New InfoNodo(unidadSiguiente.getIdElemento(), 2, unidadSiguiente.getIdNodo())	
+			Else
+				Error 1500, "No es posible dar el pase, ya que el formulario no cumple con ninguna de las condiciones definidas en el flujo del mismo."
+			End If
+		Elseif destino = idFin Then
+			' Avisar que termino
+			Set posicion = New InfoNodo(idFin, 0, "")
+		Else
+			Error 1000, "Error en siguiente"
+		End If
+%END REM
+		Set siguiente = Nothing
+		Exit Function
+errorHandler:
+		Error Err, Error
+		Exit Function
+	End Function
+	
+	
+	
+End Class
+
+
+' *************************************************************************************
+' ********* CLASS INFONODO
+' *************************************************************************************
+
+Public Class InfoNodo
+	Private id As String
+	Private seccion As Integer
+	Private unidad As String
+	
+	Public Sub New(idNodo As String, numSeccion As Integer, idUnidad As String)
+		id = idNodo
+		seccion = numSeccion
+		unidad = idUnidad
+	End Sub
+	
+	Public Function getIdElemento()
+		getIdElemento = id
+	End Function
+	
+	Public Function getSeccion()
+		getSeccion = seccion
+	End Function
+	
+	Public Function getUnidad()
+		getUnidad = unidad
+	End Function
+End Class
+
+'++LotusScript Development Environment:2:2:Initialize:1:10
+Sub Initialize
+	
+End Sub
+
+'++LotusScript Development Environment:2:2:obtenerNodos:1:8
+Sub obtenerNodos(domDoc As NotesDOMDocumentNode, nodos List As Nodo)
+	On Error Goto errorHandler
+	
+	Dim domnodelist As NotesDOMNodeList
+	Dim domnode As NotesDOMNode
+	Dim domnode2 As NotesDOMNode
+	Dim domnode3 As NotesDOMNode
+	Dim atributos As NotesDOMNamedNodeMap
+	Dim atributo As NotesDOMNode
+	Dim nodo As Nodo
+	Dim nombre As String
+	Dim idUnidad As String
+	Dim idElemento As String
+	Dim tipo As String
+	Dim i, j As Integer
+	Dim x, y As String
+	
+	' Recorro todos los nodos con la tag <Unidad>
+	Set domnodelist = domdoc.GetElementsByTagName("Unidad")
+	For i = 1 To domnodelist.NumberOfEntries
+		nombre = ""
+		idUnidad = ""
+		idElemento = ""
+		Set domnode = domnodelist.GetItem(i)
+		Set atributos = domnode.Attributes
+		' Recorro los atributos del nodo
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName = "label" Then
+				nombre = atributo.NodeValue
+			Elseif atributo.NodeName = "idOficina" Then
+				idUnidad = atributo.NodeValue
+			Elseif atributo.NodeName = "tipo" Then
+				tipo = atributo.NodeValue
+			Elseif atributo.NodeName = "id" Then
+				idElemento = atributo.NodeValue
+			End If
+		Next	
+		Set domNode2 = domNode.FirstChild
+		While Not domNode2.IsNull And domNode2.NodeName<>"mxCell" 
+			Set domNode2 = domNode2.NextSibling
+		Wend
+		
+		Set domNode3 = domNode2.FirstChild
+		While Not domNode3.IsNull And domNode3.NodeName<>"mxGeometry"
+			Set domNode3 = domNode3.NextSibling
+		Wend
+		Set atributos = domnode3.Attributes
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName="x" Then
+				x=Cstr(atributo.NodeValue)
+			Elseif atributo.NodeName="y" Then
+				y=Cstr(atributo.NodeValue)
+			End If
+		Next
+		' Creo el objeto unidad correspondiente
+		' y lo agrego a una lista
+		Set nodo = New Nodo(idElemento, idUnidad, nombre, tipo)
+		nodo.set_x(x)
+		nodo.set_y(y)
+		Set nodos(idElemento) = nodo
+	Next
+	
+	' Recorro todos los nodos con la tag <U_Cualquiera>
+	Set domnodelist = domdoc.GetElementsByTagName("U_Cualquiera")
+	For i = 1 To domnodelist.NumberOfEntries
+		idElemento = ""
+		Set domnode = domnodelist.GetItem(i)
+		Set atributos = domnode.Attributes
+		' Recorro los atributos del nodo
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName = "id" Then
+				idElemento = atributo.NodeValue
+			Elseif atributo.NodeName = "tipo" Then
+				tipo = atributo.NodeValue
+			End If
+		Next
+		Set domNode2 = domNode.FirstChild
+		While Not domNode2.IsNull And domNode2.NodeName<>"mxCell" 
+			Set domNode2 = domNode2.NextSibling
+		Wend
+		
+		Set domNode3 = domNode2.FirstChild
+		While Not domNode3.IsNull And domNode3.NodeName<>"mxGeometry"
+			Set domNode3 = domNode3.NextSibling
+		Wend
+		Set atributos = domnode3.Attributes
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName="x" Then
+				x=Cstr(atributo.NodeValue)
+			Elseif atributo.NodeName="y" Then
+				y=Cstr(atributo.NodeValue)
+			End If
+		Next
+		' Creo el objeto unidad correspondiente
+		' y lo agrego a una lista
+		
+		' Creo el objeto unidad correspondiente
+		' y lo agrego a una lista
+		Set nodo = New Nodo(idElemento, "@idCualquiera", "Todas", tipo)
+		Set nodos(idElemento) = nodo
+		nodo.set_x(x)
+		nodo.set_y(y)
+	Next
+	
+	'Recorro todos los grupos	
+	Set domnodelist = domdoc.GetElementsByTagName("Grupo")
+	For i = 1 To domnodelist.NumberOfEntries
+		nombre = ""
+		idUnidad = ""
+		idElemento = ""
+		Set domnode = domnodelist.GetItem(i)
+		Set atributos = domnode.Attributes
+		' Recorro los atributos del nodo
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName = "label" Then
+				nombre = atributo.NodeValue
+			Elseif atributo.NodeName = "idGrupo" Then
+				idUnidad = atributo.NodeValue
+			Elseif atributo.NodeName = "tipo" Then
+				tipo = atributo.NodeValue
+			Elseif atributo.NodeName = "id" Then
+				idElemento = atributo.NodeValue
+			End If
+		Next	
+		Set domNode2 = domNode.FirstChild
+		While Not domNode2.IsNull And domNode2.NodeName<>"mxCell" 
+			Set domNode2 = domNode2.NextSibling
+		Wend
+		
+		Set domNode3 = domNode2.FirstChild
+		While Not domNode3.IsNull And domNode3.NodeName<>"mxGeometry"
+			Set domNode3 = domNode3.NextSibling
+		Wend
+		Set atributos = domnode3.Attributes
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName="x" Then
+				x=Cstr(atributo.NodeValue)
+			Elseif atributo.NodeName="y" Then
+				y=Cstr(atributo.NodeValue)
+			End If
+		Next
+		' Creo el objeto unidad correspondiente
+		' y lo agrego a una lista
+		Set nodo = New Nodo(idElemento, idUnidad, nombre, tipo)
+		nodo.set_x(x)
+		nodo.set_y(y)
+		Set nodos(idElemento) = nodo
+	Next
+	
+	
+	Exit Sub
+errorHandler:
+	Msgbox "obtenerNodos - Linea: " + Cstr(Erl) + ". Num: " + Cstr(Err) + ". Error: " + Error$ + "."
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:obtenerSimbolos:1:8
+Sub obtenerSimbolos(domDoc As NotesDOMDocumentNode,  idInicio As String, idFin As String,nodos List As Nodo)
+	On Error Goto errorHandler
+	
+	Dim domnodelist As NotesDOMNodeList	
+	Dim domnode As NotesDOMNode
+	Dim domnode2 As NotesDOMNode
+	Dim domnode3 As NotesDOMNode
+	Dim atributos As NotesDOMNamedNodeMap
+	Dim atributo As NotesDOMNode
+	Dim idElemento As String
+	Dim desc As String
+	Dim i, j As Integer
+	Dim x,y As String
+	Dim nodo As Nodo
+	
+	
+	Set domnodelist = domdoc.GetElementsByTagName("Inicio")
+	
+	For i = 1 To domnodelist.NumberOfEntries
+		idElemento = ""
+		Set domnode = domnodelist.GetItem(i)
+		Set atributos = domnode.Attributes
+		
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName = "id" Then
+				idElemento = atributo.NodeValue
+			End If
+		Next
+		Set domNode2 = domNode.FirstChild
+		While Not domNode2.IsNull And domNode2.NodeName<>"mxCell" 
+			Set domNode2 = domNode2.NextSibling
+		Wend
+		Set domNode3 = domNode2.FirstChild
+		While Not domNode3.IsNull And domNode3.NodeName<>"mxGeometry"
+			Set domNode3 = domNode3.NextSibling
+		Wend
+		Set atributos = domnode3.Attributes
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName="x" Then
+				x=Cstr(atributo.NodeValue)
+			Elseif atributo.NodeName="y" Then
+				y=Cstr(atributo.NodeValue)
+			End If
+		Next
+		Set nodo = New Nodo(idElemento, "", "Inicio", "Inicio")
+		nodo.set_x(x)
+		nodo.set_y(y)
+		
+		
+		Set nodos(idElemento) = nodo
+		
+		If idInicio = "" Then
+			idInicio = idElemento
+		Else
+			existenMultiplesNodosInicio = True
+			Exit For
+		End If
+		
+	Next
+	
+	Set domnodelist = domdoc.GetElementsByTagName("Fin")
+	
+	For i = 1 To domnodelist.NumberOfEntries
+		idElemento = ""
+		Set domnode = domnodelist.GetItem(i)
+		Set atributos = domnode.Attributes
+		
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName = "id" Then
+				idElemento = atributo.NodeValue
+			End If
+		Next
+		Set domNode2 = domNode.FirstChild
+		While Not domNode2.IsNull And domNode2.NodeName<>"mxCell" 
+			Set domNode2 = domNode2.NextSibling
+		Wend
+		Set domNode3 = domNode2.FirstChild
+		While Not domNode3.IsNull And domNode3.NodeName<>"mxGeometry"
+			Set domNode3 = domNode3.NextSibling
+		Wend
+		Set atributos = domnode3.Attributes
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName="x" Then
+				x=Cstr(atributo.NodeValue)
+			Elseif atributo.NodeName="y" Then
+				y=Cstr(atributo.NodeValue)
+			End If
+		Next
+		Set nodo = New Nodo(idElemento, "", "Fin", "Fin")
+		nodo.set_x(x)
+		nodo.set_y(y)
+		Set nodos(idElemento) = nodo
+		If idFin = "" Then
+			idFin = idElemento
+		Else
+			existenMultiplesNodosFin = True
+			Exit For
+		End If
+	Next
+	Exit Sub
+errorHandler:
+	Msgbox "obtenerSimbolos - Linea: " + Cstr(Erl) + ". Num: " + Cstr(Err) + ". Error: " + Error$ + "."
+	Exit Sub
+End Sub
+'++LotusScript Development Environment:2:2:obtenerTransiciones:1:8
+Sub obtenerTransiciones(domDoc As NotesDOMDocumentNode, nodos List As Nodo, indice As Vector,transiciones  As Vector)
+	On Error Goto errorHandler
+	Dim domnodelist As NotesDOMNodeList	
+	Dim domnode As NotesDOMNode
+	Dim atributos As NotesDOMNamedNodeMap
+	Dim atributo As NotesDOMNode
+	Dim transicion As Transicion
+	Dim nodo As Nodo
+	Dim condicion As String
+	Dim origen As String
+	Dim destino As String
+	Dim idElemento As String
+	Dim i, j As Integer
+	Dim vAux As Vector
+	Dim pos As Long
+	
+	' Recorro todos los nodos con la tag <Edge>
+	Set domnodelist = domdoc.GetElementsByTagName("Edge")
+	For i = 1 To domnodelist.NumberOfEntries
+		condicion = ""
+		origen = ""
+		destino = ""
+		idElemento = ""
+		Set domnode = domnodelist.GetItem(i)
+		Set atributos = domnode.Attributes
+		
+		' Recorro los atributos del nodo <Edge>
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName = "label" Then
+				condicion = atributo.NodeValue
+			Elseif atributo.NodeName = "id" Then
+				idElemento = atributo.NodeValue
+			End If
+		Next
+		' Busco entre los hijos del nodo el que
+		' tenga como tag <mxCell>
+		Set domnode = domnode.FirstChild
+		While Not (domnode.IsNull) And domnode.NodeName <> "mxCell"
+			Set domnode = domnode.NextSibling
+		Wend
+		' Recorro los atributos del nodo <mxCell>
+		Set atributos = domnode.Attributes
+		For j = 1 To atributos.NumberOfEntries
+			Set atributo = atributos.GetItem(j)
+			If atributo.NodeName = "source" Then
+				origen = atributo.NodeValue
+			Elseif atributo.NodeName = "target" Then
+				destino = atributo.NodeValue
+			End If
+		Next
+		
+		' Creo el objeto unidad correspondiente
+		' y lo agrego a una lista
+		pos = 0
+		If indice.isMember(idElemento,pos,True) Then
+			Set vAux = transiciones.getElement(pos)
+		Else
+			pos=indice.CantElem+1
+			Call indice.insertElement(idElemento,pos)
+			Set vAux = New Vector(0)
+			Call transiciones.insertElement(vAux,pos)
+		End If
+		Set transicion = New Transicion(idElemento, origen, destino, condicion)
+		
+		Call vAux.insertElement(transicion,vAux.CantElem+1)
+		Call transiciones.replaceElement(pos,vAux)
+		
+		' Tambien le seteo a la unidad la conexion
+		If Iselement(nodos(origen)) Then
+			Set nodo = nodos(origen)
+			Set vAux = nodo.getTransicionesSalientes()
+			Call vAux.insertElement(transicion,vAux.CantElem+1)
+			Call nodo.setTransicionesSalientes(vAux)
+		End If
+		If Iselement(nodos(destino)) Then
+			Set nodo = nodos(destino)
+			Call nodo.setAlcanzable()
+			Set vAux = nodo.getTransicionesEntrantes()
+			Call vAux.insertElement(transicion,vAux.CantElem+1)
+			Call nodo.setTransicionesEntrantes(vAux)
+		End If
+	Next
+	Exit Sub
+errorHandler:
+	Msgbox "obtenerTransiciones - Linea: " + Cstr(Erl) + ". Num: " + Cstr(Err) + ". Error: " + Error$ + "."
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:getTransicionesSalientes:1:8
+Sub getTransicionesSalientes(idElemento As String, transiciones List As Transicion, transicionesSalientes List As Transicion)
+	Forall transicion In transiciones
+		If idElemento = transicion.getOrigen() Then
+			Set transicionesSalientes(Listtag(transicion)) = transicion
+		End If
+	End Forall
+End Sub
+'++LotusScript Development Environment:2:1:validarNombreUnidades:1:8
+Function validarNombreUnidades(nodos List As Nodo) As Boolean
+	On Error Goto errorHandler
+	Dim ok As Boolean
+	ok = True
+	Forall nodo In nodos
+		If nodo.getNombre() = "" Then
+			Msgbox "Unidad " + nodo.getIdNodo() + " sin nombre."
+			ok = False
+			Exit Forall
+		End If
+	End Forall
+	validarNombreUnidades = ok
+	Exit Function
+errorHandler:
+	Msgbox "Linea: " + Cstr(Erl) + ". Num: " + Cstr(Err) + ". Error: " + Error$ + "."
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:1:validarUnidadesAlcanzables:1:8
+Function validarUnidadesAlcanzables(nodos List As Nodo) As Boolean
+	On Error Goto errorHandler
+	Dim ok As Boolean
+	ok = True
+	Forall nodo In nodos
+		If Not nodo.esAlcanzable() Then
+			ok = False
+			Exit Forall
+		End If
+	End Forall
+	validarUnidadesAlcanzables = ok
+	Exit Function
+errorHandler:
+	Msgbox "Linea: " + Cstr(Erl) + ". Num: " + Cstr(Err) + ". Error: " + Error$ + "."
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:1:validarUnidadesTienenConex:1:8
+Function validarUnidadesTienenConex(nodos List As Nodo) As Boolean
+	On Error Goto errorHandler
+	Dim ok As Boolean
+	ok = True
+	Forall nodo In nodos
+		If Not nodo.tieneTransicionSaliente() And nodo.getTipo()<>"Fin"Then
+			ok = False
+			Exit Forall
+		End If
+	End Forall
+	validarUnidadesTienenConex = ok
+	Exit Function
+errorHandler:
+	Msgbox "Linea: " + Cstr(Erl) + ". Num: " + Cstr(Err) + ". Error: " + Error$ + "."
+	Exit Function
+End Function
+
+'++LotusScript Development Environment:2:1:validarConexiones:1:8
+Function validarConexiones(nodos List As Nodo, vIndice  As Vector, transiciones As Vector, idInicio As String, idFin As String)'unidades List As Unidad, conexiones List As Conexion, forks As Vector) As Boolean
+	On Error Goto errorHandler
+	
+	Dim vAux As New Vector(0)
+	Dim nodo As Nodo
+	
+	Set nodo = nodos(idInicio)
+	Set vAux = nodo.getTransicionesSalientes()
+	If vAux.CantElem<>1Then
+		validarConexiones = False
+		Exit Function
+	End If
+	
+	Set nodo = nodos(idFin)
+	Set vAux = nodo.getTransicionesEntrantes()
+	If vAux.CantElem=0 Then
+		validarConexiones = False
+		Exit Function
+	End If
+	
+	validarConexiones = True
+	Exit Function
+errorHandler:
+	Msgbox "Linea: " + Cstr(Erl) + ". Num: " + Cstr(Err) + ". Error: " + Error$ + "."
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:1:obtenerNodoInicial:1:8
+Function obtenerNodoInicial(nodos  List As Nodo,idInicio As String) As String
+	On Error Goto handler
+	
+	Dim nodo As Nodo
+	Dim vTransiciones As Vector
+	Dim nodo2 As Nodo
+	Dim trans As Transicion
+	
+	Set nodo = nodos(idInicio)
+	Set vTransiciones = nodo.getTransicionesSalientes()
+	Set trans= vTransiciones.getElement(1)
+	Set nodo2 = nodos(trans.getDestino())
+	
+	obtenerNodoInicial = nodo2.getIdElemento()
+	Exit Function
+handler:
+	Msgbox "ERROR " & Erl & " " & Error$
+End Function

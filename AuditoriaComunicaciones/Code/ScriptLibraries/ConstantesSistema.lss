@@ -1,0 +1,146 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+%REM
+Esta clase contiene todas las constantes generales del sistema
+%END REM
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Estados de expedientes
+Public Const ESTADO_EN_GENERACION					= "En generación"
+Public Const ESTADO_EN_UNIDAD						= "En Unidad"
+Public Const ESTADO_AGREGADO						= "Agregado"
+Public Const ESTADO_ARCHIVADO						= "Archivado"
+Public Const ESTADO_EN_TRANSITO					= "En Tránsito"
+
+'CONSTANTES GLOBALES
+Public Const SYSTEM_ADMIN_1							= "Martin Cabrera/ISA"
+Public Const SYSTEM_ADMIN_2							= "Pablo Andrade/ISA"
+Public Const SYSTEM_ADMIN_3							= "Sandra Sayanes/ISA"
+Public Const ERROR_LOG								= "ErrorLogEE"
+Public Const NOMBRE_APLICACION 						= "Expediente Electrónico"
+
+'Claves para buscar host y path de las bases en el documento de perfil
+Public Const CLAVE_DBPORTAL							= "PORTAL"
+Public Const CLAVE_DBRUTAS							= "RUTAS"
+Public Const CLAVE_DBNUMERACION						= "NUMERACION"
+Public Const CLAVE_DBORGANIZACION						= "ORGAN"
+Public Const CLAVE_DBGESTIONDOC						= "GESTIONDOC"
+Public Const CLAVE_DBTEMPLATEGESTIONDOC					= "TEMPLATEGESTIONDOC"
+Public Const CLAVE_DBMOTORDOC							= "MOTORDOC"
+Public Const CLAVE_DBAUDITORIA						= "AUDITORIA"
+Public Const CLAVE_DBAUDITORIA_TEMPLATE					= "AUDITORIATEMPLATE"
+Public Const CLAVE_DBAUDITORIA_SEARCH					= "AUDITORIASEARCH"
+
+'VALORES_CAMPOS
+Public Const	DOCUMENTO_PROCESADO						= "1"
+Public Const	ACCION_ALTA 							= "1"
+Public Const	ACCION_BAJA 							= "2"
+Public Const	PERSONA 								= "1"
+Public Const	GRUPO_PERSONAS 						= "4"
+Public Const	PATH_BASE_NAMES						= "NAMES.NSF"
+Public Const	CLAVE_NAMES							= "Names"
+Public Const	VALOR_GRUPO_MULTIPROPOSITO				= "0"
+Public Const	VALOR_NAMES_TYPE 						= "Group"
+Public Const	VALOR_LIST_DESCRIPTION					= "Grupo generado desde la aplicación SGD"
+Public Const	RUTA_HABILITADA						= "1"
+Public Const	RUTA_DESABILITADA						= "0"
+Public Const	NOTIFARCHIVADO_CHECKED					= "1"
+Public Const	NOTIFRD_CHECKED						= "1"
+Public Const	NOTIFRECIBIR_CHECKED					= "1"
+Public Const	ALARMAPROXEXPIRAR_CHECKED				= "1"
+Public Const	ALARMAJEFEEXPIRO_CHECKED					= "1"
+
+'Constantes Publicas
+Public Const ERRORCONF_INTERNAL_ERROR							= 10001
+Public Const ERROR_PROFILE_NOTHING									= 10006
+Public Const MSG_ERROR_PROFILE_NOTHING						= "El documento de perfil no tiene toda la información necesaria"
+Public Const ERRORCONF_CLAVE_NOTFOUND							= 10002
+Public Const MSG_ERRORCONF_CLAVE_NOTFOUND				= "No se puede encontrar la clave en la tabla de interoperabilidad"
+Public Const CONF_SERVIDOR_ACTUAL					= "SERVER_ACTUAL"	
+Public Const CONF_SERVIDOR_LOCAL						= "LOCAL"
+
+
+'CAMPOS
+Public Const	CAMPO_FORM 							= "form" 
+Public Const	CAMPO_RUTA 							= "sRuta" 
+Public Const	CAMPO_CLAVE 							= "sClave" 
+Public Const	CAMPO_ADMINISTRADORES 					= "sAdministradores"
+
+Public Const	CAMPO_NAMES_MEMBERS						= "Members"
+Public Const	CAMPO_NAMES_LISTNAME					= "ListName"
+Public Const	CAMPO_NAMES_GROUPTYPE					= "GroupType"
+Public Const	FORM_NAMES_GRUPO 						= "Group"
+Public Const	CAMPO_NAMES_TYPE 						= "Type"
+Public Const	CAMPO_LIST_DESCRIPTION					= "ListDescription"
+
+
+Public Const	CAMPO_VISPROFILE_CLAVEDBS				= "sClave"
+Public Const	CAMPO_VISPROFILE_RUTAS					= "sRuta"
+Public Const	CAMPO_VISPROFILE_HOSTS					= "sHost"
+Public Const	CAMPO_VISPROFILE_SERVIDORES				= "sServidor"
+Public Const	CAMPO_VISPROFILE_RUTALIBRE				= "lTipoRutas"
+Public Const	CAMPO_VISPROFILE_FORMATONUM				= "sFormato"
+Public Const	CAMPO_VISPROFILE_CLAVENUM				= "sClaveNum"
+Public Const	CAMPO_VISPROFILE_FORMADOCUMENTAL			= "sFormaDoc"
+Public Const	CAMPO_VISPROFILE_CSS					= "sCSS"
+
+
+Public Const	CAMPO_VISPROFILE_NOTIFARCHIVADO			= "lNotifArchivado"
+Public Const	CAMPO_VISPROFILE_NOTIF_RD				= "lNotifRD"
+Public Const	CAMPO_VISPROFILE_NOTIFRECIBIR				= "lNotifRecibir"
+Public Const	CAMPO_VISPROFILE_ALARMAPROXIMOEXPIRAR		= "lAlarmaProxExpirar"
+Public Const	CAMPO_VISPROFILE_ALARMAJEFEEXPIRO			= "lAlarmaJefeExpiro"
+Public Const	CAMPO_VISPROFILE_CANTIDAD_FIRMAS			= "lCantidadFirmas"
+Public Const	CAMPO_VISPROFILE_ARCHIVOAUTOMATICO			= "nArchivadoAuto"
+Public Const	CAMPO_VISPROFILE_PERMITIRDESVIOS			= "lPermitirDesvios"
+Public Const	CAMPO_VISPROFILE_DIASMAXTRAMITE			= "nDiasMaxTramite"
+Public Const	CAMPO_VISPROFILE_DIASMAXTRAMITE_EXTERNO		= "nDiasMaxTramiteExterno"
+Public Const	CAMPO_VISPROFILE_TAMMAXIMOANEXOS			= "nTamMaxAnexosAct"
+Public Const	CAMPO_VISPROFILE_TIPOSANEXOS				= "sTiposPermitidosAnexos"
+Public Const	CAMPO_VISPROFILE_TIEMPODEVOLUCION			="nTiempoMaximoDev"
+Public Const 	CAMPO_TIEMPOVIDAAUDITORIA				="nTiempoVidaAuditoria"
+Public Const 	CAMPO_CREACION_AUDITORIA					="dFechaCreacionAuditoria"
+Public Const 	CAMPO_CLAVE_CREACION_AUDITORIA			="sClaveCreacionAuditoria"
+
+Public Const CAMPO_VISPROFILE_LECTORES_CARATULA			= "sLectoresCaratula"
+Public Const CAMPO_VISPROFILE_AUTORES_CARATULA			= "sAutoresCaratula"
+Public Const CAMPO_VISPROFILE_LECTORES_ACTUACION			= "sLectoresActuacion"
+Public Const CAMPO_VISPROFILE_AUTORES_ACTUACION			= "sAutoresActuacion"
+
+'DOCUMENTO DE PERFIL
+Public Const	DOCUMENTO_PERFIL 						= "fConfiguracion" 
+
+
+'FORMULARIOS
+Public Const	FORMULARIO_PERFIL 						= "fVisConfiguracion" 'para visualización
+
+
+'VISTAS
+Public Const	VISTA_SOLICITUDES_ABM 					= "vSolicitudABMAdmin"
+
+
+'ROLES
+Public Const	ROL_ADMIN 							= "[Admin]"
+
+'Acciones
+Public Const ACCION_CREAR					="acc_crear"
+Public Const ACCION_PASE						="acc_pase"
+Public Const ACCION_ANULAR_PASE				="acc_anular_pase"
+Public Const ACCION_ENVIAR_PASE				="acc_enviar_pase"
+Public Const ACCION_RESERVAR					="acc_reservar"
+Public Const ACCION_ARCHIVAR					="acc_archivar"
+Public Const ACCION_RECHAZARCONFIDENCIAL		="acc_rechazaConfidencial"
+Public Const ACCION_MARCARCONFIDENCIAL			="acc_marcarConfidencial"
+Public Const ACCION_SOLCONFIDENCIAL			="acc_solConfidencial"
+Public Const ACCION_DEVOLVER					="acc_devolver"
+Public Const ACCION_AGREGAR					="acc_agregar"
+Public Const ACCION_RUTEAR					="acc_rutear"
+Public Const ACCION_LIBERAR					="acc_liberar"
+Public Const ACCION_DESAGREGAR				="acc_desagregar"
+Public Const ACCION_FIRMAR					="acc_firmar"
+Public Const ACCION_PARA_FIRMAR				="acc_para_firmar"
+Public Const ACCION_RECIBIR					="acc_recibir"
+Public Const ACCION_ASIGNAR					="acc_asignar"

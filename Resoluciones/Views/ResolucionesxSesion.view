@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='30a2' unid='5D74D3C1F12408C083257DDA005050EF' sequence='4'>
+<created><datetime dst='true'>20150127T123715,99-02</datetime></created>
+<modified><datetime>20150311T132829,00-03</datetime></modified>
+<revised><datetime>20150309T094515,48-03</datetime></revised>
+<lastaccessed><datetime>20150311T132829,00-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132829,00-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Fabian Alvariza/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQDlH9aknb8G4hQvSgCCdSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+kgAFADAALAAEAAoACQAJAAQAc05yb1Nlc2lvbmNjbk5yb1JlcyRDb25mbGljdCRSRUYEAAQAAABE
+AAUABABmb3JtAQAGAEZQdW50bwoCBQAJAGNjbk5yb1JlcwABAAAACwIcAgUACQAkQ29uZmxpY3QA
+aAEeARwCAwAHABgAEgAJTDFTNFM1UzZTN1M4UzlTMkU=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+FwABAABECGYHAAAKAHNOcm9TZXNpb24=
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAIACAAAAFZDAwAKAAEAAAAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMAAAkAAAAAAAAAUAAB
+AAAKAAAAAAAAAAAAAgIAAABzTnJvU2VzaW9uI2Njbk5yb1JlcyYAAQAAAAEBAAkBAAAKAQEOCgAA
+AQCtKwEAAQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAA
+AAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABCABAA
+AAABAP///wAFAP///wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQAAAAAAAQAA
+AAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$TITLE' sign='true'><text>ResolucionesxSesion</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item></note>
+

@@ -1,0 +1,368 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*
+'*		 							CLASS <RUTA>
+'*
+'******************************************************************************************************************	
+
+%REM
+Esta clase representa la RUTA DEFINIDA para determinado Tema de expediente
+Maneja los NotesDocument's correspondientes a los distintos pasos de una ruta
+
+'CONSTRUCTOR
+new (Byval codTemaR As Integer, Byval versionRutaR As Integer) 
+
+Parámetros:
+	codTemaR (IN)			- código del tema
+	versionRutaR (IN)		- versión de ruta
+	
+
+'PROPIEDADES
+Get CantPasos () As Integer
+'Devuelve la cantidad de pasos definidos en la ruta
+		
+
+Get Paso (Byval n As Integer) As Paso
+'Busca el NotesDocument con nro paso n
+'Crea un objeto paso y le asigna los valores según los campos del doc
+'Devuelve el objeto paso seteado
+
+Parámetros:
+	n (IN)				- número de paso
+
+	
+Property Set Paso (Byval n As Integer) As Paso
+'Recibe un objeto paso y lo setea como el paso n
+'Si ya existe un documento de paso con ese número, sobreescribe sus campos con los datos del objeto paso recibido
+'Si no existe, lo crea (siempre y cuando existan los n-1 pasos anteriores)
+
+Parámetros:
+	n (IN)				- número de paso
+		
+%END REM
+
+Option Declare
+Use "FuncionesGenerales"
+Use "ConfEE 1.0"
+Use "ConstantesDbRutas"
+Use "ClasePaso" 
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Ruta
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+Public Const DBRUTAS_VISTA_TRANSACCIONES_PASO="VTransTemaVersionInicio"
+'ERRORES GENERADOS
+'CONSTANTES PRIVADAS
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <RUTA>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Ruta
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private dbRutas As NotesDatabase  'Se setea la primera vez que se usa
+	Private codTema As Integer
+	Private versionRuta As Integer
+	
+'******************************************************************************************************************	
+	
+	'PROCEDIMIENTOS Y FUNCIONES PRIVADOS
+	
+	Private Sub SetearDbRutas()
+	'Si todavía no está seteada, setea la base de rutas
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion, srv As String, path As String
+		
+		If dbRutas Is Nothing Then
+			srv = c.ServidorDomino(CLAVE_DBRUTAS)
+			path = c.BaseDeDatos(CLAVE_DBRUTAS)
+			Set dbRutas = New NotesDataBase ("","")
+			Call dbRutas.Open (srv,path)			
+			If dbRutas.Title = "" Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBRUTAS
+		End If		
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Ruta - Procedimiento SetearDbRutas","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Private Function SetearColPasos() As NotesDocumentCollection
+	'setea la colección de pasos
+		On Error Goto HANDLER
+		
+		Dim viewVPasosTema As NotesView, clave As String
+		
+		Call SetearDbRutas()   'si todavía no está seteada, seteo la base de rutas
+		'Seteo la vista donde voy a buscar los docs de pasos
+		Set viewVPasosTema = dbRutas.GetView(DBRUTAS_VISTA_PASOS_TEMA)
+		If viewVPasosTema Is Nothing Then Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+DBRUTAS_VISTA_PASOS_TEMA
+		
+		'Obtengo la colección de pasos para el codTema de esta ruta
+		clave = Cstr(codTema)+Cstr(versionRuta)
+		Set SetearColPasos=viewVPasosTema.GetAllDocumentsByKey(clave)
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Ruta - Procedimiento SetearColPasos","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR
+	Public Sub new (Byval codTemaR As Integer, Byval versionRutaR As Integer)
+		On Error Goto HANDLER
+		
+		codTema = codTemaR
+		versionRuta = versionRutaR
+		
+		'Nota: Como no siempre se va a usar la dbRutas no conviene setearla en el new
+		'Se setea la primera vez que se usa en algún método
+		
+		Exit Sub		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Ruta - Método new","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************	
+'PROPIEDADES
+	
+	Public Property Get CantPasos () As Integer
+	'Devuelve la cantidad de pasos definidos en la ruta
+		On Error Goto HANDLER
+		
+		Dim colpasos As NotesDocumentCollection
+		
+		Call SetearDbRutas() 'Si todavía no está seteada, seteo la base de rutas
+		Set colpasos = SetearColPasos()
+		
+		CantPasos = colpasos.count
+		
+		Exit Property	
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Ruta - Propiedad Get CantPasos","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Paso (Byval n As Integer) As Paso
+	'Busca el NotesDocument con nro paso n
+	'Crea un objeto paso y le asigna los valores según los campos del doc
+	'Devuelve el objeto paso seteado		
+		On Error Goto HANDLER
+		
+		Dim viewVBusqPaso As NotesView, docPaso As NotesDocument, clave As String
+		
+		Call SetearDbRutas() 'Si todavía no está seteada, seteo la base de rutas
+		
+		'Seteo la vista donde voy a buscar el doc paso
+		Set viewVBusqPaso = dbRutas.GetView(DBRUTAS_VISTA_BUSQ_PASO)
+		If viewVBusqPaso Is Nothing Then Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+DBRUTAS_VISTA_BUSQ_PASO
+		
+		'Seteo el doc paso
+		clave = Cstr(n)+Cstr(codTema)+Cstr(versionRuta)
+		Set docPaso = viewVBusqPaso.GetDocumentByKey(clave)
+		If docPaso Is Nothing Then Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND+" Paso "+Cstr(n)
+		
+		'Creo el objeto paso y asigno sus valores en base a los del documento
+		Set Paso = New Paso
+		Paso.CodTema = docPaso.GetItemValue(DBRUTAS_CAMPO_FPASO_COD_TEMA)(0)
+		Paso.VersionRuta = docPaso.GetItemValue(DBRUTAS_CAMPO_FPASO_VERSION_RUTA)(0)
+		Paso.NroPaso = docPaso.GetItemValue(DBRUTAS_CAMPO_FPASO_NRO_PASO)(0)
+		Paso.Unidad =docPaso.GetItemValue(DBRUTAS_CAMPO_FPASO_UNIDAD)(0)
+		Paso.Tiempo = docPaso.GetItemValue(DBRUTAS_CAMPO_FPASO_TIEMPO)(0)
+		Paso.Procedimiento = docPaso.GetItemValue(DBRUTAS_CAMPO_FPASO_PROCED)(0)
+		Paso.Tipo = docPaso.GetItemValue(DBRUTAS_CAMPO_FPASO_TIPO)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Ruta - Propiedad Get Paso","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Paso (Byval n As Integer) As Paso
+	'Recibe un objeto paso y lo setea como el paso n
+	'Si ya existe un documento de paso con ese número, sobreescribe sus campos con los datos del objeto paso recibido
+	'Si no existe, lo crea (siempre y cuando existan los n-1 pasos anteriores)
+		On Error Goto HANDLER
+		
+		Dim viewVBusqPaso As NotesView, docPaso As NotesDocument, clave As String
+		Dim docPasoAnt As NotesDocument,claveAnt As String
+		
+		Call SetearDbRutas() 'Si todavía no está seteada, seteo la base de rutas
+		
+		'Seteo la vista donde voy a buscar el doc paso
+		Set viewVBusqPaso = dbRutas.GetView(DBRUTAS_VISTA_BUSQ_PASO)
+		If viewVBusqPaso Is Nothing Then Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+DBRUTAS_VISTA_BUSQ_PASO
+		
+		'Seteo el doc paso
+		clave = Cstr(n)+Cstr(codTema)+Cstr(versionRuta)
+		Set docPaso = viewVBusqPaso.GetDocumentByKey(clave)
+		
+		If Not docPaso Is Nothing Then   'existe el doc de paso n
+			'sobreescribo los campos del doc paso que ya existe
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_COD_TEMA, Paso.CodTema
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_VERSION_RUTA, Paso.VersionRuta
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_NRO_PASO, Paso.NroPaso
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_UNIDAD, Paso.Unidad
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_TIEMPO, Paso.Tiempo
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_PROCED, Paso.Procedimiento
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_TIPO, Paso.Tipo
+			'salvo el documento
+			docPaso.save False, False			
+		Else 'no existe un paso con nro n
+			If n>1 Then
+				claveAnt = Cstr(n-1)+Cstr(codTema)+Cstr(versionRuta)
+				Set docPasoAnt = viewVBusqPaso.GetDocumentByKey(claveAnt)
+				'Si no existe el paso anterior despliego un error
+				If docPasoAnt Is Nothing Then Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND+" Paso "+Cstr(n-1)
+			End If
+			
+			'Como existe el paso anterior, genero el nuevo paso
+			Set docPaso = New NotesDocument (dbRutas)
+			docPaso.ReplaceItemValue "Form", DBRUTAS_FORM_PASO
+			'cargo los campos a partir del objeto paso
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_COD_TEMA, Paso.CodTema
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_VERSION_RUTA, Paso.VersionRuta
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_NRO_PASO, Paso.NroPaso
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_UNIDAD, Paso.Unidad
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_TIEMPO, Paso.Tiempo
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_PROCED, Paso.Procedimiento
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_TIPO, Paso.Tipo
+			'cargo lectores y autores
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_LECTORES, LECTORES_FPASO
+			docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_AUTORES, AUTORES_FPASO
+			'salvo el documento
+			docPaso.save False, False
+			
+		End If
+		
+		Exit Property	
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Ruta - Propiedad Set Paso","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+'METODOS
+	
+%REM
+Se decidió dejar fuera de la clase este tipo de operaciones y ponerlas en el agente de gestion de pasos
+Atención! Si se vuelve a usar, hay que agregar la version de la ruta como parte de la clave para obtener pasos de un tema
+	
+	Public Sub InsertarPaso (oPaso As Paso)
+		'Crea un documento paso con los datos del objeto recibido y aumenta en uno el nro de paso de todos
+		'los pasos existente con nro >= al del objeto
+		
+		On Error Goto HANDLER
+		
+		'Si todavía no está seteada, seteo la base de rutas
+		Dim c As New Configuracion
+		Dim srv As String
+		Dim path As String
+		If dbRutas Is Nothing Then
+			srv = c.ServidorDomino(CLAVE_DBRUTAS)
+			path = c.BaseDeDatos(CLAVE_DBRUTAS)
+			Set dbRutas = New NotesDataBase ("","")
+			Call dbRutas.Open (srv,path)
+			
+			If dbRutas.Title = "" Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBRUTAS
+		End If
+		
+		'Seteo la vista donde voy a buscar si ya existe un paso con el nro indicado
+		Dim viewVBusqPaso As NotesView
+		Set viewVBusqPaso = dbRutas.GetView(DBRUTAS_VISTA_BUSQ_PASO)
+		If viewVBusqPaso Is Nothing Then Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+DBRUTAS_VISTA_BUSQ_PASO
+		'Veo si existe dicho paso
+		Dim docPasoAux As NotesDocument
+		Dim clave As String
+		clave = Cstr(oPaso.NroPaso)+Cstr(codTema)
+		Set docPasoAux = viewVBusqPaso.GetDocumentByKey(clave)
+		If Not docPasoAux Is Nothing Then
+			'Seteo la vista donde voy a buscar los docs de pasos
+			Dim viewVPasosTema As NotesView
+			Set viewVPasosTema = dbRutas.GetView(DBRUTAS_VISTA_PASOS_TEMA)
+			If viewVPasosTema Is Nothing Then Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+DBRUTAS_VISTA_PASOS_TEMA
+			
+		'Obtengo la colección de pasos para el codTema de esta ruta
+			Dim colpasos As NotesDocumentCollection
+			clave = Cstr(codTema)
+			Set colpasos=viewVPasosTema.GetAllDocumentsByKey(clave)
+		'Recorro la colección y aumento en uno el nro de los pasos con nropaso>=opaso.NroPaso
+			If colpasos.count > 0 Then
+				Dim nNroPasoAux As Integer
+				Set docPasoAux = colpasos.GetFirstDocument		
+				While Not docPasoAux Is Nothing
+					nNroPasoAux=docPasoAux.GetItemValue(DBRUTAS_CAMPO_FPASO_NRO_PASO)(0)
+					If oPaso.NroPaso =< nNroPasoAux Then
+						docPasoAux.ReplaceItemValue DBRUTAS_CAMPO_FPASO_NRO_PASO, nNroPasoAux + 1
+						docPasoAux.save False, False
+					End If			
+					Set docPasoAux = colpasos.GetNextDocument(docPasoAux)
+				Wend
+			End If
+			
+		End If
+		
+		'Genero el nuevo documento de paso
+		Dim docPaso As Notesdocument
+		Set docPaso = New NotesDocument (dbRutas)
+		docPaso.ReplaceItemValue "Form", DBRUTAS_FORM_PASO
+		'cargo los campos a partir del objeto paso
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_COD_TEMA, oPaso.CodTema
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_NRO_PASO,oPaso.NroPaso
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_UNIDAD, oPaso.Unidad
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_TIEMPO, oPaso.Tiempo
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_PROCED, oPaso.Procedimiento
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_TIPO, oPaso.Tipo
+		'cargo lectores y autores
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_LECTORES, LECTORES_FPASO
+		docPaso.ReplaceItemValue DBRUTAS_CAMPO_FPASO_AUTORES, AUTORES_FPASO
+		'salvo el documento
+		docPaso.save False, False
+		
+		Exit Sub		
+HANDLER:
+	'Envío el error hacia arriba, indicando el nombre de la función
+		Error Err,"ClaseRuta - Método InsertarPaso "+Error
+		Exit Sub
+	End Sub
+	
+%ENDREM
+'******************************************************************************************************************	
+	Public Function GetTransiciones(Paso As Integer)
+		Dim trans As NotesView
+		Dim ndc As NotesDocumentCollection
+		Dim nd As NotesDocument		
+		Set trans = dbRutas.GetView(DBRUTAS_VISTA_TRANSACCIONES_PASO)
+		Set ndc = trans.GetAllDocumentsByKey(Cstr(codTema)+"##"+Cstr(versionRuta)+"##"+Cstr(Paso))
+		Set nd = ndc.GetFirstDocument
+		While nd Is Nothing
+			Messagebox Cstr(nd.NroNodoFin(0))
+			Set nd = ndc.GetNextDocument(nd)
+		Wend
+	End Function
+	
+End Class

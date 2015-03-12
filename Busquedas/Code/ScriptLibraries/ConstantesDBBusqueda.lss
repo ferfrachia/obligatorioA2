@@ -1,0 +1,36 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Campos del form busqueda
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_LISTAFORMADOC		="lFormasDoc"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_HOSTDBORG		="sHostDbOrg"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_PATHDBORG		="sPathDbOrg"
+
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_BUSCAREN			="sBusqueda"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_PALABRA1			="sPalabra1"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_PALABRA2			="sPalabra2"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_PALABRA3			="sPalabra3"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_PALABRA4			="sPalabra4"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_OPERPAL			="sOperPalabra"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TIPOBUSQPAL		="sTipoBusqP"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC			="sFormaDoc"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_NRO				="sNroDoc"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_SOLICITANTE		="sSolicitante"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL		="ccOficinaInicial"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_DIACREACION		="sDiaCreacion"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_MESCREACION		="sMesCreacion"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ANIOCREACION		="sAnioCreacion"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_FECHACREACION		="sFechaCreacion"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP		="ccEstado"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT		="sSubestado"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL		="ccOficinaActual"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_USUARIO			="sUsuarioActual"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO			="sAsunto"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO			="sExtracto"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TEXTO			="sTexto"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_OPERCAMPOS		="sOperCampos"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TIPOBUSQCAMPO		="sTipoBusqC"
+Public Const DBBUSQ_CAMPO_FBUSQUEDA_TEMA		="sTema" 

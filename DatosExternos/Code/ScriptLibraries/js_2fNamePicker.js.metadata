@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050059D1A3" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="14a" sequence="14" unid="B79C07DD8FA68C3C0325757D00758CD7">
+<created><datetime>20090318T182357,67-03</datetime></created>
+<modified><datetime>20150311T132104,16-03</datetime></modified>
+<revised><datetime>20150309T094358,32-03</datetime></revised>
+<lastaccessed><datetime>20150311T132104,16-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132104,16-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Jake Howlett/O=ROCKALL</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Administrador/O=IMA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=CURSO</name><name>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Victoria Acuña/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>js/NamePicker.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20150309T094358,32-03</datetime></item></note>

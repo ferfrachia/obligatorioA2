@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059D1A3'>
+<noteinfo noteid='1d2' unid='49A9B869819F937603257583003ED68A' sequence='15'>
+<created><datetime>20090324T082621,54-03</datetime></created>
+<modified><datetime>20150311T132104,82-03</datetime></modified>
+<revised><datetime>20150309T094359,02-03</datetime></revised>
+<lastaccessed><datetime>20150311T132104,82-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132104,82-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=CURSO</name><name
+>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Victoria Acuña/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$SourceSeqTime' sign='true'><datetime>20090324T082621,41-03</datetime></item>
+<item name='$SourceSequence' sign='true'><text>00000001</text></item>
+<item name='$SourceURL' sign='true'><textlist><text>Notes:///0325758200707FED//49A9B869819F937603257583003ED68A</text><text
+>Notes:///0325758200707FED:0325758200707FED:C5549647//266</text></textlist></item>
+<item name='$ClassName' sign='true'><text>View</text></item>
+<item name='$SourceDbPath' sign='true'><text>CN=Desarrollo/O=DesarrolloISA!!igDoc\DatosExternos.nsf</text></item>
+<item name='$CacheDocVersion' sign='true'><number>1</number></item>
+<item name='$TITLE' sign='true'><text>Valor Traducido</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+2AEBAHgAEQBsaXN0YW1hbABnPj8Ag3UlAOwBAAEAoAABAAEAggAfAgEAAQChAB8CAQABAKIAHwIB
+AAEAowAfAgEAAQC1AB8CAQABAJAAHwIBAAEA1gAfAgEAAQDpAB8CAQABAOAAHwIBAAEApAAfAgEA
+AQClAB8CAwABAMAAEgBsaXN0YWJpZW4AaD4/AIN1JQABAAgAJmFhY3V0ZTsBAAgAJmVhY3V0ZTsf
+AgEACAAmaWFjdXRlOx8CAQAIACZvYWN1dGU7HwIBAAgAJnVhY3V0ZTsfAgEACAAmQWFjdXRlOx8C
+AQAIACZFYWN1dGU7HwIBAAgAJklhY3V0ZTsfAgEACAAmT2FjdXRlOx8CAQAIACZVYWN1dGU7HwIB
+AAgAJm50aWxkZTsfAgEACAAmTnRpbGRlOx8CAwACAHQAAgAkNwEAIAA8VEQgY2xhc3M9J0RhdG9F
+eHRlcm5vJyB3aWR0aD0qPgUABQBWYWxvcgAFABEAbGlzdGFtYWwAZz4/AIN1JQBTBQASAGxpc3Rh
+YmllbgBoPj8Ag3UlAIQDIgIBAAUAPC9URD4AIgIDAAUAHgAZAAMAAgAJAAQAJDckQ29uZmxpY3Qk
+UkVGAAQABAAAAAgAZgADAA==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAQAFZDAAACAAgA7gEAAI4ABQAACAAAAAAAAAAAAAICAAAAJDdURCBWYWxvcu4BAQB4
+ABEAbGlzdGFtYWwAZz4/AIN1JQDsAQABAKAAAQABAIIAHwIBAAEAoQAfAgEAAQCiAB8CAQABAKMA
+HwIBAAEAtQAfAgEAAQCQAB8CAQABANYAHwIBAAEA6QAfAgEAAQDgAB8CAQABAKQAHwIBAAEApQAf
+AgMABwAMAAUACTFTMlMAAQDAABIAbGlzdGFiaWVuAGg+PwCDdSUAAQAIACZhYWN1dGU7AQAIACZl
+YWN1dGU7HwIBAAgAJmlhY3V0ZTsfAgEACAAmb2FjdXRlOx8CAQAIACZ1YWN1dGU7HwIBAAgAJkFh
+Y3V0ZTsfAgEACAAmRWFjdXRlOx8CAQAIACZJYWN1dGU7HwIBAAgAJk9hY3V0ZTsfAgEACAAmVWFj
+dXRlOx8CAQAIACZudGlsZGU7HwIBAAgAJk50aWxkZTsfAgMABwAcABYACTBSMlMxMlJTMjFFMjFT
+MjJSUzIxRQIAdAACACQ3AQAgADxURCBjbGFzcz0nRGF0b0V4dGVybm8nIHdpZHRoPSo+BQAFAFZh
+bG9yAAUAEQBsaXN0YW1hbABnPj8Ag3UlAFMFABIAbGlzdGFiaWVuAGg+PwCDdSUAhAMiAgEABQA8
+L1REPgAiAgMABwAYABEACTBSMVMyUjZTOFMxMFMxMVIAJgABAAAAAQEACQEAAAoBAQ4KAAABAK0r
+AQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAD//wAAAAAAAAAAAAAA
+AAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEA
+AAAAAAEAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>^Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

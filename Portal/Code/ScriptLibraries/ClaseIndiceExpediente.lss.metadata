@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="a92" sequence="129" unid="78C077484D77C220032574A5004D366C">
+<created><datetime>20080814T110322,04-03</datetime></created>
+<modified><datetime>20150311T130917,29-03</datetime></modified>
+<revised><datetime>20150309T094457,66-03</datetime></revised>
+<lastaccessed><datetime>20150311T130917,29-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130917,29-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20080814T110320,20-03</datetime><datetime>20080814T110348,58-03</datetime><datetime>20080814T111250,38-03</datetime><datetime>20080816T101408,01-03</datetime><datetime>20080819T131953,50-03</datetime><datetime>20080820T120624,45-03</datetime><datetime>20080820T121348,06-03</datetime><datetime>20080820T130730,91-03</datetime><datetime>20080820T130735,50-03</datetime><datetime>20080820T130735,65-03</datetime><datetime>20080820T130735,82-03</datetime><datetime>20080820T131128,17-03</datetime><datetime>20080820T132312,87-03</datetime><datetime>20080820T132823,58-03</datetime><datetime>20080820T133713,58-03</datetime><datetime>20080820T134542,21-03</datetime><datetime>20080820T135244,20-03</datetime><datetime>20080821T091838,12-03</datetime><datetime>20080821T091939,00-03</datetime><datetime>20080821T101358,39-03</datetime><datetime>20080821T134028,91-03</datetime><datetime>20080821T141029,06-03</datetime><datetime>20080821T142054,34-03</datetime><datetime>20080822T092718,39-03</datetime><datetime>20080822T092959,32-03</datetime><datetime>20080822T094539,04-03</datetime><datetime>20080822T095134,46-03</datetime><datetime>20080822T100645,14-03</datetime><datetime>20080822T100809,84-03</datetime><datetime>20080822T140559,58-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>ClaseIndiceExpediente</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20150309T094457,66-03</datetime></item></note>

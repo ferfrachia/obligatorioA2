@@ -1,0 +1,1668 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*     
+'*	 								CLASS <CARTASERVICIO>
+'* 
+'******************************************************************************************************************	
+%REM
+
+Esta clase representa un objeto CARTA DE SERVICIO
+
+CONSTRUCTOR 
+
+	new (Byval nroCSR As String, usuarioAccionR As Usuario,Byval bCrear As Integer)
+		En nroCSR puede venir 2 cosas
+			- universal id si es una carta de servicio que se esta creando, para esta opcion bCrear=true
+			- NroCS + Nro Act si se busca una carta en particular (la carta original tiene nro act=1)
+		usuarioAccionR es para ver si el usuario tiene permisos para crear cartas de servicios o no, y 
+			para las demas acciones que se tomen luego de seteada la carta.
+PROPIEDADES
+
+
+
+MÉTODOS
+	Firmar
+	Enviar
+	Firmar y enviar
+	Responder
+	ResponderCC
+	Reenviar
+	ReenviarCC
+	Tomar conocimiento
+	Guardar
+	Archivar
+	Sacar de Archivo
+	
+%END REM
+
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM 
+
+Option Declare
+Use "ConfEE 1.0"
+Use "VectorClass 2.05"
+Use "Usuario"
+Use "UnidadExp Class"
+Use "ConstantesDBCartasServ"
+Use "Clase Informes"
+Use "ConstantesCartas"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class CartaServicio
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Const ERROR_PATH_NOT_FOUND						=17100
+Public Const MSG_ERROR_PATH_NOT_FOUND					="El path de la base de datos no es válido"
+
+Public Const ERROR_HOST_NOT_FOUND						=17101
+Public Const MSG_ERROR_HOST_NOT_FOUND					="El host de la base de datos no es válido"
+
+Public Const ERROR_CARTA_NO_FIRMADA					=19000
+Public Const MSG_CARTA_NO_FIRMADA						="La carta no se encuentra firmada"
+
+Public Const ERROR_CARTA_USUARIO_FIRMO					=19001
+Public Const MSG_CARTA_USUARIO_FIRMO					="La carta ya se encuentra firmada por el usuario: "
+
+Public Const ERROR_CARTA_DESTINO_NO_USUARIO				=19002
+Public Const MSG_CARTA_DESTINO_NO_USUARIO				= "No puede responder una carta donde su unidad no es destinataria"
+
+Public Const ERROR_CARTA_EXISTE_RESPUESTA				=19003
+Public Const MSG_CARTA_EXISTE_RESPUESTA					="Ya existe una respuesta para esa carta"
+
+Public Const ERROR_CARTA_NO_ENVIADA					=19004
+Public Const MSG_CARTA_NO_ENVIADA						="La carta debe estar con el estado Enviada" 
+
+Public Const ERROR_CARTA_NO_RESPONDIDA					=19005
+Public Const MSG_CARTA_NO_RESPONDIDA					="La carta no es una respuesta"
+
+Public Const ERROR_CARTA_UNIDAD_NO_CORRESPONDE			=19006
+Public Const MSG_CARTA_UNIDAD_NO_CORRESPONDE				="Ud no puede tomar conocimiento porque no pertenece a la unidad "
+
+Public Const ERROR_CARTA_ARCHIVADA						=19007
+Public Const MSG_CARTA_ARCHIVADA						="La carta ya se encuentra archivada"
+
+Public Const ERROR_CARTA_BASE_ARCHIVO					=19008
+Public Const MSG_CARTA_BASE_ARCHIVO					="La carta se encuentra en la base de archivo"
+
+Public Const ERROR_CARTA_NO_ULTIMA						=19009
+Public Const MSG_CARTA_NO_ULTIMA						="Existe otra actuacion en curso para esta carta."
+
+Public Const ERROR_CARTA_NO_ARCHIVADA					=19010
+Public Const MSG_CARTA_NO_ARCHIVADA					="La carta no se encuentra archivada"
+
+Public Const ERROR_CARTA_NO_PERMISOS					=19011
+Public Const MSG_CARTA_NO_PERMISOS						="Ud no tiene permisos para trabajar con caratas de servicio en esta unidad"
+
+Public Const ERROR_CARTA_DESTINATARIO					=19012
+Public Const MSG_CARTA_DESTINATARIO 					="El destinatario no puede ser el originador de la carta"
+
+Public Const ERROR_CARTA_DESTINATARIO_CC				=19013
+Public Const MSG_CARTA_DESTINATARIO_CC 					="El originador de la carta no puede estar dentro de las unidades CC"
+Public Const UNIDAD_FILES_SIZE						=1024	'Kb
+
+Public Const ERROR_CARTA_FALTA_ASUNTO					="FALTA EL ASUNTO"
+Public Const ERROR_CARTA_FALTA_DESTINO					="FALTA UNIDAD DE DESTINO"
+Public Const ERROR_CARTA_FALTA_TEXTO					="FALTA EL TEXTO DEL COMUNICADO"
+'******************************************************************************************************************	
+Public Class CartaServicio
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private doc As NotesDocument
+	Private db As NotesDatabase
+	Private nroCS As String
+	Private usuarioAccion As Usuario
+	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR	
+	
+	Public Sub new(Byval nroCSR As String, nroAct As Integer, usuarioAccionR As Usuario,Byval bCrear As Integer, anio As Integer)   
+		
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion, posguion As Integer, solo_nro As String 
+		
+		
+		If bCrear Then   'vino el universalid
+			Call SetearDbCartaServ(anio)
+			Set doc=getDocCartaServPorId(nroCSR)
+		Else   'vino el nro de carta de servicio
+			
+			Set db = c.BaseDeDatosNroDoc (nroCSR,NUMERADOR_CS,CLAVE_DBTEMPLATECARTASERV,CLAVE_DBCARTASERV)						
+			Set doc=getDocCartaServPorNro(nroCSR & Cstr(nroAct))
+			If doc Is Nothing Then
+				Set db = c.BaseDeDatosNroDoc (nroCSR,NUMERADOR_CS,CLAVE_DBARCHIVOCS_TEMPLATE,CLAVE_DBARCHIVOCS)						
+				Set doc=getDocCartaServPorNro(nroCSR & Cstr(nroAct))
+			End If
+			nroCS = nroCSR			
+		End If
+		
+		If doc Is Nothing Then
+			Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Nº " & nroCSR & Cstr(nroAct)
+		End If
+		
+		Set usuarioAccion = usuarioAccionR		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método new","")
+		Exit Sub
+		
+	End Sub	
+	
+'******************************************************************************************************************			
+'PROPIEDADES Y METODOS de la clase
+'******************************************************************************************************************		
+	
+	Public Property Get Id() As String
+		'Devuelve el UniversalId del documento de Carta de Servicio
+		On Error Goto HANDLER
+		
+		Id=doc.UniversalID
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get Id","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NroCartaServicio() As String
+		'Devuelve el número de carta de servicio
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_NRO) Then
+			If doc.getItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0)<>"" Then
+				NroCartaServicio=doc.getItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0)	
+			Else
+				NroCartaServicio= doc.UniversalID
+			End If
+		Else
+			NroCartaServicio= doc.UniversalID
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get NroCartaServicio","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NroCartaServicio() As String
+		'Setea el número de carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_NRO,NroCartaServicio
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set NroCartaServicio","")
+		Exit Property
+		
+	End Property	
+'******************************************************************************************************************	
+	
+	Public Property Get NroActCartaServicio() As String	
+		'Devuelve el número de actuacion de la carta de servicio
+		On Error Goto HANDLER
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_ACT_NRO) Then
+			NroActCartaServicio=doc.getItemValue(DBCS_CAMPO_FCARTASERV_ACT_NRO)(0)				
+		End If		
+		
+		Exit Property	
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get NroActCartaServicio","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Set NroActCartaServicio() As String
+		'Setea el número de carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_ACT_NRO,NroActCartaServicio
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set NroActCartaServicio","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	
+	Public Property Get FechaCreacion() As String
+		'Devuelve la fecha de creación de la carta de servicio
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_FECHA_CREACION) Then
+			FechaCreacion=doc.getItemValue(DBCS_CAMPO_FCARTASERV_FECHA_CREACION)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get FechaCreacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set FechaCreacion() As String
+		'Setea la fecha de creación de la carta de servicio carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_FECHA_CREACION,FechaCreacion
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set FechaCreacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Estado() As String
+		'Devuelve el estado de la carta de servicio
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_ESTADO) Then
+			Estado=doc.getItemValue(DBCS_CAMPO_FCARTASERV_ESTADO)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get Estado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Estado() As String
+		'Setea el estado de la carta de servicio carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_ESTADO,Estado
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set Estado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FechaEnvio() As Variant
+		'Devuelve la fecha de envío de la carta de servicio
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO) Then
+			FechaEnvio=doc.getItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get FechaEnvio","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set FechaEnvio() As Variant
+		'Setea la fecha de envío de la carta de servicio carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_FECHA_ENVIO,FechaEnvio
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set FechaEnvio","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get Usuario() As String
+		'Devuelve el usuario que generó la carta de servicio
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_USUARIO) Then
+			Usuario=doc.getItemValue(DBCS_CAMPO_FCARTASERV_USUARIO)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get Usuario","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Usuario() As String
+		'Setea el usuario que generó la carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_USUARIO,Usuario
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set Usuario","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get OficinaInicial() As String
+		'Devuelve la unidad que generó la carta de servicio
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL) Then
+			OficinaInicial=doc.getItemValue(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get OficinaInicial","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set OficinaInicial() As String
+		'Setea la unidad que generó la carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL,OficinaInicial		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set OficinaInicial","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Asunto() As String
+		'Devuelve el asunto de la carta de servicio
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_ASUNTO) Then
+			Asunto=doc.getItemValue(DBCS_CAMPO_FCARTASERV_ASUNTO)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get Asunto","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Asunto() As String
+		'Setea el asunto de la carta de servicio
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_ASUNTO,Asunto
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set Asunto","")
+		Exit Property
+		
+	End Property
+	
+'*****************************************************************************************************************				
+	
+	Public Property Get Lectores() As Vector
+		'Devuelve un vector con los lectores de la carta de servicio
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0),vTransformar As New Vector(0)
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_LECTORES) Then
+			Dim i As Integer,nom As notesName
+			vLectores.values=doc.getItemValue(DBCS_CAMPO_FCARTASERV_LECTORES)
+			If vLectores.cantElem > 0 Then
+				For i = 1 To vLectores.cantElem
+					Set nom=New notesName(vLectores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next	
+			End If
+		End If
+		Set Lectores=vTransformar
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get Lectores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Lectores() As Vector
+		'Setea los lectores de la carta de servicio
+		On Error Goto HANDLER
+		
+		If Lectores.cantElem > 0 Then
+			Dim i As Integer,vTransformar As New Vector(0),nom As notesName
+			For i = 1 To Lectores.cantElem
+				Set nom=New notesName(Lectores.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next			
+			If doc.HasItem(DBCS_CAMPO_FCARTASERV_LECTORES) Then
+				doc.removeItem DBCS_CAMPO_FCARTASERV_LECTORES
+			End If
+			
+			Dim itLectores As NotesItem
+			Set itLectores= New NotesItem(doc,DBCS_CAMPO_FCARTASERV_LECTORES,vTransformar.values,READERS)	
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set Lectores","")
+		Exit Property
+		
+	End Property
+	
+'*****************************************************************************************************************				
+	
+	Public Property Get LectoresCC() As Vector
+		'Devuelve un vector con los lectores de la carta de servicio
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0),vTransformar As New Vector(0)
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_LECTORES_CC) Then
+			Dim i As Integer,nom As notesName
+			vLectores.values=doc.getItemValue(DBCS_CAMPO_FCARTASERV_LECTORES_CC)
+			If vLectores.cantElem > 0 Then
+				For i = 1 To vLectores.cantElem
+					Set nom=New notesName(vLectores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next	
+			End If
+		End If
+		Set LectoresCC=vTransformar
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get LectoresCC","")
+		Exit Property
+		
+	End Property	
+'******************************************************************************************************************			
+	
+	Public Property Set LectoresCC() As Vector
+		'Setea los lectores de la carta de servicio
+		On Error Goto HANDLER
+		
+		If LectoresCC.cantElem > 0 Then
+			Dim i As Integer,vTransformar As New Vector(0),nom As notesName
+			For i = 1 To LectoresCC.cantElem
+				Set nom=New notesName(LectoresCC.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next			
+			If doc.HasItem(DBCS_CAMPO_FCARTASERV_LECTORES_CC) Then
+				doc.removeItem DBCS_CAMPO_FCARTASERV_LECTORES_CC
+			End If
+			
+			Dim itLectores As NotesItem
+			Set itLectores= New NotesItem(doc,DBCS_CAMPO_FCARTASERV_LECTORES_CC,vTransformar.values,READERS)	
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set LectoresCC","")
+		Exit Property
+		
+	End Property	
+'******************************************************************************************************************			
+	
+	Public Property Get LectoresPermanentes As Vector
+		'Devuelve un vector con los lectores permanentes 
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0)
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_LECTORES_PERM) Then
+			vLectores.values=doc.getItemValue(DBCS_CAMPO_FCARTASERV_LECTORES_PERM)	
+		End If
+		Set LectoresPermanentes=vLectores
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio- Propiedad Get LectoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set LectoresPermanentes As Vector
+		'Setea los lectores permanentes 
+		On Error Goto HANDLER
+		
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_LECTORES_PERM) Then
+			doc.removeItem DBCS_CAMPO_FCARTASERV_LECTORES_PERM
+		End If
+		Dim itLectores As NotesItem
+		Set itLectores=New  NotesItem(doc,DBCS_CAMPO_FCARTASERV_LECTORES_PERM,LectoresPermanentes.values,READERS)
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Set LectoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Autores() As Vector
+		'Devuelve un vector con los autores de la carta de servicio en formato canonico 
+		On Error Goto HANDLER
+		
+		Dim vTransformar As New Vector(0)
+		
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_AUTORES) Then
+			Dim vAutores As New Vector(0)
+			vAutores.values=doc.getItemValue(DBCS_CAMPO_FCARTASERV_AUTORES)	
+			If vAutores.cantElem > 0 Then
+				Dim i As Integer,nom As NotesName
+				For i = 1 To vAutores.cantElem
+					Set nom=New notesName(vAutores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next	
+			End If			
+		End If
+		Set Autores=vTransformar	
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Propiedad Get Autores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Autores() As Vector
+		'Setea los autores de la carta de servicio
+		On Error Goto HANDLER		
+		
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_AUTORES) Then
+			doc.removeitem DBCS_CAMPO_FCARTASERV_AUTORES
+		End If
+		Dim vTransformar As New Vector(0),nom As NotesName
+		If Autores.cantElem > 0 Then
+			Dim i As Integer
+			For i = 1 To Autores.cantElem
+				Set nom=New notesName(Autores.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next	
+		End If
+		Dim itAutores As NotesItem
+		Set itAutores=New notesItem(doc,DBCS_CAMPO_FCARTASERV_AUTORES,vTransformar.values,AUTHORS)
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServ - Propiedad Set Autores","")
+		Exit Property
+		
+	End Property
+'******************************************************************************************************************	
+	Public Property Get Document () As NotesDocument
+		Set Document = doc
+	End Property	
+'******************************************************************************************************************			
+	Public Property Get Destinatario() As String
+		Destinatario = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_DEST)(0)
+	End Property
+'******************************************************************************************************************				
+	Public Property Get DestinatariosCC () As Vector
+		Set DestinatariosCC = New Vector(0)
+		DestinatariosCC.values = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_CC)
+	End Property
+'******************************************************************************************************************				
+	Public Sub Save()
+		
+		
+		'Salva el documento carta de servicio
+		
+		On Error Goto HANDLER
+		
+		doc.save True,False
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Save","")
+		Exit Sub
+	End Sub	
+	
+'*****************************************************************************************************************	
+	
+	Public Sub Creacion () 
+		'Si el usuario está autorizado, crea la carta de servicio.
+		
+		'Controla que el usuario tenga el rolComunicaciones en la unidad
+		'Setea los siguientes datos: seguridad por defecto
+		
+		On Error Goto HANDLER
+		
+		'Valido y cargo los campos en la carta
+		Call IniciarCreacion()		
+		
+		'Salvo la carta
+		Call Me.save					
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Creacion","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************							
+	
+	Public Sub AddFirma(Byval sFirma As String,Byval fFechaFirma As Variant) 
+		'Agrega la firma sFirma y la fecha fFechaFirma a la carta de servicio
+		On Error Goto HANDLER
+		Dim vFirmas As New Vector(0), vFirmasFechas As New Vector(0),vFirmasUsuarios As New Vector(0)
+		
+		If doc.HasItem("lUnidadesDest") Then
+			If doc.lUnidadesDest(0) ="" Then
+				Error ERROR_CARTA_USUARIO_FIRMO,ERROR_CARTA_FALTA_DESTINO
+			End If
+		Else
+			Error ERROR_CARTA_USUARIO_FIRMO,ERROR_CARTA_FALTA_DESTINO		
+		End If
+		
+		If doc.HasItem("sTexto") Then
+			
+		Else
+			Error ERROR_CARTA_USUARIO_FIRMO,ERROR_CARTA_FALTA_TEXTO
+		End If
+		If doc.HasItem("sAsunto") Then
+			
+			If doc.sAsunto(0) = "" Then
+				Error ERROR_CARTA_USUARIO_FIRMO,ERROR_CARTA_FALTA_ASUNTO 
+			End If
+		Else
+			Error ERROR_CARTA_USUARIO_FIRMO,ERROR_CARTA_FALTA_ASUNTO
+		End If		
+		
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_FIRMAS) Then
+			vFirmas.values = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FIRMAS)
+			vFirmasFechas.values = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHAS_FIRMAS)
+			vFirmasUsuarios.values = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FIRMAS_USUARIO)
+		End If
+		If vFirmasUsuarios.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_CARTA_USUARIO_FIRMO,MSG_CARTA_USUARIO_FIRMO & usuarioAccion.nombreUsuario
+		End If
+		Call vFirmas.insertElement(sFirma,1)
+		Call vFirmasFechas.insertElement(Cdat(fFechaFirma),1)
+		Call vFirmasUsuarios.insertElement(usuarioAccion.nombreUsuario,1)
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_FIRMAS,vFirmas.values
+		doc.replaceItemValue DBCS_CAMPO_FCARTASERV_FECHAS_FIRMAS,vFirmasFechas.values
+		doc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_FIRMAS_USUARIO,vFirmasUsuarios.values
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método AddFirma","")
+		Exit Sub 
+		
+	End Sub 		
+	
+'******************************************************************************************************************								
+	Public Sub Enviar()
+		On Error Goto handler
+		Dim vCC As New Vector(0)
+		'Verifico que este firmada
+		If Not isSigned() Then
+			Error ERROR_CARTA_NO_FIRMADA, MSG_CARTA_NO_FIRMADA
+		End If
+		'Verifico permisos?
+		
+		If doc.GetItemValue(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL)(0) = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_DEST)(0) Then
+			Error ERROR_CARTA_DESTINATARIO,MSG_CARTA_DESTINATARIO
+		End If
+		
+		vcc.values = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_CC)
+		If vCC.isMember(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL)(0),0,False) Then
+			Error ERROR_CARTA_DESTINATARIO_CC,MSG_CARTA_DESTINATARIO_CC
+		End If
+		'Verifico si tiene numero en caso de no tener numero
+		If Not isNumerated() Then
+			Call Numerar()
+			Dim infUnidad As New InformesUnidad(Cstr(Month(Today)),Cstr(Year(Today)),doc.GetItemValue(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL)(0) )
+			infUnidad.SumaElementos INFORME_CANT_CAR, 1 , False			
+		End If		
+		'Agrego Lectores a los Destinatarios y a los CC
+		Call AgregoLectores()
+		'Cambio Estado
+		Me.Estado= ESTADOC_ENVIADA
+		'Pongo Fecha de Enviado		
+		Me.FechaEnvio = Now
+		'agrego campo destinatarios para bandejas
+		Call AgregoCampoDestinatarios()
+		Dim vAutores As New Vector(0)
+		Set Me.Autores=vAutores
+		'Guardo la carta de Servicio
+		If Me.nroactcartaservicio>1 Then
+			Dim oCarta As New CartaServicio(Me.nroCartaServicio, Me.nroActcartaservicio-1,usuarioAccion,False,Year(Today))
+			oCarta.TomarConocimiento (Me.OficinaInicial)
+		End If
+		Call Me.save()
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Enviar","")
+		Exit Sub 
+	End Sub
+'******************************************************************************************************************				
+	Public Function anular_res_ree (cc As Boolean, tipo As String) As String
+		On Error Goto handler
+		Dim oCSANT As New CartaServicio(Me.nroCartaServicio,Me.nroActCartaServicio-1,usuarioAccion,False,1)
+		Call MarcarDocParaBorrarCS (Me.document)
+		If tipo="RESPUESTA" Then
+			anular_res_ree=oCSANT.Responder(cc)
+		Else
+			anular_res_ree=oCSANT.Reenviar(cc)
+		End If
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método anular_res_ree","")
+		Exit Function
+	End Function
+'******************************************************************************************************************			
+	Public Function Responder(cc As Boolean) As String
+		On Error Goto handler
+		'Valido que el usuario pertenezca a la unidad de destino de la carta
+		Dim vUnidades As New Vector(0)
+		Dim unidadDestino As UnidadExp
+		
+		Set vUnidades = usuarioAccion.Unidades()
+		
+		If Not vUnidades.isMember(Me.Destinatario,0,False) Then
+			Error ERROR_CARTA_DESTINO_NO_USUARIO,MSG_CARTA_DESTINO_NO_USUARIO
+		End If		
+		
+		Dim vPersonasComunicaciones As Vector
+		Set unidadDestino = New UnidadExp(Me.destinatario)
+		Set vPersonasComunicaciones = unidadDestino.UsuariosRol(CAMPO_UNIDAD_USUARIOS_COMUNIC)
+		
+		If Not vPersonasComunicaciones.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_CARTA_NO_PERMISOS,MSG_CARTA_NO_PERMISOS	
+		End If
+		
+		'Valido que ya no exista una respuesta a esa carta de esta unidad
+		If buscoActuacion() Then
+			Error ERROR_CARTA_EXISTE_RESPUESTA,MSG_CARTA_EXISTE_RESPUESTA
+		End If
+		
+		'Me fijo en el estado de la carta que sea enviado
+		If Me.Estado <> ESTADOC_ENVIADA Then
+			Error ERROR_CARTA_NO_ENVIADA,MSG_CARTA_NO_ENVIADA
+		End If
+		
+		Call creoRespuesta(cc)
+		'Call SacoDestinatarios(Me.Destinatario)
+		Call Me.save()
+		responder = Cstr(Me.NroActCartaServicio()+1)
+		'AgregoLectores
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Responder","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************						
+	Public Function Reenviar(cc As Boolean) As String
+		On Error Goto handler
+		
+		'Valido que el usuario pertenezca a la unidad de destino de la carta
+		Dim vUnidades As New Vector(0)
+		Dim unidadDestino As UnidadExp
+		
+		Set vUnidades = usuarioAccion.Unidades()
+		
+		If Not vUnidades.isMember(Me.Destinatario,0,False) Then
+			Error ERROR_CARTA_DESTINO_NO_USUARIO,MSG_CARTA_DESTINO_NO_USUARIO
+		End If	
+		
+		Dim vPersonasComunicaciones As Vector
+		Set unidadDestino = New UnidadExp(Me.destinatario)
+		Set vPersonasComunicaciones = unidadDestino.UsuariosRol(CAMPO_UNIDAD_USUARIOS_COMUNIC)
+		
+		If Not vPersonasComunicaciones.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_CARTA_NO_PERMISOS,MSG_CARTA_NO_PERMISOS	
+		End If
+		
+		'Valido que ya no exista una respuesta o reenviada a esa carta de esta unidad
+		If buscoActuacion() Then
+			Error ERROR_CARTA_EXISTE_RESPUESTA,MSG_CARTA_EXISTE_RESPUESTA
+		End If
+		
+		Call CrearReenvio(cc)
+		'Call SacoDestinatarios(Me.Destinatario)
+		
+		Call Me.save()
+		reenviar =  Cstr(Me.NroActCartaServicio()+1)
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Reenviar","")
+		Exit Function
+	End Function
+'******************************************************************************************************************					
+	Public Sub AnularRespuesta()
+		Dim docAnt As NotesDocument, vUnidadesDest As New Vector(0)		
+		
+		'Agrega al campo La unidad de destino de la penultima actuacion como si no estuviera respondida
+		Set docAnt= getDocCartaServPorNro(Me.NroCartaServicio()+Cstr(Me.NroActCartaServicio-1))
+		If Not docAnt Is Nothing Then
+			vUnidadesDest.values = docAnt.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP)
+			If Not vUnidadesDest.isMember(Me.OficinaInicial(),0,False) Then
+				Call vUnidadesDEst.insertElement(Me.OficinaInicial(),1)
+				Call docAnt.ReplaceItemValue (DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP,vUnidadesDest.values)
+				docAnt.Save True,False
+			End If
+		Else
+			Error ERROR_CARTA_NO_RESPONDIDA, MSG_CARTA_NO_RESPONDIDA
+		End If
+		'Borra la ultima actuacion
+		Call MarcarDocParaBorrarCS (Me.document)
+	End Sub
+'******************************************************************************************************************					
+	Public Sub TomarConocimiento(unidad As String)
+		On Error Goto handler
+		Dim vUnidades As New Vector(0)
+		
+		Set vUnidades = usuarioAccion.Unidades()
+		
+		If Not vUnidades.isMember(unidad,0,False) Then
+			Error ERROR_CARTA_UNIDAD_NO_CORRESPONDE,MSG_CARTA_UNIDAD_NO_CORRESPONDE
+		End If	
+		
+		Dim vPersonasComunicaciones As Vector, unidadDestino As UnidadExp
+		Set unidadDestino = New UnidadExp(UNIDAD)
+		Set vPersonasComunicaciones = unidadDestino.UsuariosRol(CAMPO_UNIDAD_USUARIOS_COMUNIC)
+		
+		If Not vPersonasComunicaciones.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_CARTA_NO_PERMISOS,MSG_CARTA_NO_PERMISOS	
+		End If
+		
+		Call SacoDestinatarios (unidad)
+		Call AgregoDestCC(unidad)
+		Me.save
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método TomarConocimiento","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************				
+	Public Sub Editar()
+		On Error Goto handler
+		Dim oUnidad As UnidadExp, vUsuariosComunic As vector
+		
+		Set oUnidad = New UnidadExp(Me.OficinaInicial)
+		Set vUsuariosComunic = oUnidad.UsuariosRolComunic
+		If vUsuariosComunic.cantElem>0 Then
+			If Not vUsuariosComunic.isMember(usuarioAccion.NombreUsuario,0,False) Then				
+				Error ERROR_CANT_ACCESS, MSG_ERROR_CANT_ACCESS+" - Rol [Cartas de Servicio]"
+			End If	
+		Else			
+			Error ERROR_CANT_ACCESS, MSG_ERROR_CANT_ACCESS+" - Rol [Cartas de Servicio]"
+		End If		
+		
+		If issigned Then
+			doc.RemoveItem DBCS_CAMPO_FCARTASERV_FIRMAS
+			doc.RemoveItem DBCS_CAMPO_FCARTASERV_FECHAS_FIRMAS
+			doc.RemoveItem DBCS_CAMPO_FCARTASERV_FIRMAS_USUARIO
+		End If
+		Me.save
+		Exit Sub
+handler:
+		
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Editar","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************				
+	Public Sub Archivar()
+		On Error Goto handler
+		'Pregunto que no este archivada
+		'me fijo si es la ultima
+			'si no es la ultima y la ultima es de mi unidad, en borrador, anulo la actuacion?
+		'paso a archivo
+		Dim docAux As NotesDocument, i As Integer
+		Dim dbArch As NotesDatabase, c As New configuracion
+		
+		If Me.estado=ESTADOC_ARCHIVADO Then
+			Error ERROR_CARTA_ARCHIVADA,MSG_CARTA_ARCHIVADA	
+		End If
+		
+		If Instr(db.FileName,CLAVE_DBARCHIVOCS)>0 Then
+			Error ERROR_CARTA_BASE_ARCHIVO,MSG_CARTA_BASE_ARCHIVO
+		End If
+		
+		Set docAux=getDocCartaServPorNro(Me.NroCartaServicio & Cstr(Me.NroActCartaServicio+1))
+		
+		If Not docAux Is Nothing Then
+			If docAux.GetItemValue(DBCS_CAMPO_FCARTASERV_ESTADO)(0) = ESTADOC_ENVIADA Then
+				Error ERROR_CARTA_NO_ULTIMA,MSG_CARTA_NO_ULTIMA
+			Else
+				Call marcardocparaborrarCS(docAux)
+			End If
+		End If
+		
+		Set dbArch = c.BaseDeDatosNroDoc (Me.NroCartaServicio,NUMERADOR_CS,CLAVE_DBARCHIVOCS_TEMPLATE,CLAVE_DBARCHIVOCS)
+		
+		For i = 1 To Me.nroActCartaServicio-1
+			Set docAux=getDocCartaServPorNro(Me.NroCartaServicio & Cstr(i))
+			docAux.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ESTADO,ESTADOC_ARCHIVADO
+			docAux.Save True,False
+			Call docAux.CopyToDatabase(dbArch)
+			Call MarcarDocParaBorrarCS(docAux)
+		Next
+		Me.Estado = ESTADOC_ARCHIVADO
+		Me.save
+		Call doc.CopyToDatabase(dbArch)
+		Call MarcarDocParaBorrarCS(doc)
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Archivar","")
+		Exit Sub
+		
+	End Sub
+'******************************************************************************************************************					
+	Public Function esRespuesta() As Boolean
+		esRespuesta = False
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_RESPUESTA) Then
+			If doc.GetItemValue(DBCS_CAMPO_FCARTASERV_RESPUESTA)(0) = "SI" Then
+				esRespuesta=True
+			End If
+		End If
+	End Function
+'******************************************************************************************************************				
+	Public Sub SacarDeArchivo()		
+		On Error Goto handler
+		
+		Dim docAux As NotesDocument, i As Integer
+		Dim dbCart As NotesDatabase, c As New configuracion
+		
+		If Me.estado<>ESTADOC_ARCHIVADO Then
+			Error ERROR_CARTA_NO_ARCHIVADA,MSG_CARTA_NO_ARCHIVADA	
+		End If
+		
+		Set docAux=getDocCartaServPorNro(Me.NroCartaServicio & Cstr(1))
+		
+		i=1
+		Set dbCart = c.BaseDeDatosNroDoc (Me.NroCartaServicio,NUMERADOR_CS,CLAVE_DBTEMPLATECARTASERV,CLAVE_DBCARTASERV)
+		While Not docAux Is Nothing			
+			docAux.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ESTADO,ESTADOC_ENVIADA
+			docAux.Save True,False
+			Call docAux.CopyToDatabase(dbCart)
+			Call MarcarDocParaBorrarCS(docAux)
+			i=i+1
+			Set docAux=getDocCartaServPorNro(Me.NroCartaServicio & Cstr(i))
+		Wend
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método SacarDeArchivo","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************						
+	
+	Public Sub checkFileSize()
+		
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion
+		
+		Dim limit As Long 'limit viene en Kb
+		limit = c.TamañoMaximoAnexo
+		
+		Dim attachs As Variant,attach As NotesEmbeddedObject
+		attachs=Evaluate("@AttachmentNames",doc)
+		
+		Dim Total As Long
+		Total=0	
+		If doc.HasEmbedded Then
+			If Not Isempty(attachs) Then
+				Forall f In attachs
+					If f <> "" Then
+						Set attach=doc.GetAttachment(f)
+						Total=Total + attach.FileSize
+						If Clng(Total / UNIDAD_FILES_SIZE) > limit Then
+							Error ERROR_FILE_SIZE_EXCEDED, MSG_ERROR_FILE_SIZE_EXCEDED
+						End If								
+					End If					
+				End Forall				
+			End If			
+		End If		
+		
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método checkFileSize","")
+		Exit Sub 	
+	End Sub
+	
+'******************************************************************************************************************						
+	
+	Public Sub checkFileNumber()
+		
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion
+		
+		Dim limit As Integer 'limit viene en enteros
+		limit = c.CantMaximoAnexo
+		
+		Dim attachs As Variant
+		attachs=Evaluate("@Attachments",doc)
+		
+		If limit < Cint(attachs(0)) Then
+			Error ERROR_FILE_NUMBER_EXCEDED, MSG_ERROR_FILE_NUMBER_EXCEDED
+		End If
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carta de Servicio - Método checkFileNumber","")
+		Exit Sub 	
+	End Sub	
+	
+'*********************************************************************************************************	
+	Public Sub checkFileExtensions()
+		'vPosibles trae doc,jpg,xsl,etc..
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion,vPosibles As New Vector(0)
+		Set vPosibles=c.TiposArchivosAnexos 
+		
+		Dim attachs As Variant,attach As NotesEmbeddedObject,esta As Integer
+		attachs=Evaluate("@AttachmentNames",doc)
+		
+		If vPosibles.cantElem > 0 Then			
+			If Not Isempty(attachs) Then
+				Forall f In attachs
+					If Trim(f) <> "" Then
+						esta=False
+						Forall e In vPosibles.values
+							If e <> "" Then
+								'Comparo la extensión del archivo f con la extnsión e
+								If Right(Ucase(f),Len(Ucase("." & e))) = Ucase("." & e) Then 
+									esta=True
+								End If	
+							End If								
+						End Forall	
+						If Not esta Then
+							Error ERROR_FILE_TYPE_NOT_ALLOWED,MSG_ERROR_FILE_TYPE_NOT_ALLOWED & " Archivo: " & f
+						End If								
+					End If					
+				End Forall
+			End If			
+		End If
+		
+		
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carta de servicio - Método checkFileExtensions","")
+		Exit Sub 		
+	End Sub
+	
+	
+'*********************************************************************************************************	
+	
+	
+	Public Sub Acusar(strUnidad As String)
+		'Indica que la unidad strUnidad ya esta al tanto de la Carta de Servicio
+		On Error Goto HANDLER
+		
+		If Trim(strUnidad) = "" Then
+			Exit Sub
+		End If
+		Dim vAcuses As New Vector(0)
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_ACUSES) Then
+			vAcuses.values = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ACUSES)
+		End If
+		If Not vAcuses.isMember(strUnidad,0,True) Then
+			vAcuses.insertElement strUnidad, vAcuses.cantElem + 1
+			doc.replaceItemValue DBCS_CAMPO_FCARTASERV_ACUSES,vAcuses.values
+			
+			doc.Save True,False
+		End If		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Carta de servicio - Método Acusar","")
+		Exit Sub 		
+	End Sub
+	
+'******************************************************************************************************************				
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS
+'******************************************************************************************************************			
+	Private Sub AgregoDestCC(unidad)
+		On Error Goto handler
+		Dim vDestCC As New Vector(0)
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_TOMARONCC) Then
+			vDestCC.values = doc.GetItemValue(DBCS_CAMPO_FCARTASERV_TOMARONCC)					
+		End If
+		If Not vDestCC.isMember(unidad,0,False) Then
+			Call vDestCC.insertElement(unidad,vDestCC.cantElem+1)
+		End If
+		doc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_TOMARONCC	,vDestCC.values
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método SacarDeArchivo","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************				
+	Private Sub CrearReenvio	(cc As Boolean)
+		On Error Goto handler
+		Dim newDoc As NotesDocument, vLectores As Vector,vLectPerm As Vector
+		
+		Set newDoc = New NotesDocument(db) 
+		newDoc.ReplaceItemValue "Form",DBCS_FORM_CARTASERV
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ESTADO,ESTADOC_EN_GENERACION
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_NRO,Me.NroCartaServicio()
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ACT_NRO, Me.NroActCartaServicio()+1
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL, Me.Destinatario()
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_FECHA_CREACION,Now
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ASUNTO, "FW: " & Me.Asunto
+		
+		If CC Then
+			newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_UNIDADES_CC,Me.DestinatariosCC().values
+		End If
+		
+		Dim c As New Configuracion
+		'Lectores  -  la unidad
+		Set vLectores = New Vector(0)				
+		vLectores.insertElement Me.Destinatario,vLectores.cantElem+1
+		Dim itLectores As NotesItem
+		Set itLectores= New NotesItem(newDoc,DBCS_CAMPO_FCARTASERV_LECTORES,vLectores.values,READERS)	
+		
+		'Lectores permanentes
+		Set vLectPerm = New Vector(0)
+		Set vLectPerm = c.LectoresCarta
+		vLectPerm.insertElement ROL_DESARROLLO_CS,vLectPerm.cantElem + 1		
+		Dim itLectoresP As NotesItem
+		Set itLectoresP=New  NotesItem(newDoc,DBCS_CAMPO_FCARTASERV_LECTORES_PERM,vLectPerm.values,READERS)		
+		
+		Dim itAutoresA As NotesItem
+		Set itAutoresA=New notesItem(newDoc,DBCS_CAMPO_FCARTASERV_AUTORES,Me.Destinatario,AUTHORS)
+		
+		newDoc.Save True,False
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método creoReenvio","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************			
+	Private Sub AgregoLectoresHistoria(vLect As Vector , campo As String, iHastaActuacion As Integer)
+		On Error Goto handler
+		Dim iAct As Integer, vLectores As New Vector(0), vAcuses As New Vector(0), vTomaronCC As New Vector(0)
+		Dim docAct As NotesDocument, iLectores As NotesItem, i As Integer, vUniSinRes As New Vector(0)
+		Dim pos As Long
+		
+		For iAct = 1 To iHastaActuacion
+			Set docAct = getDocCartaServPorNro(Me.NroCartaServicio() & Cstr(iAct))
+			vLectores.values = docAct.GetItemValue(campo)
+			
+			Call vLectores.append(vLect,True)
+			
+			
+			If docAct.HasItem(campo) Then
+				Call docAct.RemoveItem(campo)
+			End If	
+			
+			Set iLectores= New NotesItem(docAct,campo,vLectores.values,READERS)		
+			
+			'Marco las cartas anteriores como acusadas
+			vAcuses.values = docAct.GetItemValue(DBCS_CAMPO_FCARTASERV_ACUSES)
+			Call vAcuses.append(vLect,True)
+			docAct.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ACUSES, vAcuses.values
+			
+			'setear un vector con unidades_sin resp
+			'fijarse que unidades de vLect estan en unidades sin resp, sacarlas y agregarlas 
+			' a el campo tomarcc
+			vUniSinRes.values = docAct.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP)
+			vTomaronCC.values = docAct.GetItemValue(DBCS_CAMPO_FCARTASERV_TOMARONCC)
+			For i=1 To vLect.cantelem
+				pos=0
+				If vUniSinRes.isMember(vLect.getElement(i),pos,False) Then					
+					vUniSinRes.deleteElement(pos)
+					If Not vTomaronCC.isMember(vLect.getElement(i),0,False) Then
+						Call vTomaronCC.insertelement(vLect.getElement(i), vTomaronCC.cantElem+1)
+					End If
+				End If
+			Next
+			docAct.ReplaceItemValue DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP, vUniSinRes.values
+			docAct.ReplaceItemValue DBCS_CAMPO_FCARTASERV_TOMARONCC,vTomaronCC.values
+			
+			docAct.Save True,False
+		Next
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método AgregoLectoresHistoria","")
+		Exit Sub
+	End Sub		
+'******************************************************************************************************************			
+	Private Sub SacoLectoresHistoria(unidadSacar As String ,campo As String, iHastaActuacion As Integer)
+		Dim iAct As Integer, vLectores As New Vector(0)
+		Dim docAct As NotesDocument, iLectores As NotesItem, pos As Long
+		
+		For iAct = 1 To iHastaActuacion
+			Set docAct = getDocCartaServPorNro(Me.NroCartaServicio() + Cstr(iAct))
+			vLectores.values = docAct.GetItemValue(campo)
+			pos = 1
+			If vLectores.isMember (unidadSacar,pos,False) Then
+				vLectores.deleteelement pos
+			End If
+			
+			Set iLectores= New NotesItem(docAct,campo,vLectores.values,READERS)				
+			docAct.Save True,False
+		Next
+	End Sub		
+'******************************************************************************************************************			
+	Private Sub AgregoCampoDestinatarios()
+		Dim vDest As New Vector(0)
+		Call vDest.insertElement (Me.destinatario,1)
+		Call vDest.append(Me.DestinatariosCC,False)
+		doc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP,vDest.values
+	End Sub
+'******************************************************************************************************************		
+	Private Sub SacoDestinatarios(unidad As String)
+		Dim pos As Long, vDest As New Vector(0)
+		
+		vDest.values= doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP)
+		If vDest.isMember(unidad,pos,True) Then
+			Call vDest.deleteElement(pos)
+		End If
+		
+		doc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP,vDest.values
+	End Sub
+'******************************************************************************************************************			
+	Private Sub creoRespuesta (CC As Boolean)
+		On Error Goto handler
+		Dim newDoc As NotesDocument, vLectores As Vector, vLectPerm As vector
+		'Creo la carta le asigno mismo numero y sumo 1 al numero de actuacion
+		
+		Set newDoc = New NotesDocument(db) 
+		newDoc.ReplaceItemValue "Form",DBCS_FORM_CARTASERV
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ESTADO,ESTADOC_EN_GENERACION
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_NRO,Me.NroCartaServicio()
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ACT_NRO, Me.NroActCartaServicio()+1
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_UNIDADES_DEST, Me.OficinaInicial()
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL, Me.Destinatario()
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_FECHA_CREACION,Now
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_ASUNTO, "RE: " & Me.Asunto
+		newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_RESPUESTA, "SI"
+		If CC Then
+			newDoc.ReplaceItemValue DBCS_CAMPO_FCARTASERV_UNIDADES_CC,Me.DestinatariosCC().values
+		End If
+		
+		Dim c As New Configuracion
+		'Lectores  -  la unidad
+		Set vLectores = New Vector(0)				
+		vLectores.insertElement Me.Destinatario,vLectores.cantElem+1
+		'Estos lectores se agregan en el momento de enviar la carta, nadie puede ver la carta que hago
+		'hasta que se envia.
+		'vLectores.append Me.Lectores,True
+		
+		Dim itLectores As NotesItem
+		Set itLectores= New NotesItem(newDoc,DBCS_CAMPO_FCARTASERV_LECTORES,vLectores.values,READERS)	
+		
+		'Lectores permanentes
+		Set vLectPerm = New Vector(0)
+		Set vLectPerm = c.LectoresCarta
+		vLectPerm.insertElement ROL_DESARROLLO_CS,vLectPerm.cantElem + 1		
+		Dim itLectoresP As NotesItem
+		Set itLectoresP=New  NotesItem(newDoc,DBCS_CAMPO_FCARTASERV_LECTORES_PERM,vLectPerm.values,READERS)		
+		
+		Dim itAutoresA As NotesItem
+		Set itAutoresA=New notesItem(newDoc,DBCS_CAMPO_FCARTASERV_AUTORES,Me.Destinatario,AUTHORS)
+		
+		newDoc.Save True,False
+		
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método creoRespuesta","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************					
+	Private Function buscoActuacion() As Boolean
+		On Error Goto handler
+		Dim docAux As NotesDocument
+		
+		Set docAux = getDocCartaServPorNro(Me.NroCartaServicio()+Cstr(Me.NroActCartaServicio+1))
+		buscoActuacion = Not docAux Is Nothing
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método buscoActuacion","")
+		Exit Function
+	End Function	
+'******************************************************************************************************************			
+	Private Sub AgregoLectores()
+		On Error Goto handler
+		Dim vLectores As New Vector(0)
+		Dim vCC As New Vector(0)
+		Dim item As NotesItem
+		
+		vCC.values= doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_CC)
+		
+		If Me.NroActCartaServicio>1 Then
+			Set vLectores = Me.FirstActuacion.Lectores			
+			
+			If vcc.cantElem>0 Then
+				Call AgregoLectoresHistoria(vCC,DBCS_CAMPO_FCARTASERV_LECTORES_CC,Me.NroActcartaServicio-1)
+			End If
+		'Agrego Destinatarios
+			Call vLectores.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_DEST)(0),vLectores.cantelem+1)
+			Call AgregoLectoresHistoria(vLectores,DBCS_CAMPO_FCARTASERV_LECTORES,Me.NroActCartaServicio-1)		
+		Else
+			Set vLectores = Me.Lectores
+			Call vLectores.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_UNIDADES_DEST)(0),vLectores.cantElem+1)
+			
+			
+		End If
+		'Cargo a Lectores Permanentes el rol "verCartas" que ve todas
+		Set item = doc.GetFirstItem( "LectoresPer" )
+		Call item.AppendToTextList( "[verCartas]" )
+		
+		Set Me.Lectores = vLectores
+		If vCC.cantElem>0 Then
+			Set Me.LectoresCC = vCC
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método AgregoLectores","")
+		Exit Sub 
+	End Sub
+'******************************************************************************************************************			
+	Private Sub Numerar()
+		On Error Goto handler
+		'en caso de numerar fijarse si es en la base correspondiente
+		If Right(Cstr(Year(Today)),2) <> Right(Cstr(AnioCS),2) Then
+			Call SetearDbCartaServ(AnioCS)
+			Dim docAux As New NotesDocument(db)
+			Call doc.CopyAllItems(docAux)
+			Call MarcarDocParaBorrarCS(doc)
+			Set doc = docAux
+		End If
+		Dim c As New Configuracion
+		Me.NroCartaServicio = c.NumerarFormateado(NUMERADOR_CS,"","") 
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método Numerar","")
+		Exit Sub 
+	End Sub
+'******************************************************************************************************************		
+	Private Function isSigned() As Boolean
+		
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_FIRMAS) Then
+			If doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FIRMAS)(0)<> "" Then
+				
+				isSigned=True
+				Exit Function
+			End If
+		End If
+		
+		isSigned=False
+	End Function
+'******************************************************************************************************************	
+	Private Function isNumerated() As Boolean
+		On Error Goto handler
+		If doc.HasItem(DBCS_CAMPO_FCARTASERV_NRO) Then
+			If doc.GetItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0)<> "" Then
+				isNumerated=True
+				Exit Function
+			End If
+		End If
+		isNumerated=False
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método isNumerated","")
+		Exit Function
+	End Function
+'******************************************************************************************************************	
+	
+	Private Sub SetearDbCartaServ(Byval anio As Integer)
+	'Si aún no está seteada, setea la base de gestión documental que corresponda según el anio que recibe
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion	
+		
+		If db Is Nothing Then
+			If Not Isnumeric(anio) Then Error ERROR_ANIO_NOTHING, MSG_ERROR_ANIO_NOTHING
+			
+			Set db = c.BaseDeDatosAnio(anio,CLAVE_DBTEMPLATECARTASERV,CLAVE_DBCARTASERV)
+			If Not db.isOpen Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBGESTIONDOC
+		End If
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Procedimiento SetearDbCartaServ","")
+		Exit Sub
+		
+	End Sub	
+	
+'******************************************************************************************************************	
+	
+	Private Function getDocCartaServPorId(sIDCarta As String) As NotesDocument
+		'Busca el documento CartaServicio correspondiente al UniversalID sIDCarta y lo devuelve
+		On Error Goto HANDLER
+		Dim c As New Configuracion
+		Dim vClaves As New Vector(0)
+		Dim i As Integer
+		Dim strClave As String
+		Dim docAux As NotesDocument
+		Dim flag As Boolean
+		flag=True
+		
+		Set vClaves = c.Claves
+		
+		
+		
+		For i = 1 To vClaves.cantElem
+			strClave= vClaves.getElement(i)
+			
+			
+			If Instr(strclave,CLAVE_DBCARTASERV) Then
+				Set db = c.ReferenciarBaseDeDatos(strclave)
+				
+				If Not db.isOpen Then 
+					Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBGESTIONDOC
+				End If
+				Set docAux=db.getDocumentByUNID(sIDCarta)	
+				
+				If Not (docAux Is Nothing) Then
+					
+					Set getDocCartaServPorId=docAux
+					Exit Function
+				End If
+				
+			End If
+			
+		Next i
+		flag = False
+		Set getDocCartaServPorId=db.getDocumentByUNID(sIDCarta)	
+		Exit Function
+		
+HANDLER:
+		If flag Then
+			Resume Next
+		Else
+			Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Procedimiento getDocCartaPorId " & sIDCarta,"")
+			Exit Function
+		End If
+		
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Function getDocCartaServPorNro(sNroCarta As String) As notesDocument	
+		'Busca el documento CartaServicio correspondiente al número sNroCarta y lo devuelve
+		On Error Goto HANDLER
+		Dim vCartas As notesview
+		Dim c As New Configuracion
+		Dim vClaves As New Vector(0)
+		Dim i As Integer
+		Dim strClave As String
+		
+		If db Is Nothing Then
+			Set vClaves = c.Claves
+			
+			
+			For i = 1 To vClaves.cantElem
+				strClave= vClaves.getElement(i)
+				
+				
+				If Instr(strclave,CLAVE_DBCARTASERV) Then
+					Set db = c.ReferenciarBaseDeDatos(strclave)
+					
+				End If
+			Next i
+		End If
+		Set vCartas=db.getView(DBCS_VISTA_BUSQ_CARTA) 
+		
+		If Not vCartas Is Nothing Then
+					'Set doc=vCartas.getdocumentByKey(sNroCarta,True)	
+			Set getDocCartaServPorNro=vCartas.getdocumentByKey(sNroCarta,True)		
+			If Not getDocCartaServPorNro Is Nothing Then
+				Exit Function
+			End If
+		Else
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & DBCS_VISTA_BUSQ_CARTA	
+		End If
+		Exit Function
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Procedimiento getDocCartaPorNro " & sNroCarta,"")
+		Exit Function
+	End Function	
+	
+'******************************************************************************************************************		
+	
+	Private Sub IniciarCreacion()
+		'Valida la creción y carga los campos necesarios al crear una carta 
+		'Se usa desde los métodos Creacion y Responder
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion, vUsuariosComunic As New Vector(0), oUnidad As UnidadExp, vLectores As New Vector(0), vAutores As New Vector(0)
+		Dim nname As NotesName, session As New NotesSession , nombrecanonic As String
+		Dim vLectPerm As New Vector(0)
+		
+		'Valido que el usuario tenga el rol
+		Set oUnidad = New UnidadExp(Me.OficinaInicial)
+		Set vUsuariosComunic = oUnidad.UsuariosRolComunic
+		If vUsuariosComunic.cantElem>0 Then
+			If Not vUsuariosComunic.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				Call MarcarDocParaBorrarCS(doc)
+				Error ERROR_CANT_ACCESS, MSG_ERROR_CANT_ACCESS+" - Rol [Cartas de Servicio]"
+			End If	
+		Else
+			Call MarcarDocParaBorrarCS(doc)
+			Error ERROR_CANT_ACCESS, MSG_ERROR_CANT_ACCESS+" - Rol [Cartas de Servicio]"
+		End If		
+		
+		'Cargo los campos en la carta
+		
+		
+		'Autores - sino la oficina.
+		Set vAutores = New Vector(0)				
+		vAutores.insertElement Me.OficinaInicial,vAutores.cantElem+1				
+		Set Me.Autores = vAutores
+		
+		'Lectores  -  la unidad
+		Set vLectores = New Vector(0)			
+		vLectores.insertElement Me.OficinaInicial,vLectores.cantElem+1		
+		Set Me.Lectores = vLectores
+		
+		'Lectores permanentes
+		Set vLectPerm = c.LectoresCarta
+		vLectPerm.insertElement ROL_DESARROLLO_CS,vLectPerm.cantElem + 1
+		Set Me.LectoresPermanentes=vLectPerm
+		
+		'Cargo el log de la operación crear
+		addLog Now,ACCION_CREAR_CS
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase CartaServicio - Método IniciarCreacion","")
+		Exit Sub 
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Private Sub addLog(fechaHora As Variant,sOperacion As String)
+		'Agrega una línea al log de la carta con operacion, usuario y fecha/hora
+		
+		Dim vLog As New vector(0),iOperacion As notesItem,iUsuario As notesItem,iFechaHora As notesItem
+		
+		vLog.insertElement sOperacion,1
+		vLog.insertElement Me.usuarioAccion.NombreUsuario,2
+		vLog.insertElement Cstr(fechaHora),3
+		
+		'Set campos
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_LOG_OPERACION) Then
+			Set iOperacion= doc.getFirstItem(DBCS_CAMPO_FCARTASERV_LOG_OPERACION)	
+		Else
+			Set iOperacion= New notesItem(doc,DBCS_CAMPO_FCARTASERV_LOG_OPERACION,"")	
+		End If
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_LOG_USUARIO) Then
+			Set iUsuario= doc.getFirstItem(DBCS_CAMPO_FCARTASERV_LOG_USUARIO)	
+		Else
+			Set iUsuario= New notesItem(doc,DBCS_CAMPO_FCARTASERV_LOG_USUARIO,"")	
+		End If
+		If doc.hasItem(DBCS_CAMPO_FCARTASERV_LOG_FECHAHORA) Then
+			Set iFechaHora= doc.getFirstItem(DBCS_CAMPO_FCARTASERV_LOG_FECHAHORA)	
+		Else
+			Set iFechaHora= New notesItem(doc,DBCS_CAMPO_FCARTASERV_LOG_FECHAHORA,"")	
+		End If		
+		
+		'Agrego LOG
+		Call iOperacion.appendToTextList(vLog.getElement(1))	
+		Call iUsuario.appendToTextList(vLog.getElement(2))
+		Call iFechaHora.appendToTextList(vLog.getElement(3))
+		
+	End Sub	
+'******************************************************************************************************************				
+	Private Function AnioCS As Integer
+		AnioCS = 2000+Cint(Strright(Strleft(Ucase(db.FileName),".NSF"),"CARTASSERV"))
+	End Function
+'******************************************************************************************************************				
+	
+	Private Function FirstActuacion () As CartaServicio
+		Set FirstActuacion = New CartaServicio (Me.NroCartaServicio , 1,usuarioAccion,False,Year(Today))
+	End Function
+'******************************************************************************************************************					
+	Public Property Get BaseDeDatos() As NotesDatabase
+		Set BaseDeDatos = db
+	End Property
+End Class

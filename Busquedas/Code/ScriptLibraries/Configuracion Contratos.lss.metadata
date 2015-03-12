@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E0500598295" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="632" sequence="11" unid="268957F7D3B47A1183257A31005D0E63">
+<created><datetime>20120704T135625,31-03</datetime></created>
+<modified><datetime>20150311T131747,95-03</datetime></modified>
+<revised><datetime>20150309T094347,85-03</datetime></revised>
+<lastaccessed><datetime>20150311T131747,95-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131747,95-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Rivadavia/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Jorge Isi/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>Configuracion Contratos</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20150309T094347,85-03</datetime></item></note>

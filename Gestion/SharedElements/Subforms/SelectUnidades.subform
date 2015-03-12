@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='73e' unid='89B7758F8114705A03257330005A8A1E' sequence='15'>
+<created><datetime>20070807T132855,98-03</datetime></created>
+<modified><datetime>20150311T131034,13-03</datetime></modified>
+<revised><datetime>20150309T094413,99-03</datetime></revised>
+<lastaccessed><datetime>20150311T131034,13-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131034,13-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070807T134701,97-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>SelectUnidades</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>SelectUnidades</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAzP8IAAAAAACF/yIAAQAACjxz
+ZWxlY3QgZG9qb1R5cGU9IlNlbGVjdCI+gQKDBAEAhf8JAAEAAAoJAN0GAACt/6n//AIBABgABADw
+AvACCgAEAAEAWAALAGFjdHVhY2lvbmVzAAEAAAABAAcATm9DYWNoZQAfAosAAQALAFZCdXNxQWN0
+RXhwAAUACABjY05yb0V4cAAAAAAAAAAAEECDBQEAAAD7AkMBAwAHAAwABQAJMFMwRQABABQABwB2
+YWxvcmVzAAEAAAADAAcACgAEAAkwUlIBADYAAwBwb3MAAQAFAE9SR0FOAAEADgBmQ29uZmlndXJh
+Y2lvbgEABgBzQ2xhdmX3AnYCAwAHAAoAAwAJMFIAAQBEAAUAdmFsb3IAAQAOAGZDb25maWd1cmFj
+aW9uAQAFAHNSdXRhAPcCBQADAHBvcwBrAgAAAAAAAAAA8D8QAWsCAwAHAAoAAwAJMFIAAQAkAAQA
+QmFzZQUABQB2YWxvcgABAAEAXAABAAEALwCEAwMABwAKAAMACTBSAAgAXgEFAAEAaQAAAAAAAAAA
+APA/CgIFAAEAaQAFAAsAYWN0dWFjaW9uZXMAagEMAgUAAQBpAAUAAQBpAAAAAAAAAAAA8D8iAgkC
+BQAGAHVuaWRhZAEAAAABAAcATm9DYWNoZQABAAAABQAEAEJhc2UfAgEAEQAoQnVzcXVlZGFVbml4
+TnJvKQAFAAsAYWN0dWFjaW9uZXMABQABAGkAIAIBAAQARVhQX2ACAQAHAHNVbmlkYWQAgwYBAAAA
++wJDAQkCBQAHAHZhbG9yZXMAAQAOADxvcHRpb24gdmFsdWU9BQAJAGxpc3RhQWN0cwABAAIAIyNf
+AlYBIgIBABQAIGNsYXNzPSJDZWxkYUl0ZW1zIj4iAgUACQBsaXN0YUFjdHMAAQACACMjXwJWASIC
+AQADAC4tIAAiAgUABgB1bmlkYWQiAgEACQA8L29wdGlvbj4AIgIJArMC+wRIAQMABwAwACoACTBS
+MTlSMjFSNTNSUjU2UzU3UzY2UzJFNjdTNjhTNjlTODBTODRSODVSAAASAAUABwB2YWxvcmVzAAMA
+BwAMAAUACTBSUlIAhf8IAAEAAAqqAt4GAACuAIX/CAABAAAKgQKDBAEAhf8RAAEAAAo8L3NlbGVj
+dD4Azf8IAAAAAAA=
+</rawitemdata></item></note>
+

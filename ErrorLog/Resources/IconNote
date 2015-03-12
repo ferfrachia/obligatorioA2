@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257E0500591BAD'>
+<noteinfo noteid='11e' unid='DD6220BF37D234E503256BA000445B8A' sequence='666'>
+<created><datetime>20020419T092638,82-03</datetime></created>
+<modified><datetime>20150311T131318,32-03</datetime></modified>
+<revised><datetime>20150311T131318,31-03</datetime></revised>
+<lastaccessed><datetime>20150311T131318,32-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131318,08-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=1871</name><name>CN=Desarrollo/O=1871</name><name
+>CN=Federico Tobler/O=1871</name><name>CN=Pablo Andrade/O=ISA</name><name
+>CN=Desarrollo/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Diego Celery/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060517T163221,45-03</datetime><datetime>20060518T111206,25-03</datetime><datetime
+>20060713T120702,72-03</datetime><datetime>20070111T152534,69-03</datetime><datetime
+>20070611T122449,70-03</datetime><datetime>20070705T120406,82-03</datetime><datetime
+>20070705T121103,30-03</datetime><datetime>20090715T190532,11-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAA////////////////////////////////////////////////////////////////////
+/////////////////+D/P//Afz//zH8///5/P//+fz///n8///5/P//+fz//wH8//4B/P/+Mcz//
+nHk//4x8P//A/j//wP8///////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIgAAAAAi
+AAAAAAAAAAAiIiIgAAAAIgAAAAAAAAAAIgAiIAAAACIAAAAAAAAAAAAAAiAAAAAiAAAAAAAAAAAA
+AAIgAAAAIgAAAAAAAAAAAAACIAAAACIAAAAAAAAAAAAAAiAAAAAiAAAAAAAAAAAAAAIgAAAAIgAA
+AAAAAAAAIiIiIAAAACIAAAAAAAAAAiIiIiAAAAAiAAAAAAAAAAIiACIgACIAIgAAAAAAAAACIAAi
+IAACICIAAAAAAAAAAiIAIiAAACIiAAAAAAAAAAAiIiIAAAACIgAAAAAAAAAAIiIiAAAAACIAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$Flags'><text>J2</text></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current ErrorLog</text></item></note>
+

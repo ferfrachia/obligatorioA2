@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF8003FBE02" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1aa" sequence="14" unid="EFB09F730931008E83257C6A004521BA">
+<created><datetime dst="true">20140124T103506,18-02</datetime></created>
+<modified><datetime>20150309T094332,25-03</datetime></modified>
+<revised><datetime>20150309T094332,24-03</datetime></revised>
+<lastaccessed><datetime>20150309T094332,25-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T093614,90-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=DNII</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>Configuracion Sistema</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime dst="true">20141112T111138,15-02</datetime></item></note>

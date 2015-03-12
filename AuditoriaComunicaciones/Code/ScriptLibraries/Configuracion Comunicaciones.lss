@@ -1,0 +1,1134 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <CONFIGURACION>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'*
+'*		New()
+'*			Constructor de la clase 
+'*
+
+
+'******************************************************************************************************************
+
+Option Declare
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+'Use "ConstantesSistemaCOMUNICACIONES"
+Use "ConstantesSistema"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigComunicaciones
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Constantes realacionadas con el formato de la numeracion
+
+
+'Public Const INDICADOR_DIGITO 						= "#"
+'Public Const INDICADOR_DIGITOS_PROPIO_NRO				= "*"
+'Public Const INDICADOR_AÑO_CUATRO_DIGITOS				= "yyyy"
+'Public Const INDICADOR_AÑO_DOS_DIGITOS					= "yy"
+'Public Const INDICADOR_CODIGO										="c"
+
+'Public Const CONF_SERVIDOR_ACTUAL						= "SERVER_ACTUAL"	
+'Public Const CONF_SERVIDOR_LOCAL						= "LOCAL"
+
+'CONSTANTES PRIVADAS
+'Private Const NOMBRE_FORM_CONF					= "ConfComunicaciones"
+'Private Const CAMPO_RUTA_DB						= "sPath"
+'Private Const CAMPO_SERVIDOR_DB					= "sServer"
+'Private Const CAMPO_HOST_DB 						= "sHost"
+'Private Const CAMPO_CLAVE_DB						= "sClave"
+Public Const INDICADOR_CODIGO_COMUNICACION			="c"
+Public Const INDICADOR_CODIGO_SECUENCIAC					= "#"
+Public Const INDICADOR_CODIGO_UNIDADC					= "u"
+'Campos Notificaciones
+Private Const CAMPO_NOTIFICACION_ENVIAR				= "rNotificacionEnviar"
+Private Const CAMPO_NOTIFICACION_RESPONDER			= "rNotificacionResponder"
+Private Const CAMPO_NOTIFICACION_FIRMAR			= "rNotificacionFirmar"
+Private Const CAMPO_NOTIFICACION_RECIBIR			= "rNotificacionRecibir"
+Private Const CAMPO_NOTIFICACION_PASE				= "rNotificacionPase"
+Private Const CAMPO_NOTIFICACION_FINALIZAR			= "rNotificacionFinalizar"
+Private Const CAMPO_NOTIFICACION_ARCHIVAR			= "rNotificacionArchivar"
+'Auditoria
+Private Const CAMPO_CONFIG_AUDITORIA_CANT_DIAS 	= "nTiempoVidaAuditoria"
+Private Const CAMPO_CONFIG_AUDITORIA_CLAVE		= "sClaveCreacionAuditoria"
+Private Const CAMPO_CONFIG_AUDITORIA_FECHA_C	= "dFechaCreacionAuditoria"
+
+'CONSTANTES PRIVADAS COMUNICACIONES
+Public Const NOMBRE_FORM_CONF					= "ConfComunicaciones"
+Public Const CAMPO_RUTA_DB						= "sPath"
+Public Const CAMPO_SERVIDOR_DB					= "sServer"
+Public Const CAMPO_HOST_DB 						= "sHost"
+Public Const CAMPO_CLAVE_DB						= "sClave"
+Public Const INDICADOR_CODIGO										="c"
+'CONSTANTES PUBLICAS
+'Public Const CONF_SERVIDOR_ACTUAL					= "SERVER_ACTUAL"	
+'Public Const CONF_SERVIDOR_LOCAL						= "LOCAL"
+
+Public Const ERROR_NUMERATION							= 10003
+Public Const MSG_ERROR_NUMERATION						= "No se puede asignar el número automático"
+
+Public Const INDICADOR_AÑO_CUATRO_DIGITOS				= "yyyy"
+Public Const INDICADOR_AÑO_DOS_DIGITOS					= "yy"
+'Constantes realacionadas con el formato de la numeracion
+Public Const INDICADOR_DIGITO 						= "#"
+Public Const INDICADOR_DIGITOS_PROPIO_NRO				= "*"
+Public Const INDICADOR_INCISO							="i"
+Public Const INDICADOR_UNIDAD							="u"
+Public Const INDICADOR_DIGITOS_PROPIO_UNIDAD				="&"
+Public Const INDICADOR_DIGITOS_PROPIO_INCISO				="$"
+Public Const ERROR_INDICADOR_DIGITO_NOT_FOUND			= 10004
+Public Const MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND			= "No se encuetra el indicador de la cantidad de digitos en el formato del numerador"
+'Public Const ERROR_PROFILE_NOTHING						= 10006
+'Public Const MSG_ERROR_PROFILE_NOTHING					= "El documento de perfil no tiene toda la información necesaria"
+'Public Const ERRORCONF_CLAVE_NOTFOUND					= 10002
+'Public Const MSG_ERRORCONF_CLAVE_NOTFOUND		= "No se puede encontrar la clave en la tabla de interoperabilidad"
+
+
+
+
+'Public Const ERRORCONF_INTERNAL_ERROR					= 10001
+
+'Public Const ERRORCONF_CLAVE_NOTFOUND					= 10002
+'Public Const MSG_ERRORCONF_CLAVE_NOTFOUND				= "No se puede encontrar la clave en la tabla de interoperabilidad"
+
+'Public Const ERROR_NUMERATION							= 10003
+'Public Const MSG_ERROR_NUMERATION						= "No se puede asignar el número automático"
+
+'Public Const ERROR_INDICADOR_DIGITO_NOT_FOUND			= 10004
+'Public Const MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND			= "No se encuetra el indicador de la cantidad de digitos en el formato del numerador"
+
+'Public Const ERROR_PATH_INCOMPLETED					= 10005
+'Public Const MSG_ERROR_PATH_INCOMPLETED					= "La tabla de interoperabilidad no tiene el path completo"
+
+'Public Const ERROR_PROFILE_NOTHING						= 10006
+'Public Const MSG_ERROR_PROFILE_NOTHING					= "El documento de perfil no tiene toda la información necesaria"
+
+'Public Const ERROR_CREATE_DB							= 10007
+'Public Const MSG_ERROR_CREATE_DB_ANIO					= "El año debe ser numérico: "
+
+
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class ConfigComunicaciones
+	'******************************************************************************************************************	
+	
+	'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	Private vKeyDB As Vector
+	Private vServer As Vector
+	Private vHost As Vector
+	Private vFilePath As Vector
+	Private vFormNum As Vector	
+	Private vKeyNum As Vector
+	
+	'******************************************************************************************************************	
+	
+	'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+	'******************************************************************************************************************		
+	Private Function ObtenerNombreServidor(Byval sValor As String) As String
+		' Retorna el verdadero valor del servidor en caso que sea una clave
+		On Error Goto HANDLER
+		
+		If sValor = CONF_SERVIDOR_ACTUAL Then
+			ObtenerNombreServidor = ses.CurrentDatabase.Server
+		Elseif sValor = CONF_SERVIDOR_LOCAL Then
+			ObtenerNombreServidor = ""
+		Else
+			ObtenerNombreServidor = sValor
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Procedimiento ObtenerNombreServidor","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************		
+	
+	Public Function PedirNumero (Byval nombrenumerador As String) As Long
+		'Pide un número a la clase numeración para el numerador que recibe y lo devuelve
+		'Suposiciones:
+		' 1) Si se utiliza un numerador diferente por año, el nombre del numerador indicará que va 
+		'    el año con yy o yyyy en el lugar que corresponda. Esta función sustituye ese indicador
+		'	por el año actual
+		On Error Goto HANDLER
+		Dim errorFaltaNumerador As Integer
+		errorFaltaNumerador=0
+		Dim num As NumClient, BASENUMERACION As String, SERVIDORNUMERACION As String
+		
+		'Sustituyo el indicador de año por el año actual
+		nombrenumerador = SustituirAnio(nombrenumerador)
+		
+		'Pido el número
+		'Busco srv y path de la base de numeracion
+		SERVIDORNUMERACION  = Me.ServidorDomino(CLAVE_DBNUMERACION)
+		BASENUMERACION  = Me.BaseDeDatos(CLAVE_DBNUMERACION)
+		If (nombrenumerador <> "") And (BASENUMERACION <> "") Then
+			MsgBox nombreNumerador & "estamos dentro del if que crearía uno nuevo"
+			'Creo el objeto numerador
+			errorFaltaNumerador=1
+			Set num = New NumClient(nombrenumerador,SERVIDORNUMERACION,BASENUMERACION)		
+			MsgBox nombreNumerador
+			PedirNumero = num.GetNumber()
+			MsgBox nombreNumerador			
+		Else
+			Error ERROR_NUMERATION,MSG_ERROR_NUMERATION
+		End If
+		
+		Exit Function
+HANDLER:
+		If(errorFaltaNumerador=1) Then
+			MsgBox 	"SUPONGO QUE EN ESE CASO NO ESTÁ EL NUMERADOR. EN CASO DE QUE ESTÉ COMENTAR ESTE IF"
+			Dim doc As NotesDocument
+			Dim dbdts As NotesDatabase
+			
+			Set dbdts = ReferenciarBaseDeDatos(CLAVE_DBNUMERACION)
+			Set doc =dbdts.Createdocument()
+			MsgBox "PASAMOS EL REFERENCEO DE LA BD DE NUM"
+			Call doc.Replaceitemvalue("Form","Numerador")
+			Call doc.Replaceitemvalue("Name",nombreNumerador)
+			Call doc.Replaceitemvalue("Queue", 1)
+			Call doc.Replaceitemvalue("LastQueued",1)
+			Call doc.Replaceitemvalue("LastAsigned",1)
+			Call doc.Replaceitemvalue("QueueLen",1)
+			Call doc.Replaceitemvalue("StartNumber",1)
+			Call doc.Save(True, False)
+			Set num = New NumClient(nombrenumerador,SERVIDORNUMERACION,BASENUMERACION)
+			PedirNumero = num.GetNumber()
+		Else
+			Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Funcion PedirNumero","")	
+		End if
+		
+		
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************		
+	Public Function SustituirCodigoFormulario(ByVal formato As String, codigoFormulario As Integer) As String
+		On Error GoTo HANDLER
+		
+		Dim pos As Integer
+		Dim izq As String
+		Dim der As String
+		
+		pos = InStr(formato, INDICADOR_CODIGO_COMUNICACION)
+		
+		If (pos <> 0) Then
+			'Saco lo que hay a la derecha e izquierda del código de la comunicacion
+			izq = StrLeft(formato, INDICADOR_CODIGO_COMUNICACION)
+			der = StrRightBack(formato, INDICADOR_CODIGO_COMUNICACION)
+			
+			formato = izq & codigoFormulario & der
+		End If
+		SustituirCodigoFormulario = formato
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirCodigoFormulario","")
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	Public Function  SustituirCodigoUnidad(ByVal formato As String, codigoUnidad As String)
+		On Error GoTo HANDLER
+		
+		Dim izq As String
+		Dim der As String
+		Dim pos As Integer
+		
+		pos = InStr(formato, INDICADOR_CODIGO_UNIDADC)
+		
+		If(pos <> 0 And codigoUnidad<>"") Then
+			izq = StrLeft(formato, INDICADOR_CODIGO_UNIDADC)
+			der = StrRightBack(formato, INDICADOR_CODIGO_UNIDADC)
+			
+			formato = izq & codigoUnidad & der
+		End If
+		
+		
+		SustituirCodigoUnidad = formato
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirCodigoFormulario","")
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+	Public Function SustituirAnio (Byval formato As String)As String
+		'Busca el indicador del año (yy o yyyy) dentro del formato y lo sustituye por el año actual
+		'Si el indicador del año no está devuelve el formato como lo recibió
+		On Error Goto HANDLER
+		
+		Dim anioactual As String, pos As Integer
+		
+		'Veo si va el año con cuatro digitos
+		anioactual = Cstr(Year(Today))
+		pos = Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)
+		If pos = 0 Then  'veo si va el año con dos digitos
+			anioactual = Right(Cstr(Year(Today)),2)
+			pos = Instr(formato, INDICADOR_AÑO_DOS_DIGITOS)
+		End If
+		If pos <> 0 Then  'va el año
+			Mid$ (formato, pos,Len(anioactual)) = anioactual
+		End If  'si no va el año no modifiqué nada al texto		
+		SustituirAnio = formato
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Funcion SustituirAnio","")
+		Exit Function
+	End Function
+	
+	
+	
+	
+	'******************************************************************************************************************		
+	Public Function SustituirNumeroSecuencia(ByVal formato As String, secuencia As Long) As String
+		On Error GoTo HANDLER
+		Dim izq As String
+		Dim der As String
+		Dim largoNum As Integer
+		Dim largoSec As Integer
+		Dim aux As String
+		Dim i As Integer
+		
+		largoSec = Len(CStr(secuencia))
+		izq = StrLeft(formato, INDICADOR_CODIGO_SECUENCIAC)
+		der = StrRightBack(formato, INDICADOR_CODIGO_SECUENCIAC)
+		
+		'Obtengo la cantidad de numerales de la secuencia
+		largoNum = Len(formato) - (Len(izq) + Len(der))
+		
+		For i%=1 To (largoNum - largoSec)
+			aux = aux & 0
+		Next
+		aux = aux & secuencia
+		formato = izq & aux & der
+		
+		SustituirNumeroSecuencia = formato
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirNumeroSecuencia","")
+		Exit Function
+	End Function
+	Public Function SustituirCantDigitos (Byval formato As String, Byval nro As String) As String
+		'Chequea la cantidad de veces que aparece el indicador de un digito y lo sustituye
+		'por el nro formateado con esa cantidad de digitos
+		On Error Goto HANDLER
+		
+		Dim pos As Integer, digitos As Integer, prefijo As String, resto As String, sufijo As String
+		
+		'Busco la cantidad de dígitos para el número
+		pos = Instr(formato,INDICADOR_DIGITO)	'debe haber por lo menos un indicador (digitos segun los que tenga el nro)
+		If pos <> 0 Then
+			digitos = 1
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			resto = Right(formato, Len(formato)-pos)
+			pos = Instr(resto,INDICADOR_DIGITO)		
+			While pos <> 0  'cuento los dígitos
+				digitos = digitos + 1
+				resto = Right(resto, Len(resto)-pos)
+				pos = Instr(resto,INDICADOR_DIGITO)
+			Wend
+			sufijo = resto
+			'Agrego 0's al nro hasta llegar a la cant de dígitos
+			While Len(nro)<digitos
+				nro = "0" + nro
+			Wend 
+			'Armo el nuevo formato
+			SustituirCantDigitos = prefijo + nro + sufijo
+		Else   'no está el #
+			'busco el *
+			pos = Instr(formato,INDICADOR_DIGITOS_PROPIO_NRO)
+			If pos = 0 Then Error ERROR_INDICADOR_DIGITO_NOT_FOUND, MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND
+			
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			If pos = Len(formato) Then  'no hay sufijo
+				sufijo = ""
+			Else
+				sufijo = Right(formato, Len(formato)-pos)
+			End If
+			
+			SustituirCantDigitos = prefijo + nro + sufijo
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Funcion SustituirCantDigitos","")
+		Exit Function
+	End Function
+	
+	'
+	
+	'CONSTRUCTOR
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		
+		'Se carga el documento de profile
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(NOMBRE_FORM_CONF)
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vHost = New Vector(0)
+		Set vFilePath = New Vector(0)
+		Set vFormNum = New Vector(0)
+		Set vKeyNum = New Vector(0)
+		
+		vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+		vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+		vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+		vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB)
+		
+		'En caso de que nunca haya sido editado se setea el campo form para poderse editar
+		If Not docConfiguracion.HasItem("Form") Then
+			docConfiguracion.ReplaceItemValue "Form",NOMBRE_FORM_CONF
+		End If
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Método new","")
+		Exit Sub
+	End Sub
+	
+	
+	'
+	
+	'******************************************************************************************************************					
+	Public Property Get tamMaxAnexos As Integer
+		On Error Goto handler
+		tamMaxAnexos = Cint(docConfiguracion.getItemValue("nTamMaxAnexos")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get tamMaxAnexos","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************					
+	Public Property Get BaseDeDatos(Byval clave As String) As String
+		' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+		'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		BaseDeDatos = vFilePath.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get BaseDeDatos","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set BaseDeDatos(Byval clave As String) As String
+		' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+		' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vFilePath.ReplaceElement(pos,BaseDeDatos)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Set BaseDeDatos","")
+		Exit Property
+	End Property
+	
+	
+	Public Property Get Claves() As vector
+		' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = docConfiguracion.GetItemValue(CAMPO_CLAVE_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get Claves","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set Claves As Vector
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_CLAVE_DB, Claves.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase Configuracion Comunicaciones - Propiedad Set Claves", Erl, "")
+		Exit Property
+	End Property
+	
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get Hosts() As vector
+		' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error GoTo HANDLER
+		
+		Set Hosts = New Vector(0)
+		Hosts.Values = docConfiguracion.GetItemValue(CAMPO_HOST_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get Hosts","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set Hosts As Vector
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_HOST_DB, Hosts.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase Configuracion Comunicaciones - Propiedad Set Hosts", Erl, "")
+		Exit Property
+	End Property
+	
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get Servers() As vector
+		' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error GoTo HANDLER
+		
+		Set Servers = New Vector(0)
+		Servers.Values = docConfiguracion.GetItemValue(CAMPO_SERVIDOR_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get Servers","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set Servers As Vector
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_SERVIDOR_DB, Servers.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase Configuracion Comunicaciones - Propiedad Set Servers", Erl, "")
+		Exit Property
+	End Property
+	
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get Paths() As vector
+		' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error GoTo HANDLER
+		
+		Set Paths = New Vector(0)
+		Paths.Values = docConfiguracion.GetItemValue(CAMPO_RUTA_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get Paths","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set Paths As Vector
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_RUTA_DB, Paths.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase Configuracion Comunicaciones - Propiedad Set Paths", Erl, "")
+		Exit Property
+	End Property
+	
+	
+	'******************************************************************************************************************	
+	
+	
+	Public Property Get ServidorDomino(Byval clave As String) As String
+		' Dada una clave retorna el Servidor. Si no lo encuentra retorna "".
+		'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then
+			ServidorDomino = ObtenerNombreServidor(vServer.getElement(pos))
+		End if
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get ServidorDomino","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set ServidorDomino(Byval clave As String) As String
+		' Dada una clave setea el Servidor. Si no lo genera un error
+		' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vServer.ReplaceElement(pos,ServidorDomino)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "ServidorDomino: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Set ServidorDomino","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+
+	'Public Function HostByKey(clave As String) As String
+	' retorna el host correspondiente a la 'clave' en la tabla de interoperabilidad.
+	' si no se encuentra la 'clave', retorna el string vacio.
+	'On Error GoTo handler
+	'Dim hostResult As String
+	'Dim pos As Long
+	'hostResult = ""
+	'If Me.Claves.isMember(UCase(clave), pos, False) Then
+	'	hostResult = Me.Host.getElement(pos)			
+	'End If
+	'HostByKey = hostResult
+	'Exit Function
+	'handler:
+	'	Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase ConfDocumentos - Funcion HostByKey", Erl, ses.Effectiveusername)
+	'	Exit Function
+	'End Function
+	
+	'*************************************************************************************************************************************		
+	Public Sub addAuditoriaDate(sClave As String,dCreacion As Variant)
+		'dCreacion es de tipo Date, sClave=clave de la base
+		Dim itClaves As NotesItem,itFechas As NotesItem,aFechas As Variant
+		
+		If docConfiguracion.hasItem(CAMPO_CONFIG_AUDITORIA_CLAVE) Then
+			Set itClaves=docConfiguracion.getFirstItem(CAMPO_CONFIG_AUDITORIA_CLAVE)
+		Else
+			Set itClaves=New NotesItem(docConfiguracion,CAMPO_CONFIG_AUDITORIA_CLAVE,"")	
+		End If
+		itClaves.appendToTextlist sClave
+		If docConfiguracion.hasItem(CAMPO_CONFIG_AUDITORIA_FECHA_C) Then
+			Set itFechas=docConfiguracion.getFirstItem(CAMPO_CONFIG_AUDITORIA_FECHA_C)
+		Else
+			Set itFechas=New NotesItem(docConfiguracion,CAMPO_CONFIG_AUDITORIA_FECHA_C,"")		
+		End If
+		aFechas=itFechas.values
+		ReDim Preserve aFechas(LBound(itClaves.values) To UBound(itClaves.values))
+		aFechas(UBound(itClaves.values))=dCreacion
+		itFechas.values=aFechas
+	End Sub
+	'*************************************************************************************************************************************		
+
+	Public Property Get Host(Byval clave As String) As String
+		' Dada una clave retorna el Host. Si lo encuentra retorna "".
+		'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		Host = vHost.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get Host","")
+		Exit Property
+	End Property	
+	'******************************************************************************************************************	
+	
+	Public Property Set Host(Byval clave As String) As String
+		' Dada una clave setea el Host. Si no retorna un error ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vHost.ReplaceElement(pos,Host)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "Host: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Set Host","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+
+	
+	Public Property Set Interoperabilidad() As Vector
+		'Recibe un vector de vectores con las columnas de la tabla
+		'Setea toda la informacion de la tabla de interoperabilidad con dichos vectores
+		On Error Goto HANDLER
+		
+		vKeyDB.Values = Interoperabilidad.GetElement(1).Values
+		vServer.Values = Interoperabilidad.GetElement(2).Values
+		vHost.Values = Interoperabilidad.GetElement(3).Values
+		vFilePath.Values = Interoperabilidad.GetElement(4).Values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Set Interoperabilidad","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get cabezalBusqueda As String
+		On Error Goto handler
+		cabezalBusqueda = docConfiguracion.getItemValue("cabezalBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get cabezalBusqueda","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************					
+	Public Property Get filaBusqueda As String
+		On Error Goto handler
+		filaBusqueda = docConfiguracion.getItemValue("filaBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get filaBusqueda","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get pieBusqueda As String
+		On Error Goto handler
+		pieBusqueda = docConfiguracion.getItemValue("pieBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get pieBusqueda","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************		
+	Public Property Get MaxBusqueda As Long
+		On Error Goto handler
+		MaxBusqueda = Clng(docConfiguracion.getItemValue("MaxBusqueda")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get MaxBusqueda","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************		
+	Public Property Get docsPorPaginaBusqueda As String
+		On Error Goto handler
+		docsPorPaginaBusqueda = Clng(docConfiguracion.getItemValue("docsPorPagina")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get docsPorPaginaBusqueda","")
+		Exit Property
+	End Property
+	
+	
+	
+	'******************************************************************************************************************			
+	Public Property Get NotificacionEnviar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_ENVIAR)(0)="Si" Then
+			NotificacionEnviar=True
+		Else
+			NotificacionEnviar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get NotificacionEnviar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Property Get NotificacionResponder As Boolean
+		On Error GoTo handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_RESPONDER)(0)="Si" Then
+			NotificacionResponder=True
+		Else
+			NotificacionResponder=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get NotificacionReEnviar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Property Get NotificacionRecibir As Boolean
+		On Error GoTo handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_RECIBIR)(0)="Si" Then
+			NotificacionRecibir=True
+		Else
+			NotificacionRecibir=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get NotificacionReEnviar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Property Get NotificacionFirmar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_FIRMAR)(0)="Si" Then
+			NotificacionFirmar=True
+		Else
+			NotificacionFirmar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get NotificacionReEnviar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Property Get NotificacionPase As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_PASE)(0)="Si" Then
+			NotificacionPase=True
+		Else
+			NotificacionPase=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get NotificacionPase","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Property Get NotificacionFinalizar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_FINALIZAR)(0)="Si" Then
+			NotificacionFinalizar=True
+		Else
+			NotificacionFinalizar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get NotificacionFinalizar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Property Get NotificacionArchivar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_ARCHIVAR)(0)="Si" Then
+			NotificacionArchivar=True
+		Else
+			NotificacionArchivar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get NotificacionArchivar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Function insertLineaInteroperabilidad(vIns As Vector,nColOrdenar As Integer)
+		'Inserta en forma ordenada segun la clave si nColOrdenar<>0
+		'nColOrdenar es la columna por la cual ordenar
+		'Si nColOrdenar=0 inserta al final
+		Dim posIns As Long
+		
+		If nColOrdenar<>0 Then
+			Select Case(nColOrdenar)
+			Case 1:
+				posIns=vKeyDB.InsertPos(vIns.getElement(1),True)
+			Case 2:
+				posIns=vServer.InsertPos(vIns.getElement(2),True)
+			Case 3:
+				posIns=vHost.InsertPos(vIns.getElement(3),True)
+			Case 4:
+				posIns=vFilePath.InsertPos(vIns.getElement(4),True)
+		End Select			
+		Else
+			posIns = vKeyDB.cantElem + 1
+		End If
+		vKeyDB.insertElement vIns.getElement(1),posIns
+		vServer.insertElement vIns.getElement(2),posIns
+		vHost.insertElement vIns.getElement(3),posIns
+		vFilePath.insertElement vIns.getElement(4),posIns
+	End Function
+	
+	
+	'******************************************************************************************************************			
+	
+	
+	
+	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
+		'Retorna una referencia a la base de datos que recibe como parámetro.
+		'En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		Set ReferenciarBaseDeDatos = Nothing
+		
+		If vKeyDB.isMember(Ucase(clave), pos, False) Then _
+		Set ReferenciarBaseDeDatos = New NotesDatabase(ObtenerNombreServidor(vServer.getElement(pos)), vFilePath.getElement(pos))
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Método ReferenciarBaseDeDatos","")
+		Exit Function
+		
+	End Function
+	
+	'******************************************************************************************************************		
+	
+	Public Function NumerarFormateado (Byval NOMBRENUMERADOR As String,formato As String,codigo As String) As String
+		'Devuelve el nro que corresponde según el nombre del numerador y con el formato indicado en el doc de perfil	
+		On Error Goto HANDLER
+		
+		Dim nro As String
+		
+		'Pido número a la clase de numeración
+		nro = Cstr(PedirNumero(NOMBRENUMERADOR))
+		'Obtengo el formato del nro
+		If formato = "" Then Error ERRORCONF_CLAVE_NOTFOUND, "FormatoNumerador: No se encuentra la clave " _ 
+		& NOMBRENUMERADOR & " en la tabla de Formato de numeradores."
+		'Sustituyo el indicador de año por el año actual
+		formato = SustituirAnio(formato)
+		'Sustituyo el indicador de digitos por el nro
+		formato = SustituirCantDigitos(formato,nro)	
+		'Sustituyo el codigo si es que esta
+		NumerarFormateado = Replace(formato,INDICADOR_CODIGO,codigo)
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Método NumerarFormateado","")
+		Exit Function
+	End Function
+	'**************************************************************************************************************************************************	
+	
+	'******************************************************************************************************************
+	'***************************	AUDITORIA ***************************************************************************	
+	'******************************************************************************************************************
+	
+	Public Property Get TiempoVidaAuditoria As String
+		On Error GoTo handler
+		TiempoVidaAuditoria = CStr(docConfiguracion.GetItemValue(CAMPO_CONFIG_AUDITORIA_CANT_DIAS)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get TiempoVidaAuditoria", Erl, "")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set TiempoVidaAuditoria As String
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITORIA_CANT_DIAS, CStr(TiempoVidaAuditoria)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set TiempoVidaAuditoria", Erl, "")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get ClavesAuditoria As Vector
+		On Error GoTo handler
+		Set ClavesAuditoria = New Vector(0)
+		If docConfiguracion.hasItem(CAMPO_CONFIG_AUDITORIA_CLAVE) Then
+			ClavesAuditoria.values = docConfiguracion.getItemValue(CAMPO_CONFIG_AUDITORIA_CLAVE)
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get ClavesAuditoria", Erl, "")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set ClavesAuditoria  As Vector
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITORIA_CLAVE, ClavesAuditoria.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION,  "Clase ConfDocumentos - Propiedad Set ClavesAuditoria ", Erl, "")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get FechasAuditoria As Vector
+		On Error GoTo handler
+		Set FechasAuditoria = New Vector(0)
+		If docConfiguracion.HasItem(CAMPO_CONFIG_AUDITORIA_FECHA_C) Then
+			FechasAuditoria.values = docConfiguracion.GetItemValue(CAMPO_CONFIG_AUDITORIA_FECHA_C)
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION,   "Clase ConfDocumentos - Propiedad Get FechasAuditoria", Erl, "")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set FechasAuditoria As Vector
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITORIA_FECHA_C,FechasAuditoria.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION,"Clase ConfDocumentos - Propiedad Set FechasAuditoria", Erl, "")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************
+	
+	'******************************************************************************************************************	
+	
+	Public Sub Save () 
+		On Error GoTo handler
+		
+		Dim ses As New NotesSession
+		docConfiguracion.Save True, False
+		
+		Dim claves As Vector
+		Set claves = Me.Claves
+		
+		Dim i As Integer
+		Dim clave As String
+		Dim db As NotesDatabase
+		Dim docConfig As NotesDocument
+		
+		For i=1 To claves.CantElem
+			clave = claves.getElement(i)
+			If clave<>"NAMES"  And clave<>"MOTOR"Then
+				
+				Set db = New NotesDatabase(Me.ServidorDomino(clave),Me.BasedeDatos(clave))
+				If Not db Is Nothing Then
+					If Not db.Isopen Then
+						db.Open Me.ServidorDomino(clave), Me.BasedeDatos(clave) 
+					End If
+					Set docConfig = db.GetProfileDocument("ConfComunicaciones")
+					Call copiarCampos(docConfiguracion,docConfig)
+					Call docConfig.Save(True,False)
+				End If
+			End If
+		Next
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase ConfDocumentos - Sub Save", Erl, ses.Effectiveusername)
+		Exit Sub
+	End Sub
+	'************************************************************************************************************************
+
+	Sub copiarCampos(docOrigen As NotesDocument, docDestino As NotesDocument)
+		On Error GoTo handler
+		
+		Call docDestino.ReplaceItemValue("$PublicAccess", "1")
+
+		'cargo los campos de interop
+		Call docDestino.ReplaceItemValue("sClave",docOrigen.GetItemValue("sClave"))
+		Call docDestino.ReplaceItemValue("sHost",docOrigen.GetItemValue("sHost"))
+		Call docDestino.ReplaceItemValue("sServer",docOrigen.GetItemValue("sServer"))
+		Call docDestino.ReplaceItemValue("sPath",docOrigen.GetItemValue("sPath"))
+		Call docDestino.ReplaceItemValue("sAccesoAnonimo", docOrigen.GetItemValue("sAccesoAnonimo"))
+
+		'Campos de busqueda
+		Call docDestino.ReplaceItemValue("MaxBusqueda",docOrigen.GetItemValue("MaxBusqueda")(0))
+		Call docDestino.ReplaceItemValue("docsPorPagina",docOrigen.GetItemValue("docsPorPagina")(0))
+		Call docDestino.ReplaceItemValue("cabezalBusqueda",docOrigen.GetItemValue("cabezalBusqueda")(0))
+		Call docDestino.ReplaceItemValue("filaBusqueda",docOrigen.GetItemValue("filaBusqueda")(0))
+		Call docDestino.ReplaceItemValue("pieBusqueda",docOrigen.GetItemValue("pieBusqueda")(0))
+
+		'Campos para las notificaciones
+		Call docDestino.ReplaceItemValue("rNotificacionEnviar",docOrigen.GetItemValue("rNotificacionEnviar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionResponder",docOrigen.GetItemValue("rNotificacionResponder")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionPase",docOrigen.GetItemValue("rNotificacionPase")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionFinalizar",docOrigen.GetItemValue("rNotificacionFinalizar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionArchivar",docOrigen.GetItemValue("rNotificacionArchivar")(0))	
+		Call docDestino.ReplaceItemValue("rNotificacionRecibir",docOrigen.GetItemValue("rNotificacionRecibir")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionFirmar",docOrigen.GetItemValue("rNotificacionFirmar")(0))
+		Call docDestino.ReplaceItemValue("sEmailInstitucional",docOrigen.GetItemValue("sEmailInstitucional")(0))
+		Call docDestino.ReplaceItemValue("lMsgTemplate",docOrigen.GetItemValue("lMsgTemplate"))
+		
+		Call docDestino.ReplaceItemValue("sTiposPermitidosAnexos",docOrigen.GetItemValue("sTiposPermitidosAnexos"))
+		Call docDestino.ReplaceItemValue("tamanoAnexo",docOrigen.GetItemValue("tamanoAnexo"))
+		
+		Call docDestino.Replaceitemvalue("nTiempoVidaAuditoria", docOrigen.Getitemvalue("nTiempoVidaAuditoria")(0))
+		Call docDestino.ReplaceItemValue("sClaveCreacionAuditoria",docOrigen.GetItemValue("sClaveCreacionAuditoria"))
+
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError("COMUNICACIONES","ConfigComWQS - Sub copiarCampos","")	
+	End Sub
+
+	'*************************************************************************************************************************************	
+	
+	Public Function InsertarLineaInterop(clave As String, host As String, serv As String, ruta As String)
+		' Agrega una fila en la tabla de Interoperabilidad con los valores: clave, host, serv y ruta.
+		On Error GoTo handler
+		
+		Dim pos As Long
+		Dim vAux As New Vector(0)
+		Set vAux  = Me.Claves		
+		Dim vClavesLength As Long
+		vClavesLength = vAux.cantElem +1
+		If Not Me.Claves.isMember(UCase(clave), pos,False) Then
+			Set vAux  = Me.Claves
+			vAux.insertElement clave,vClavesLength
+			Set Me.Claves= vAux
+			Set vAux  = Me.Servers
+			vAux.insertElement serv,vClavesLength
+			Set Me.Servers = vAux
+			Set vAux  = Me.Hosts
+			vAux.insertElement host,vClavesLength
+			Set Me.Hosts = vAux
+			Set vAux  = Me.Paths
+			vAux.insertElement ruta,vClavesLength
+			Set Me.Paths = vAux
+			vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+			vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+			vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+			vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB)
+			'Call Me.save()
+			
+		End If
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, NOMBRE_APLICACION, "Clase Configuracion Comunicaciones - Funcion InsertarLineaInterop", Erl, ses.Effectiveusername)
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	
+End Class
+'******************************************************************************************************************

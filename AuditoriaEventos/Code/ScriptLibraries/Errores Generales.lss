@@ -1,0 +1,63 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+%REM
+Constantes asociadas con errores generales del sistema y particulares de sus módulos.
+No contiene los errores particulares de una clase. Dichos errores estarán en la propia clase.
+
+RANGOS DE NUMEROS
+Errores Administracion y Configuracion - Clase ConfEE 1.0: 10000 - 10099
+Errores de esta biblioteca: 10100 - 10199
+Errores Motor documental - Clase MotorCli: 10200 - 10299
+
+Errores VectorClass 2.05: 11000 - 11100
+
+Errores ErrorHandlerClass 1.2: 14800 - 14899
+
+Errores Clase Expediente: 15000 - 15099
+
+Errores NumeradorClient: 16010 - 16099
+
+Errores Clase Auditoria: 10300 - 16399
+
+%END REM
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'NUMEROS Y MENSAJES DE ERROR
+
+'Generales
+Public Const ERROR_VIEW_NOT_FOUND							= 10101
+Public Const MSG_ERROR_VIEW_NOT_FOUND						= "No se encontró la vista"
+
+Public Const ERROR_PROFILEDOC_NOT_FOUND						= 10102
+Public Const MSG_ERROR_PROFILEDOC_NOT_FOUND					= "No se encontró el documento de perfil"
+
+Public Const ERROR_DOCUMENT_NOT_FOUND						= 10103
+Public Const MSG_ERROR_DOCUMENT_NOT_FOUND					= "No se encontró el documento"
+
+Public Const ERROR_FIELD_NOT_FOUND							= 10104
+Public Const MSG_ERROR_FIELD_NOT_FOUND						= "No se encontró el campo"
+
+Public Const ERROR_DB_NOT_OPEN							= 10105
+Public Const MSG_ERROR_DB_NOT_OPEN							= "No se puede abrir la base de datos"
+
+Public Const ERROR_CANT_SAVE_DOCUMENT						= 10106
+Public Const MSG_ERROR_CANT_SAVE_DOCUMENT					= "No se puede salvar el documento"
+
+'Rutas
+Public Const ERROR_CANT_COPY_ROUTE							= 10109
+Public Const MSG_ERROR_CANT_COPY_ROUTE						= "No existe ruta a copiar"
+
+Public Const ERROR_AGENTE_NOT_FOUND						= 10110
+Public Const MSG_ERROR_AGENTE_NOT_FOUND						= "No se encontró el agente"
+
+Public Const ERROR_INCORRECT_OPTION						= 10111
+Public Const MSG_ERROR_INCORRECT_OPTION						= "Opción incorrecta"
+
+Public Const ERROR_INCORRECT_PARAMETER						= 10112
+Public Const MSG_ERROR_INCORRECT_PARAMETER					= "Parámetro incorrecto"
+
+Public Const ERROR_DB_NOT_CREATED							= 10113
+Public Const MSG_ERROR_DB_NOT_CREATED						= "No se pudo crear la base de datos."

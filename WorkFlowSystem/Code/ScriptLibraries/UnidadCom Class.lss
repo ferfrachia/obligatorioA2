@@ -1,0 +1,130 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Declare
+Use "Unidad Class"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class UnidadCom As Unidad
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const CAMPO_UNIDAD_NOMBREACTUAL						= "sUnidad"
+Private Const CAMPO_MIEMBROCOMUNICACION_FIRMANTES					="RolFirmante"
+Private Const CAMPO_MIEMBROCOMUNICACION_RECEPTORES				="RolReceptor"
+Private Const VISTA_MIEMBROCOMUNICACION						="MiembrosComxUniCom"
+Private Const SEPARADOR_MIEMBROCOMUNICACION						="##"
+
+Private Const ERROR_DOCUMENT_NOT_FOUND						= 10103
+Private Const MSG_ERROR_DOCUMENT_NOT_FOUND					= "No se encontró el documento"
+Private Const NOMBRE_APLICACION = "iGDoc Formularios"
+'******************************************************************************************************************	
+'* 
+'*									CLASS <UNIDADCom>
+'* 
+'******************************************************************************************************************
+'*
+'* Clase que utiliza como base la clase unidad y sobre escribe los metodos que son particulares de comunicaciones
+'* El constructor es  por codigo, tener en cuenta que el codigo se llama 
+'* número
+'*
+'*
+'*
+'*
+'*
+'*
+'*
+'******************************************************************************************************************
+Public Class UnidadCom As Unidad
+	'No tiene miembros propios estan todos en la clase base
+	
+	Public Sub new (Byval unidad As String), Unidad()
+		On Error Goto handler
+		
+		sUnidad = unidad
+		
+		
+		Set docUnidad = ViewUnidades.GetDocumentbyKey(Unidad, True)
+		If docUnidad Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Unidad"
+		
+		
+		
+		Exit Sub
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadCom - Constructor","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	Public Property Get NombreActual As String
+		On Error Goto handler
+		
+		NombreActual = docUnidad.getItemValue(CAMPO_UNIDAD_NOMBREACTUAL)(0)
+		Exit Property
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadCom - NombreActual","")
+		Exit Property
+	End Property
+'******************************************************************************************************************
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolFirmarCom(TipoCom As String) As vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		Dim visMiembrosCom As NotesView
+		Set visMiembrosCom=dbOrg.getView(VISTA_MIEMBROCOMUNICACION)
+		Dim miembroCom As NotesDocument
+		Set miembroCom = visMiembrosCom.getdocumentbykey(sUnidad+SEPARADOR_MIEMBROCOMUNICACION+TipoCom,True)
+		
+		
+		Set UsuariosRolFirmarCom = New vector(0)
+		If Not miembroCom Is Nothing Then
+			UsuariosRolFirmarCom.values = miembroCom.GetItemValue(CAMPO_MIEMBROCOMUNICACION_FIRMANTES)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"UnidadCom - Propiedad Get UsuariosRolFirmarCom","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	'****************************************************************************************
+	
+	Public Property Get UsuariosRolReceptorCom(TipoCom As String) As vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		Dim visMiembrosCom As NotesView
+		Set visMiembrosCom=dbOrg.getView(VISTA_MIEMBROCOMUNICACION)
+		Dim miembroCom As NotesDocument
+		
+		Set miembroCom = visMiembrosCom.getdocumentbykey(sUnidad+SEPARADOR_MIEMBROCOMUNICACION+TipoCom,True)
+		
+		
+		Set UsuariosRolReceptorCom = New vector(0)
+		
+		If Not miembroCom Is Nothing Then
+			UsuariosRolReceptorCom.values = miembroCom.GetItemValue(CAMPO_MIEMBROCOMUNICACION_RECEPTORES)
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"UnidadCom - Propiedad Get UsuariosRolReceptorCom","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	
+End Class

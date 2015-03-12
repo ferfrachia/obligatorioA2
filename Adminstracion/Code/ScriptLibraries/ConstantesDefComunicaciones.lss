@@ -1,0 +1,24 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Campos del formulario de definición de formularios
+Public Const COM_DEF_CAMPO_NOMBRE						= "sNombre"
+Public Const COM_DEF_CAMPO_CODIGO						= "sCodigo"
+Public Const COM_DEF_CAMPO_NOMTEMAS					= "sTemas"
+Public Const COM_DEF_CAMPO_FIRMA						= "sFirma"
+Public Const COM_DEF_CAMPO_NUMERACION					= "sNumeracionFormato"
+
+' Numerador
+Public Const COM_NOMBRE_NUMERADOR						= "IGDOC_COMUNICACIONES"

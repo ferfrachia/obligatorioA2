@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058D89B" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1276" sequence="17" unid="1F889AE616D2C09F83257DC8004F7C70">
+<created><datetime dst="true">20150109T122812,00-02</datetime></created>
+<modified><datetime>20150311T131045,83-03</datetime></modified>
+<revised><datetime>20150309T094424,41-03</datetime></revised>
+<lastaccessed><datetime>20150311T131045,83-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131045,83-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Fernando Frachia/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Fernando Frachia/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>ClaseMotorCli</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20150309T094424,41-03</datetime></item></note>

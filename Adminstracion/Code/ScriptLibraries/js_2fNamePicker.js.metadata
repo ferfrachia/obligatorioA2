@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058E9F2" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="127a" sequence="66" unid="5F830CC3F59D540583257CF6005A729B">
+<created><datetime>20140613T132755,79-03</datetime></created>
+<modified><datetime>20150311T131131,95-03</datetime></modified>
+<revised><datetime>20150309T094332,20-03</datetime></revised>
+<lastaccessed><datetime>20150311T131131,95-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131131,95-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Alvaro Andrade/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>js/NamePicker.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+<item name="$POID"><datetime>20150309T094332,20-03</datetime></item></note>

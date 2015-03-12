@@ -1,0 +1,102 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library ConstantesDocumentos
+	Created May 8, 2012 by Ian Coates/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+'CAMPOS
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+public Const CAMPO_DOC_ACCION				= "sAccion"
+public Const CAMPO_DOC_ID					= "ID"
+public Const CAMPO_DOC_USUARIO				= "sUsuario"
+public Const CAMPO_DOC_NUMERO				= "numeroDocumento"
+public Const CAMPO_DOC_FECHA_CREACION		="fFechaCreacion"
+Public Const CAMPO_DOC_TEXTO_ESTADO			="textoEstado"
+Public Const CAMPO_DOC_ESTADO				="estado"
+Public Const CAMPO_DOC_RESERVADOPARA		="reservadoPara"
+public Const CAMPO_DOC_AUTORES				= "autoresPdd"
+Public Const CAMPO_DOC_FECHA_PUBLICACION	="fFechaPublicacion"
+Public Const CAMPO_DOC_NRO_EXP_CREADOR		="nroExpCreador"
+Public Const CAMPO_DOC_NRO_ACT_CREADORA		="nroActCreadora"
+Public Const CAMPO_DOCPARAM_NRO_FORM		= "nroFormulario"
+Public Const CAMPO_DOCPARAM_NRO_SECCION		= "nroSeccion"
+Public Const CAMPO_DOCPARAM_FECHA_PUB		= "fechaPublicacion"
+Public Const CAMPO_DOCPARAM_PATH_FORM		= "sPathWebForms"
+Public Const CAMPO_DOC_TIPO_DOC				="tipoDoc"
+Public Const CAMPO_DOC_UNIDAD				="unidad"
+Public Const CAMPO_DOC_LECTORES				="lectores"
+Public Const CAMPO_DOC_LECTORES_PERMANENTES	="lectoresPermanentes"
+Public Const CAMPO_DOC_FINALIZADO_POR		="finalizadoPor"
+Public Const CAMPO_DOC_ARCHIVADO_POR		="archivadoPor"
+Public Const CAMPO_DOC_NRO_EXTERNO_DOC		="numeroExternoDocumento"
+Public Const CAMPO_DOC_FIRMAS				= "sFirma"
+Public Const CAMPO_DOC_FECHAS_FIRMAS		= "fFechaFirma"
+Public Const CAMPO_DOC_USUARIOS_FIRMAS		= "sUsuarioFirma"
+Public Const CAMPO_DOC_HASHS_FIRMAS			= "sHashsFirma"
+Public Const CAMPO_DOC_FORMULARIO			= "formulario"
+Public Const CAMPO_DOC_NRO_FORM_CREADOR		= "nroFormCreador"
+Public Const CAMPO_DOC_NRO_SECCION_CREADORA	= "nroSeccionCreadora"
+
+'Constantes de publicación
+Public Const CAMPO_DEFDOC_PUBLICA_EXTERNA	= "cPublicAccess"
+Public Const CAMPO_DEFDOC_PUBLICA_INTERNA	= "cOrganAccess"
+Public Const CAMPO_DEFDOC_SE_PUBLICA		= "cPublicar"
+Public Const CAMPO_DEFDOC_PUBLICA_JER		= "cJerarquiaPub"
+Public Const CAMPO_DEFDOC_PUBLICA_UNIDADES 	= ""
+
+Public Const CAMPO_DOCPARAM_FORM  	 		= "paramActualizarInforme"
+Public Const CAMPO_DOCPARAM_NRO_DOC 		= "nroDoc"
+Public Const CAMPO_DOCPARAM_NRO_EXP	 		= "nroExpediente"
+Public Const CAMPO_DOCPARAM_NRO_ACT	 		= "nroActuacion"
+Public Const CAMPO_DOCPARAM_TIPO_DOC 		= "tipoDoc"
+Public Const CAMPO_DOCPARAM_UNIDAD	 		= "unidad"
+Public Const CAMPO_DOCPARAM_USUARIO	 		= "usuario"
+Public Const CAMPO_DOCPARAM_SERV	 		= "serv"
+Public Const CAMPO_DOCPARAM_PATH	 		= "path"
+Public Const CAMPO_DOCPARAM_COD_ERROR 		= "codError"
+Public Const CAMPO_DOCPARAM_MSG_ERROR 		= "msgError"
+'ACCIONES
+Public Const ACC_PDD_CREARBASE				= "CREARBASEDOCUMENTOS"
+public Const ACC_PDD_CREAR					= "acc_crear_doc"
+Public Const ACC_PDD_CREAR_WS					= "acc_crear_doc_ws"
+public Const ACC_PDD_LIBERAR				= "acc_liberar_doc"
+Public Const ACC_PDD_ASIGNAR				= "acc_asignar_doc"
+Public Const ACC_PDD_EDITAR				= "acc_editar_doc"
+Public Const ACC_PDD_FIRMAR					= "acc_firmar_doc"
+Public Const ACC_PDD_FIRMAR_Y_PUBLICAR		= "acc_firmar_y_publicar_doc"
+public Const ACC_PDD_RESERVAR				= "acc_reservar_doc"
+Public Const ACC_PDD_PUBLICAR				= "acc_publicar_doc"
+Public Const ACC_PDD_ARCHIVAR				= "acc_archivar_doc"
+Public Const ACC_PDD_DESARCHIVAR			= "acc_desarchivar_doc"
+Public Const ACC_PDD_ANULAR					= "acc_anular_doc"
+Public Const ACC_PDD_QUITAR_ANULAR					= "acc_quitar_anular_doc"
+Public Const ACC_PDD_CANCELAR_DOCUMENTO_EXPEDIENTE	= "acc_cancelar_documento_expediente"
+'ESTADOS
+Public Const ESTADO_DOC_BORRADOR			= 1
+Public Const ESTADO_DOC_RESERVADO			= 21
+Public Const ESTADO_DOC_PARA_REVISAR		= 3
+Public Const ESTADO_DOC_PARA_PUBLICAR		= 4
+Public Const ESTADO_DOC_PUBLICADO			= 5
+Public Const ESTADO_DOC_FIRMADO				= 6
+Public Const ESTADO_DOC_ARCHIVADO			= 7
+Public Const ESTADO_DOC_ANULADO				= 8
+
+'BASES
+Public Const BASE_ARCHIVO					= "ARCHIVO_DOC"
+'AGENTES
+Public Const NOMBRE_AGENTE_MOTOR			= "Motor 2.0"
+Public Const DBWS_AGENTE_WS_ACT_INF_EXP 	= "ActualizarInformeExpedienteJava"
+Public Const DBWS_AGENTE_WS_SECCION_INF_FORM	= "ActualizarInformeFormularioJava"
+'VISTAS
+Public Const DBWS_VISTA_DOC_PARAM_X_UNID 	= "DocsParamxUNID"
+'AUXILIARES
+Public Const NIVEL_ACCESO_ALTO 				= "[Alto]"
+Public Const NIVEL_ACCESO_MEDIO 			= "[Medio]"
+Public Const NIVEL_ACCESO_BAJO 				= "[Bajo]"
+Public Const NIVEL_ACCESO_PUBLICO			= "[Publico]"

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E05005A23D7" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="7aa" sequence="18" unid="E948C69069849E3E8325768C004E5D2F">
+<created><datetime dst="true">20091214T121556,63-02</datetime></created>
+<modified><datetime>20150311T132442,52-03</datetime></modified>
+<revised><datetime>20150309T094408,08-03</datetime></revised>
+<lastaccessed><datetime>20150311T132442,52-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132442,52-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name>CN=AdministradorEE/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IMF</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=DNII</name><name>CN=Juan Funez/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>error.gif</text></item>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime>20040902T174412,37-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>error.gif</text></item>
+<item name="$DesignerVersion" sign="true"><text>6.5</text></item></note>

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='11d2' unid='C9D1199A542A58D983257B9B0068DD54' sequence='26'>
+<created><datetime>20130701T160524,04-03</datetime></created>
+<modified><datetime>20150311T132750,30-03</datetime></modified>
+<revised><datetime>20150309T094504,96-03</datetime></revised>
+<lastaccessed><datetime>20150311T132750,30-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132750,30-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQDzHWOtNs/IyMNVWACtbSUA
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(SesionesEnEjecucionPorNro)|VSesEjecucion</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+AgECABoAAgAkNQUACgBzTnJvU2VzaW9uVgEDAAIAXAACACQ0AQAfAFs8QSBIUkVGPSdqYXZhc2Ny
+aXB0OmFicmlyRG9jKCIAkABWASICAQAEACIpJz4iAgUADABzRGVzY3JpcGNpb24iAgEABQA8L0E+
+XQAiAgMABQAiAB0ABAACAAIACQAEACQ1JDQkQ29uZmxpY3QkUkVGAAQABAAAAFAABQAEAEZvcm0B
+AAcARlNlc2lvbgAKAgUACABjY0VzdGFkbwEADABFbiBFamVjdWNpom4KAhwCBQAJACRDb25mbGlj
+dABoAR4BHAIDAAcAFAAOAAlMMVM0UzVTMkU4UzlT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEgWYAAAACACQ1
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAYACAAAAFZDBQACAAAAKAAAAFoAAQAACgAgAAAAAAAAAAICAAAAVkMAAAIAAABqAAAAagEB
+AAAKACAAAAAAAAAAAgIAAAAkNSgAAgAaAAIAJDUFAAoAc05yb1Nlc2lvblYBAwAHAAwABQAJMFMw
+RQAkNGoAAgBcAAIAJDQBAB8AWzxBIEhSRUY9J2phdmFzY3JpcHQ6YWJyaXJEb2MoIgCQAFYBIgIB
+AAQAIiknPiICBQAMAHNEZXNjcmlwY2lvbiICAQAFADwvQT5dACICAwAHAAwABQAJMFMwRQAmAAEA
+AAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQEAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAB
+AAQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAA
+AAAAAAAAAAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAA
+AAEAAAAAAAEAgICAAAEAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text>Se usa en el form parametros agregar para mostrar la lista de nros pendientes</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAABAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAX0NhdGVnb3KhYXMA
+AQBOfL7/LAAAAAUAAACdAQAAEQAAAAAAAABfRWRpdGFyIGRvY3VtZW50bwkCAAIKvv8sAAAABQAA
+AJ0BAAARAAAAAAAAAEVuX3ZpYXIgZG9jdW1lbnRvAAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAA
+X1JlbWl0aXIEAAQKvv8yAAAABQAAAJ0BAAAXAAAAAAAAAF9Nb3ZlciBhIHVuYSBjYXJwZXRhLi4u
+AAUAPXy+/zAAAAAFAAAAnQEAABYAAAAAAAAARV94dHJhZXIgZGUgbGEgY2FycGV0YQYAPnw=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABfQ2F0ZWdv
+cqFhcwABAE58vv8sAAAABQAAAJ0BAAARAAAAAAAAAF9FZGl0YXIgZG9jdW1lbnRvAAIAAgq+/ywA
+AAAFAAAAnQEAABEAAAAAAAAARW5fdmlhciBkb2N1bWVudG8AAwADCr7/IgAAAAUAAACdAQAACAAA
+AAAAAABfUmVtaXRpcgQABAq+/zIAAAAFAAAAnQEAABcAAAAAAAAAX01vdmVyIGEgdW5hIGNhcnBl
+dGEuLi4BBQA9fL7/MAAAAAUAAACdAQAAFgAAAAAAAABFX3h0cmFlciBkZSBsYSBjYXJwZXRhBgA+
+fA==
+</rawitemdata></item></note>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005C47C3" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1f6" sequence="16" unid="3758A3AEA883434B0325730F006E6655">
+<created><datetime>20070705T170551,57-03</datetime></created>
+<modified><datetime>20150311T134757,99-03</datetime></modified>
+<revised><datetime dst="true">20150206T174553,93-02</datetime></revised>
+<lastaccessed><datetime>20150311T134757,99-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T134757,99-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$TITLE" sign="true"><text>js/NamePickerBKKK.js</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$POID"><datetime>20120726T095917,94-03</datetime></item></note>

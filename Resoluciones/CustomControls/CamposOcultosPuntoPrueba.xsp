@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+
+
+	<div style="display: none">
+		<xp:panel style="height:224.0px">
+
+
+
+
+			<xp:inputText id="universalID"
+				value="#{javascript:return document1.getDocument().getUniversalID();}"
+				style="display:none;">
+			</xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="Protocolo">
+				<xp:this.defaultValue><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+
+return profileDoc.getItemValue("rProtocolo");}]]></xp:this.defaultValue>
+			</xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="Puerto">
+				<xp:this.defaultValue><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+
+return profileDoc.getItemValue("sPuerto");
+}]]></xp:this.defaultValue>
+			</xp:inputText>
+			<xp:br></xp:br>
+
+
+
+
+
+			<xp:inputText id="resPor" value="#{document1.reservadoPor}"></xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="currentUser">
+
+				<xp:this.value><![CDATA[#{javascript:@Name("[CN]",session.getEffectiveUserName())}]]></xp:this.value>
+			</xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="comunicado"></xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="Accion" value="#{document1.Accion}"></xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="nombrePrueba" value="#{document1.prueba}"></xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="inputText1" value="#{document1.IsSaved}"
+				defaultValue="No"></xp:inputText>
+			<xp:br></xp:br>
+			<xp:inputText id="inputText2"></xp:inputText></xp:panel>
+	</div>
+</xp:view>

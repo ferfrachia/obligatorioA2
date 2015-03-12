@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='282' unid='8445E3CEA4F988DF43256E1B0082A3B1' sequence='82'>
+<created><datetime>20040115T024655,85+03</datetime></created>
+<modified><datetime>20150311T131216,72-03</datetime></modified>
+<revised><datetime>20150309T094438,97-03</datetime></revised>
+<lastaccessed><datetime>20150311T131216,72-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131216,72-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=IAN COATES/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Diego Celery/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20040115T025624,95+03</datetime><datetime>20040115T025627,81+03</datetime><datetime
+>20040115T030003,66+03</datetime><datetime>20040115T033507,38+03</datetime><datetime
+>20040312T130445,65+03</datetime><datetime>20060214T112040,28-03</datetime><datetime
+>20060530T115144,21-03</datetime><datetime>20060530T115853,41-03</datetime><datetime
+>20060531T142633,18-03</datetime><datetime>20071228T100933,21-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>ResetNroCartas</text></item>
+<item name='$AssistType' sign='true'><number>65413</number></item>
+<item name='$AssistLastRun' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$AssistDocCount' sign='true'><number>0</number></item>
+<item name='$FlagsExt' sign='true'><text/></item>
+<item name='$AssistFlags' sign='true'><text>s</text></item>
+<item name='$MachineName' sign='true'><text>*</text></item>
+<item name='$AssistTrigger' sign='true'><text>1</text></item>
+<item name='$AssistInfo' sign='true'>
+<rawitemdata type='11'>
+AQABAAMABAABAID8CgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</rawitemdata></item>
+<item name='$AssistQuery' sign='true'>
+<rawitemdata type='f'>
+gQYAAAAA
+</rawitemdata></item>
+<item name='$AssistAction' sign='true'>
+<rawitemdata type='10'>
+gQKF/4wCAAAAAIACAAAnKytMb3R1c1NjcmlwdCBEZXZlbG9wbWVudCBFbnZpcm9ubWVudDoyOjU6
+KE9wdGlvbnMpOjA6NzQKT3B0aW9uIERlY2xhcmUKCicrK0xvdHVzU2NyaXB0IERldmVsb3BtZW50
+IEVudmlyb25tZW50OjI6NTooRm9yd2FyZCk6MDoxCkRlY2xhcmUgU3ViIEluaXRpYWxpemUKCicr
+K0xvdHVzU2NyaXB0IERldmVsb3BtZW50IEVudmlyb25tZW50OjI6NTooRGVjbGFyYXRpb25zKTow
+OjIKCicrK0xvdHVzU2NyaXB0IERldmVsb3BtZW50IEVudmlyb25tZW50OjI6MjpJbml0aWFsaXpl
+OjE6MTAKU3ViIEluaXRpYWxpemUKCURpbSBzZXNzaW9uIEFzIE5ldyBub3Rlc3Nlc3Npb24KCURp
+bSBkYiBBcyBOb3Rlc0RhdGFiYXNlCglEaW0gdmlldyBBcyBOb3Rlc1ZpZXcKCURpbSBkb2MgQXMg
+Tm90ZXNEb2N1bWVudAoJCglTZXQgZGIgPSBzZXNzaW9uLkN1cnJlbnREYXRhYmFzZQoJU2V0IHZp
+ZXcgPSBkYi5HZXRWaWV3KCJWQnVzcVVuaSIpCglTZXQgZG9jID0gdmlldy5HZXRGaXJzdERvY3Vt
+ZW50CglXaGlsZSBOb3QgZG9jIElzIE5vdGhpbmcgCgkJZG9jLlJlcGxhY2VJdGVtVmFsdWUgImNj
+TnJvQ1MiLDAKCQlkb2MuU2F2ZSBUcnVlLEZhbHNlCgkJU2V0IGRvYyA9IHZpZXcuR2V0TmV4dERv
+Y3VtZW50KGRvYykKCVdlbmQKRW5kIFN1YgBm
+</rawitemdata></item>
+<item name='$Restricted' sign='true'><number>1</number></item>
+<item name='$Flags'><text>fL3S</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item>
+<item name='$AssistRunInfo' summary='true'>
+<rawitemdata type='3'>
+BgAAAgAACAB+AgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAA5JlPAFVuJQNwJUoAn20lAAAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqq
+</rawitemdata></item>
+<item name='$AssistAction_Ex' sign='true'>
+<rawitemdata type='14'>
+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
+ABQAAAAAAP//AQADAAQAAAAHAEQACQAKAAAA/w==
+</rawitemdata></item>
+<item name='$AssistVersion'><datetime>20150309T094437,87-03</datetime></item>
+<item name='$POID'><datetime>20150309T094438,97-03</datetime></item></note>
+

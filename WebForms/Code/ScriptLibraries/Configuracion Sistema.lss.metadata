@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="b32" sequence="60" unid="746AEA8DB451ABC2032574470068EF03">
+<created><datetime>20080512T160609,31-03</datetime></created>
+<modified><datetime>20150309T094523,47-03</datetime></modified>
+<revised><datetime>20150309T094523,46-03</datetime></revised>
+<lastaccessed><datetime>20150309T094523,47-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161855,74-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=CURSO</name><name>CN=Admin ISA/O=VISION</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=WebApp Manager/O=1871</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime dst="true">20081114T180442,43-02</datetime><datetime>20090430T135742,85-03</datetime><datetime>20090430T141401,71-03</datetime><datetime>20090430T142427,79-03</datetime><datetime>20090430T143043,34-03</datetime><datetime>20090430T143118,98-03</datetime><datetime>20090430T143202,68-03</datetime><datetime>20090430T143413,60-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>Configuracion Sistema</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20140814T173026,77-03</datetime></item></note>

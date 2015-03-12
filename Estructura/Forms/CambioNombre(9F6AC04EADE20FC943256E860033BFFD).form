@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='4d6' unid='9F6AC04EADE20FC943256E860033BFFD' sequence='83'>
+<created><datetime>20040430T122514,85+03</datetime></created>
+<modified><datetime>20150311T131219,64-03</datetime></modified>
+<revised><datetime>20150309T094441,73-03</datetime></revised>
+<lastaccessed><datetime>20150311T131219,64-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131219,64-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Diego Celery/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20040430T123950,92+03</datetime><datetime>20040430T124015,56+03</datetime><datetime
+>20040430T124033,94+03</datetime><datetime>20040430T124047,43+03</datetime><datetime
+>20040504T195144,35+03</datetime><datetime>20060214T112041,72-03</datetime><datetime
+>20060530T115145,78-03</datetime><datetime>20060530T115854,84-03</datetime><datetime
+>20060531T142634,69-03</datetime><datetime>20071228T100934,44-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><textlist><text>CambioNombre</text><text>CambioNombre</text></textlist></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>wCD</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='Estado' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='NombreActual' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='NombreFuturo' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>NombreFuturo</text><text>NombreActual</text><text
+>Estado</text></textlist></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>CambioNombre</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQADAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8lAAEBABJTb2xpY2l0dWQg
+ZGUgY2FtYmlvIGRlIG5vbWJyZQCBAoMEAQCF/wgAAQEAEoECgv9aAAIAAwAAAAAAAACgBQAAoAUA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACUhQAAAACgBQ0A
+AAAAAAEAAAAEAAAAgwQCAN0GAQD7//v/LAAAAAAAAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA
+AAAAAAAAAAAAXP8+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4AAAAAAAAA
+AQAACgAAAAABAAAAAADeBgEA+/+jDqAFKAA8AAAAAAACAKQSAACgBaALAAAAAgAAAQEAAIECgv9a
+AAMAAAAAAAAAAACgBaALoAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AACGAQAAAABUhwAAAAAAAAAAAAAAAAEAAAAEAAAAgwQDAIX/DgABAAAIRXN0YWRvpBIAAaALIScA
+AAACAAABAQAAgQKC/1oABAAAAAAAAAAAAKALISegCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAIYBAAAAAFSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAQAhf8IAAEAAAjd
+BgAA9//3/yQAAQAAgAAAoAUkAQAAAAAAAAAAZAAAAAAAAAAAAAAAAAD+/1AAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAALD/FAAAAARAgAAAAAAAAAAAAAAAiv9CAIoCAAUAIAIAAAAAAAACAQAACAAAAAAAAAAA
+BgAAABgARXN0YWRvAgAJAAkAUEVORElFTlRFUFJPQ0VTQURP0ggBAAAAAADSCAkA////AN4GAAD3
+/4X/CAABAAAIpBIBAKAFoAsAAAACAAABAQAAgQKDBAMAhf8VAAEAAAhOb21icmUgQWN0dWFsAKQS
+AQGgCyEnAAAAAgAAAQEAAIECgwQEAIX/CAABAAAI3QYAAIr//v9QAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AACK/zAAigAABQAwAgAAAAAAAAIBAAAIAAAAAAAAAAAMAAAAAABOb21icmVBY3R1YWzeBgAAiv+F
+/wgAAQAACKQSAgCgBaALAAAAAgAAAQEAAIECgwQDAIX/FQABAAAITm9tYnJlIEZ1dHVybwCkEgIB
+oAshJwAAAAIAAAEBAACBAoMEBACF/wgAAQAACN0GAACK//7/UAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+iv8wAIoAAAUAMAIAAAAAAAACAQAACAAAAAAAAAAADAAAAAAATm9tYnJlRnV0dXJv3gYAAIr/hf8I
+AAEAAAilBgAAAACBAoL/WgAFAAIAAAAAAAAAoAUAAKAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAlIcAAAAAAAAAAAAAAAABAAAABAAAAIMEBQCF/wgAAQAA
+Cg==
+</rawitemdata></item></note>
+

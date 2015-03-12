@@ -1,0 +1,174 @@
+<mxEditor defaultGroup="group" defaultEdge="edge"
+	helpWindowImage="/mxgraph/Expediente/images/help.gif"
+	tasksWindowImage="/mxgraph/Expediente/images/tasks.gif"
+	forcedInserting="0"
+	swimlaneRequired="0">
+	<include name="/mxgraph/Expediente/config/editor-commons.xml"/>
+	
+	<Array as="cycleAttributeValues">
+		<add value="#83027F"/>
+		<add value="#66B922"/>
+		<add value="#808913"/>
+		<add value="#CF0056"/>
+		<add value="#4679B6"/>
+	</Array>
+	<Array as="templates">
+		<add as="edge">
+			<Edge label="" description="">
+				<mxCell edge="1">
+					<mxGeometry as="geometry" relative="1"/>
+				</mxCell>
+			</Edge>
+		</add>
+		<add as="unidad">
+			<Unidad label="" description="" href="" tipo="unidad">
+				<mxCell vertex="1">	
+					<mxGeometry as="geometry" width="80" height="35" style=""   />
+				</mxCell>
+			</Unidad>
+		</add>
+		<add as="u_cualquiera">
+			<U_Cualquiera label="Cualquier unidad" description="" href="" tipo="cualquiera">
+				<mxCell vertex="1" style="rounded">		
+					<mxGeometry as="geometry" width="80" height="35"/>
+				</mxCell>
+			</U_Cualquiera>
+		</add>
+		<add as="inicio">
+			<Inicio label="Inicio" description="Inicio" href="" tipo="inicio">
+				<mxCell vertex="1" style="symbol;image=/mxgraph/javascript/examples/editors/images/symbols/event.png">		
+					<mxGeometry as="geometry" width="32" height="32"/>
+				</mxCell>
+			</Inicio>
+		</add>
+		<add as="grupo">
+			<Grupo label="grupo" description="Grupo" href="" tipo="grupo">
+				<mxCell vertex="1" style="group">		
+					<mxGeometry as="geometry" width="120" height="35"/>
+				</mxCell>
+			</Grupo>
+		</add>
+		<add as="fin">
+			<Fin label="Fin" description="Fin" href="" tipo="fin">
+				<mxCell vertex="1" style="symbol;image=/mxgraph/Expediente/images/symbols/terminate.png">		
+					<mxGeometry as="geometry" width="32" height="32"/>
+				</mxCell>
+			</Fin>
+		</add>
+	</Array>
+	<add as="createTasks"><![CDATA[
+		function (div)
+		{
+			var off = 30;
+			
+			if (this.graph != null)
+			{
+				var layer = this.graph.model.root.getChildAt(0);
+				mxUtils.para(div,  mxResources.get('examples'));
+				mxUtils.linkInvoke(div, mxResources.get('newDiagram'), this,
+					'open', '/mxgraph/Expediente/diagrams/empty.xml', off);
+				mxUtils.br(div);
+				mxUtils.linkInvoke(div, mxResources.get('swimlanes'), this,
+					'open', '/mxgraph/Expediente/diagrams/swimlanes.xml', off);
+				mxUtils.br(div);
+				mxUtils.linkInvoke(div, mxResources.get('travelBooking'), this,
+					'open', '/mxgraph/Expediente/diagrams/travel-booking.xml', off);
+				mxUtils.br(div);
+				
+				if (!this.graph.isSelectionEmpty())
+				{
+					var cell = this.graph.getSelectionCell();
+					if (this.graph.getSelectionCount() == 1 &&
+						(this.graph.model.isVertex(cell) &&
+						cell.getEdgeCount() > 0) || this.graph.isSwimlane(cell))
+					{
+						mxUtils.para(div, 'Layout');
+						mxUtils.linkAction(div, mxResources.get('verticalTree'),
+							this, 'verticalTree', off);
+						mxUtils.br(div);
+						mxUtils.linkAction(div, mxResources.get('horizontalTree'),
+							this, 'horizontalTree', off);
+						mxUtils.br(div);
+					}
+					
+					mxUtils.para(div, 'Format');
+					
+					if (mxUtils.isNode(cell.value, 'Symbol'))
+					{
+						mxUtils.linkAction(div, mxResources.get('image'),
+							this, 'image', off);
+						mxUtils.br(div);
+					}
+					else
+					{
+						mxUtils.linkAction(div, mxResources.get('opacity'),
+							this, 'opacity', off);
+						mxUtils.br(div);
+						if (this.graph.model.isVertex(cell) ||
+							(cell.style != null && 
+							cell.style.indexOf("arrowEdge") >= 0))
+						{
+							mxUtils.linkAction(div, mxResources.get('gradientColor'),
+								this, 'gradientColor', off);
+							mxUtils.br(div);
+						}
+						if (this.graph.model.isEdge(cell))
+						{
+							mxUtils.linkAction(div, 'Straight Connector', this, 'straightConnector', off);
+							mxUtils.br(div);
+							mxUtils.linkAction(div, 'Elbow Connector', this, 'elbowConnector', off);
+							mxUtils.br(div);
+							mxUtils.linkAction(div, 'Arrow Connector', this, 'arrowConnector', off);
+							mxUtils.br(div);
+						}
+					}
+					
+					mxUtils.linkAction(div, 'Rounded', this, 'toggleRounded', off);
+					mxUtils.br(div);
+					if (this.graph.isSwimlane(cell) || this.graph.model.isEdge(cell))
+					{
+						mxUtils.linkAction(div, 'Orientation', this, 'toggleOrientation', off);
+						mxUtils.br(div);
+					}
+					
+					if (this.graph.getSelectionCount() > 1)
+					{
+						mxUtils.para(div, mxResources.get('align'));
+						mxUtils.linkAction(div, mxResources.get('left'),
+							this, 'alignCellsLeft', off);
+						mxUtils.br(div);
+						mxUtils.linkAction(div, mxResources.get('center'),
+							this, 'alignCellsCenter', off);
+						mxUtils.br(div);
+						mxUtils.linkAction(div, mxResources.get('right'),
+							this, 'alignCellsRight', off);
+						mxUtils.br(div);
+						mxUtils.linkAction(div, mxResources.get('top'),
+							this, 'alignCellsTop', off);
+						mxUtils.br(div);
+						mxUtils.linkAction(div, mxResources.get('middle'),
+							this, 'alignCellsMiddle', off);
+						mxUtils.br(div);
+						mxUtils.linkAction(div, mxResources.get('bottom'),
+							this, 'alignCellsBottom', off);
+						mxUtils.br(div);
+					}
+					
+					mxUtils.para(div, mxResources.get('selection'));
+					mxUtils.linkAction(div, mxResources.get('clearSelection'),
+						this, 'selectNone', off);
+					mxUtils.br(div);
+				}
+				else if (layer.getChildCount() > 0)
+				{
+					mxUtils.para(div, mxResources.get('selection'));
+					mxUtils.linkAction(div, mxResources.get('selectAll'),
+						this, 'selectAll', off);
+					mxUtils.br(div);
+				}
+				
+				mxUtils.br(div);
+			}
+		}
+	]]></add>
+</mxEditor>

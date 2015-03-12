@@ -1,0 +1,46 @@
+/* CSS Document */
+
+#NamesPicker{
+	background-color:#DDDDDD;
+	border:1px solid AAAAAA;
+	padding:5px;
+	width:270px;
+	margin:10px;
+}
+.selBusq{
+	font-size:10pt;
+}
+.right{
+	float:right;
+}
+.tdSeleccion{
+font-size:10pt;
+}
+
+#NamesList{
+	border:1px solid #ccc;
+	width:450px;padding:10px;
+}
+
+.gray{
+	color:#999;
+}
+
+.block{
+	display:block;
+}
+
+img.link{
+	cursor:hand;
+}
+
+#NamesList td img, #search_results table tr{
+	cursor:hand;
+}
+
+#NamesPicker input, #NamesPickerLabel{
+	margin:2px;
+}
+
+
+

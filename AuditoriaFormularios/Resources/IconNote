@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257DF8003FC722'>
+<noteinfo noteid='11a' unid='6AFB80117356934403256D4A003F9D6A' sequence='188'>
+<created><datetime>20030619T083450,66-03</datetime></created>
+<modified><datetime>20150309T094335,53-03</datetime></modified>
+<revised><datetime>20150309T094335,52-03</datetime></revised>
+<lastaccessed><datetime>20150309T094335,53-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T093637,60-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name
+>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Desarrollo3/O=DesarrolloISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030811T102327,32-03</datetime><datetime>20030811T112424,79-03</datetime><datetime
+>20030811T112502,32-03</datetime><datetime>20030912T133815,90+00</datetime><datetime
+>20031008T183336,99+03</datetime><datetime>20031008T183337,00+03</datetime><datetime
+>20031008T183351,26+03</datetime><datetime>20031023T190056,76-03</datetime><datetime
+>20031023T190056,77-03</datetime><datetime>20031023T190057,27-03</datetime><datetime
+>20031023T190100,18-03</datetime><datetime>20031023T190159,94-03</datetime><datetime
+>20031023T190223,38-03</datetime><datetime>20031023T190224,45-03</datetime><datetime
+>20031023T190224,46-03</datetime><datetime>20031023T190226,94-03</datetime><datetime
+>20031023T190421,44-03</datetime><datetime>20031023T190426,94-03</datetime><datetime
+>20031023T190518,05-03</datetime><datetime>20031023T190518,77-03</datetime><datetime
+>20031023T190518,78-03</datetime><datetime>20031023T190522,36-03</datetime><datetime
+>20060517T171731,78-03</datetime><datetime>20060518T111035,77-03</datetime><datetime
+>20060529T172222,55-03</datetime><datetime>20060529T173415,79-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$DefaultFrameset' sign='true'><text>Inicio</text></item>
+<item name='$DefaultWebFrameset' sign='true'><text>Inicio</text></item>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKoAAKoAAAAAAAAAAAAAAKpN3USgCgAAAAAAAAAAAApP1N
+3d3UoKAAAAAAAAAACk/qqkCrRESgAAAAAAAAAKR+rSIqCrq0SgAAAAAAAACn7iIiIiKruqKgAAAA
+AAAKTfIiIiIiIirqSgAAAAAACk/SIiIiIiIiLqSgAAAAAApNciIiIiIiIiKZSgAAAAAKTXIiIiIi
+IiIiIkoAAAAABPwiIiIiIiIiIiKUoAAAAATGIiIiIiIiIiIiIkoAAAAE9iIiIiIiIiIiIiKkAAAA
+BOZiIiIiIiIiIiIiqkAAAADGYiIiIiIiIiIiIi/uAAAARmIiIiIiIiIiIiIi/gAAAEZiIiIiIiIi
+IiIiIi/gAAAPYiIiIiIiIiIiIiIv4AAADGYiIiIiIiIiIiIiIuAAAAD2IiIiIiIiIiIiIiL+AAAA
+hmJiIiIiIiIiIiIi/gAAAAjyIiIiIiIiIiIiIv4AAAAE4mJiIiIiIiIiIiL0AAAAAI9iYiIiIiIi
+IiIi9AAAAAAI8mIiIiIiIiIiIvoAAAAAAI9mYiIiYiIiIiLqAAAAAAAIxhYmIiIiIiIi6gAAAAAA
+AIjxYWJiYmJiL6oAAAAAAAAECPZmFhYWIvpAAAAAAAAAAEoIBmFhYW6kAAAAAAAAAAAARADu7uAK
+QAAAAAAAAAAAAABEREREQAAAAA==
+</rawitemdata></item>
+<item name='$Flags'><text>JSF</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$PIRCRefreshModTime'><datetime>20140630T151202,60-03</datetime></item>
+<item name='$TemplateModTime'><datetime>20140630T151116,93-03</datetime></item>
+<item name='$TemplateServerName'><text>CN=Catalina Seoane/O=ISA</text></item>
+<item name='$TemplateFileName'><text>c:\Program Files (x86)\IBM\Lotus\Notes\Data\AuditoriaFormularios2014_2.ntf</text></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current AuditoriaFormularios</text></item></note>
+

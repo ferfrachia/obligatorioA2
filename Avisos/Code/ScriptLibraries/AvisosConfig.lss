@@ -1,0 +1,821 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+
+'******************************************************************************************************************	
+'* 
+'*									CLASS <IGDocConfig>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'* 
+'*		New()
+'*			Constructor de la clase 
+'*
+'*	PROPIEDADES
+
+'******************************************************************************************************************
+
+Option Declare
+
+'Use "Configuracion Sistema"
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class AvisosConfig
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'******************************************************************************************************************		
+'******************************************************************************************************************		
+
+'CONSTANTES PRIVADAS
+Private Const NOMBRE_DOC_PERFIL					= "ConfAvisos"
+
+
+'CONSTANTES PÚBLICAS
+Public Const CAMPO_CONFIG_PROTOCOLO 				="rProtocolo"
+Public Const CAMPO_CONFIG_HOST_SERVER				="sHost"
+Public Const CAMPO_CONFIG_PUERTO					="sPuerto"
+Public Const CAMPO_CONFIG_MAX_SOL_PROCESAR			="nMaxSolProcesar"
+Public Const CAMPO_CONFIG_ASUNTO_MAIL				="sAsuntoMail"
+Public Const CAMPO_CONFIG_MSJ_MAIL					="msjMail"
+Public Const CAMPO_CONFIG_MSJ_SMS					="msjSMS"
+Public Const CAMPO_CONFIG_MSJ_VOZ					="msjVoz"
+Public Const CAMPO_CONFIG_TIPOS_CANALES				="sTiposCanales"
+Public Const CAMPO_CONFIG_CLAVES					="sClaves"
+Public Const CAMPO_CONFIG_SERVIDORES				="sServidores"
+Public Const CAMPO_CONFIG_HOSTS						="sHosts"
+Public Const CAMPO_CONFIG_RUTAS						="sRutas"
+Public Const CAMPO_CONFIG_TIEMPO_MAX_AUDIT 			="nTiempoVidaAuditoria"
+Public Const CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA	="sClaveCreacionAuditoria"
+Public Const CAMPO_CONFIG_FECHA_CREACION_AUDITORIA 	="dFechaCreacionAuditoria"
+Public Const CAMPO_CONFIG_URLS						="sURLS"
+Public Const CAMPO_CONFIG_USUARIOS					= "sUsuarios"
+Public Const CAMPO_CONFIG_PASSWORDS					= "sPasswords"
+Public Const CAMPO_CONFIG_TIPOS_DE_MSJ				="sTiposDeMensajes"
+Public Const CAMPO_CONFIG_CUENTAS_CORREOS			="sCuentasDeCorreos"
+Public Const CAMPO_CONFIG_ESTADOS					="sEstados"
+Public Const CAMPO_CONFIG_CLASES					="sClases"
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class AvisosConfig
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	
+'******************************************************************************************************************
+' CONSTRUCTOR	
+'******************************************************************************************************************
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		
+		'Se carga el documento de profile
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(NOMBRE_DOC_PERFIL)
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Método new","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+'******************************************************************************************************************	
+	Public Property Set Protocolo As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_PROTOCOLO, Cstr(Protocolo)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Set Protocolo", "")
+		Exit Property
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get Protocolo As String
+		On Error Goto handler
+		Protocolo = Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_PROTOCOLO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Protocolo","")
+		Exit Property
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Set Host As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_HOST_SERVER, Cstr(Host)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Host","")
+		Exit Property
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get Host As String
+		On Error Goto handler
+		Host = Cstr(docConfiguracion.GetItemValue (CAMPO_CONFIG_HOST_SERVER)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Host","")
+		Exit Property
+	End Property		
+	
+'*****************************************************************************************************************
+	
+	Public Property Set Puerto As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_PUERTO, Cstr(Puerto)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Set Puerto","")
+		Exit Property		
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get Puerto As String
+		On Error Goto handler
+		Puerto = Cstr(docConfiguracion.GetItemValue (CAMPO_CONFIG_PUERTO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Get Puerto","")
+		Exit Property
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Set MaxSolProcesar As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_MAX_SOL_PROCESAR, Cint(MaxSolProcesar)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Set MaxSolProcesar","")
+		Exit Property		
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get MaxSolProcesar As Integer
+		On Error Goto handler
+		MaxSolProcesar = Cint(docConfiguracion.GetItemValue (CAMPO_CONFIG_MAX_SOL_PROCESAR)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Get MaxSolProcesar","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set AsuntoMail As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_ASUNTO_MAIL,Cstr(AsuntoMail)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad set AsuntoMail","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get AsuntoMail As String
+		On Error Goto handler
+		AsuntoMail =Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_ASUNTO_MAIL)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AVisosConfig - Propiedad get Puerto","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get MsjMail As String
+		On Error Goto handler
+		MsjMail = docConfiguracion.getItemValue(CAMPO_CONFIG_MSJ_MAIL)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get MsjMail","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set MsjMail As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_MSJ_MAIL, MsjMail
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set MsjMail","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get MsjSMS As String
+		On Error Goto handler
+		MsjSMS = docConfiguracion.getItemValue(CAMPO_CONFIG_MSJ_SMS)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get MsjSMS","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Set MsjSMS As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_MSJ_SMS, MsjSMS
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set MsjSMS","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get MsjVoz As String
+		On Error Goto handler
+		MsjVoz = docConfiguracion.getItemValue(CAMPO_CONFIG_MSJ_VOZ)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get MsjVoz","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Set MsjVoz As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_MSJ_Voz, MsjVoz
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set MsjVoz","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get TiempoMaximoAuditoria As String
+		On Error Goto handler 
+		TiempoMaximoAuditoria = docConfiguracion.getItemValue(CAMPO_CONFIG_TIEMPO_MAX_AUDIT)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get TiempoMaximoAuditoria","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Set TiempoMaximoAuditoria As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_TIEMPO_MAX_AUDIT, TiempoMaximoAuditoria
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set TiempoMaximoAuditoria","")
+		Exit Property
+	End Property
+'*************************************************************************************************************************************
+	Public Property Set ClavesCreacionAuditoria As Vector
+		On Error Goto handler
+		docConfiguracion.replaceItemValue CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA,ClavesCreacionAuditoria.values
+		Exit Property
+handler:
+		Call  RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Set ClavesCreacionAuditoria","")
+	End Property
+'******************************************************************************************************************				
+	
+	Public Property Get ClavesCreacionAuditoria As Vector
+		On Error Goto handler
+		Set ClavesCreacionAuditoria = New Vector(0)
+		If docConfiguracion.hasItem(CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA) Then
+			ClavesCreacionAuditoria.values = docConfiguracion.getItemValue(CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA)
+		End If
+		Exit Property
+handler:
+		Call  RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Get ClavesCreacionAuditoria","")
+	End Property
+'*************************************************************************************************************************************	
+	
+	Public Property Set FechasCreacionAuditoria As Vector
+		On Error Goto handler
+		docConfiguracion.replaceItemValue CAMPO_CONFIG_FECHA_CREACION_AUDITORIA,FechasCreacionAuditoria.values
+		Exit Property
+handler:
+		Call  RegistrarYGenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Set FechasCreacionAuditoria","")
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get FechasCreacionAuditoria As Vector
+		On Error Goto handler
+		Set FechasCreacionAuditoria = New Vector(0)
+		If docConfiguracion.hasItem(CAMPO_CONFIG_FECHA_CREACION_AUDITORIA ) Then
+			FechasCreacionAuditoria.values = docConfiguracion.getItemValue(CAMPO_CONFIG_FECHA_CREACION_AUDITORIA)
+		End If
+		Exit Property
+handler:
+		Call registrarYgenerarError(NOMBRE_APLICACION, "Clase AvisosConfig - Propiedad Get FechasCreacionAuditoria","")
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get TiposCanales As Vector
+		On Error Goto handler
+		Set TiposCanales = New Vector(0)
+		TiposCanales.values = docConfiguracion.getItemValue(CAMPO_CONFIG_TIPOS_CANALES)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get TiposCanales","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set TiposCanales As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_TIPOS_CANALES,TiposCanales.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set TiposCanales","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Get Claves As Vector
+		On Error Goto handler
+		Set Claves = New Vector(0)
+		Claves.values = docConfiguracion.getItemValue(CAMPO_CONFIG_CLAVES)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Claves","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Claves As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_CLAVES, Claves.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Claves","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Get Servidores As Vector
+		On Error Goto handler
+		Set Servidores = New Vector(0)
+		Servidores.values = docConfiguracion.getItemValue(CAMPO_CONFIG_SERVIDORES)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Servidores","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Servidores As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_SERVIDORES, Servidores.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Servidores","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Get Hosts As Vector
+		On Error Goto handler
+		Set Hosts = New Vector(0)
+		Hosts.values = docConfiguracion.getItemValue(CAMPO_CONFIG_HOSTS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Hosts","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Hosts As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_HOSTS, Hosts.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Hosts","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Get Rutas As Vector
+		On Error Goto handler
+		Set Rutas = New Vector(0)
+		Rutas.values = docConfiguracion.getItemValue(CAMPO_CONFIG_RUTAS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Ruta","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Rutas As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_RUTAS, Rutas.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Ruta","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************
+	Public Property Get Passwords As Vector
+		On Error GoTo handler
+		Set Passwords = New Vector(0)
+		Passwords.values = docConfiguracion.getItemValue(CAMPO_CONFIG_PASSWORDS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Passwords","")
+		Exit Property
+	End Property
+'******************************************************************************************************************
+	Public Property Get Usuarios As Vector
+		On Error GoTo handler
+		Set Usuarios = New Vector(0)
+		Usuarios.values = docConfiguracion.getItemValue(CAMPO_CONFIG_USUARIOS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Usuarios","")
+		Exit Property
+	End Property
+'******************************************************************************************************************
+	Public Property Set Passwords As Vector
+		On Error GoTo handler
+		docConfiguracion.Replaceitemvalue CAMPO_CONFIG_PASSWORDS, Passwords.Values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Passwords","")
+	End Property
+'******************************************************************************************************************
+	Public Property Set Usuarios As Vector
+		On Error GoTo handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_USUARIOS, Usuarios.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Usuarios","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get URLs As Vector
+		On Error Goto handler
+		Set URLs = New Vector(0)
+		URLs.values = docConfiguracion.getItemValue(CAMPO_CONFIG_URLS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get URLs","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set URLs As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_URLS, URLs.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set URLs","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get TiposDeMensaje As Vector
+		On Error Goto handler
+		Set TiposDeMensaje = New Vector(0)
+		TiposDeMensaje.values = docConfiguracion.getItemValue(CAMPO_CONFIG_TIPOS_DE_MSJ)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get TiposDeMensaje","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set TiposDeMensaje As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_TIPOS_DE_MSJ, TiposDeMensaje.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set TiposDeMensaje","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get CuentasDeCorreos As Vector
+		On Error Goto handler
+		Set CuentasDeCorreos = New Vector(0)
+		CuentasDeCorreos.values = docConfiguracion.getItemValue(CAMPO_CONFIG_CUENTAS_CORREOS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get CuentasDeCorreos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set CuentasDeCorreos As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_CUENTAS_CORREOS, CuentasDeCorreos.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set CuentasDeCorreos","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************			
+	Public Property Get Estados As Vector
+		On Error Goto handler
+		Set Estados = New Vector(0)
+		Estados.values = docConfiguracion.getItemValue(CAMPO_CONFIG_ESTADOS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Estados","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Estados As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_ESTADOS, Estados.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Estados","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************			
+	Public Property Get Clases As Vector
+		On Error Goto handler
+		Set Clases = New Vector(0)
+		Clases.values = docConfiguracion.getItemValue(CAMPO_CONFIG_CLASES)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get Clases","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Clases As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_CLASES, Clases.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Clases","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************			
+	Public Property Get ServidorDomino(clave As String) As String
+		On Error Goto handler
+		Dim vClaves As New Vector(0)
+		Dim vServ As New Vector(0)
+		Dim pos As Long
+		
+		Set vClaves = Me.Claves
+		Set vServ = Me.Servidores
+		
+		If vClaves.isMember(clave, pos , True) Then
+			ServidorDomino=vServ.getElement(pos)
+		Else
+			ServidorDomino=""
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get ServidorDomino","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set ServidorDomino(clave As String) As String
+		On Error Goto handler
+		Dim pos As Long
+		
+		'Set Claves = New Vector(0)
+		'Claves.values = docConfiguracion.getItemValue(CAMPO_CONFIG_CLAVES)
+		'Servidores.values=docConfiguracion.GetItemValue(CAMPO_CONFIG_SERVIDORES)
+		
+		If Me.Claves.isMember(clave, pos , True) Then
+			Call Me.Servidores.replaceElement(pos,ServidorDomino)
+		End If	
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_CONFIG_SERVIDORES,Me.Servidores.values)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set Claves","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Get BasedeDatos(clave As String) As String
+		On Error Goto handler
+		Dim pos As Long
+		
+		Dim vClaves As New Vector(0)
+		Dim vRutas As New vector(0)
+		Set vClaves = Me.Claves
+		Set vRutas = Me.Rutas
+		
+		If vClaves.isMember(clave, pos , True) Then 
+			BasedeDatos=vRutas.getElement(pos)
+		Else
+			BasedeDatos=""
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Get BasedeDatos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set BasedeDatos(clave As String) As String
+		On Error Goto handler
+		Dim pos As Long
+		Dim Bases As New Vector(0)     
+		
+		'Set Claves = New Vector(0)
+		'Claves.values = docConfiguracion.getItemValue(CAMPO_CONFIG_CLAVES)
+		Bases.values=docConfiguracion.GetItemValue(CAMPO_CONFIG_RUTAS)
+		
+		If Me.Claves.isMember(clave, pos , True) Then
+			Call Bases.replaceElement(pos,BasedeDatos)
+		End If
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_CONFIG_RUTAS,Bases.values)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig - Propiedad Set BasedeDatos","")
+		Exit Property
+	End Property			
+'******************************************************************************************************************		
+	Public Sub Save () 
+		On Error Goto handler
+		Dim vClaves As Vector
+		Dim vServidores As Vector
+		Dim vRutas As Vector
+		Dim docAux As NotesDocument
+		Dim j As Integer
+		Dim dbSetear As NotesDatabase
+		Dim serverConf As String
+		Dim pathConf As String
+		
+		Call docConfiguracion.Save(True,False)
+		
+		Set vClaves= Me.Claves
+		Set vServidores = Me.Servidores
+		Set vRutas = Me.Rutas
+		For j=1 To vClaves.CantElem 
+			'If Not excluirBase(vclaves.getElement(j)) Then ' Chequeo si tengo que copiar el doc de config o no
+			serverConf = vServidores.getElement(j)
+			pathConf = vRutas.getElement(j)
+			'Obtengo la base j-esima de la tabla de interoperabilidad
+			Set dbSetear = ses.GetDatabase(serverConf, pathConf)
+			'obtengo el documento de perfil. 
+			Set docAux = dbSetear.GetProfileDocument(NOMBRE_DOC_PERFIL)
+			'Se copian los campos desde el doc de configuracion, al doc de perfil.
+			Call copiarDocConfig (docConfiguracion , docAux) 
+			'Se guarda el documento de perfil actualizado.
+			Call docAux.save(True,False)
+			'End If
+		Next
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase AvisosConfig - Sub Save","","")
+		Exit Sub
+	End Sub
+	'*************************************************************************************************************************************			
+	Public Sub copiarDocConfig (docConfig As NotesDocument, docProfile As NotesDocument) 
+		On Error Goto handler
+		' Copiamos todos los campos de la config, del documento al documento de perfil
+		' conf gral.
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PROTOCOLO,docConfig.GetItemValue(CAMPO_CONFIG_PROTOCOLO))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_HOST_SERVER,docConfig.GetItemValue(CAMPO_CONFIG_HOST_SERVER))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PUERTO,docConfig.GetItemValue(CAMPO_CONFIG_PUERTO))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_MAX_SOL_PROCESAR, docConfig.GetItemValue(CAMPO_CONFIG_MAX_SOL_PROCESAR))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_TIPOS_CANALES,docConfig.GetItemValue(CAMPO_CONFIG_TIPOS_CANALES))
+		' vías de comunicación
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_ASUNTO_MAIL,docConfig.GetItemValue(CAMPO_CONFIG_ASUNTO_MAIL))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_MSJ_MAIL,docConfig.GetItemValue(CAMPO_CONFIG_MSJ_MAIL))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_MSJ_SMS,docConfig.GetItemValue(CAMPO_CONFIG_MSJ_SMS))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_MSJ_VOZ,docConfig.GetItemValue(CAMPO_CONFIG_MSJ_VOZ))	
+		' interoperabilidad
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_CLAVES,docConfig.GetItemValue(CAMPO_CONFIG_CLAVES))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_SERVIDORES,docConfig.GetItemValue(CAMPO_CONFIG_SERVIDORES))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_HOSTS,docConfig.GetItemValue(CAMPO_CONFIG_HOSTS))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_RUTAS,docConfig.GetItemValue(CAMPO_CONFIG_RUTAS))
+		' conf de canales
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_URLS,docConfig.GetItemValue(CAMPO_CONFIG_URLS))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_TIPOS_DE_MSJ,docConfig.GetItemValue(CAMPO_CONFIG_TIPOS_DE_MSJ))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_CUENTAS_CORREOS,docConfig.GetItemValue(CAMPO_CONFIG_CUENTAS_CORREOS))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_ESTADOS,docConfig.GetItemValue(CAMPO_CONFIG_ESTADOS))	
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_CLASES,docConfig.GetItemValue(CAMPO_CONFIG_CLASES))
+		' conf de auditoria
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_TIEMPO_MAX_AUDIT,docConfig.GetItemValue(CAMPO_CONFIG_TIEMPO_MAX_AUDIT))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA,docConfig.GetItemValue(CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_FECHA_CREACION_AUDITORIA,docConfig.GetItemValue(CAMPO_CONFIG_FECHA_CREACION_AUDITORIA))
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase AvisosConfig - Sub copiarDocConfig","","")
+		Exit Sub
+	End Sub
+'*************************************************************************************************************************************				
+	
+	Private Function excluirbase (clave As String) As Boolean
+		On Error Goto handler
+		
+		If Ucase(clave)= CLAVE_NAMES Then
+			excluirbase = True
+		Else
+			excluirbase = False
+		End If
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase AvisosConfig - Function excluirbase","","")
+		Exit Function
+	End Function
+	
+'*************************************************************************************************************************************
+	
+	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
+		'Retorna una referencia a la base de datos que recibe como parámetro.
+		'En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+		On Error Goto HANDLER
+		Dim pos As Long
+		Dim servName As String
+		Dim pathName As String
+		
+		Set ReferenciarBaseDeDatos = Nothing
+		If Me.Claves.isMember(Ucase(clave), pos, False) Then 
+			servName = Me.Servidores.getElement(pos)
+			pathName = Me.Rutas.getElement(pos)
+			Set ReferenciarBaseDeDatos = ses.GetDatabase(servName,pathName)
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AvisosConfig- Método ReferenciarBaseDeDatos","")
+		Exit Function
+		
+	End Function
+'*************************************************************************************************************************************
+	Public Function HostByKey(clave As String) As String
+		' retorna el host correspondiente a la 'clave' en la tabla de interoperabilidad.
+		' si no se encuentra la 'clave', retorna el string vacio.
+		On Error Goto handler
+		Dim hostResult As String
+		Dim pos As Long
+		hostResult = ""
+		If Me.Claves.isMember(Ucase(clave), pos, False) Then
+			hostResult = Me.Hosts.getElement(pos)			
+		End If
+		HostByKey = hostResult
+		Exit Function
+handler:
+		Call RegistrarYGenerarError (NOMBRE_APLICACION, "Clase AvisosConfig - Método HostByKey","")
+		Exit Function
+	End Function
+'*************************************************************************************************************************************	
+	Public Function InsertarLineaInterop(clave As String, host As String, serv As String, ruta As String)
+		' Agrega una fila en la tabla de Interoperabilidad con los valores: clave, host, serv y ruta.
+		On Error Goto handler
+		Dim pos As Long
+		Dim vAux As New Vector(0)
+		Set vAux  = Me.Claves		
+		Dim vClavesLength As Long
+		vClavesLength = vAux.cantElem +1
+		
+		If Not Me.Claves.isMember(Ucase(clave), pos,False) Then
+			Set vAux  = Me.Claves
+			vAux.insertElement clave,vClavesLength
+			Set Me.Claves = vAux
+			
+			Set vAux  = Me.Servidores
+			vAux.insertElement serv,vClavesLength
+			Set Me.Servidores = vAux
+			
+			Set vAux  = Me.Hosts
+			vAux.insertElement host,vClavesLength
+			Set Me.Hosts = vAux
+			
+			Set vAux  = Me.Rutas
+			vAux.insertElement ruta,vClavesLength
+			Set Me.Rutas = vAux
+			
+		End If
+		Exit Function
+handler:
+		Call RegistrarYGenerarError (NOMBRE_APLICACION, "Clase AvisosConfig - Método InsertarLineaInterop","")
+		Exit Function
+	End Function
+'*************************************************************************************************************************************	
+	Public Function addAuditoriaDate (clave As String, fecha As Variant)
+		On Error Goto handler
+		
+		Dim itClaves As notesItem,itFechas As notesItem,aFechas As Variant
+		
+		If docConfiguracion.hasItem(CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA) Then
+			Set itClaves=docConfiguracion.getFirstItem(CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA)
+		Else
+			Set itClaves=New notesItem(docConfiguracion,CAMPO_CONFIG_CLAVE_CREACION_AUDITORIA,"")	
+		End If
+		itClaves.appendToTextlist clave
+		If docConfiguracion.hasItem(CAMPO_CONFIG_FECHA_CREACION_AUDITORIA) Then
+			Set itFechas=docConfiguracion.getFirstItem(CAMPO_CONFIG_FECHA_CREACION_AUDITORIA)
+		Else
+			Set itFechas=New notesItem(docConfiguracion,CAMPO_CONFIG_FECHA_CREACION_AUDITORIA,"")		
+		End If
+		aFechas=itFechas.values
+		Redim Preserve aFechas(Lbound(itClaves.values) To Ubound(itClaves.values))
+		aFechas(Ubound(itClaves.values))=fecha
+		itFechas.values=aFechas
+		
+		Exit Function
+handler:
+		Exit Function
+	End Function
+	
+End Class
+'******************************************************************************************************************		

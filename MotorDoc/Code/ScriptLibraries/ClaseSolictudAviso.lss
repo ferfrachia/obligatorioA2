@@ -1,0 +1,483 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*                                                 
+'*			 					CLASS <SOLICITUDAVISO>
+'* 
+'******************************************************************************************************************	
+Option Public
+Option Declare
+
+
+Use "ClaseExpediente"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SolicitudAviso
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'CAMPOS DEL DOCUMENTO
+Public Const CAMPO_SA_NRODOC					="NumDocumento"
+Public Const CAMPO_SA_TIPO					="TipoDocumento"	'"0"->Expediente | "1"->Generico
+Public Const CAMPO_SA_ID						="id"
+Public Const CAMPO_SA_ESTADO					="EstadoDocumento"
+Public Const CAMPO_SA_NROOFICINA				="NumeroOficina"
+Public Const CAMPO_SA_TIPOMENS				="TipoMensaje"		'"Correo"|"SMS"|"Voz"
+Public Const CAMPO_SA_DEST					="Destinatario"
+Public Const CAMPO_SA_FECHA 					="fecha"
+Public Const CAMPO_SA_ANIO 					="anio"
+Public Const CAMPO_SA_MENSAJE					="Mensaje"
+Public Const CAMPO_SA_ASUNTO					="Asunto"
+Public Const CAMPO_SA_FORM					="form"
+Public Const NOMBRE_FORM_SOL_AVISO				="fSolicitud"
+Public Const NOMBRE_FORM_CONF_IGDOC			="IGDocConfig"
+
+'CONSTANTES DE ESTADO
+Public Const ESTADO_PENDIENTE					= "0"
+Public Const ESTADO_ENVIADA					= "1"
+Public Const ESTADO_ENVIADA_CONF				= "2"
+Public Const ESTADO_CONFIRMAD					= "3"
+Public Const ESTADO_ERR_ENVIAR				= "4"
+
+'Tipos de mensaje que se manadan en la solicitud
+Public Const AVISO_MSJ_TIPO_CORREO				= "Correo"
+Public Const AVISO_MSJ_TIPO_SMS				= "SMS"
+Public Const AVISO_MSJ_TIPO_VOZ				= "Voz"
+
+'CONSTANTES DE TIPO DE DOCUMENTO
+Public Const TIPO_DOCUMENTO_EXPEDIENTE			="0"
+'CONSTANTE PARA CAMPO DESTINATARIO DE AVISOS = VACIO
+Public Const CAMPO_DEST_AVISO_VACIO			="-"
+Public Const CAMPO_PATH_AVISOS				="sPathAvisos"
+
+Public Const TOKEN_NUMERO					="%NUMERO%"
+Public Const TOKEN_UNIDAD					="%UNIDAD%"
+Public Const TOKEN_ASUNTO					="%ASUNTO%"
+Public Const TOKEN_TEMA						="%TEMA%"	
+
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <SOLICITUDAVISO>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class SolicitudAviso
+'******************************************************************************************************************		
+	
+'MIEMBROS PRIVADOS
+	Private db As notesDatabase
+	Public doc As notesDocument
+	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR	
+	
+	Sub new(oExpediente As Expediente)
+		'Setea las variables miembro del objeto
+		On Error Goto HANDLER
+		
+		Dim session As New NotesSession
+		Dim caratula As Caratula
+		Dim vCorreos As New Vector(0)
+		Dim vCelulares As New Vector (0)
+		Dim vTelefonos As New Vector(0)
+		Dim vUnidades As New Vector(0)
+		Dim i As Integer
+		Dim strDestino As String
+		Dim igdocConfig As NotesDocument
+		Dim uniExp As UnidadExp
+		
+		Set igdocConfig = session.CurrentDatabase.GetProfileDocument(NOMBRE_FORM_CONF_IGDOC)
+		Set db = session.GetDatabase(session.CurrentDatabase.Server,igdocConfig.GetItemValue(CAMPO_PATH_AVISOS)(0))
+		Set doc = db.Createdocument()
+		doc.ReplaceItemValue CAMPO_SA_FORM, NOMBRE_FORM_SOL_AVISO
+		doc.ReplaceItemValue CAMPO_SA_ESTADO, ESTADO_PENDIENTE
+		doc.ReplaceItemValue CAMPO_SA_FECHA,Date()
+		
+		If (Not oExpediente Is Nothing) And (igdocConfig.GetItemValue(CAMPO_PATH_AVISOS)(0) <> "") Then
+			'Obtengo la base de avisos
+			
+			
+			Set caratula = oExpediente.Caratula
+			Set vCorreos = caratula.CorreosAvisos
+			Set vCelulares = caratula.CelularesAvisos
+			Set vTelefonos = caratula.TelefonosAvisos
+			Set vUnidades = caratula.UnidadesAvisos
+			i=1
+			While (i <= vCorreos.CantElem) Or (i <= vCelulares.CantElem) Or (i <= vTelefonos.CantElem) 
+				' se crea una solicitud por entrada en la lista de receptores
+				Set doc = New NotesDocument (db)
+				doc.ReplaceItemValue CAMPO_SA_FORM, NOMBRE_FORM_SOL_AVISO
+				doc.Save True, False
+				
+				doc.ReplaceItemValue CAMPO_SA_NRODOC,caratula.NroExp 
+				doc.ReplaceItemValue CAMPO_SA_TIPO,TIPO_DOCUMENTO_EXPEDIENTE
+				doc.ReplaceItemValue CAMPO_SA_ID, doc.UniversalID
+				doc.ReplaceItemValue CAMPO_SA_ESTADO, ESTADO_PENDIENTE
+				
+				Set uniExp = New UnidadExp(caratula.OficinaActual)
+				doc.ReplaceItemValue CAMPO_SA_NROOFICINA,uniExp.NombreActual
+				
+				'busco el primer campo no vacio, para el destinatario
+				If (i <= vCorreos.CantElem) And (vCorreos.getElement(i) <> CAMPO_DEST_AVISO_VACIO) Then
+					' solicitud tiene que mandar mails
+					strDestino = vCorreos.getElement(i)
+					doc.ReplaceItemValue CAMPO_SA_TIPOMENS, AVISO_MSJ_TIPO_CORREO
+				Else
+					If (i <= vCelulares.CantElem) And (vCelulares.getElement(i) <> CAMPO_DEST_AVISO_VACIO) Then
+						'solicitud tiene que mandar sms
+						strDestino =  vCelulares.getElement(i)
+						doc.ReplaceItemValue CAMPO_SA_TIPOMENS, AVISO_MSJ_TIPO_SMS
+					Else
+						If (i <= vTelefonos.CantElem) And (vTelefonos.getElement(i) <> CAMPO_DEST_AVISO_VACIO) Then
+							' solicitud tiene que mandar msj de voz
+							strDestino = vTelefonos.getElement(i)
+							doc.ReplaceItemValue CAMPO_SA_TIPOMENS, AVISO_MSJ_TIPO_VOZ
+						End If
+					End If
+				End If
+				
+				doc.ReplaceItemValue CAMPO_SA_DEST, strDestino
+				doc.ReplaceItemValue CAMPO_SA_ASUNTO, "Informe de IGDoc Expediente - Nro: " & caratula.NroExp
+				doc.ReplaceItemValue CAMPO_SA_FECHA,Date()
+				
+				doc.Save True, False
+				i = i+1
+				
+			Wend
+		
+			
+		End If
+		
+		Exit Sub	
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Constructor","")
+		Exit Sub
+		
+	End Sub
+	
+	
+'*****************************************************************************************************************	
+'Metodo - Save
+'*****************************************************************************************************************	
+	
+	Public Sub Save()
+		' Devuelve el numero de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.Save True, False	
+		doc.ReplaceItemValue CAMPO_SA_ID, doc.UniversalID
+		doc.Save True, False			
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get Save","")
+		Exit Sub
+	End Sub
+	
+	
+'*****************************************************************************************************************	
+'PROPIEDADES - Getters
+'*****************************************************************************************************************	
+	
+	Public Property Get NumDoc() As String
+		' Devuelve el numero de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		
+		NumDoc=doc.GetItemValue(CAMPO_SA_NRODOC)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get NumDoc","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get TipoAviso() As String
+		' Devuelve el tipo de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		
+		TipoAviso = doc.GetItemValue(CAMPO_SA_TIPO)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get IdAviso() As String
+		' Devuelve el asunto de la solicitud de aviso.
+		On Error Goto HANDLER		
+		
+		IdAviso = doc.GetItemValue(CAMPO_SA_ID)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get AsuntoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get EstadoAviso() As String
+		' Devuelve el estado de la solicitud de aviso.
+		On Error Goto HANDLER		
+		
+		EstadoAviso = doc.GetItemValue(CAMPO_SA_ESTADO)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get EstadoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Destinatario() As String
+		' Devuelve el telefono asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		
+		Destinatario = doc.GetItemValue(CAMPO_SA_DEST)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get NroTelAviso","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Get NumOficina() As String
+		' Devuelve el numero de oficina asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		NumOficina = doc.GetItemValue(CAMPO_SA_NROOFICINA)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get NumOficina","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************
+	
+	Public Property Get TipoMensaje() As String
+		' Devuelve el tipo de doc asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		TipoMensaje = doc.GetItemValue(CAMPO_SA_TIPOMENS)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoMensaje","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Mensaje() As String
+		' Devuelve el tipo de doc asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		Mensaje = doc.GetItemValue(CAMPO_SA_MENSAJE)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get Mensaje","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Asunto() As String
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		Asunto = doc.GetItemValue(CAMPO_SA_ASUNTO)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get Asunto","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+'PROPIEDADES - Setters
+'******************************************************************************************************************
+	
+	Public Property Set NumDoc() As String
+		' Devuelve el numero de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_NRODOC, NumDoc
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set NumDoc","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set TipoAviso() As String
+		' Devuelve el tipo de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_TIPO, TipoAviso
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set TipoAviso","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************
+	
+	Public Property Set EstadoAviso() As String
+		' Asigna el estado de la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_ESTADO,EstadoAviso
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set EstadoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Destinatario() As String
+		' Devuelve el telefono asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_DEST,Destinatario
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set Destinatario","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	
+	Public Property Set IdAviso() As String
+		' Devuelve el UID asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_ID,IdAviso
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set IdAviso","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************
+	
+	Public Property Set NumOficina() As String
+		' Asigno un numero de oficina a la solicitud
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_NROOFICINA,NumOficina
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set NumOficina","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************
+	
+	Public Property Set TipoMensaje()As String
+		' Asigno un nuevo tipo de documento a la solicitud 
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_TIPOMENS,TipoMensaje
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set TipoMensaje","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************
+	
+	Public Property Set Mensaje() As String
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_MENSAJE,Mensaje
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get Mensaje","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Asunto() As String
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_ASUNTO,Asunto
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get Asunto","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************	
+	Public Function generarMensajeAviso (oExp As Expediente, sUsuario As String)
+		On Error Goto HANDLER
+%REM
+Public Const TOKEN_NUMERO					="%NUMERO%"
+Public Const TOKEN_UNIDAD					="%UNIDAD%"
+Public Const TOKEN_ASUNTO					="%ASUNTO%"
+Public Const TOKEN_TEMA						="%TEMA%"	
+%END REM 
+		Dim config As New Configuracion
+		Dim msjFinal As String
+		Dim asuntoFinal As String
+		Dim templateAsunto As String
+		Dim templateMsj As String
+		Dim findArray(3) As String, replArray(3) As String
+		Dim uniExp As UnidadExp
+		Set uniExp = New UnidadExp(oExp.Caratula.OficinaActual)
+		
+		findArray(0) = TOKEN_NUMERO
+		findArray(1) = TOKEN_UNIDAD
+		findArray(2) = TOKEN_ASUNTO
+		findArray(3) = TOKEN_TEMA
+		
+		replArray(0) = oExp.Caratula.NroExp
+		replArray(1) = uniExp.NombreActual
+		replArray(2) = oExp.Caratula.Asunto	
+		replArray(3) = oExp.Caratula.Tema
+		
+		If Me.TipoMensaje= AVISO_MSJ_TIPO_CORREO Then
+		'proceso el cuerpo del mail
+			templateMsj = config.TemplateMsgCorreoAvisos
+			msjFinal = replaceSubstring(templateMsj,findArray(0),replArray(0),0)
+			msjFinal = replaceSubstring(msjFinal,findArray(1),replArray(1),0)
+			msjFinal = replaceSubstring(msjFinal,findArray(2),replArray(2),0)
+			msjFinal = replaceSubstring(msjFinal,findArray(3),replArray(3),0)
+		'proceso el asunto del mail
+			templateAsunto = config.TemplateAsuntoCorreoAvisos
+			asuntoFinal = replaceSubstring(templateAsunto,findArray(0),replArray(0),0)
+			asuntoFinal  = replaceSubstring(asuntoFinal ,findArray(1),replArray(1),0)
+			asuntoFinal  = replaceSubstring(asuntoFinal ,findArray(2),replArray(2),0)
+			asuntoFinal  = replaceSubstring(asuntoFinal ,findArray(3),replArray(3),0)
+			
+			doc.ReplaceItemValue CAMPO_SA_ASUNTO,asuntoFinal
+		Else
+			If Me.TipoMensaje = AVISO_MSJ_TIPO_SMS Then
+				templateMsj = config.TemplateMensajeSmsAvisos
+			'proceso el mensaje
+				msjFinal = replaceSubstring(templateMsj,findArray(0),replArray(0),0)
+				msjFinal = replaceSubstring(msjFinal,findArray(1),replArray(1),0)
+				msjFinal = replaceSubstring(msjFinal,findArray(2),replArray(2),0)
+				msjFinal = replaceSubstring(msjFinal,findArray(3),replArray(3),0)
+			Else
+				If Me.TipoMensaje = AVISO_MSJ_TIPO_VOZ Then
+					templateMsj = config.TemplateMensajeVozAvisos
+			'proceso el mensaje
+					msjFinal = replaceSubstring(templateMsj,findArray(0),replArray(0),0)
+					msjFinal = replaceSubstring(msjFinal,findArray(1),replArray(1),0)
+					msjFinal = replaceSubstring(msjFinal,findArray(2),replArray(2),0)
+					msjFinal = replaceSubstring(msjFinal,findArray(3),replArray(3),0)
+				End If
+			End If
+		End If
+		'Msgbox "el mensaje parseado queda: " & msjFinal
+		doc.ReplaceItemValue CAMPO_SA_MENSAJE, msjFinal
+		Me.Save
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - generarMensajeAviso ","")
+		Exit Function
+	End Function
+	
+	
+	
+End Class

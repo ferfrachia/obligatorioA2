@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500598C82'>
+<noteinfo noteid='356' unid='11B4D6D7BA52C0A283257BC6005AE6DA' sequence='17'>
+<created><datetime>20130813T133253,38-03</datetime></created>
+<modified><datetime>20150311T131809,80-03</datetime></modified>
+<revised><datetime>20150309T094425,30-03</datetime></revised>
+<lastaccessed><datetime>20150311T131809,80-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131809,80-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>AbrirVista</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>db := @ReplaceSubstring(@Subset(@DbName; -1); "\\"; "/");
+"&lt;meta http-equiv=\"refresh\" content=\"0;url=/" + db + "/PorUnidadVolumenExpedientes?OpenView\"&gt;"</formula></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>AbrirVista</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8LAAEAAAouLi4A
+</rawitemdata></item></note>
+

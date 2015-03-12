@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='eca' unid='B045F15D5384132483257AE70072E044' sequence='14'>
+<created><datetime dst='true'>20130102T185445,16-02</datetime></created>
+<modified><datetime>20150311T131231,50-03</datetime></modified>
+<revised><datetime>20150309T094453,75-03</datetime></revised>
+<lastaccessed><datetime>20150311T131231,50-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131231,50-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Miembros Formularios por Formulario|MiembrosFormxForm</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+2gACACgAAgAkNAUACwBzQ29kaWdvRm9ybQABAAIAIyMiApAAVgEiAgMAAgAkAAsAc0NvZGlnb0Zv
+cm0ABQALAHNDb2RpZ29Gb3JtAAMABQA4ADMABQALAAIACwAJAAQAc0NvZGlnb0Zvcm0kNHNDb2Rp
+Z29Gb3JtJENvbmZsaWN0JFJFRgAEAAQAAAA+AAUABABGb3JtAQASAE1pZW1icm9zRm9ybXVsYXJp
+bwoCBAAFAAkAJENvbmZsaWN0AGgBHgEcAgQAAwAHABIADAAJTDFTNFM1UzdTOFM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+IQACAABEiGYHAAALAABmAAsAAgBzQ29kaWdvRm9ybSQ0
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAYACAAAAFZDAwALAAAAAAAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMBAAIAAAA2AAAABQEB
+AAAKAAAAAAAAAAAAAgIAAABWQwAACwAAACYAAABQAAEAAAoAAAAAAAAAAAACAgAAAHNDb2RpZ29G
+b3JtJDQ2AAIAKAACACQ0BQALAHNDb2RpZ29Gb3JtAAEAAgAjIyICkABWASICAwAHAAwABQAJMFMw
+RQBzQ29kaWdvRm9ybSYAAgAkAAsAc0NvZGlnb0Zvcm0ABQALAHNDb2RpZ29Gb3JtAAMAJgABAAAA
+AQEACQEAAAoBAQ4KAAABAK0rAQABAAECAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAE
+AAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA//8AAAAA
+AAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABC
+AAAAAAABAP///wAFAP///wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQCAgIAA
+AQAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAOzp2AABAAAAAAAJAAAAAAABAOzp2AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/VgAAAAEAAACfAQAADQAAAAAAAABDb25maWd1cmFjaW9uCTIAAAAkAAIADRgAAAAAAAAB
+AA4AZkNvbmZpZ3VyYWNpb27tAgMABwAMAAUACTBTMEUAvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9F
+ZGl0IERvY3VtZW50AwACCr7/KAAAAAUAAACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAQAAwq+
+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0ZvcndhcmQFAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9N
+b3ZlIFRvIEZvbGRlci4uLgYAPXy+/y4AAAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZv
+bGRlcgAHAD58
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv9WAAAAAQAAAJ8BAAANAAAAAAAAAENvbmZpZ3VyYWNpb24AMgAAACQAAgANGAAA
+AAAAAAEADgBmQ29uZmlndXJhY2lvbu0CAwAHAAwABQAJMFMwRQC+/ygAAAAFAAAAnQEAAA4AAAAA
+AAAAX0VkaXQgRG9jdW1lbnQDAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9TZW5kIERvY3VtZW50
+BAADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAUABAq+/ywAAAAFAAAAnQEAABIAAAAA
+AAAAX01vdmUgVG8gRm9sZGVyLi4uBgA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVtb3ZlIEZy
+b20gRm9sZGVyAAcAPnw=
+</rawitemdata></item></note>
+

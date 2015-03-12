@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050059030D" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="80e" sequence="61" unid="E120715A9D3F4E2B032571DA007A3CFA">
+<created><datetime>20060830T191510,02-03</datetime></created>
+<modified><datetime>20150311T131223,56-03</datetime></modified>
+<revised><datetime>20150309T094446,15-03</datetime></revised>
+<lastaccessed><datetime>20150311T131223,56-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131223,56-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Diego Celery/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Valentina Da Silva/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060830T191510,10-03</datetime><datetime>20060830T191643,92-03</datetime><datetime>20060831T111104,53-03</datetime><datetime>20060905T162008,31-03</datetime><datetime>20060905T162316,57-03</datetime><datetime>20060905T162401,59-03</datetime><datetime>20060905T162410,38-03</datetime><datetime>20060905T162508,81-03</datetime><datetime>20060905T163319,12-03</datetime><datetime>20060905T163336,92-03</datetime><datetime>20060905T163441,82-03</datetime><datetime>20060905T163605,91-03</datetime><datetime>20060905T163842,72-03</datetime><datetime>20060905T163936,12-03</datetime><datetime dst="true">20071228T101559,31-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>LibJS</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+<item name="$Comment"><text>Libraría de funciones varias en JavaScript</text></item>
+<item name="$POID"><datetime>20150309T094446,15-03</datetime></item></note>

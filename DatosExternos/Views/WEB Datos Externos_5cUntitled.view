@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059D1A3'>
+<noteinfo noteid='236' unid='3841D3FEE645FA8F83257792006C2AEF' sequence='15'>
+<created><datetime>20100902T164128,79-03</datetime></created>
+<modified><datetime>20150311T132105,26-03</datetime></modified>
+<revised><datetime>20150309T094359,40-03</datetime></revised>
+<lastaccessed><datetime>20150311T132105,26-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132105,26-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Victoria Acuña/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQD3XsJsmmTrWjmKcQB8dSUD
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>WEB Datos Externos\Untitled</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+iAAFACoAJgADAA8ACQAEAFRpcG9EYXRvRXh0ZXJubyRDb25mbGljdCRSRUYEAAQAAABEAAUABABG
+b3JtAQARAFRpcG8gRGF0byBFeHRlcm5vAAoCBAAFAAQARm9ybQEACABUaXBvRGF0bwoCBAAdAgQA
+AwAHABQADgAJM1M0UzZTN1M5UzEwUw==
+</formula></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+HAABAABEAGYAAAAPAFRpcG9EYXRvRXh0ZXJubw==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEAiEAAAFZDAQAPAAEAAAAAAFAABQAACgAAAAAAAAAAAAICAAAAVGlwb0RhdG9FeHRlcm5v
+IyYAAQAAAAEBAAkBAAAKAQEOCgAAPwCtKwECLwABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAA
+AAAAAAEAAAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAEAAAAAEA9/f3AAEA7+/vAAEAAAAAAAAAAAAA
+AAAAAQD///8AAQD///8AAAABAAAAAAABAAAAAAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>8.5</text></item>
+<item name='$ViewInheritedFrom' sign='true'><text>TiposDatos</text></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRw/AAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZWwBAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcgAGAD58vv+KAAAAAQAAAB8BAAAa
+ADAAAAAAAENyZWFyIFRpcG8gZGUgRGF0byBFeHRlcm5vKgAAAB4AAgDoAwAAAAAAAAEACABUaXBv
+RGF0b+0CAwAHAAoAAwAJNFMAMAAAAB4A5wABAA4AW0FjdHVhbGl6YWRvcl0WAh4BAwAHABAACQAJ
+MVMyUzJFM1MA
+</rawitemdata></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRw/AAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAPDw8AABAAAAAAAJAAAAAAABAPDw8AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/KAAAAAUAAACdAQAADgAAAAAAAABfRWRpdCBEb2N1bWVudAIAAgq+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX1NlbmQgRG9jdW1lbnQDAAMKvv8iAAAABQAAAJ0BAAAIAAAAAAAAAF9Gb3J3YXJk
+BAAECr7/LAAAAAUAAACdAQAAEgAAAAAAAABfTW92ZSBUbyBGb2xkZXIuLi4FAD18vv8uAAAABQAA
+AJ0BAAATAAAAAAAAAF9SZW1vdmUgRnJvbSBGb2xkZXIwBgA+fL7/igAAAAEAAAAfAQAAGgAwAAAA
+AABDcmVhciBUaXBvIGRlIERhdG8gRXh0ZXJubyoAAAAeAAIA6AMAAAAAAAABAAgAVGlwb0RhdG/t
+AgMABwAKAAMACTRTADAAAAAeAOcAAQAOAFtBY3R1YWxpemFkb3JdFgIeAQMABwAQAAkACTFTMlMy
+RTNTAA==
+</rawitemdata></item>
+<item name='$SelQuery' sign='true'>
+<rawitemdata type='f'>
+gQYAAAAAif8mAAAAAAABABoAVGlwbyBEYXRvIEV4dGVybm98VGlwb0RhdG8=
+</rawitemdata></item>
+<item name='$Flags'><text>Y</text></item></note>
+

@@ -1,0 +1,30 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Campos del formulario de definición de formularios
+Public Const FRM_DEF_CAMPO_NOMBRE						= "sNombre"
+Public Const FRM_DEF_CAMPO_VERSION							= "sVersion"
+Public Const FRM_DEF_CAMPO_CODIGO							= "sCodigo"
+Public Const FRM_DEF_CAMPO_SECCIONES					= "ncantSecciones"
+Public Const  FRM_DEF_CAMPO_VTEMAS							= "ccTemas"
+Public Const FRM_DEF_CAMPO_NOMTEMAS					= "sTemas"
+Public Const FRM_DEF_CAMPO_UNITEMAS						= "sUnidadesTemas"
+Public Const FRM_DEF_CAMPO_VISIBILIDAD						= "sVisibilidad"
+Public Const FRM_DEF_CAMPO_FIRMA								= "sFirma"
+Public Const FRM_DEF_CAMPO_ACUSE							= "sAcuse"
+Public Const FRM_DEF_CAMPO_NUMERACION					= "sNumeracion"
+Public Const FRM_DEF_CAMPO_ESTADO							= "sEstado"
+
+'Acciones sobre los formularios de definición
+Public Const FRM_DEF_ACC_ACTIVAR								= "acc_activar_form"
+Public Const FRM_DEF_ACC_DESACTIVAR							= "acc_desactivar_form"
+
+'Estados de las Definiciones de Formularios
+Public Const FRM_DEF_ESTADO_ACTIVO							= "Activo"
+Public Const FRM_DEF_ESTADO_INACTIVO						= "Inactivo"
+
+' Numerador
+Public Const FRM_NOMBRE_NUMERADOR						= "IGDOC_FORMULARIOS"

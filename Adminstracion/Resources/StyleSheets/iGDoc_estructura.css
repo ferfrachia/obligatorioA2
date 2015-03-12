@@ -1,0 +1,229 @@
+/*    GENERALES */
+
+BODY {
+	font-size: 8pt;
+	font-family: Arial, Helvetica, sans-serif; 
+	background-color: transparent; 
+	color: #666666; 
+	margin: 0px;
+}
+a:visited{
+	color:#888888
+}
+a:hover{
+	color:#111166;
+}
+a {
+	text-decoration: none;
+	color:#888888;
+}
+
+.igdoc_tituloModulo{
+	font-size: 12pt;
+	font-family: Arial, Helvetica, sans-serif; 
+	font-weight: bold;
+	background-color: transparent; 
+	color : #00649F;
+	margin: 0px;
+
+} 
+
+.igdoc_cabezalVista
+.igdoc_indiceVista A {
+	font-size: 8pt;
+	font-family: Arial, Helvetica;
+	text-decoration: none;
+}
+
+.igdoc_cabezalVista {
+	display: block;
+	width: 100%; height: 86px;
+	background-image: URL(barraFondoIgDoc.jpg?OpenImageResource); 
+	background-repeat: repeat-x;
+	background-position: top;
+	vertical-align: top;
+	text-align: top;
+}
+.igdoc_logoSupIzq {
+	display: inline;
+	width: 130px; height: 90px;	
+	position: relative; left: 0px; top: 0px;
+	text-align: center;
+}
+
+.igdoc_tituloVista {
+	display: inline;
+/* 	width: 450px;  */
+	width: 100%; 
+	height: 90px;
+	position: relative; left: 0px; top: 0px;
+}
+.igdoc_tituloVista  TABLE{
+	/* 	width: 450px;  */
+	width: 100%; 
+}
+
+.igdoc_cuerpoVista {
+	display: inline;
+	position: relative; left: 5px; top: 0px;
+	padding: 5px;
+	/*  width: 445px;  */
+	width: 100%;  
+}
+.igdoc_cuerpoVista TABLE  {
+	width: 100%;
+	vertical-align: top;
+	text-align: left;
+}
+.igdoc_cuerpoVista TABLE TD FONT {
+	font-size: 8pt;
+	vertical-align: middle;
+}
+
+
+
+.igdoc_celdaMenu {
+	width: 130px; 
+}
+.igdoc_fondoMenu {
+	display: inline;
+	position: relative; left: 6px; top: 0px;
+	width: 130px; 
+	vertical-align: top;
+	text-align: top;
+}
+.igdoc_fondoMenu  A, .textoMenu {
+	font: 8pt;
+}
+.igdoc_imgBoton{
+	margin: 2px;
+	cursor: pointer;
+}
+.igdoc_Boton{
+	background-image: url(igDocfondoBoton.gif?OpenImageResource);
+	background-repeat: no-repeat;
+	background-position: center middle;
+	background-color: transparent;
+	border-collapse: collapse;
+	border:	0px;
+	border-style: none;
+	height: 18px; width: 116px;
+	font-size: 8pt;
+	font-family: Arial, Helvetica;
+}
+.igdoc_cuerpoDocumento {
+	vertical-align: top;
+}
+UL.igdoc_opcionesMenu .igdoc_subtituloMenu ,
+UL.igdoc_opcionesMenu .igdoc_opcionMenu {
+	list-style: none;
+	height: 16px;
+	border-bottom: 1px solid #DDDDDD;
+	margin: 0px;
+}
+UL.igdoc_opcionesMenu {
+	padding: 0px;
+	margin: 0px;
+}
+UL.igdoc_opcionesMenu .igdoc_opcionMenu {
+	padding: 0px;
+	color: #888888;
+}
+UL.igdoc_opcionesMenu .igdoc_subtituloMenu ,
+UL.igdoc_opcionesMenu .igdoc_opcionMenu  A{
+	font-size: 8pt;
+	font-family: Arial, Helvetica;
+	text-decoration: none;
+	background-color: transparent;
+	width: 100%; height: 100%; 
+	padding: 2px;
+}
+UL.igdoc_opcionesMenu .igdoc_subtituloMenu {
+	padding: 8px 0px 2px 2px;
+	color: #444444;	
+}
+UL.igdoc_opcionesMenu .igdoc_opcionMenu  A:hover
+{
+	background-color: #F7FAFF;
+	padding: 2px;
+}
+UL.igdoc_opcionesMenu .igdoc_opcionMenuActiva
+{
+	background-color: #F7FAFF;
+}
+TABLE.igdoc_menuNavegacion {
+	background-color: transparent;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_si {
+	background-image: url(menuNavsi.gif?OpenImageResource);
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_sc {
+	background-image: url(menuNavsc.gif?OpenImageResource);
+	background-repeat: repeat-x;
+	background-position: top;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_sd {
+	background-image: url(menuNavsd.gif?OpenImageResource);
+	background-repeat: no-repeat;
+	background-position: top right;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_li {
+	background-image: url(menuNavli.gif?OpenImageResource);
+	background-repeat: repeat-y;
+	background-position: left;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_lc {
+	background-color: #E4E7EC;
+	padding: 0px; margin: 0px;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_ld {
+	background-image: url(menuNavld.gif?OpenImageResource);
+	background-repeat: repeat-y;
+	background-position: right;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_ii {
+	background-image: url(menuNavii.gif?OpenImageResource);
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_ic {
+	background-image: url(menuNavic.gif?OpenImageResource);
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_id {
+	background-image: url(menuNavid.gif?OpenImageResource);
+	background-repeat: no-repeat;
+	background-position: bottom right;
+}
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_si,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_sd,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_li,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_ld,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_ii,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_id {
+	width: 6px;
+	font-size: 1pt;
+	border-collapse: collapse;
+}
+
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_si,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_sd,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_sc,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_ic,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_ii,
+TABLE.igdoc_menuNavegacion TD.igdoc_menuNav_id {
+	height: 6px;
+	font-size: 1pt;
+	border-collapse: collapse;
+}
+TABLE.igdoc_menuNavegacion TR {
+	border-collapse: collapse;
+	padding: 0px; margin: 0px;
+}
+.igdoc_lineaMenu {
+}
+.igdoc_opcionMenu {
+}

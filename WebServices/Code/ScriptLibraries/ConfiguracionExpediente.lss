@@ -1,0 +1,56 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	16/12/2011	Se utiliza DynamicLoading para impedir el ciclo de uses entre librerias.
+					
+%END REM
+
+Option Public
+Option Declare 
+Use "ConfEE 1.0"
+Use "DynamicLoading"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfExpediente As Configuracion
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Dim sUsarIgDocConf As String
+
+Public Class ConfExpediente As Configuracion
+	
+	Private 	dbAdmin As NotesDatabase
+	
+	Public Sub new (), Configuracion()
+		On Error Goto HANDLER 
+		
+		If vKeyDB.cantElem=0 Then
+			
+			
+			Dim igDoc As Variant		
+			
+			Set igDoc = FactoryClass("IGDocConfig")
+			Set dbADmin = New NotesDatabase (ses.CurrentDatabase.server, igDoc.PathAdministracion())
+			Set docConfiguracion = dbAdmin.GetProfileDocument("fConfiguracion")
+			vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+			vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+			vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+			vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB)
+			vFormNum.values = docConfiguracion.getItemValue(CAMPO_FORMATO_NUMERACION)
+			vKeyNum.values = docConfiguracion.getItemValue(CAMPO_CLAVE_NUMERACION)
+			If Not docConfiguracion.HasItem("Form") Then
+		'En caso de que nunca haya sido editado se setea el campo form para mNum.values = docConfiguracion.getItemValue(CAMPO_FORMATO_NUMERACION)
+				docConfiguracion.ReplaceItemValue "Form","fConfiguracion"
+			End If
+			
+		End If
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionExpediente - Método new","")
+		Exit Sub
+	End Sub	
+	
+	
+End Class

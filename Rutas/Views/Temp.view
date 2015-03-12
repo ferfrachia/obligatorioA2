@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500590CD0'>
+<noteinfo noteid='546' unid='099BE870ED83498903256F6B006913C6' sequence='17'>
+<created><datetime>20041215T160743,42-03</datetime></created>
+<modified><datetime>20150311T131245,10-03</datetime></modified>
+<revised><datetime>20150309T094510,73-03</datetime></revised>
+<lastaccessed><datetime>20150311T131245,10-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131245,10-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=IAN COATES/O=ISA</name><name>CN=Pablo Andrade/O=ISA</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Temp</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAGYAAAACACQw
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAMACAAAAFZDAQACAAEAHgAAALsAAQAACgAAAAAAAAAAAAICAAAAVkMAAAQABAAmAAAAUAAB
+AAAKAAAAAAAAAAAAAgIAAAAkMCMeAAkAFAAQnRETF35RNK4HleBc0QjuBAAEAAQABABGb3JtRm9y
+bSYACQAcAGRiSaZMqYryoN99nZ44is3TL5CVVTlsegQABAAEAAQAJgABAAAAAQEACQEAAAoBAQ4K
+AAABAK0rAQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAD//wAAAAAA
+AAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAEIA
+AAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAAAAAAAA
+AAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+dgAJAGwAT8D79u3u2dHSkKmZaSDiNeptFeWGqZiNL7ORiCv8LbCu2YHD8tIp1PccQm0hJhvJoJ2K
+rv5kXcO8zr+iMNnAsPRKbG/HBFGN29yaKuGKhIsp0oNPlCZUznI8U2X9QW2vOKKkXomlSocEAAQA
+BAAEAA==
+</formula></item>
+<item name='$HideInfo' summary='false' sign='true'><datetime>20070720T160046,59-03</datetime></item>
+<item name='$Flags'><text>Y</text></item></note>
+

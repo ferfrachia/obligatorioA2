@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='906' unid='18A3580AE0B9004A83257384005FF600' sequence='43'>
+<created><datetime dst='true'>20071030T152808,96-02</datetime></created>
+<modified><datetime>20150311T131224,68-03</datetime></modified>
+<revised><datetime>20150309T094447,09-03</datetime></revised>
+<lastaccessed><datetime>20150311T131224,68-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131224,68-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Miembros Formularios por Unidad y Formulario|MiembrosFormxUniForm</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+6gACADIAAgAkNgUACgBzTnJvVW5pZGFkAQACACMjIgIFAAsAc0NvZGlnb0Zvcm0AIgIDAAIAKAAC
+ACQ0BQALAHNDb2RpZ29Gb3JtAAEAAgAjIyICkABWASICAwACACQACwBzQ29kaWdvRm9ybQAFAAsA
+c0NvZGlnb0Zvcm0AAwAFAC4AKgAFAAIAAgALAAkABAAkNiQ0c0NvZGlnb0Zvcm0kQ29uZmxpY3Qk
+UkVGBAAEAAAAKgAFAAQARm9ybQEAEgBNaWVtYnJvc0Zvcm11bGFyaW8KAgQABAADAAcADgAIAAlM
+MVM0UzVT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GAACAABEiGYHAAACAABmAAIAAgAkNiQ0
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAcACAAAAFZDAwACAAAAQAAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMBAAIAAAA2AAAABgEB
+AAAKAAAAAAAAAAAAAgIAAABWQwAACwAAACYAAABQAAEAAAoAAAAAAAAAAAACAgAAACQ2QAACADIA
+AgAkNgUACgBzTnJvVW5pZGFkAQACACMjIgIFAAsAc0NvZGlnb0Zvcm0AIgIDAAcADAAFAAkwUzBF
+ACQ0NgACACgAAgAkNAUACwBzQ29kaWdvRm9ybQABAAIAIyMiApAAVgEiAgMABwAMAAUACTBTMEUA
+c0NvZGlnb0Zvcm0mAAIAJAALAHNDb2RpZ29Gb3JtAAUACwBzQ29kaWdvRm9ybQADACYAAQAAAAEB
+AAkBAAAKAQEOCgAAAQCtKwEAAQABAgAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEABAAA
+AAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAP//AAAAAAAA
+AAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAA
+AAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAgICAAAEA
+AAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAOzp2AABAAAAAAAJAAAAAAABAOzp2AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/VgAAAAEAAACfAQAADQAAAAAAAABDb25maWd1cmFjaW9uADIAAAAkAAIADRgAAAAAAAAB
+AA4AZkNvbmZpZ3VyYWNpb27tAgMABwAMAAUACTBTMEUAvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9F
+ZGl0IERvY3VtZW50AwACCr7/KAAAAAUAAACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAQAAwq+
+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0ZvcndhcmQFAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9N
+b3ZlIFRvIEZvbGRlci4uLgYAPXy+/y4AAAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZv
+bGRlcioHAD58
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv9WAAAAAQAAAJ8BAAANAAAAAAAAAENvbmZpZ3VyYWNpb27/MgAAACQAAgANGAAA
+AAAAAAEADgBmQ29uZmlndXJhY2lvbu0CAwAHAAwABQAJMFMwRQC+/ygAAAAFAAAAnQEAAA4AAAAA
+AAAAX0VkaXQgRG9jdW1lbnQDAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9TZW5kIERvY3VtZW50
+BAADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAUABAq+/ywAAAAFAAAAnQEAABIAAAAA
+AAAAX01vdmUgVG8gRm9sZGVyLi4uBgA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVtb3ZlIEZy
+b20gRm9sZGVyYQcAPnw=
+</rawitemdata></item></note>
+

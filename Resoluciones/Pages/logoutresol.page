@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='16a' unid='BF5548837921508403257582004A4CD2' sequence='57'>
+<created><datetime>20090323T103133,30-03</datetime></created>
+<modified><datetime>20150311T132731,64-03</datetime></modified>
+<revised><datetime>20150309T094456,40-03</datetime></revised>
+<lastaccessed><datetime>20150311T132731,64-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132731,64-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime dst='true'>20070109T144450,75-02</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
++f8gAAAAAAANAAQAdQAAAAAAAAAAAAAAAAAAAAAAAADc/4gA+f92ACBOAAAAAAAAAABQcm90b2Nv
+bG89ZG9jdW1lbnQuZm9ybXNbMF0uUHJvdG9jb2xvLnZhbHVlOw1QdWVydG8gPSBkb2N1bWVudC5m
+b3Jtc1swXS5QdWVydG8udmFsdWUNc2V0VGltZW91dCgibG9nb3V0KCkiLCAgMjAwMCApOwAA+f8g
+AAAAAAAPAAQA+AEAAAAAAAAAAAAAAAAAAAAAAADc/woC+f/4ASBOAAAAAAAAAAB2YXIgUHJvdG9j
+b2xvPSIiDXZhciBQdWVydG89IiINDWZ1bmN0aW9uIERpckFCUygpeyANCXZhciBwYXRobmFtZT1s
+b2NhdGlvbi5wYXRobmFtZTsgIA0JcGF0aG5hbWU9cGF0aG5hbWUudG9VcHBlckNhc2UoKTsNCXBh
+dGhuYW1lMT1wYXRobmFtZS50b1VwcGVyQ2FzZSgpOw0JcmV0dXJuKFByb3RvY29sbysnOi8vJyts
+b2NhdGlvbi5ob3N0bmFtZSsiOiIrUHVlcnRvK3BhdGhuYW1lLnN1YnN0cmluZygwLChwYXRobmFt
+ZS5pbmRleE9mKCcuTlNGJykrNSkpKSAgDX0NZnVuY3Rpb24gbG9nb3V0KCl7DQl2YXIgcGF0aG5h
+bWU9bG9jYXRpb24ucGF0aG5hbWU7ICANCXBhdGhuYW1lPXBhdGhuYW1lLnRvVXBwZXJDYXNlKCk7
+DQl0b3AubG9jYXRpb24uaHJlZiA9IERpckFCUygpKyI/bG9nb3V0JnJlZGlyZWN0dG89IitQcm90
+b2NvbG8rJzovLycrbG9jYXRpb24uaG9zdG5hbWUrIjoiK1B1ZXJ0bytwYXRobmFtZS5zdWJzdHJp
+bmcoMCwocGF0aG5hbWUuaW5kZXhPZignLk5TRicpKzUpKQ19DQBf/xAAAgAPAAcAAAAAAAAAX/8Q
+AAIADQAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>logoutresol</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>db:= @ReplaceSubstring(@Subset(@DbName;1)+"/"+@Subset(@DbName;-1);@Char(92);"/");
+css:="";
+@SetHTTPHeader("Cache-control";"no-cache");
+"[&lt;META  http-equiv='Expires' content='0'&gt;&lt;META HTTP-EQUIV='Cache-Control' CONTENT='no-cache'&gt; &lt;META HTTP-EQUIV='Pragma'  CONTENT='no-cache'&gt;  &lt;STYLE type=\"text/css\"&gt;"+ css + "&lt;/STYLE&gt;]"+
+"[&lt;style&gt;BODY { font-family: Arial, Helvetica, sans-serif; background-color: white; scrollbar-face-color:#97C1AB;scrollbar-highlight-color:#CED4D6;scrollbar-3dlight-color:#CED4D6;scrollbar-darkshadow-color:#CED4D6;scrollbar-shadow-color:#226385;scrollbar-arrow-color:#FFFFFF;scrollbar-track-color:#CED4D6;}"+
+".tablaBandejas{font-family: Arial,  Verdana ; font-size: 6px;background-color : white;color : #000080;bordercolor : #00649F;}"+
+".TituloTabla{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:44614E;background-color:FFFFFF;font-family:Arial;font-size:11pt;}"+@NewLine+
+".fila {font-size:10pt; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:left; text-decoration:none;color:#000000; cursor:hand;}"+@NewLine+
+".filaOvr {font-size:10pt; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:left; text-decoration:none;color:orange;cursor:hand;}"+@NewLine+
+".TituloVista {font-size:13px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; font-weight:bold; background-color:#e9e9e9}"+@NewLine+
+".titulo3 {font-size:13px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; font-weight:bold; text-align:center; background-color:#e9e9e9}"+@NewLine+
+".cuerpo1 {font-size:11px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:center; padding-left:1; padding-right:5; }"+@NewLine+
+".cuerpoO1 {font-size:11px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:center; padding-left:1; padding-right:5; cursor:hand; color:#009900;}"+@NewLine+
+"&lt;/style&gt;]"</formula></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>logoutresol</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+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
+BAEAhf8IAAEAAAo=
+</rawitemdata></item></note>
+

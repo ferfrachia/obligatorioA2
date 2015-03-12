@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1766" sequence="18" unid="4DF11E0DCDA5A0AB83257DF00059C9ED">
+<created><datetime dst="true">20150218T142043,97-02</datetime></created>
+<modified><datetime>20150311T130932,89-03</datetime></modified>
+<revised><datetime>20150309T094508,90-03</datetime></revised>
+<lastaccessed><datetime>20150311T130932,89-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130932,89-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>BandejaDocumentos</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+<item name="$POID"><datetime>20150309T094508,90-03</datetime></item></note>

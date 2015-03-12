@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='89a' unid='FBAD35CC40D84935832577A6006ABDB3' sequence='53'>
+<created><datetime>20100922T162553,79-03</datetime></created>
+<modified><datetime>20150311T132739,48-03</datetime></modified>
+<revised><datetime>20150309T094508,08-03</datetime></revised>
+<lastaccessed><datetime>20150311T132739,48-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132739,48-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Melissa Vidal/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime dst='true'>20070116T150726,09-02</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+3QYAAPn/+f8gAAEAAAAPAAQAaAAAAAAAAAAAAAAAAAAAAAAAAADc/3oA+f9oACBOAAAAAAAAAAAN
+Ly9MYXMgZnVuY2lvbmVzIGphdmFzY3JpcHQgc2UgZW5jdWVudHJhbiBlbiBqcy8kJFZpZXdUZW1w
+bGF0ZSBmb3IgUHVudG9zUGVuZGllbnRlc1NJTlVOSURBRFhNTC9oZWFkZXINAPb/WwAAAAAAAwAa
+ADkAAAAAAAAAAAAAAAAAAAAAAAAAAABqcy8kJFZpZXdUZW1wbGF0ZSBmb3IgUHVudG9zUGVuZGll
+bnRlc1NJTlVOSURBRFhNTC9oZWFkZXI/3gYAAPn/d/8qAAAAAAABAAAAgAABAP+fcQABAAAAgAAA
+AAAAAAAAAAAAAAAAAAAAX/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>$$ViewTemplate for PuntosPendientesSINUNIDADXML</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$MimeType'><text>text/xml</text></item>
+<item name='$WebFlags'><text>H</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>$$ViewTemplate for PuntosPendientesSINUNIDADXML</text></item>
+<item name='$$ViewBody' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>$$ViewBody</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gv9GAAEABAAAAAAAAACgBQAAoAUIANACoAVwCEALEA7gELATgBYAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAACUAKYsAAAAAAEARE9fTk9UX1RBRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+gQKC/1oAAgAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUMAKAFDAAAAAAAAQAAAAQAAACDBAIAzP8IAAAAAACF/zMAAQAACjw/
+eG1sIHZlcnNpb249IjEuMCIgZW5jb2Rpbmc9J0lTTy04ODU5LTEnPz4AgQKDBAIAhf8vAAEAAAo8
+P3htbC1zdHlsZXNoZWV0IHR5cGU9InRleHQveHNsIiBocmVmPSIAhf8fAAEAAAplc3RpbG9fcHVu
+dG9zU0lORVNULnhzbACF/xQAAQAACj9SZWFkRm9ybSI/PoECgwQCAIX/EQABAAAKPGFzdW50b3M+
+AM3/CAAAAAAAgQKC/1oAAwAAAAAAAAAAAKAFAACgBQgAjgheCy4O/hDOE54Wbhk+HAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAJAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAAC7/3AAAwAYANLVpGNM
+rWIAAABWAAEAAAABAAcATm9DYWNoZQAfAgEAAAABABwAUHVudG9zUGVuZGllbnRlc1NJTlVOSURB
+RFhNTAAAAAAAAAAA8D+qBGoBAAAAAAAAAAAAAAoCAwAHAAoABAAJMTVTgwQDAIX/CAABAAAK3QYA
+AIr//v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK/y4AigAABQAwAAAAAAAAAAABAAAKAAAAAAAAAAAK
+AAAAAAAkJFZpZXdCb2R5Yg4BAIQAAAAAAAAAAADeBgAAiv+F/wgAAQAACoECgwQCAMz/CAAAAAAA
+hf8SAAEAAAg8L2FzdW50b3M+zf8IAAAAAAA=
+</rawitemdata></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL0c5wAAAAEAAQAAAIEAAAAA
+AAAABQABCQgAAAB5/2wAAQADO2oAAQAAAAAAAQD///8AAQADO2oAAAAfAAAAAAAAAAAAAwAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAD8/zoAAAAAAAAAAAAAAAEAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA
+AAAAAAAAvv8mAAAABQAAAJ0BAAALAAAAAAAAAENhdGVnb3JpX3plJAEATny+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX0VkaXQgRG9jdW1lbnQCAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAFNlbmQgRG9j
+dV9tZW50AwADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAQABAq+/ywAAAAFAAAAnQEA
+ABIAAAAAAAAAX01vdmUgVG8gRm9sZGVyLi4uBQA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVt
+b3ZlIEZyb20gRm9sZGVyAAYAPnw=
+</rawitemdata></item>
+<item name='$PublicAccess'><text>1</text></item></note>
+

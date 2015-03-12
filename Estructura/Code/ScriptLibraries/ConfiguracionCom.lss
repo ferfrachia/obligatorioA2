@@ -1,0 +1,51 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Public
+Option Declare 
+
+Use "Configuracion Comunicaciones"
+Use "DynamicLoading"
+
+Private Const CAMPO_RUTA_DB								= "sPath"
+Private Const CAMPO_SERVIDOR_DB						= "sServer"
+Private Const CAMPO_HOST_DB 							= "sHost"
+Private Const CAMPO_CLAVE_DB							= "sClave"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfComunicaciones As ConfigCom
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PRIVADAS
+
+Public Class ConfComunicaciones As ConfigCom
+	Private dbAdmin As NotesDatabase
+	
+	Sub new(), ConfigCom()
+		Dim igDoc As Variant
+		
+		If vKeyDB.cantElem = 0 Then
+			Set igDoc = FactoryClass("IGDocConfig")
+			Set dbADmin = New NotesDatabase (ses.CurrentDatabase.server, igDoc.PathAdministracion())
+			
+			Set docConfiguracion = dbAdmin.GetProfileDocument("ConfComunicaciones")
+			vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+			vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+			vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+			vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB) 
+			
+		'En caso de que nunca haya sido editado se setea el campo form para poderse editar
+			If Not docConfiguracion.HasItem("Form") Then
+				docConfiguracion.ReplaceItemValue "Form","ConfComunicaciones"
+			End If
+		End If
+		
+	End Sub
+End Class

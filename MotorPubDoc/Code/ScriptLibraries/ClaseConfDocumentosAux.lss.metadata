@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A126E" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="626" sequence="46" unid="64FA49C704AFBE54832579F80070A534">
+<created><datetime>20120508T173023,24-03</datetime></created>
+<modified><datetime>20150311T132356,27-03</datetime></modified>
+<revised><datetime>20150309T094437,84-03</datetime></revised>
+<lastaccessed><datetime>20150311T132356,27-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132356,27-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$POID"><datetime>20120514T133255,41-03</datetime></item>
+<item name="$TITLE" sign="true"><text>ClaseConfDocumentosAux</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.2</text></item>
+
+
+</note>

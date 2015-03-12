@@ -1,0 +1,91 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "Unidad Class"
+Use "Configuracion Formularios" 
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class UnidadFormClass As Unidad
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Class UnidadFormClass As Unidad
+	
+'CONSTRUCTOR
+'******************************************************************************************************************
+	Private conf As ConfigForms
+	
+	Public Sub new (Byval unidad As String), Unidad()
+		On Error Goto handler
+		
+		sUnidad = unidad
+		Set conf= New ConfigForms()
+		
+		
+		Set docUnidad = ViewUnidades.GetDocumentbyKey(unidad, True)
+		
+		
+		If docUnidad Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Unidad"
+		
+		
+		Exit Sub
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadForm - Constructor","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************
+'PROPERTIES
+'******************************************************************************************************************
+	'Retorna la lista de usuario con el rol pasado por parámetro para un formulario dado	
+	Public Property Get RolesForm(codigoFormulario As String, nombreRol As String) As Vector
+		On Error Goto HANDLER
+		Dim retorno As New Vector(0)
+		Dim vMiembrosFormxUniForm As NotesView
+		Dim doc As NotesDocument
+		
+		Set vMiembrosFormxUniForm= dbOrg.GetView("MiembrosFormxUniForm")
+		Set doc=vMiembrosFormxUniForm.GetDocumentByKey(Me.Numero +"##"+ codigoFormulario , True)
+		
+		retorno.values=doc.GetItemValue(nombreRol)
+		Set RolesForm=retorno
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error, NOMBRE_APLICACION,"Clase UnidadForm - Property RolesForm","","")
+		Exit Property
+	End Property
+	
+	
+	'Retorna los usuarios miembros de la unidad con acceso al formulario pasado por parámetro
+	Public Property Get UsuariosConAcceso(codigoFormulario As String) As Vector
+		On Error Goto HANDLER
+		Dim retorno As New Vector(0)
+		Dim vMiembrosFormxUniForm As NotesView
+		Dim doc As NotesDocument
+		
+		Set vMiembrosFormxUniForm= dbOrg.GetView("MiembrosFormxUniForm")
+		Set doc=vMiembrosFormxUniForm.GetDocumentByKey(Me.Numero +"##"+ codigoFormulario , True)
+		
+		retorno.values=doc.GetItemValue("nbMiembrosFormulario")
+		Set UsuariosConAcceso=retorno
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error, NOMBRE_APLICACION,"Clase UnidadForm - Property UsuariosConAcceso","","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+'MÉTODOS PÚBLICOS
+'******************************************************************************************************************
+	'Retorna true si la unidad tiene acceso al formulario pasado por parámetro
+	Public Function TieneAccesoAFormulario(codigoFormulario As String) As Boolean
+		On Error Goto HANDLER
+		Dim vMiembrosFormxUniForm As NotesView
+		Set vMiembrosFormxUniForm= dbOrg.GetView("MiembrosFormxUniForm")
+		TieneAccesoAFormulario= Not vMiembrosFormxUniForm.GetDocumentByKey(Me.Numero+"##"+codigoFormulario,True) Is Nothing
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error, NOMBRE_APLICACION,"Clase UnidadForm - Property TieneAccesoAFormulario","","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************
+	
+End Class

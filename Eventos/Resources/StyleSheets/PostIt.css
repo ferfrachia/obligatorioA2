@@ -1,0 +1,115 @@
+/* get rid of those system borders being generated for A tags */
+
+:focus {
+	-moz-outline-style:none;
+}
+
+/* tooltip styling. uses a background image (a black box with an arrow) */
+/*div.tooltip {
+	background: #FFF47F;
+	font-size:12px;
+	height:180px;
+	padding:0px;
+	margin-top: -15px; 
+	margin-left: 15px;
+	
+	width:250px;
+	display:none;
+	color:#000;
+	z-index: 3;
+
+	border: #D6D3CE 1px solid ;
+
+	overflow: auto;
+}*/
+
+.postit{
+	/*background: #FFF47F;*/
+	color:#333;
+	display:block;
+	font-size:1px;
+	height: 18px !important;
+	/* padding:10px 10px 10px 10px; */
+	text-decoration:none;
+	width:18px !important;
+	
+	position:relative;
+	/* top:150px; */
+	top:0px;
+	/* border: #00F 1px solid ;  */
+}
+
+/* simple mouseover effect for the trigger */
+#trigger:hover {
+	color:#000;
+}
+
+/* ESTILOS DEL MODAL FORM */
+input.text { 
+	margin-bottom:12px; 
+	width:95%; 
+	padding: .4em; 
+}
+
+fieldset { 
+	padding:0; 
+	border:0; 
+	margin-top:25px; 
+}
+div#users-contain {  
+	width: 350px; 
+	margin: 20px 0; 
+}
+div#users-contain table { 
+	margin: 1em 0; 
+	border-collapse: collapse; 
+	width: 100%; 
+}
+div#users-contain table td, div#users-contain table th { 
+	border: 1px solid #eee; 
+	padding: .6em 10px; 
+	text-align: left; 
+}
+.ui-button { 
+	outline: 0; margin:0; 
+	padding: .4em 1em .5em; 
+	text-decoration:none;  !important; 
+	cursor:pointer; 
+	position: relative; 
+	text-align: center; 
+}
+.ui-dialog .ui-state-highlight, .ui-dialog .ui-state-error { 
+	padding: .3em;  
+}
+.botonDialog {
+	-moz-border-radius-bottomleft:4px;
+	-moz-border-radius-bottomright:4px;
+	-moz-border-radius-topleft:4px;
+	-moz-border-radius-topright:4px;
+
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	/* background:#E6E6E6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) repeat-x scroll 50% 50%; */
+	background:#E6E6E6 url(images/ui-bg_glass_75_e6e6e6_1x400.JPG) repeat-x scroll 50% 50%;
+	border:1px solid #D3D3D3;
+	color:#555555;
+	font-weight:normal;
+	outline-color:-moz-use-text-color;
+	outline-style:none;
+	outline-width:medium;
+
+	cursor:pointer;
+	float:right;
+	line-height:1.4em;
+	margin:0.5em 0.4em 0.5em 0;
+	overflow:visible;
+	padding:0.2em 0.6em 0.3em;
+	width:auto;
+	
+	font-family:Verdana,Arial,sans-serif;
+	text-align:left;
+	font-size:90%;
+	
+	font-family:Arial,Helvetica,sans-serif;
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+<script>
+window.print();
+</script>
+	<xp:eventHandler event="onClientLoad" submit="true"
+		refreshMode="norefresh">
+		<xp:this.script><![CDATA[window.print();]]></xp:this.script>
+
+	</xp:eventHandler>
+	<xp:this.data>
+		<xp:dominoDocument var="document1"
+			formName="NumerosReservadosExp">
+		</xp:dominoDocument>
+	</xp:this.data>
+
+	<xp:inputRichText id="inputRichText1"
+		style="width:100%;height:210.0px" defaultValue=" ">
+		<xp:this.value><![CDATA[#{javascript:var dReserva:NotesDocument;
+
+var docConf:NotesDocument = database.getProfileDocument("fConfiguracion","");
+var docIgdocConf:NotesDocument = database.getProfileDocument("iGDocConfig","");
+print("imprimir el formato = ")
+print(docConf.getItemValueString("Form"))
+rti="";
+var aux="";
+var ret="";
+var rti = docConf.getItemValueString("pEstiloImpNumRes");//"estiloOrdenDia"
+var numeros:java.util.Vector = document1.getItemValue("Numeros")
+var claves:java.util.Vector = docIgdocConf.getItemValue("sClave")
+var urls:java.util.Vector = docIgdocConf.getItemValue("sUrl")
+
+var logo1="";
+var logo2="";
+
+for(i=0;i< claves.size();i++){
+	if(claves.get(i) == "LOGO_IMPRESION_1"){
+		logo1 = urls.get(i);
+	}else if(claves.get(i) == "LOGO_IMPRESION_2"){
+		logo2 = urls.get(i);
+	}
+}
+
+for(i=0;i < numeros.size();i++){
+	var numero = numeros.get(i);
+	aux = rti;
+	aux= aux.replace("%nroexpediente%",numero);
+	aux= aux.replace("%logo1%","<img src=\""+logo1+"\"/>");
+	aux= aux.replace("%logo2%","<img src=\""+logo2+"\"/>");	
+	ret = ret + aux;
+}
+ret = ret;
+return ret;}]]></xp:this.value>
+	</xp:inputRichText>
+
+</xp:view>

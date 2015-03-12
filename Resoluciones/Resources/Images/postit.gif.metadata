@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E05005A68FF" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="129a" sequence="9" unid="BB4770EECE1960C183257BA300681B87">
+<created><datetime>20130709T155707,91-03</datetime></created>
+<modified><datetime>20150311T132751,28-03</datetime></modified>
+<revised><datetime>20150309T094510,74-03</datetime></revised>
+<lastaccessed><datetime>20150311T132751,28-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132751,28-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>postit.gif</text></item>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$FlagsExt"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime>20130709T162303,98-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>postit.gif</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item></note>

@@ -1,0 +1,642 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <UNIDAD>
+'*
+'******************************************************************************************************************	
+
+'*	CONSTRUCTOR
+'*
+'*		New(unidad)
+'*			Constructor de la clase
+'*
+'*	PROPIEDADES
+'*
+'*		Get/Set UltimoNroCSUnidad() As String
+'*			Retorna/setea el último nro de carta se servicio asignado para la unidad
+'*
+'*		Get CodigoUnidad() As String
+'*			Retorna el codigo de la unidad
+'*
+'*		Get Miembros() As Vector
+'*	 		Retorna una lista de miembros de la unidad
+'*
+'*		Get UnidadSuperior() As String
+'*	 		Retorna la unidad inmediatamente superior
+'*
+'*		Get CodigoUnidadSuperior() As String
+'*	 		Retorna el código de la unidad inmediatamente superior
+'*
+'*		Get JefeUnidad() As vector
+'*	 		Retorna un vector con los nombres de los jefe de la unidad
+'*
+'*		Get TipoUnidad() As String
+'*			Retorna el tipo de unidad
+'*
+'*		Get UnidadHabilitada() As String
+'*			Retorna si la unidad está habilitada a que den pase hacia ella o no
+'*
+'*		Get/Set UnidadHabilitadaArchivar() As String
+'*			Retorna/Setea si la unidad está habilitada a archivar expedientes o no
+'*
+'*		Get UnidadesPase()as vector
+'*			Retorna un vector con las unidades habilitadas a dar pase
+'*			a ésta unidad.
+'*
+'*	MÉTODOS
+'*
+'******************************************************************************************************************
+
+Option Declare
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "ConfEE 1.0"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Unidad
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'CONSTANTES PUBLICAS
+'Tipos de Unidad
+Public Const UNIDAD_EXTERNA								="0"
+Public Const UNIDAD_INTERNA								="1"
+
+
+'ERRORES PARTICULARES DE LA CLASE
+
+'CONSTANTES PRIVADAS
+Private Const VISTA_BUSQUEDAUNIDADES						="(BusquedaUnixNro)"
+Private Const CLAVE_BASE_ORGANIZACION						="ORGAN"
+Private Const CAMPO_UNIDAD_MIEMBROS						="nbMiembros"
+Private Const CAMPO_UNIDAD_UNIDADSUPERIOR					="sUnidadSuperior"
+Private Const CAMPO_UNIDAD_JEFEUNIDAD						="nbJefeUnid"
+Private Const CAMPO_UNIDAD_TIPOUNIDAD						="lTipoUni"
+Private Const CAMPO_UNIDAD_HABILITADAPASE					="sHabilitadaPase"
+Private Const CAMPO_UNIDAD_HABILITADAARCHIVAR				="sHabilitadaArchivar"
+Private Const CAMPO_UNIDAD_CODUNIDAD						="sCodUnidad"
+Private Const CAMPO_UNIDAD_CODUNIDADSUPERIOR					="sCodUnidadSup"
+Private Const CAMPO_UNIDAD_CODIGO							="sCodVisUnidad"
+Private Const CAMPO_UNIDAD_INCISO							="sInciso"
+Private Const CAMPO_UNIDAD_NOMBREJERARQUICO					="sNombreJerarquico"
+Private Const CAMPO_UNIDAD_NOMBREJERARQUICO_PADRE				="sNombreJerarquicoPadre"
+Private Const CAMPO_UNIDAD_LISTAUNIDADES_PASE				="sUnidadesPase"
+Private Const CAMPO_UNIDAD_USUARIOS_PASE					="RolPase"
+Private Const CAMPO_UNIDAD_USUARIOS_CREAR					="RolCreador"
+Private Const CAMPO_UNIDAD_USUARIOS_RECEPTOR					="RolReceptor"
+Private Const CAMPO_UNIDAD_USUARIOS_EDITOR					="RolEditor"
+Private Const CAMPO_UNIDAD_USUARIOS_FIRMAR					="RolFirmante"
+Private Const CAMPO_UNIDAD_USUARIOS_GESTION					="RolGestion"
+Private Const CAMPO_UNIDAD_USUARIOS_MANEJAR_CONF				="RolManejarConf"
+Private Const CAMPO_UNIDAD_USUARIOS_MODIFICAR_PLAZO			="RolModificarPlazo"
+Public Const CAMPO_UNIDAD_USUARIOS_COMUNIC					="RolComunicaciones"
+Private Const CAMPO_UNIDAD_HABILITADAPASE_TRUE				="0"
+Private Const CAMPO_UNIDAD_HABILITADAPASE_FALSE				="1"
+Private Const CAMPO_UNIDAD_HABILITADAARCHIVAR_TRUE			="0"
+Private Const CAMPO_UNIDAD_HABILITADAARCHIVAR_FALSE			="1"
+Private Const CAMPO_UNIDAD_NRO_CS							="ccNroCS"
+
+Private Const CAMPO_UNIDAD_ESCLAR_NOTIF						="sLimiteNotificaciones"
+Private Const CAMPO_UNIDAD_ESCLAR_NOTIF_TRUE					="1"
+
+Private Const CAMPO_OPCIONES_PASE							="UnidadesPaseSelect"
+Private Const CAMPO_OPCION_PASE_TODAS						="Todas"
+Private Const CAMPO_OPCION_PASE_NINGUNA						="Ninguna"
+Private Const CAMPO_OPCION_PASE_ALGUNAS						="Algunas"
+Public Const CAMPO_UNIDAD_NRO								="sNroUnidad"
+
+
+'Valores de los campos
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <UNIDAD>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class Unidad
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private c As Configuracion
+	Private dbOrg As NotesDatabase
+	Private viewUnidades As NotesView
+	Private docUnidad As NotesDocument
+	Private sUnidad As String
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+	
+'******************************************************************************************************************		
+	
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		If c Is Nothing Then Set c = New Configuracion
+		Set dbOrg = c.ReferenciarBaseDeDatos(CLAVE_BASE_ORGANIZACION)
+		
+		If dbOrg Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN & " " & CLAVE_BASE_ORGANIZACION
+		
+		Set ViewUnidades = dbOrg.GetView(VISTA_BUSQUEDAUNIDADES)
+		If viewUnidades Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_BUSQUEDAUNIDADES 
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Unidad - Constructor","")
+		Exit Sub
+	End Sub	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get Nombre As String
+		On Error Goto HANDLER
+		
+		Nombre=sUnidad
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get Nombre","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get EscalarNotificacion As Integer
+		On Error Goto HANDLER
+		
+		If docUnidad.HasItem(CAMPO_UNIDAD_ESCLAR_NOTIF) Then
+			EscalarNotificacion = docUnidad.GetItemValue(CAMPO_UNIDAD_ESCLAR_NOTIF)(0)=CAMPO_UNIDAD_ESCLAR_NOTIF_TRUE	
+		Else
+			EscalarNotificacion=False	
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get EscalarNotificacion","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get UltimoNroCSUnidad() As String
+	' Retorna el último nro de carta de servicio asignado para esta unidad
+		On Error Goto HANDLER
+		
+		UltimoNroCSUnidad = docUnidad.GetItemValue(CAMPO_UNIDAD_NRO_CS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UltimoNroCSUnidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set UltimoNroCSUnidad() As String
+	' Setea el último nro de carta de servicio asignado para esta unidad
+		On Error Goto HANDLER
+		
+		docUnidad.ReplaceItemValue CAMPO_UNIDAD_NRO_CS,UltimoNroCSUnidad
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Set UltimoNroCSUnidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get CodigoUnidad() As String
+	' Retorna el codigo de la unidad
+		On Error Goto HANDLER
+		
+		CodigoUnidad = docUnidad.GetItemValue(CAMPO_UNIDAD_UNIDADSUPERIOR)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get CodigoUnidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get Miembros() As Vector
+	' Retorna una lista de miembros de la unidad
+		On Error Goto HANDLER
+		
+		Set Miembros = New Vector(0)
+		Miembros.Values = docUnidad.GetItemValue(CAMPO_UNIDAD_MIEMBROS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get Miembros","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get UnidadSuperior() As String
+	' Retorna la unidad inmediatamente superior
+		On Error Goto HANDLER
+		
+		UnidadSuperior = docUnidad.GetItemValue(CAMPO_UNIDAD_UNIDADSUPERIOR)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UnidadSuperior","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	Public Property Get CodigoUnidadSuperior() As String
+	' Retorna el codigo de la unidad inmediatamente superior
+		On Error Goto HANDLER
+		
+		CodigoUnidadSuperior = docUnidad.GetItemValue(CAMPO_UNIDAD_CODUNIDADSUPERIOR)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get CodigoUnidadSuperior","")
+		Exit Property
+	End Property
+'******************************************************************************************************************				
+	Public Property Get JefeUnidad() As vector
+	' Retorna un vector con los nombres de los jefe de la unidad
+		On Error Goto HANDLER
+		
+		Set JefeUnidad = New Vector(0)
+		JefeUnidad.Values = docUnidad.GetItemValue(CAMPO_UNIDAD_JEFEUNIDAD)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get JefeUnidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	Public Property Get TipoUnidad() As String
+	' Retorna el tipo de unidad
+		On Error Goto HANDLER
+		
+		TipoUnidad = docUnidad.GetItemValue(CAMPO_UNIDAD_TIPOUNIDAD)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get TipoUnidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************					
+	Public Property Get Codigo() As String
+	' Retorna el campo con el codigo de la unidad para la numeracion
+		On Error Goto HANDLER
+		
+		Codigo = docUnidad.GetItemValue(CAMPO_UNIDAD_CODIGO)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get Codigo","")
+		Exit Property
+	End Property
+'******************************************************************************************************************						
+	Public Property Get Inciso() As String
+		' Retorna el campo con el codigo de la unidad para la numeracion
+		On Error Goto HANDLER
+		
+		Inciso = docUnidad.GetItemValue(CAMPO_UNIDAD_INCISO)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get Inciso","")
+		Exit Property
+	End Property
+'******************************************************************************************************************				
+	
+	Public Property Get UnidadHabilitada As Integer
+	' Retorna el tipo de unidad
+		On Error Goto HANDLER
+		
+		
+		If docUnidad.hasItem(CAMPO_UNIDAD_HABILITADAPASE) Then
+			UnidadHabilitada = docUnidad.GetItemValue(CAMPO_UNIDAD_HABILITADAPASE)(0)=CAMPO_UNIDAD_HABILITADAPASE_TRUE
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UnidadHabilitada","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set UnidadHabilitada As Integer
+	' Retorna el tipo de unidad
+		On Error Goto HANDLER
+		
+		
+		If UnidadHabilitada Then
+			docUnidad.replaceItemValue CAMPO_UNIDAD_HABILITADAPASE,CAMPO_UNIDAD_HABILITADAPASE_TRUE	
+		Else
+			docUnidad.replaceItemValue CAMPO_UNIDAD_HABILITADAPASE,CAMPO_UNIDAD_HABILITADAPASE_FALSE	
+		End If		
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Set UnidadHabilitada","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	Public Property Get UnidadHabilitadaArchivar As Integer
+	' Retorna true si la unidad está habilitada a archivar expedientes, false en caso contrario
+		On Error Goto HANDLER		
+		
+		If docUnidad.hasItem(CAMPO_UNIDAD_HABILITADAARCHIVAR) Then
+			UnidadHabilitadaArchivar = docUnidad.GetItemValue(CAMPO_UNIDAD_HABILITADAARCHIVAR)(0)=CAMPO_UNIDAD_HABILITADAARCHIVAR_TRUE
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UnidadHabilitadaArchivar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set UnidadHabilitadaArchivar As Integer
+	'Setea si la unidad está habilitada a archivar expedientes o no
+		On Error Goto HANDLER		
+		
+		If UnidadHabilitadaArchivar Then
+			docUnidad.replaceItemValue CAMPO_UNIDAD_HABILITADAARCHIVAR,CAMPO_UNIDAD_HABILITADAARCHIVAR_TRUE	
+		Else
+			docUnidad.replaceItemValue CAMPO_UNIDAD_HABILITADAARCHIVAR,CAMPO_UNIDAD_HABILITADAARCHIVAR_FALSE	
+		End If		
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Set UnidadHabilitadaArchivar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get OpcionPase As String
+		On Error Goto HANDLER
+		
+		If docUnidad.HasItem(CAMPO_OPCIONES_PASE) Then
+			OpcionPase=docunidad.GetItemValue(CAMPO_OPCIONES_PASE)(0)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get OpcionesPase","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************					
+	
+	Public Property Get UnidadesPase() As vector
+	' Retorna un vector con las unidades habilitadas a dar pase
+	' a ésta unidad.
+		On Error Goto HANDLER
+	'
+		Set UnidadesPase = New vector(0)
+		
+		UnidadesPase.values = docUnidad.GetItemValue(CAMPO_UNIDAD_LISTAUNIDADES_PASE)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UnidadesPase","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolPase() As vector
+	' Retorna un vector con las unidades habilitadas a dar pase
+	' a ésta unidad.
+		On Error Goto HANDLER
+	'
+		Set UsuariosRolPase = New vector(0)
+		
+		UsuariosRolPase.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_PASE)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolPase","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	Public Property Get UsuariosRol(rol As String) As vector
+		On Error Goto handler
+		Set UsuariosRol = New vector(0)
+		UsuariosRol.values = docUnidad.GetItemValue(rol)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRol","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************	
+	
+	Public Property Get UsuariosRolComunic() As vector
+	' Retorna un vector con los usuario con RolComunicaciones de esta unidad
+		On Error Goto HANDLER
+	'
+		Set UsuariosRolComunic = New vector(0)
+		
+		UsuariosRolComunic.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_COMUNIC)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolComunic","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolCrear() As vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol crear
+		On Error Goto HANDLER
+		
+		Set UsuariosRolCrear = New vector(0)
+		
+		UsuariosRolCrear.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_CREAR)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolCrear","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolReceptor() As vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		
+		Set UsuariosRolReceptor = New vector(0)
+		
+		UsuariosRolReceptor.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_RECEPTOR)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolReceptor","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	
+	Public Property Get UsuariosRolEditor() As Vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		
+		Set UsuariosRolEditor = New vector(0)
+		
+		UsuariosRolEditor.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_EDITOR)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolEditor","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolFirmar() As Vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		
+		Set UsuariosRolFirmar = New vector(0)
+		If docUnidad.hasItem(CAMPO_UNIDAD_USUARIOS_FIRMAR) Then
+			UsuariosRolFirmar.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_FIRMAR)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolFirmar","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolGestion() As Vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		
+		Set UsuariosRolGestion = New vector(0)
+		If docUnidad.hasItem(CAMPO_UNIDAD_USUARIOS_GESTION) Then
+			UsuariosRolGestion.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_GESTION)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolGestion","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolManejarConfidencial() As Vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		
+		Set UsuariosRolManejarConfidencial = New vector(0)
+		If docUnidad.hasItem(CAMPO_UNIDAD_USUARIOS_MANEJAR_CONF) Then
+			UsuariosRolManejarConfidencial.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_MANEJAR_CONF)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolManejarConfidencial","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+	
+	Public Property Get UsuariosRolModificarPlazo() As Vector
+	' Retorna un vector con llos nombres de usuario que tienen el rol Receptor
+		On Error Goto HANDLER
+		
+		Set UsuariosRolModificarPlazo = New vector(0)
+		If docUnidad.hasItem(CAMPO_UNIDAD_USUARIOS_MODIFICAR_PLAZO) Then
+			UsuariosRolModificarPlazo.values = docUnidad.GetItemValue(CAMPO_UNIDAD_USUARIOS_MODIFICAR_PLAZO)	
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get UsuariosRolModificarPlazo","")
+		Exit Property
+	End Property
+	
+'****************************************************************************************
+			'Métodos Públicos
+'****************************************************************************************
+	
+	Public Function UnidadHabilitadaPase(sUnidad As String) As Integer
+		On Error Goto HANDLER
+		
+		
+		Select Case(Me.OpcionPase)
+		Case CAMPO_OPCION_PASE_TODAS:
+			UnidadHabilitadaPase=True	
+		Case CAMPO_OPCION_PASE_NINGUNA:
+			UnidadHabilitadaPase=False
+		Case CAMPO_OPCION_PASE_ALGUNAS:
+			UnidadHabilitadaPase=Me.UnidadesPase.isMember(sUnidad,0,False)
+			If sUnidad=Me.Nombre Then
+				UnidadHabilitadaPase =True
+			End If
+		Case Else
+			UnidadHabilitadaPase=False
+		End Select
+		
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Function UnidadHabilitadaPase","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function save()
+		'Salva el documento 
+		On Error Goto HANDLER
+		
+		docUnidad.save True,False
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Unidad - Método Save","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	
+End Class

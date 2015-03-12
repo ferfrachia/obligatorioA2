@@ -1,0 +1,58 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+	2.0 24/08/2009		Modificado por: Ian coates
+		Se modifció la "no modificacion" anterior para que se use realmente esta configuracion
+
+%END REM
+
+Option Declare
+Use "Configuracion Eventos"
+Use "DynamicLoading"     
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfEventos As ConfigEventos 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Dim sUsarIgDocConf As String
+
+Public Class ConfEventos As ConfigEventos 
+	
+	Private dbAdmin As NotesDatabase
+	
+	Public Sub new (), ConfigEventos()
+		On Error Goto HANDLER
+		If vKeyDB.cantElem=0 Then    
+			Dim igDoc As Variant		
+			
+			Set igDoc = FactoryClass("IGDocConfig")
+			Set dbADmin = New NotesDatabase (session.CurrentDatabase.server, igDoc.PathAdministracion())
+			Set docConfiguracion= dbadmin.getProfileDocument("(ConfiguracionEv)")
+		
+			vKeyDB.values = docConfiguracion.getItemValue(CAMPO_EVENTOS_CLAVE_DB)
+			vServer.values = docConfiguracion.getItemValue(CAMPO_EVENTOS_SERVIDOR_DB)
+			vHost.values = docConfiguracion.getItemValue(CAMPO_EVENTOS_HOST_DB)
+			vFilePath.values = docConfiguracion.getItemValue(CAMPO_EVENTOS_RUTA_DB)
+		'	vFormNum.values = docConfiguracion.getItemValue(CAMPO_RESOL_FORMATO_NUMERACION)
+		'	vKeyNum.values = docConfiguracion.getItemValue(CAMPO_RESOL_CLAVE_NUMERACION)
+			If Not docConfiguracion.HasItem("Form") Then
+		'En caso de que nunca haya sido editado se setea el campo form para mNum.values = docConfiguracion.getItemValue(CAMPO_FORMATO_NUMERACION)
+				docConfiguracion.ReplaceItemValue "Form", "(ConfiguracionEv)"
+			End If
+			
+		End If
+		Exit Sub
+HANDLER:
+		
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionEventos - Método new","")
+		Exit Sub
+	End Sub	
+	
+	
+End Class

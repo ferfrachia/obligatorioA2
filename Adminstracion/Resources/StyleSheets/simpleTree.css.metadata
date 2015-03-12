@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050058E9F2" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="17a6" sequence="15" unid="62933BB1EE694DCB832576B9006E0A34">
+<created><datetime dst="true">20100128T180155,72-02</datetime></created>
+<modified><datetime>20150311T131138,45-03</datetime></modified>
+<revised><datetime>20150309T094454,49-03</datetime></revised>
+<lastaccessed><datetime>20150311T131138,45-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131138,45-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+
+<item name="$FileModDT" sign="true"><datetime>20090819T201243,83-03</datetime></item>
+
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$FileNames" sign="true"><text>simpleTree.css</text></item>
+<item name="$Class"><text>Diseño ESTRUCTURA</text></item>
+<item name="$TITLE" sign="true"><text>simpleTree.css</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item></note>

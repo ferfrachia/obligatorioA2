@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500598295'>
+<noteinfo noteid='51e' unid='114421E0DEC8D118032572D70051ED36' sequence='61'>
+<created><datetime>20070510T115451,42-03</datetime></created>
+<modified><datetime>20150311T131746,65-03</datetime></modified>
+<revised><datetime>20150309T094346,97-03</datetime></revised>
+<lastaccessed><datetime>20150311T131746,65-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131746,65-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IMF</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20081008T152013,14-03</datetime><datetime>20090121T174925,73-03</datetime><datetime
+>20090719T145723,64-03</datetime><datetime>20100609T164935,13-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070511T185825,98-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
++f8gAAAAAAAPAAQAMwAAAAAAAAAAAAAAAAAAAAAAAADc/0YA+f80ACBOAAAAAAAAAAB2YXIgZHBy
+b3ZpZGVyOw0NZnVuY3Rpb24gc2V0VmFsKHZhbCl7DWFsZXJ0KHZhbCkNfQAvX/8QAAIADwAHAAAA
+AAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>Pruebadojo</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$SubForms' sign='true'><text>dojo</text></item>
+<item name='$SubForm_RepIDs' sign='true'><text>0000000000000000</text></item>
+<item name='$Flags'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>Pruebadojo</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAhf8IAAEAAAqBAoMEAQCF/wgA
+AQAACt0GAACt/3H/JgAAAAAAAwAYAAQAAAAAAAAAAAAAAAAAAAAAAAAAAABkb2pvrf8RAA4ACAAA
+AAUAZG9qbwAArgLeBgAArgCF/wgAAQAACoECgwQBAMz/CAAAAAAAhf8nAAEAAAo8c2NyaXB0IHR5
+cGU9InRleHQvamF2YXNjcmlwdCI+AIECgwQBAIX/LgABAAAKCWRvam8ucmVxdWlyZSgiZG9qby53
+aWRnZXQuQ29tYm9Cb3giKTuBAoMEAQCF/xEAAQAACjwvc2NyaXB0PgCBAoMEAQCF/wgAAQAACoEC
+gwQBAIX/YgABAAAKPHNlbGVjdCBkb2pvVHlwZT0iU2VsZWN0IiB2YWx1ZT0idGhpcyBzaG91bGQg
+bmV2ZXIgYmUgc2VlbiAtIGl0IGlzIHJlcGxhY2VkISIgaWQ9InVuaWRhZCIggQKDBAEAhf8JAAEA
+AAoJAIX/EgABAAAKIGRhdGFVUkw9IoX/TgABAAAKaHR0cDovL250aXNhMy5pc2FsdGRhLmNvbS51
+eS9GaWxlQ2VudGVyMi9Pcmdhbml6YWNpb24ubnNmL3VuaWRhZGVzZG9qb4X/QwABAAAKIiBzdHls
+ZT0id2lkdGg6IDMwMHB4OyIgbmFtZT0iZm9vLmJhcjEiIG1heExpc3RMZW5ndGg9IjE1IiAAhf8f
+AAEAAApvblZhbHVlQ2hhbmdlZD0ic2V0VmFsIgCF/wkAAQAACj4AgQKDBAEAhf8RAAEAAAo8L3Nl
+bGVjdD4AgQKDBAEAhf8IAAEAAAqBAoMEAQCF/2MAAQAACjxzZWxlY3QgZG9qb1R5cGU9IkNvbWJv
+Qm94IiB2YWx1ZT0idGhpcyBzaG91bGQgbmV2ZXIgYmUgc2VlbiAtIGl0IGlzIHJlcGxhY2VkISIg
+aWQ9InVuaWRhIiAAgQKDBAEAhf9DAAEAAAoJIHN0eWxlPSJ3aWR0aDogMzAwcHg7IiBuYW1lPSJm
+b28uYmFyMSIgbWF4TGlzdExlbmd0aD0iMTUiPgCBAoMEAQCF/xEAAQAACjwvc2VsZWN0PgCBAoME
+AQCF/wgAAQAACs3/CAAAAAAAgQKDBAEAhf8KAAEAAAogIA==
+</rawitemdata></item></note>
+

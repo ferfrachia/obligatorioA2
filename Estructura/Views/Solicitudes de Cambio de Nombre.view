@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='432' unid='6810D37B839F5AD343256E8B004B7893' sequence='91'>
+<created><datetime>20040505T164420,67+03</datetime></created>
+<modified><datetime>20150311T131218,82-03</datetime></modified>
+<revised><datetime>20150309T094441,13-03</datetime></revised>
+<lastaccessed><datetime>20150311T131218,82-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131218,82-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071228T100938,40-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Solicitudes de Cambio de Nombre|SolCamNom</text></item>
+<item name='$Index' sign='true'><text>/C</text></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+AgECABYAAgAkNAUABgBmRmVjaGFLAQMAAgAYAAYARXN0YWRvBQAGAEVzdGFkbwMAAgAkAAwATm9t
+YnJlQWN0dWFsBQAMAE5vbWJyZUFjdHVhbAMAAgAkAAwATm9tYnJlRnV0dXJvBQAMAE5vbWJyZUZ1
+dHVybwMABQA8ADcABQACAAYADAAMAAkAJDRFc3RhZG9Ob21icmVBY3R1YWxOb21icmVGdXR1cm8k
+Q29uZmxpY3QABAAEAAAAOAAFAAQARm9ybQEADABDYW1iaW9Ob21icmUKAgQABQAJACRDb25mbGlj
+dABoAR4BHAIEAAMABwASAAwACUwxUzRTNVM3UzhT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+HAACAABEiWYAAAACAAhmAAIABgAkNEVzdGFkbw==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAEAAUAigAAAFZDBQACAFAAJAAAAFIAAQAACAAhAAAAAAAAAAACAAAAVkMBAAYAAAAaAAAAggAB
+AAAIACEAAAAAAAAAAgIAAABWQwAADAAAACYAAABQAAEAAAgAIAAAAAAAAAACAgAAAFZDAAAMAAAA
+JgAAAFAAAQAACAAgAAAAAAAAAAICAAAAJDQ8VEFCTEUgV0lEVEg9IjYyMyIgY2xhc3M9InRhYmxh
+IiBjZWxsc3BhY2luZz0yIGJvcmRlcj0iMCIgYm9yZGVyY29sb3I9IiMwMDY0OUYiPiQAAgAWAAIA
+JDQFAAYAZkZlY2hhSwEDAAcADAAFAAkwUzBFAEVzdGFkbxoAAgAYAAYARXN0YWRvBQAGAEVzdGFk
+bwMATm9tYnJlQWN0dWFsJgACACQADABOb21icmVBY3R1YWwFAAwATm9tYnJlQWN0dWFsAwBOb21i
+cmVGdXR1cm8mAAIAJAAMAE5vbWJyZUZ1dHVybwUADABOb21icmVGdXR1cm8DACYAAQAAAAEBAAkB
+AAAKAQEOCgAALwCtKwEAAQABAQAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEAxAAAAAAA
+//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAA
+AAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJ
+AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAEA9/f3
+AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAICAgAAAAAAAAAAAAAgAAAAAAAEA
+WEMACIADAAAAAAABAgICAQEBAQcEAwAAAAAAAAAAIC8vOllDAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item></note>
+

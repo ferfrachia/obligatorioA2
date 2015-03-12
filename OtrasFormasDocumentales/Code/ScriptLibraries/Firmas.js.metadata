@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="2da" sequence="43" unid="8C32D137A4FE2F5803257391004D2E5A">
+<created><datetime>20071112T110301,38-03</datetime></created>
+<modified><datetime>20150309T094354,74-03</datetime></modified>
+<revised><datetime>20150309T094354,73-03</datetime></revised>
+<lastaccessed><datetime>20150309T094354,74-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100907,87-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=EAS</name><name>CN=IAN COATES/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Pablo Andrade/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Leonardo Capillera/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071112T110301,42-03</datetime><datetime>20080328T143616,07-03</datetime><datetime>20081029T161703,43-03</datetime><datetime>20081029T171845,30-03</datetime><datetime dst="true">20081117T102122,18-02</datetime><datetime dst="true">20081119T085514,34-02</datetime><datetime dst="true">20081119T162409,36-02</datetime><datetime dst="true">20081122T153311,57-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>Firmas</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20130923T103125,33-03</datetime></item></note>

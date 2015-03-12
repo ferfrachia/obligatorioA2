@@ -1,0 +1,180 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <IGDocConfig>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'* 
+'*		New()
+'*			Constructor de la clase 
+'*
+'*	PROPIEDADES
+
+'******************************************************************************************************************
+
+Option Declare
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class IGDocConfig
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+
+
+
+'******************************************************************************************************************		
+'********************************************************************************************************************************************	
+
+
+'CONSTANTES PRIVADAS
+Private Const NOMBRE_FORM_CONF				= "IGDocConfig"
+Private Const CAMPO_PROTOCOLO					="rProtocolo"
+Private Const CAMPO_PUERTO					="sPuerto"
+Private Const CAMPO_EMAIL_INSTITUCIONAL			="sMail"
+Private Const CAMPO_INSTITUCION				="sInstitucion"
+Private Const CAMPO_HOST_SERVER				="sHost"
+
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class IGDocConfig
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+'********************************************************************************************************************************************************************************	
+'CONSTRUCTOR
+	Public Sub new()
+		On Error Goto HANDLER
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		'Se carga el documento de profile
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(NOMBRE_FORM_CONF)
+		'En caso de que nunca haya sido editado se setea el campo form para poderse editar
+		If Not docConfiguracion.HasItem("Form") Then
+			docConfiguracion.ReplaceItemValue "Form",NOMBRE_FORM_CONF
+		End If
+		Exit Sub
+HANDLER:
+		Msgbox "Error en new IGDOCCONFIG " & Err & "-" & Erl
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método new","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	Public Property Set Protocolo As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_PROTOCOLO,Cstr(Protocolo)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método set Protocolo","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get Protocolo As String
+		On Error Goto handler
+		Protocolo =Cstr(docConfiguracion.GetItemValue(CAMPO_PROTOCOLO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método get Protocolo","")
+		Exit Property
+	End Property
+	
+		'******************************************************************************************************************	
+	Public Property Set Puerto As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_PUERTO,Cstr(Puerto)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método set Puerto","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get Puerto As String
+		On Error Goto handler
+		Puerto =Cstr(docConfiguracion.GetItemValue(CAMPO_PUERTO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método get Puerto","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Institucion As String
+		On Error Goto handler
+		Institucion = docConfiguracion.getItemValue(CAMPO_INSTITUCION)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get Institucion","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set Institucion As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_INSTITUCION, Institucion
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set Institucion","")
+		Exit Property
+	End Property		
+	'******************************************************************************************************************	
+	
+	Public Property Get EmailInstitucional As String
+		On Error Goto handler
+		EmailInstitucional = docConfiguracion.getItemValue(CAMPO_EMAIL_INSTITUCIONAL)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get EmailInstitucional","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set EmailInstitucional As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_EMAIL_INSTITUCIONAL, EmailInstitucional
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set EmailInstitucional","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	
+	
+	Public Property Get Host() As String
+	'	On Error Goto HANDLER
+		
+		Host= docConfiguracion.GetItemValue(CAMPO_HOST_SERVER)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Propiedad Get Host","")
+		Exit Property
+	End Property
+	
+	
+'*************************************************************************************************************************************	
+	
+	
+End Class
+'******************************************************************************************************************

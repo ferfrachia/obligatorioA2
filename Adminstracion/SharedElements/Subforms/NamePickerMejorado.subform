@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E9F2'>
+<noteinfo noteid='58e' unid='F7F711E449471077032572E00073323E' sequence='157'>
+<created><datetime>20070519T175815,02-03</datetime></created>
+<modified><datetime>20150311T131116,49-03</datetime></modified>
+<revised><datetime>20150309T094327,34-03</datetime></revised>
+<lastaccessed><datetime>20150311T131116,49-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131116,49-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070705T144030,67-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>NamePickerMejorado</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>NamePickerMejorado</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAzP8IAAAAAACF/xsAAQAACjwh
+LS0gTmFtZVBpY2tlciAtLT4AgQKC/1oAAgAAAAAAAAAAAKAFAACgBRQARAfoCIwKMAzUDXgPHBHA
+EmQUCBasF1AZ9BqYHDwe4B+EISgjzCRwJgABAAAAAJSAoAUKAKAFCgAwKmQAAQAAAAQAAACDBAIA
+hf9KAAEAAAo8ZGl2IGlkPSJOYW1lc1BpY2tlck1lam9yYWRvIiBzdHlsZT0iei1pbmRleDoxMDAw
+OyBkaXNwbGF5Om5vbmU7Ij6BAoMEAQCF/x0AAQAACgk8c3BhbiBjbGFzcz0icmlnaHQiPgCBAoME
+AQCF/yEAAQAACgkJPGltZyBjbGFzcz0ibGluayIgc3JjPSIA3QYAAK3/qf9GAAEAGAAEADoAOgAA
+ACwAAQABAC8AiwAAAAAAAAAAAPA/EAFrAgEAAQBcAAEAAQAvAIQDIgIDAAcADAAFAAkwUzBFAIX/
+CAABAAAKqgLeBgAArgCF/1QAAQAACi9pbWFnZXMvaWNvbnMvY3Jvc3MuZ2lmIiBhbHQ9IkNsb3Nl
+IiBvbmNsaWNrPSJOYW1lUGlja2VyTWVqb3JhZG8uY2xvc2UoKTsiLz6BAoMEAQCF/xAAAQAACgk8
+L3NwYW4+gQKDBAEAhf8/AAEAAAoJPHNwYW4gaWQ9Ik5hbWVzUGlja2VyTWVqb3JhZG9MYWJlbCI+
+UGlja2VyIEhlYWQ8L3NwYW4+AIECgwQBAIX/bAABAAAKCTxpbnB1dCBpZD0ic2VhcmNoX3RleHRf
+bWVqb3JhZG8iIGF1dG9jb21wbGV0ZT0ib2ZmIiBuYW1lPSJxIiBzaXplPSIyNSIgdGl0bGU9IlR5
+cGUgbmFtZSBvZiB1c2VyIiAvPoECgwQBAIX/ZAABAAAKCSA8aW1nIGFsdD0iU3Bpbm5lciIgaWQ9
+InNlYXJjaF9zcGlubmVyIiBzcmM9ImltYWdlcy9pbmRpY2F0b3IuZ2lmIiBzdHlsZT0iZGlzcGxh
+eTpub25lOyIgLz6BAoMEAQCF/ykAAQAACgk8ZGl2IGlkPSJzZWxCdXNxTWVqb3JhZG8iPjwvZGl2
+PgCBAoMEAQCF/w0AAQAACgk8aHI+AIECgwQBAIX/MQABAAAKCTxkaXYgaWQ9InNlYXJjaF9yZXN1
+bHRzX21lam9yYWRvIj48L2Rpdj4AgQKDBAEAhf8OAAEAAAo8L2Rpdj6BAoMEAQCF/ygAAQAACgk8
+c2NyaXB0IHR5cGU9InRleHQvamF2YXNjcmlwdCI+gQKDBAEAhf8kAAEAAAoJCU5hbWVQaWNrZXJN
+ZWpvcmFkby5pbml0KCB7gQKDBAEAhf9EAAEAAAoJCQlwcm9tcHQ6ICc8cD5TZWxlY2Npb25lIGxh
+IHBlcnNvbmEgcXVlIGRlc2VhIGFncmVnYXI8L3A+JyyBAoMEAQCF/yUAAQAACgkJCWFkZHJlc3Ni
+b29rOiAnL25hbWVzLm5zZicsAIECgwQBAIX/JgABAAAKICAJCQl2aWV3bmFtZTogJygkVklNUGVv
+cGxlKScsgQKDBAEAhf8UAAEAAAoJCQljb2x1bW46IDGBAoMEAQCF/w0AAQAACgkJfSk7AIECgwQB
+AIX/EgABAAAKCTwvc2NyaXB0PoECgwQBAIX/HAABAAAKPCEtLSAvTmFtZVBpY2tlciAtLT7N/wgA
+AAAAAA==
+</rawitemdata></item></note>
+

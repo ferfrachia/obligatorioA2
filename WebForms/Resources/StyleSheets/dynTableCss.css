@@ -1,0 +1,54 @@
+.DivTableClass {
+	margin:0px;padding:0px;
+	width:100%;
+}.DivTableClass table{
+	width:100%;
+	margin:0px;padding:0px;
+}.DivTableClass tr:hover td{
+	background-color:#80BBDD;
+	background:-o-linear-gradient(bottom, #80BBDD 5%, #FFFFFF 100%);	
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #80BBDD), color-stop(1, #56aaff) );
+	background:-moz-linear-gradient( center top, #80BBDD 5%, #FFFFFF 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#80BBDD", endColorstr="#FFFFFF");	
+	background: -o-linear-gradient(top,#80BBDD,#56aaff);
+}.DivTableClass tr:first-child td{
+	background: none repeat scroll 0 0 #808080;
+    color: #FFFFFF;
+    font-weight: bold;
+	font-size: 13px;
+	font-family: Arial;
+}.DivTableClass td{
+	background:-o-linear-gradient(bottom, #FFFFFF 15%, #FFFFFF 100%);	
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #56aaff), color-stop(1, #80BBDD) ); 
+	background:-moz-linear-gradient( center top, #FFFFFF 15%, #FFFFFF 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#FFFFFF", endColorstr="#80BBDD");	
+	background: -o-linear-gradient(top,#56aaff,#80BBDD);
+	background-color: #FFFFFF;
+	text-align:left;
+	padding:7px;
+	font-size:13px;
+	font-family:Arial;
+	color:#000000;
+}
+
+.buttonClass {
+    background: -moz-linear-gradient(center top , #808080 5%, #808080 100%) repeat scroll 0 0 #808080;
+    border: 1px solid #84BBF3;
+    border-radius: 13px;
+    box-shadow: 0 0 0 0 #BBDAF7 inset;
+    color: #FFFFFF;
+    display: inline-block;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 13px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #528ECC;
+}
+.buttonClass:hover {
+    background: -moz-linear-gradient(center top , #185796 5%, #79BBFF 100%) repeat scroll 0 0 #185796;
+}
+.buttonClass:active {
+    position: relative;
+    top: 1px;
+}

@@ -1,0 +1,154 @@
+
+.tabla
+{
+    border-radius: 4px 0 0 4px;
+    font-size: 12px;
+    height: 27px;
+    text-align: center;
+	border-radius: 4px 4px 4px 4px;
+	width:40%;
+	padding:0;
+}
+
+.tabla2
+{
+	border: 2px #808080;
+	border-radius: 4px 4px 4px 4px;
+	height:auto;
+	margin-right:auto;
+	width:70%;
+}
+
+.TablaTitulo
+{
+	background-image: url("dot.gif");
+	font-family:Arial;
+	color: #808080;
+	font-size: 24px;
+	text-align: left;
+	align:left;
+	
+
+	  
+}
+.cabezalTabla2
+{
+	background: none repeat scroll 0 0 #808080;
+    border-radius: 4px 0 0 4px;
+    color: #FFFFFF;
+    font-family: Arial;
+    font-size: 12px;
+    height: 27px;
+    text-align: center;
+    width: 20%;
+    
+}
+
+.dato {
+    font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    width:95%;
+    height:20px;
+    
+}
+
+.dato2
+{
+	font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+    width:90%;
+    height:20px;
+	
+}
+
+.datoLectura {
+    border: 1px outset #808080;
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: center;
+}
+
+
+.campoCentro
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:70%;
+	height:auto;
+	position:absolute;
+	right:0px;
+	width:300px;
+}
+
+
+.campoGrande
+{
+	font-family:Arial;
+	height:auto;
+	width:90%;
+}
+.campoGrande2
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:30%;
+}
+
+.campoRadioButton
+{
+	font-family:Arial;
+	text-align: right;
+}
+
+.campoTelefono
+{
+	font-family:Arial;
+	margin-right:auto;
+}
+.campoCombo
+{
+	font-family:Arial;
+	text-align: center;
+	width:95%;
+}
+
+.Etiquetas
+{
+    font-family:Arial;
+    background: none repeat scroll 0 0 #808080;
+    border-radius: 4px 0 0 4px;
+    color: #FFFFFF;
+    font-size: 12px;
+    height: 27px;
+    text-align: center;
+    width:20%;
+}
+
+.boton
+{
+	font-family:Arial;
+    background: none repeat scroll 0 0 #808080;
+    border-radius: 4px 0 0 4px;
+    color: #FFFFFF;
+    text-align: center;
+    width:33%;
+}
+
+
+.btnIngresar
+{
+	border: 4px solid blue;
+	background: #F5F5F5;
+	position:absolute;
+	width:200px;
+	margin:0;
+	padding:0;
+}
+
+.par
+{
+	background-color: #E8E8E8 ;
+}

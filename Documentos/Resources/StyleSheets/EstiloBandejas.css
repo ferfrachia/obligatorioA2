@@ -1,0 +1,24 @@
+/* CSS Document */
+.FormFilaTituloBandeja{background-color:#CAD3E2;color:#35417D;font-size:10pt;font-family: Tahoma, Verdana, Arial;}
+.FormCeldaTituloBandeja{border-left: solid  1px #636768;text-align: center}
+.FormFilaForm{color:#35417D;font-size:10pt;font-family: Tahoma, Verdana, Arial;}
+.FormFilaFormOvr{color:orange;font-size:10pt;font-family: Tahoma, Verdana, Arial;cursor:pointer;align:center;}
+.FormCeldaForm{border-bottom: solid  1px #cccccc; align:center;}
+.TituloBandejas{font-size:11pt;font-family: Tahoma, Verdana, Arial;color:#303632;}
+.botonParam{font-family: Arial, Verdana , Helvetica, sans-serif;font-size: 11px;color:#000000;border-bottom : solid 1px #00649F;border-left : solid 1px #00649F;border-right : solid 1px #00649F;border-top : solid 1px #00649F;background-color: #F8F7FC;}
+.CeldaLink{border-left: solid 2px #35417D;color:#35417D;}
+.CeldaLinkOvr{border-left: solid 2px #35417D;color:orange;cursor:pointer}
+.LinksSuperiores{color:#35417D;font-size:8pt;font-family: Tahoma, Verdana, Arial;}
+.SelectFiltro{color:#35417D;font-size:8pt;font-family: Tahoma, Verdana, Arial;}
+.CeldaNombreUnidad{color:#35417D;font-size:15pt;font-family: Tahoma, Verdana, Arial;font-width:bold;}
+.TituloBusqueda{color:#35417D;font-size:8pt;font-family: Tahoma, Verdana, Arial;}
+.LinkBusquedaChica{color:#35417D;font-size:7pt;font-family: Tahoma, Verdana, Arial;}
+.TituloNombreUnidad{color:#35417D;font-size:14pt;font-family: Tahoma, Verdana, Arial;}
+#slidemenubar, #slidemenubar2{ position:absolute;border:0px solid black;background:#F2F2F2;font:bold 12px Verdana;line-height:20px;}
+div.sample_attach, a.sample_attach{  font-size: 12px;  width: 64px;  background: #92C0FB;  padding: 0px 5px;  font-weight: 900;  color: #000000;}
+a.sample_attach {  font-size: 12px;  border: 0px;  width: 64px;  display: block;  border-bottom: none;  text-decoration: none;}
+
+/* deshabilita la barra de scroll vertical en IE */
+body {
+  overflow: hide;
+}

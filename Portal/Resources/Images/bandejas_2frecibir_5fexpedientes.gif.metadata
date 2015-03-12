@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1726" sequence="6" unid="BDCA08C5B0EF11FA83257DC10046F263">
+<created><datetime dst="true">20150102T105455,71-02</datetime></created>
+<modified><datetime>20150311T130932,57-03</datetime></modified>
+<revised><datetime>20150309T094507,62-03</datetime></revised>
+<lastaccessed><datetime>20150311T130932,57-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130932,57-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>D34CiQ</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime>20140827T174847,79-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>rcv_exps_btn.gif</text></item>
+<item name="$TITLE" sign="true"><text>bandejas/recibir_expedientes.gif</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.3</text></item></note>

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='13de' unid='9E084E110379F4E483257DC8004FD22F' sequence='15'>
+<created><datetime dst='true'>20150109T123151,51-02</datetime></created>
+<modified><datetime>20150311T131047,15-03</datetime></modified>
+<revised><datetime>20150309T094423,59-03</datetime></revised>
+<lastaccessed><datetime>20150311T131047,15-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131047,15-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060328T103806,46-03</datetime><datetime>20060410T165850,78-03</datetime><datetime
+>20060410T171411,32-03</datetime><datetime>20060410T171630,39-03</datetime><datetime
+>20060410T172001,61-03</datetime><datetime>20060410T180125,49-03</datetime><datetime
+>20060411T104902,40-03</datetime><datetime>20060412T134104,16-03</datetime><datetime
+>20060412T134643,77-03</datetime><datetime>20060412T134757,30-03</datetime><datetime
+>20060412T140631,56-03</datetime><datetime>20060412T140807,72-03</datetime><datetime
+>20060530T120220,87-03</datetime><datetime>20060623T174941,34-03</datetime><datetime
+>20060623T175135,25-03</datetime><datetime>20060623T180326,04-03</datetime><datetime
+>20061013T104015,27-03</datetime><datetime dst='true'>20061101T113023,29-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(BusquedaExpAgregado)|VBusqExpAgregado</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+MAECABgAAgAkMQUACABjY05yb0V4cFYBAwAFABgAEwACAAIACQAkMSRDb25mbGljdAAEAAQAAACa
+AAUABABGb3JtAQAKAEZBY3R1YWNpb24KAgQABQAEAEZvcm0BAAkARkNhcmF0dWxhAAoCBQAIAGNj
+RXN0YWRvAQAIAEFncmVnYWRvCgIFAAgAY2NFc3RhZG8BAAkAQXJjaGl2YWRvAAoCBQAMAHNDb2Rp
+Z29QYWRyZWoBAAAAAAAAAADwPw0CHAIEAB0CBAAcAgQAHQIDAAcAYABaAAlMMVM1UzZTN1I4UzlF
+MTFTMTJSVFRUVFRUVFRUMTNTMTZTMTdSVFRUVFRUVFRUVFRUVDE4UzNFMjFTNEUyMlMyNlMyN1My
+OFMzRTI5UlRUVFRUVFRUVDMwUg==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEiGYAAAACACQx
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAIACgAAAFZDAQQCAAYAJgAAAJYAAQAACgABAAAAAAAAAAICAAAAJDFOcm9FeHAmAAIAGAAC
+ACQxBQAIAGNjTnJvRXhwVgEDAAcADAAFAAkwUzBFACYAAQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEA
+AQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAA//8AAAAAAAAAAAAAAAAA
+AEIAAAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAICA
+gAAAAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text>Vista utilizada para encontrar documentos de un expagregado(al desarchivar)</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item></note>
+

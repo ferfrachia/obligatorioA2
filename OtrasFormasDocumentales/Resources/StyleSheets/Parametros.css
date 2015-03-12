@@ -1,0 +1,112 @@
+
+.TablaMsgParamContenido {
+	background-color: #F1F5F8;
+}
+.TablaMsgParam {
+	height:5px;
+	width:100%;
+
+	margin:6px 0px 6px 6px;
+}
+
+.TablaParamEsquina {
+	width:3px;
+	height:3px;
+	font-size:1px;
+}
+
+.TablaParamBordeHoriz {
+	height:3px;
+	font-size:1px;
+}
+
+.TablaParamBordeVert {
+	width:3px;
+	font-size:1px;
+}
+
+
+.TextoParamSel {
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #2E7BBD;
+}
+
+.textoSeleccion {
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	color: #000000;
+}
+.textoSeleccionOvr {
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	color: orange;
+	background-color: #dddddd;
+	cursor:hand;
+}
+
+.BotonAccionAct 
+{
+	width: 65;
+	height: 16;
+}
+
+.textoParamTitulo
+{
+font-family: Arial,  Verdana ; 
+font-size: 12pt;
+font-weight: bold;
+color : #2E7BBD
+}
+
+.CuerpoForm {  font-family: Arial, Helvetica, sans-serif;  background-color: #FFFFFF;  }
+
+.botonParam{
+font-family: Arial, Verdana , Helvetica, sans-serif;
+font-size: 11px;
+color:#000000;
+border-bottom : solid 1px #00649F;
+border-left : solid 1px #00649F;
+border-right : solid 1px #00649F;
+border-top : solid 1px #00649F;
+background-color: #F8F7FC;
+
+}
+
+.unidadNegra {  text-decoration: none;font-family: Arial, Verdana, Helvetica, sans-serif; font-size: 9pt;color:black;cursor:hand} 
+.unidadSel {  text-decoration: none;font-family: Arial, Verdana, Helvetica, sans-serif; font-size: 9pt;color:blue;cursor:hand;background-color:#EEEEEE} 
+.unidadOvr {  text-decoration: none;font-family: Arial, Verdana, Helvetica, sans-serif; font-size: 9pt;color:green;cursor:hand} 
+.unidadRoja {  text-decoration: none;font-family: Arial, Verdana, Helvetica, sans-serif; font-size: 9pt;color:red} 
+
+.CampoParam    {
+font-family: Arial, Verdana , Helvetica, sans-serif;
+font-size: 11px;
+color:#000000;
+border-bottom : solid 1px #00649F;
+border-left : solid 1px #00649F;
+border-right : solid 1px #00649F;
+border-top : solid 1px #00649F;
+background-color: #F8F7FC;
+}
+.DivSeleccion    {
+height:100;
+width:100%;
+}
+
+.DivDestino    {
+font-family: Arial, Verdana , Helvetica, sans-serif;
+font-size: 10pt;
+color:red;
+}
+
+.fondoDialogo{
+bgColor:red;
+bgOpacity:0.5;
+toggle:fade;
+toggleDuration:250;
+}
+

@@ -1,0 +1,93 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+%REM
+Constantes asociadas con errores generales del sistema y particulares de sus módulos.
+No contiene los errores particulares de una clase. Dichos errores estarán en la propia clase.
+
+RANGOS DE NUMEROS
+Errores Administracion y Configuracion - Clase ConfEE 1.0: 10000 - 10099
+Errores de esta biblioteca: 10100 - 10199
+Errores Motor documental - Clase MotorCli: 10200 - 10299
+Errores Clase Auditoria: 10300 - 10399
+Errores agentes Temas y Rutas: 10400 - 10499
+Errores agentes Estructura Organizacional: 10500 - 10599
+
+Errores VectorClass 2.05: 11000 - 11100
+
+Errores ErrorHandlerClass 1.2: 14800 - 14899
+
+Errores Clase Expediente: 15000 - 15099
+Errores Clase CartaServicio: 15100 - 15199
+Errores agentes Cartas de Servicio: 15200 - 15299
+Errores Clase Sesion: 15300 - 15399
+
+Errores NumeradorClient: 16010 - 16099
+Errores Clase Notificaciones: 16100 - 16199
+Errores agentes Portal: 16200 - 16299
+
+Errores agentes Recuperacion y Busquedas: 17000 - 17099
+Errores agentes Gestion Documental: 17100 - 17199
+
+
+%END REM
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'NUMEROS Y MENSAJES DE ERROR
+
+'Generales
+Public Const ERROR_VIEW_NOT_FOUND							= 10101
+Public Const MSG_ERROR_VIEW_NOT_FOUND						= "No se encontró la vista"
+
+Public Const ERROR_PROFILEDOC_NOT_FOUND						= 10102
+Public Const MSG_ERROR_PROFILEDOC_NOT_FOUND					= "No se encontró el documento de perfil"
+
+Public Const ERROR_DOCUMENT_NOT_FOUND						= 10103
+Public Const MSG_ERROR_DOCUMENT_NOT_FOUND					= "No se encontró el documento"
+
+Public Const ERROR_FIELD_NOT_FOUND							= 10104
+Public Const MSG_ERROR_FIELD_NOT_FOUND						= "No se encontró el campo"
+
+Public Const ERROR_DB_NOT_OPEN							= 10105
+Public Const MSG_ERROR_DB_NOT_OPEN							= "No se puede abrir la base de datos"
+
+Public Const ERROR_CANT_SAVE_DOCUMENT						= 10106
+Public Const MSG_ERROR_CANT_SAVE_DOCUMENT					= "No se puede salvar el documento"
+
+Public Const ERROR_AGENTE_NOT_FOUND						= 10109
+Public Const MSG_ERROR_AGENTE_NOT_FOUND						= "No se encontró el agente"
+
+Public Const ERROR_INCORRECT_OPTION						= 10110
+Public Const MSG_ERROR_INCORRECT_OPTION						= "Opción incorrecta"
+
+Public Const ERROR_INCORRECT_PARAMETER						= 10111
+Public Const MSG_ERROR_INCORRECT_PARAMETER					= "Parámetro incorrecto"
+
+Public Const ERROR_DB_NOT_CREATED							= 10112
+Public Const MSG_ERROR_DB_NOT_CREATED						= "No se pudo crear la base de datos."
+
+Public Const ERROR_ANIO_NOTHING							= 10113
+Public Const MSG_ERROR_ANIO_NOTHING						= "No se indicó el año para ubicar la base de Gestión Documental"
+
+Public Const ERROR_PARAMETER_UNIDAD_NOT_FOUND				= 10114
+Public Const MSG_ERROR_PARAMETER_UNIDAD_NOT_FOUND				= "No se encontró el parámetro unidad"
+
+Public Const ERROR_CANT_ACCESS							= 10115
+Public Const MSG_ERROR_CANT_ACCESS							= "No dispone de los permisos necesarios para realizar esta operación"
+
+Public Const ERROR_FILE_SIZE_EXCEDED						= 10116
+Public Const MSG_ERROR_FILE_SIZE_EXCEDED					= "Se ha excedido el tamaño máximo posible para el conjunto attachments."
+
+Public Const ERROR_FILE_TYPE_NOT_ALLOWED					= 10117
+Public Const MSG_ERROR_FILE_TYPE_NOT_ALLOWED					= "El tipo de archivo no está permitido en la Configuración actual."
+
+Public Const ERROR_PARAMETER_USER_NOT_FOUND					= 10118
+Public Const MSG_ERROR_PARAMETER_USER_NOT_FOUND				= "No se encontró el parámetro Usuario"
+
+Public Const ERROR_ENTRY_NOT_FOUND_IN_ACL					= 10119
+Public Const MSG_ERROR_ENTRY_NOT_FOUND_IN_ACL				= "En la Lista de control de acceso no se encontro una entrada para"
+
+Public Const ERROR_FILE_NUMBER_EXCEDED						= 10120
+Public Const MSG_ERROR_FILE_NUMBER_EXCEDED					= "Se ha excedido el número máximo posible de adjuntos por actuación."

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005ABB51'>
+<noteinfo noteid='1a6' unid='18E0CC021A76092D852566AD001A7158' sequence='46'>
+<created><datetime dst='true'>19981030T004849,52-04</datetime></created>
+<modified><datetime>20150311T133102,49-03</datetime></modified>
+<revised><datetime>20150309T094423,41-03</datetime></revised>
+<lastaccessed><datetime>20150311T133102,49-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133102,49-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Lotus Notes Template Development/O=Lotus Notes</name><name
+>CN=Diego Celery/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IMF</name><name>CN=Administrador/O=MEC</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060317T103044,30-03</datetime><datetime>20060630T180753,67-03</datetime><datetime
+>20060703T112854,66-03</datetime><datetime>20060703T112854,78-03</datetime><datetime
+>20060713T143602,86-03</datetime><datetime>20060802T135149,58-03</datetime><datetime
+>20060802T151926,37-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Language' sign='true'><text>es-MX</text></item>
+<item name='$LastBuildTime' sign='true'><datetime>19990412T171835,59+00</datetime></item>
+<item name='$BabelInfo' sign='true'><text>00000126</text></item>
+<item name='$TITLE' sign='true'><text>Main</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIAAwAAAAAAAAAAAAAAAAAAAAAA8P8+AAAAAAABAAAAAAAHAAcAAAAAAAUAAAAAAAUAAAAA
+AAEAAgAAAAAABQAAAAAAAAADAAEAAgAaAAMAAQDx/0kAEAAAAABQAQADAAEAAQAAAAAACQAAAAUA
+AQAAAAAAAABOb3Rlc1ZpZXdUb3BpYwEA////AB4AAAkBAP///wAFAEFyaWFsP/b/NQAAAAAAAwAC
+ABMAAAAAAAAAAAAAAAAAAAAAAAAAAABDb250ZW5pZG9zfGIuIEluZGV4P/H/PgAAAAAAAEABAAMA
+AQABAAAAAAAFAAAABQABAAAAAAAAAFRvcGljVG9waWMBAP///wABAAAJAQD///8A9v9ZAAAAAAAD
+AAcANwAAAAAAAAAAAAAAAAAAAAAAAAAAAFCgZ2luYSBkZSBiaWVudmVuaWRhIGRlIGxhIEF5dWRh
+IGRlIE5vdGVzfENvbnRlbnRzSW50cm8/
+</rawitemdata></item>
+<item name='$Flags'><text>#4C</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item></note>
+

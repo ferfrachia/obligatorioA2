@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='13c6' unid='93720E1C04F4CE6283257DC8004FD229' sequence='15'>
+<created><datetime dst='true'>20150109T123151,45-02</datetime></created>
+<modified><datetime>20150311T131047,03-03</datetime></modified>
+<revised><datetime>20150309T094423,47-03</datetime></revised>
+<lastaccessed><datetime>20150311T131047,03-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131047,03-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060328T103806,58-03</datetime><datetime>20060410T165850,49-03</datetime><datetime
+>20060410T171411,02-03</datetime><datetime>20060410T171630,09-03</datetime><datetime
+>20060410T172001,31-03</datetime><datetime>20060410T180125,18-03</datetime><datetime
+>20060411T104902,11-03</datetime><datetime>20060412T134103,87-03</datetime><datetime
+>20060412T134643,48-03</datetime><datetime>20060412T134757,02-03</datetime><datetime
+>20060412T140630,54-03</datetime><datetime>20060412T140807,43-03</datetime><datetime
+>20060530T120220,57-03</datetime><datetime>20060623T174941,03-03</datetime><datetime
+>20060623T175134,94-03</datetime><datetime>20060623T180325,74-03</datetime><datetime
+>20061013T104014,97-03</datetime><datetime dst='true'>20061101T113023,37-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Archivos por Id)|ArchivosPorId</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+rgAFACQAHwADAAgACQAEAGNjTnJvRXhwJENvbmZsaWN0JFJFRgAEAAQAAABeAAUACABjY0VzdGFk
+bwEACQBBcmNoaXZhZG8ACgIFAAoAc1N1YkVzdGFkbwEAAgA0NQoCHQIEAAUADABzQ29kaWdvUGFk
+cmVqAQAAAAAAAAAAAAAKAgQAHAIDAAcAJgAgAAlMMVMyUzVTNlM5UzJFMTBTMTFTMTJTMTZTMTdT
+MThT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+FQABAABEAGYAAAAIAGNjTnJvRXhw
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAQAIAAIAAAAAAFAAAQAACgAAAAAAAAAAAAICAAAAY2NOcm9FeHBJZCYAAQAA
+AAEBAAkBAAAKAQEOCgAAAQCtKwEAAQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEA
+AAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAAAQD/
+//8AAQD///8AAAABAAAAAAABAAAAAAAAAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item>
+<item name='$Flags'><text>Y</text></item></note>
+

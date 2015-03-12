@@ -1,0 +1,891 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*  
+'*	 								CLASS <SESION>
+'* 
+'******************************************************************************************************************	
+%REM
+ 
+Esta clase representa un objeto SESION
+
+CONSTRUCTOR  
+
+PROPIEDADES 
+
+
+MÉTODOS
+%END REM
+
+Option Declare
+Use "FuncionesGenerales"  
+Use "ConstantesSistema"
+Use "ConstantesDBResoluciones"
+Use "VectorClass 2.05"
+Use "Usuario"
+Use "ClasePunto"
+Use "Configuracion RD"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Sesion
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'CONSTANTES PÚBLICAS
+
+'ERRORES GENERADOS
+
+'CONSTANTES PRIVADAS 
+Private Const NOTIFICACION_FROM = "Sistema de Expediente Electrónico"
+
+Public Const ERROR_PATH_NOT_FOUND						=15300
+Public Const MSG_ERROR_PATH_NOT_FOUND					="El path de la base de datos no es válido"
+'Public Const MSG_ERROR_PATH_NOT_FOUND					="El path de la base de datos no es válido"
+
+Public Const ERROR_HOST_NOT_FOUND						=15301
+Public Const MSG_ERROR_HOST_NOT_FOUND					="El host de la base de datos no es válido"
+
+Public Const ERROR_DATE_NOT_VALID						=15302
+Public Const MSG_ERROR_DATE_NOT_VALID					="La fecha de la sesión no puede ser menor a la actual"
+
+Public Const ERROR_DATE_EXIST							=15303
+Public Const MSG_ERROR_DATE_EXIST						="Ya existe una sesión para la fecha indicada"
+
+Public Const ERROR_PTOS_NOT_FOUND						=15304
+Public Const MSG_ERROR_PTOS_NOT_FOUND					="No existen puntos en la sesión. No puede finalizarla."
+
+Public Const ERROR_PTOS_EN_SESION						=15305
+Public Const MSG_ERROR_PTOS_EN_SESION					="Existe puntos pendientes en la sesión. No puede finalizarla."
+
+Public Const ERROR_INCORRECT_NUMBER_ACT					=15306
+Public Const MSG_ERROR_INCORRECT_NUMBER_ACT				="Para agregar el expediente a una sesión de Directorio su actuación no puede ser la primera."
+
+Public Const ERROR_EXP_IS_HERE							=15307
+Public Const MSG_ERROR_EXP_IS_HERE						="El siguiente Expediente ya fue agregado a ésta Sesión : "
+
+Public Const ERROR_INCORRECT_NUMBER_SESION				=15308
+Public Const MSG_ERROR_INCORRECT_NUMBER_SESION			="No se pueden mover asuntos a una misma sesion"
+
+Public Const DBRES_CAMPO_FSESION_NRO_COMPLETO 	="sNroSesion"
+
+'******************************************************************************************************************	
+'*
+'*						 			CLASS <SESION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Sesion
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private doc As NotesDocument
+	Private db As NotesDatabase
+	Private nroSes As String
+	Private usuarioAccion As Usuario
+	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR	
+	
+	Public Sub new(Byval nroSes_ As String, usuarioAccion_ As Usuario,Byval bCrear As Integer)   
+		
+		On Error Goto HANDLER
+		
+		Dim c As New ConfigRD, session As New NotesSession
+		
+		'La base de Resoluciones de Directorio es única
+		Set db=session.CurrentDatabase 
+		
+		If bCrear Then   'vino el universalid
+			Set doc=getDocSesionPorId(nroSes_)
+		Else   'vino el nro de sesion
+			Set doc=getDocSesionPorNro(nroSes_)
+		End If
+		If doc Is Nothing Then	
+			Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND+" Nº "+nroSes_
+		End If
+		
+		nroSes = nroSes_
+		Set usuarioAccion = usuarioAccion_
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Método new","")
+		Exit Sub
+		
+	End Sub	
+	
+'*****************************************************************************************************************	
+	
+'PROPIEDADES	
+	
+	
+	Public Property Get Expedientes As Vector
+		'Devuelve el UniversalId del documento
+		On Error Goto HANDLER
+		
+		Dim viewPuntos As NotesView
+		Set viewPuntos=db.GetView(DBRES_VISTA_PUNTOS_SESION)
+		
+		Dim colDoc As NotesDocumentCollection
+		Set colDoc=viewPuntos.GetAllDocumentsByKey(Cstr(Me.NroSesion),True)
+		
+		Dim vExp As New Vector(0),i As Integer
+		If colDoc.Count > 0 Then
+			Dim tmpCod As NotesDocument,oPto As Punto
+			For i=1 To colDoc.Count
+				Set tmpCod=colDoc.GetNthDocument(i)
+				Set oPto=New Punto(tmpCod.UniversalID, Me.usuarioAccion)
+				If oPto.NroExpediente <> "" Then
+					vExp.insertElement 	oPto.NroExpediente,vExp.cantElem + 1	
+				End If				
+				Set oPto=Nothing
+			Next	
+		End If
+		
+		Set Expedientes=vExp
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get Expedientes","")
+		Exit Property
+		
+	End Property
+'*****************************************************************************************************************		
+	
+	Public Property Get Id() As String
+		'Devuelve el UniversalId del documento
+		On Error Goto HANDLER
+		
+		Id=doc.UniversalID
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get Id","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NroSesion() As Long
+		'Devuelve el número de la sesión
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBRES_CAMPO_FSESION_NRO) Then
+			NroSesion=doc.getItemValue(DBRES_CAMPO_FSESION_NRO)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get NroSesion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NroSesion() As Long
+		'Setea el número de sesión
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBRES_CAMPO_FSESION_NRO,NroSesion
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set NroSesion","")
+		Exit Property
+		
+	End Property
+'******************************************************************************************************************	
+	
+	Public Property Get NroSesionCompleto() As String
+		'Devuelve el número de la sesión
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBRES_CAMPO_FSESION_NRO_COMPLETO) Then
+			NroSesionCompleto=doc.getItemValue(DBRES_CAMPO_FSESION_NRO_COMPLETO)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get NroSesionCompleto","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NroSesionCompleto() As String
+		'Setea el número de sesión
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBRES_CAMPO_FSESION_NRO_COMPLETO,NroSesionCompleto
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set NroSesionCompleto","")
+		Exit Property
+		
+	End Property	
+'******************************************************************************************************************	
+	
+	Public Property Get Fecha() As Variant
+		'Devuelve la fecha de la sesión
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBRES_CAMPO_FSESION_FECHA) Then
+			Fecha=doc.getItemValue(DBRES_CAMPO_FSESION_FECHA)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get Fecha","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Fecha() As Variant
+		'Setea la fecha de la sesión
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBRES_CAMPO_FSESION_FECHA,Fecha
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set Fecha","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Estado() As String
+		'Devuelve el estado de la sesión
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBRES_CAMPO_FSESION_ESTADO) Then
+			Estado=doc.getItemValue(DBRES_CAMPO_FSESION_ESTADO)(0)	
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get Estado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Estado() As String
+		'Setea el estado de la sesión
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBRES_CAMPO_FSESION_ESTADO,Estado
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set Estado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Seguridad() As String
+		'Retorna la seguridad de la sesión
+		On Error Goto HANDLER
+		
+		Seguridad = doc.GetItemValue (DBRES_CAMPO_FSESION_SEGURIDAD)(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get Seguridad","")
+		Exit Property
+		
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Seguridad() As String
+		'Setea la seguridad de la sesión
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBRES_CAMPO_FSESION_SEGURIDAD,Seguridad
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set Seguridad","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Autores() As Vector
+		'Devuelve un vector con los autores de la sesion formateado con nombre abreviado
+		On Error Goto HANDLER
+		
+		Dim vTransformar As New Vector(0)
+		
+		If doc.hasItem(DBRES_CAMPO_FSESION_AUTORES) Then
+			Dim vAutores As New Vector(0)
+			vAutores.values=doc.getItemValue(DBRES_CAMPO_FSESION_AUTORES)	
+			If vAutores.cantElem > 0 Then
+				Dim i As Integer,nom As NotesName
+				For i = 1 To vAutores.cantElem
+					Set nom=New notesName(vAutores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next	
+			End If			
+		End If
+		Set Autores=vTransformar		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get Autores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Autores() As Vector
+		'Setea los autores de la sesión con los nombres canonicos
+		On Error Goto HANDLER		
+		
+		If doc.HasItem(DBRES_CAMPO_FSESION_AUTORES) Then
+			doc.removeitem DBRES_CAMPO_FSESION_AUTORES
+		End If
+		Dim vTransformar As New Vector(0),nom As NotesName
+		If Autores.cantElem > 0 Then
+			Dim i As Integer
+			For i = 1 To Autores.cantElem
+				Set nom=New notesName(Autores.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next	
+		End If
+		Dim itAutores As NotesItem
+		Set itAutores=New notesItem(doc,DBRES_CAMPO_FSESION_AUTORES,vTransformar.values,AUTHORS)
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set Autores","")
+		Exit Property
+		
+	End Property
+	
+'*****************************************************************************************************************				
+	
+	Public Property Get Lectores() As Vector
+		'Devuelve un vector con los lectores de la sesión con formato de nombres abreviado
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0),vTransformar As New Vector(0)
+		
+		If doc.hasItem(DBRES_CAMPO_FSESION_LECTORES) Then
+			Dim i As Integer,nom As notesName
+			vLectores.values=doc.getItemValue(DBRES_CAMPO_FSESION_LECTORES)
+			If vLectores.cantElem > 0 Then
+				For i = 1 To vLectores.cantElem
+					Set nom=New notesName(vLectores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next	
+			End If
+		End If
+		Set Lectores=vTransformar
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get Lectores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Lectores() As Vector
+		'Setea los lectores de la sesión con los nombres canonicos
+		On Error Goto HANDLER
+		
+		If Lectores.cantElem > 0 Then
+			Dim i As Integer,vTransformar As New Vector(0),nom As notesName
+			For i = 1 To Lectores.cantElem
+				Set nom=New notesName(Lectores.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next			
+			If doc.HasItem(DBRES_CAMPO_FSESION_LECTORES) Then
+				doc.removeItem DBRES_CAMPO_FSESION_LECTORES
+			End If
+			
+			Dim itLectores As NotesItem
+			Set itLectores=New  NotesItem(doc,DBRES_CAMPO_FSESION_LECTORES,vTransformar.values,READERS)	
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set Lectores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get LectoresPermanentes As Vector
+		'Devuelve un vector con los lectores permanentes de la sesion
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0)
+		
+		If doc.hasItem(DBRES_CAMPO_FSESION_LECTORES_PERMANENTES) Then
+			vLectores.values=doc.getItemValue(DBRES_CAMPO_FSESION_LECTORES_PERMANENTES)	
+		End If
+		Set LectoresPermanentes=vLectores
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Get LectoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set LectoresPermanentes As Vector
+		'Setea los lectores permanentes de la sesion
+		On Error Goto HANDLER
+		
+		If doc.HasItem(DBRES_CAMPO_FSESION_LECTORES_PERMANENTES) Then
+			doc.removeItem DBRES_CAMPO_FSESION_LECTORES_PERMANENTES
+		End If
+		Dim itLectores As NotesItem
+		Set itLectores=New  NotesItem(doc,DBRES_CAMPO_FSESION_LECTORES_PERMANENTES,LectoresPermanentes.values,READERS)
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Propiedad Set LectoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+	
+'*****************************************************************************************************************		
+'*****************************************************************************************************************	
+'*****************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS
+	
+	Private Function getDocSesionPorNro(sNroSes As String) As notesDocument	
+		'Busca el documento Sesion correspondiente al número sNroSes y lo devuelve
+		On Error Goto HANDLER
+		
+		Dim vSesiones As notesview
+		Set vSesiones=db.getView(DBRES_VISTA_BUSQ_SESIONES) 
+		
+		If Not vSesiones Is Nothing Then
+			Set doc=vSesiones.getdocumentByKey(sNroSes,False)	
+			Set getDocSesionPorNro=doc			
+		Else
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & DBRES_VISTA_SESIONES
+		End If
+		
+		Exit Function
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Procedimiento getDocSesionPorNro " & sNroSes,"")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Function getDocSesionPorId(sIDSesion As String)As notesDocument
+		'Busca el documento Sesion correspondiente al UniversalID sIDSesion y lo devuelve
+		On Error Goto HANDLER
+		
+		Set getDocSesionPorId=db.getDocumentByUNID(sIDSesion)	
+		
+		Exit Function
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Procedimiento getDocSesionPorId " & sIDSesion,"")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Private Sub addLog(fechaHora As Variant,sOperacion As String)
+		'Agrega una línea al log de la carta con operacion, usuario y fecha/hora
+		
+		Dim vLog As New vector(0),iOperacion As notesItem,iUsuario As notesItem,iFechaHora As notesItem
+		
+		vLog.insertElement sOperacion,1
+		vLog.insertElement Me.usuarioAccion.NombreUsuario,2
+		vLog.insertElement Cstr(fechaHora),3
+		
+		'Set campos
+		If doc.hasItem(DBRES_CAMPO_FSESION_LOG_OPERACION) Then
+			Set iOperacion= doc.getFirstItem(DBRES_CAMPO_FSESION_LOG_OPERACION)	
+		Else
+			Set iOperacion= New notesItem(doc,DBRES_CAMPO_FSESION_LOG_OPERACION,"")	
+		End If
+		If doc.hasItem(DBRES_CAMPO_FSESION_LOG_USUARIO) Then
+			Set iUsuario= doc.getFirstItem(DBRES_CAMPO_FSESION_LOG_USUARIO)	
+		Else
+			Set iUsuario= New notesItem(doc,DBRES_CAMPO_FSESION_LOG_USUARIO,"")	
+		End If
+		If doc.hasItem(DBRES_CAMPO_FSESION_LOG_FECHAHORA) Then
+			Set iFechaHora= doc.getFirstItem(DBRES_CAMPO_FSESION_LOG_FECHAHORA)	
+		Else
+			Set iFechaHora= New notesItem(doc,DBRES_CAMPO_FSESION_LOG_FECHAHORA,"")	
+		End If		
+		
+		'Agrego LOG
+		Call iOperacion.appendToTextList(vLog.getElement(1))	
+		Call iUsuario.appendToTextList(vLog.getElement(2))
+		Call iFechaHora.appendToTextList(vLog.getElement(3))
+		
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Private Sub CrearDocActa()
+		'Crea un pdf con el acta y lo agrega al doc de sesión
+		
+		
+	End Sub	
+	
+'******************************************************************************************************************							
+'*****************************************************************************************************************	
+	
+'METODOS
+	
+	Public Function Creacion ()
+		'Si el usuario está autorizado, crea la sesion asignándole el nro que le corresponda
+		
+		'El control de que el usuario tenga el rol GestionResoluciones está en el Controller
+		'Setea los siguientes datos: Nro, estado, seguridad por defecto
+		
+		On Error Goto HANDLER
+		
+		Dim c As New ConfigRD, vLectores As New Vector(0), vAutores As New Vector(0),  vLectPerm As New Vector(0)
+		Dim nname As NotesName, session As New NotesSession , nombrecanonic As String
+		Dim vSesiones As NotesView, docses As NotesDocument, oSes As Sesion, nro As Long, termine As Boolean 
+		Dim oPto As Punto, colPtos As NotesDocumentCollection, docPto As NotesDocument, vPuntosSesion As NotesView, clave As String 
+		Dim config As New ConfigRD
+		'Verifico que la fecha de sesión no sea menor a la actual(este control se quita a pedido de Alicia Carnelli)
+'		If Cdat(Me.Fecha) < Today Then 
+'			Call MarcarDocParaBorrar(doc)
+'			Error ERROR_DATE_NOT_VALID, MSG_ERROR_DATE_NOT_VALID
+'		End If
+		
+		'Verifico que no exista otra sesión para la misma fecha
+		Set vSesiones=db.GetView(DBRES_VISTA_SESIONES)
+		If vSesiones Is Nothing Then Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND+" "+DBRES_VISTA_SESIONES
+		Set docses=vSesiones.GetDocumentByKey(Cdat(Me.fecha))
+		Dim numero As String
+		
+		numero = config.getNroSesion()
+		'Me.NroSesion=Cint(numero)
+		Me.NroSesionCompleto = numero & "/" & Cstr(Year(Now))
+		
+		'Comente esto para que 
+		'If  Not doc.rTipoSesion(0)="Ordinaria" Then
+		'	Me.NroSesionCompleto ="E" &  numero & "/" & Cstr(Year(Now))
+		'End If
+
+		If  doc.rTipoSesion="Extraordinaria" Then
+			Me.NroSesionCompleto ="E" &  numero & "/" & CStr(Year(Now))
+		End If
+		
+		'Actualizo seguridad
+		Set nname = session.CreateName (usuarioAccion.NombreUsuario)
+		nombrecanonic = nname.Canonical 		
+		'Autores - el usuario que la creó y el rol gestion
+		Set vAutores = New Vector(0)
+		vAutores.insertElement nombrecanonic, vAutores.cantElem+1
+		vAutores.insertElement ROL_GESTION_RESOLUCIONES,vAutores.cantElem+1	
+		Set Me.Autores = vAutores
+		
+		'Lectores 
+		Set vLectores = New Vector(0)
+		vLectores.insertElement nombrecanonic,vLectores.cantElem+1				
+		vLectores.insertElement ROL_GESTION_RESOLUCIONES,vLectores.cantElem+1	
+		Set Me.Lectores = vLectores
+		
+		'Lectores permanentes
+		vLectPerm.insertElement "[Desarrollo]",vLectPerm.cantElem + 1
+		Set Me.LectoresPermanentes=vLectPerm
+		
+		'Cargo el log de la operación crear
+		addLog Now,ACCION_CREAR_SESION
+		
+		'Salvo 
+		Call Me.save	
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Sesion - Método Creacion","")
+		Exit Function
+		
+	End Function
+	
+'*****************************************************************************************************************	
+	
+'****************************************************************************************************	
+	
+	Public Function CrearActa(sNroActa As String)
+		'Finaliza la sesión
+		On Error Goto HANDLER
+		
+		Dim vPuntosSesion As NotesView, docPto As NotesDocument, clave As String, i As Integer
+		Dim colPtos As NotesDocumentCollection, oPto As Punto, vPtos As New Vector(0)
+		Dim vLectoresPto As Vector
+		Dim ses As New NotesSession
+		Dim nn As NotesName
+		
+		
+	'Controlo que todos los ptos estén en el estado correspondiente
+		Set vPuntosSesion = db.GetView(DBRES_VISTA_PUNTOS_SESION)
+		If vPuntosSesion Is Nothing Then Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND+" "+DBRES_VISTA_PUNTOS_SESION
+		clave = Cstr(Me.NroSesionCompleto)
+		Set colPtos = vPuntosSesion.GetAllDocumentsByKey(clave)
+		'Debe existir algún pto en la sesión(esto se modifico como se explica abajo en el comentario)
+		
+		'A pedido de AC no se controla mas que al finalizar la session tenga puntos
+		'Si los tiene deben estar aprobados, retirados, etc.
+		If colPtos.Count > 0 Then	
+			'
+			'Error ERROR_PTOS_NOT_FOUND, MSG_ERROR_PTOS_NOT_FOUND
+			
+		'Todos deben estar aprobados, aplazados o retirados
+			Set docPto = colPtos.GetFirstDocument 
+			While Not docPto Is Nothing
+				Set oPto = New Punto(docPto.UniversalID,usuarioAccion)
+				If oPto.Estado = ESTADO_PTO_EN_SESION Then Error ERROR_PTOS_EN_SESION, MSG_ERROR_PTOS_EN_SESION
+				If oPto.Estado="Aprobado" Then
+					Call vPtos.insertElement(docPto.UniversalID,vPtos.cantElem+1)
+				End If	
+				Set docPto = colPtos.GetNextDocument(docPto)
+			Wend
+			
+			For i= 1 To vPtos.cantElem
+				Set oPto = New Punto(vPtos.getElement(i),usuarioAccion)
+				oPto.EstadoRes = ESTADO_RESOLUC_PUBLICADA
+				'Set vLectoresPto = oPto.Lectores
+				'Call vLectoresPto.insertElement(ROL_LEER_RESOLUCIONES,vLectoresPto.CantElem+1)
+				
+				'Set oPto.Lectores= vLectoresPto
+				'Set vLectoresPto = Me.Autores
+				'vLectoresPto.insertElement ROL_PUBLICAR_RESOLUCION,vLectoresPto.CantElem+1
+				'Set Me.autores = vLectoresPto
+				Call oPto.AccesoPublico(True)
+				oPto.NroActa=sNroActa
+				Call oPto.Save()
+			Next
+		End If
+		'Cambio el estado de la sesión
+		Me.Estado = ESTADO_SESION_FINALIZADA
+		
+		Dim vLectores As New Vector(0)
+		Dim acta As NotesDocument
+		Me.Seguridad = ACCESO_PUBLICO
+		
+		vLectores.insertElement ROL_VER_ORDEN,vLectores.cantElem+1	
+		vLectores.insertElement ROL_LEER_RESOLUCIONES,vLectores.cantElem+1	
+		vLectores.insertElement ROL_GESTION_RESOLUCIONES,vLectores.cantElem + 1
+		vLectores.insertElement ROL_PUBLICAR_RESOLUCION,vLectores.CantElem+1		
+		Set Me.Lectores=vLectores
+		Call doc.ReplaceItemValue("sNroActa",sNroActa)
+		Set nn = New NotesName(ses.EffectiveUserName)		
+		Call doc.ReplaceItemValue("sUsuarioFinaliza",nn.Common)
+		Set acta = db.CreateDocument
+		acta.Form="FActa"
+		Call acta.ReplaceItemValue("sNroActa",sNroActa)
+		acta.ccnNroSesion = Me.NroSesionCompleto
+		Call acta.ReplaceItemValue("fSesion",doc.GetItemValue(DBRES_CAMPO_FSESION_FECHA)(0))
+		Call acta.ComputeWithForm(False,False)
+		Call acta.Save(True,False)
+		'Salvo la sesión
+		Call Me.save
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Método CrearActa","")
+		Exit Function
+	End Function
+	
+'****************************************************************************************************	
+	Public Function CambiarNroActa(sNroActa As String)
+		'Finaliza la sesión
+		On Error Goto HANDLER
+		
+		Dim vPuntosSesion As NotesView, docPto As NotesDocument, clave As String, i As Integer
+		Dim colPtos As NotesDocumentCollection, oPto As Punto, vPtos As New Vector(0)
+		Dim vLectoresPto As Vector
+		Dim ses As New NotesSession
+		Dim nn As NotesName
+		
+		
+	'Controlo que todos los ptos estén en el estado correspondiente
+		Set vPuntosSesion = db.GetView(DBRES_VISTA_PUNTOS_SESION)
+		If vPuntosSesion Is Nothing Then Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND+" "+DBRES_VISTA_PUNTOS_SESION
+		clave = Cstr(Me.NroSesionCompleto)
+		Set colPtos = vPuntosSesion.GetAllDocumentsByKey(clave)
+		'Debe existir algún pto en la sesión(esto se modifico como se explica abajo en el comentario)
+		
+		'A pedido de AC no se controla mas que al finalizar la session tenga puntos
+		'Si los tiene deben estar aprobados, retirados, etc.
+		If colPtos.Count > 0 Then	
+			'
+			'Error ERROR_PTOS_NOT_FOUND, MSG_ERROR_PTOS_NOT_FOUND
+			
+		'Todos deben estar aprobados, aplazados o retirados
+			Set docPto = colPtos.GetFirstDocument 
+			While Not docPto Is Nothing
+				Set oPto = New Punto(docPto.UniversalID,usuarioAccion)
+				If oPto.Estado = ESTADO_PTO_EN_SESION Then Error ERROR_PTOS_EN_SESION, MSG_ERROR_PTOS_EN_SESION
+				If oPto.Estado="Aprobado" Then
+					Call vPtos.insertElement(docPto.UniversalID,vPtos.cantElem+1)
+				End If	
+				Set docPto = colPtos.GetNextDocument(docPto)
+			Wend
+			
+			For i= 1 To vPtos.cantElem
+				Set oPto = New Punto(vPtos.getElement(i),usuarioAccion)
+				oPto.NroActa=sNroActa
+				Call oPto.Save()
+			Next
+		End If
+		Call doc.ReplaceItemValue("sNroActa",sNroActa)
+		Call Me.save
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Método CambiarNroActa","")
+		Exit Function
+	End Function
+	
+'****************************************************************************************************	
+	Public Function PublicarSesion()
+		'Deja la sesión y sus asuntos disponibles para los usuarios con rol firmante y LeerResoluc
+		On Error Goto HANDLER
+		
+		Dim vPuntosSesion As NotesView, docPto As NotesDocument, clave As String
+		Dim colPtos As NotesDocumentCollection, oPto As Punto, vLectores As Vector, vLectoresPto As Vector
+		
+		'Controlo que todos los ptos estén en el estado correspondiente
+		Set vPuntosSesion = db.GetView(DBRES_VISTA_PUNTOS_SESION)
+		If vPuntosSesion Is Nothing Then Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND+" "+DBRES_VISTA_PUNTOS_SESION
+		clave = Cstr(Me.NroSesionCompleto)
+		Set colPtos = vPuntosSesion.GetAllDocumentsByKey(clave)
+		'Debe existir algún pto en la sesión
+		If colPtos.Count > 0 Then
+			'Error ERROR_PTOS_NOT_FOUND, MSG_ERROR_PTOS_NOT_FOUND
+			
+		'Todos deben estar aprobados, aplazados o retirados
+			Set docPto = colPtos.GetFirstDocument 
+			While Not docPto Is Nothing
+		'Se actualiza seguridad de cada pto
+				Set oPto = New Punto(docPto.UniversalID,usuarioAccion)
+				oPto.Seguridad = ACCESO_PUBLICO
+				Set vLectoresPto = oPto.Lectores
+				vLectoresPto.insertElement ROL_VER_ORDEN,vLectoresPto.cantElem+1	
+				vLectoresPto.insertElement ROL_LEER_RESOLUCIONES,vLectoresPto.cantElem+1	
+				
+				Set oPto.Lectores = vLectoresPto
+				oPto.save
+				Set docPto = colPtos.GetNextDocument(docPto)
+			Wend
+		End If	
+		'Modifico y salvo la sesión
+		Me.Seguridad = ACCESO_PUBLICO
+		
+		'Lectores de la propia sesión
+		Set vLectores = Me.Lectores
+		vLectores.insertElement ROL_VER_ORDEN,vLectores.cantElem+1	
+		vLectores.insertElement ROL_LEER_RESOLUCIONES,vLectores.cantElem+1	
+		Set Me.Lectores = vLectores
+		
+		'Cargo el log de la operación crear
+		addLog Now,ACCION_PUBLICAR_SESION
+		Call Me.save
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Método PublicarSesion","")
+		Exit Function
+	End Function	
+	
+'*****************************************************************************************************************			
+	Public Sub RestringirSesion()
+	'Restringe las sesion y todos sus puntos solamente para el rol "GestionResoluc"
+		On Error Goto HANDLER
+		
+		Dim vPuntosSesion As NotesView, docPto As NotesDocument, clave As String
+		Dim colPtos As NotesDocumentCollection, oPto As Punto, vLectores As Vector, vLectoresPto As Vector
+		
+	'Controlo que todos los ptos estén en el estado correspondiente
+		Set vPuntosSesion = db.GetView(DBRES_VISTA_PUNTOS_SESION)
+		If vPuntosSesion Is Nothing Then Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND+" "+DBRES_VISTA_PUNTOS_SESION
+		clave = Cstr(Me.NroSesionCompleto)
+		Set colPtos = vPuntosSesion.GetAllDocumentsByKey(clave)
+		'Debe existir algún pto en la sesión
+		If colPtos.Count > 0 Then 
+			'Error ERROR_PTOS_NOT_FOUND, MSG_ERROR_PTOS_NOT_FOUND
+			
+		'Todos deben estar aprobados, aplazados o retirados
+			Set docPto = colPtos.GetFirstDocument 
+			While Not docPto Is Nothing
+		'Se actualiza seguridad de cada pto
+				Set oPto = New Punto(docPto.UniversalID,usuarioAccion)
+				oPto.Seguridad = ACCESO_RESTRINGIDO
+				Set vLectoresPto = New vector(0)
+				vLectoresPto.insertElement ROL_GESTION_RESOLUCIONES,vLectoresPto.cantElem+1	
+				Set oPto.Lectores = vLectoresPto
+				
+				oPto.save
+				
+				Set docPto = colPtos.GetNextDocument(docPto)
+			Wend
+		End If		
+		'Modifico y salvo la sesión
+		Me.Seguridad = ACCESO_RESTRINGIDO
+		
+		'Lectores de la propia sesión
+		Set vLectores = New vector(0)
+		vLectores.insertElement ROL_GESTION_RESOLUCIONES,vLectores.cantElem+1	
+		Set Me.Lectores = vLectores
+		
+		Call Me.save
+		
+		Exit Sub		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Restringir sesion","")
+		Exit Sub
+	End Sub
+'*****************************************************************************************************************		
+	
+	Public Function Save()
+		'Salva el documento sesion
+		
+		On Error Goto HANDLER
+		
+		doc.save True,False
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Sesion - Método Save","")
+		Exit Function
+	End Function
+	
+'*****************************************************************************************************************		
+	
+	
+	
+End Class

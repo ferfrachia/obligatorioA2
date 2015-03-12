@@ -1,0 +1,40 @@
+'++LotusScript Development Environment:2:5:(Options):0:66
+Option Public
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Class Response
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+'********************************************************************************************************
+'CLASE Response
+'Encapsula una respuesta de un servicio
+'********************************************************************************************************
+
+Class Response
+	Public ErrorCode As Integer
+	Public ErrorMsg As String
+	
+	Public Sub New
+		
+	End Sub
+	
+	
+	Public Sub SetErrorCode(value As Integer)
+		ErrorCode = value
+	End Sub
+	
+	Public Function GetErrorCode() As Integer
+		GetErrorCode = ErrorCode
+	End Function
+	
+	Public Sub SetErrorMsg(value As String)
+		ErrorMsg = value
+	End Sub
+	
+	Public Function GetErrorMsg() As Integer
+		GetErrorMsg = ErrorMsg
+	End Function
+	
+End Class

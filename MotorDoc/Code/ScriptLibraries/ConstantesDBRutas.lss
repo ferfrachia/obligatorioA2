@@ -1,0 +1,83 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Nombre del numerador para temas
+Public Const NUMERADOR_TEMA							= "EE_CodTema"
+
+' Acciones posibles en un documento de paso
+Public Const DBRUTAS_FPASO_ACCION_CREAR					= "Crear"
+Public Const DBRUTAS_FPASO_ACCION_MODIFICAR				= "Modificar"
+Public Const DBRUTAS_FPASO_ACCION_BORRAR				= "Borrar"
+
+'Tipos de ruta
+Public Const RUTA_LIBRE		 						= "Libre"
+Public Const RUTA_PREDEFINIDA							= "Predefinida"
+
+'Lectores y Autores de los documentos
+Public Const LECTORES_FTEMA							=""
+Public Const LECTORES_FPASO							=""
+Public Const AUTORES_FTEMA							="[AdminTemasRutas]"
+Public Const AUTORES_FPASO							="[AdminTemasRutas]"
+
+'Campos de la base "Gestión de Temas y Rutas"
+Public Const DBRUTAS_CAMPO_FPASO_VISTA_TEMA 				= "ccVistaPadre"
+Public Const DBRUTAS_CAMPO_FPASO_ID_TEMA 				= "ccIDTema"
+Public Const DBRUTAS_CAMPO_FPASO_COD_TEMA 				= "ccCodTema"
+Public Const DBRUTAS_CAMPO_FPASO_NRO_PASO				= "nNro"
+Public Const DBRUTAS_CAMPO_FPASO_NRO_PASO_OLD			= "nNroAnt"
+Public Const DBRUTAS_CAMPO_FPASO_UNIDAD					= "sUnidadPaso"
+Public Const DBRUTAS_CAMPO_FPASO_TIEMPO					= "nDiasAct"
+Public Const DBRUTAS_CAMPO_FPASO_PROCED					= "sProced"
+Public Const DBRUTAS_CAMPO_FPASO_TIPO					= "rTipoPaso"
+Public Const DBRUTAS_CAMPO_FPASO_LECTORES				= "Lectores"
+Public Const DBRUTAS_CAMPO_FPASO_AUTORES				= "Autores"
+Public Const DBRUTAS_CAMPO_FPASO_ACCION					= "sAccion"
+Public Const DBRUTAS_CAMPO_FPASO_HOSTDBORG				= "sHostDbOrg"
+Public Const DBRUTAS_CAMPO_FPASO_PATHDBORG				= "sPathDbOrg"
+Public Const DBRUTAS_CAMPO_FPASO_HOSTDBRUTAS				= "sHostDbRutas"
+Public Const DBRUTAS_CAMPO_FPASO_PATHDBRUTAS				= "sPathDbRutas"
+Public Const DBRUTAS_CAMPO_FPASO_NOM_TEMA				= "ccNomTema"
+Public Const DBRUTAS_CAMPO_FPASO_VERSION_RUTA			= "ccVersionRuta"
+Public Const DBRUTAS_CAMPO_FPASO_VISTA_ORIGEN			= "vistaOrigen"
+Public Const DBRUTAS_CAMPO_FPASO_RETORNO				= "Retorno"
+Public Const DBRUTAS_CAMPO_FPASO_QUERY					= "Query_String"
+Public Const DBRUTAS_CAMPO_FPASO_RETURN					= "$$Return"
+
+Public Const DBRUTAS_CAMPO_FTEMA_COD_TEMA 				= "ccCodTema"
+Public Const DBRUTAS_CAMPO_FTEMA_NOMBRE					= "sTema"
+Public Const DBRUTAS_CAMPO_FTEMA_DESCRIPCION				= "sDescripcion"
+Public Const DBRUTAS_CAMPO_FTEMA_TIEMPO					= "nDiasExp"
+Public Const DBRUTAS_CAMPO_FTEMA_UNIDADES				= "sUnidad"
+Public Const DBRUTAS_CAMPO_FTEMA_TABLA_NOMBRES			= "sNombreC"
+Public Const DBRUTAS_CAMPO_FTEMA_TABLA_TIPOS				= "sTipoC"
+Public Const DBRUTAS_CAMPO_FTEMA_TABLA_REQUERIDO			= "sRequeridoC"
+Public Const DBRUTAS_CAMPO_FTEMA_TIPO_RUTA				= "rTipoRuta"
+Public Const DBRUTAS_CAMPO_FTEMA_VERSION				= "ccVersionRuta"
+Public Const DBRUTAS_CAMPO_FTEMA_LECTORES				= "Lectores"
+Public Const DBRUTAS_CAMPO_FTEMA_AUTORES				= "Autores"
+Public Const DBRUTAS_CAMPO_FTEMA_HOSTDBORG				= "sHostDbOrg"
+Public Const DBRUTAS_CAMPO_FTEMA_PATHDBORG				= "sPathDbOrg"
+Public Const DBRUTAS_CAMPO_FTEMA_VISTA_ORIGEN			= "vistaOrigen"
+Public Const DBRUTAS_CAMPO_FTEMA_RETORNO				= "Retorno"
+Public Const DBRUTAS_CAMPO_FTEMA_QUERY					= "Query_String"
+Public Const DBRUTAS_CAMPO_FTEMA_RETURN					= "$$Return"
+
+
+'Formulario de la base "Gestión de Temas y Rutas"
+Public Const	DBRUTAS_FORM_PASO						= "FPaso"
+Public Const	DBRUTAS_FORM_TEMA						= "FTema"
+
+'Vistas de la base "Gestión de Temas y Rutas"
+Public Const	DBRUTAS_VISTA_PASOS_TEMA					= "VPasosTema"
+Public Const	DBRUTAS_VISTA_BUSQ_TEMA_COD				= "VBusqTemaCod"
+Public Const	DBRUTAS_VISTA_BUSQ_TEMA_DESC				= "VBusqTemaDescVersion"
+Public Const	DBRUTAS_VISTA_BUSQ_TEMA_DESC_SOLA			= "VBusqTemaDesc"
+Public Const	DBRUTAS_VISTA_BUSQ_PASO					= "VBusqPaso"
+Public Const	DBRUTAS_VISTA_BUSQ_A_PROCESAR				= "VPasosSinProcesar"
+Public Const	DBRUTAS_VISTA_TEMA_POR_NOMBRE				= "VTemaNom"
+Public Const	DBRUTAS_VISTA_TEMA_POR_CODIGO				= "VTemaCod"
+Public Const	DBRUTAS_VISTA_TEMA_POR_UNIDAD				= "VTemaUni"
+Public Const 	DBRUTAS_VISTA_SELECCION_TEMA				= "VSeleccionTema1"

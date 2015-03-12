@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='4ae' unid='5E9CA8900A24D1AB03256D44006359B1' sequence='79'>
+<created><datetime>20030613T150510,25-03</datetime></created>
+<modified><datetime>20150311T131219,44-03</datetime></modified>
+<revised><datetime>20150309T094441,45-03</datetime></revised>
+<lastaccessed><datetime>20150311T131219,44-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131219,44-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Cabrera/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030722T133613,92-03</datetime><datetime>20030919T161009,32+00</datetime><datetime
+>20030919T161009,35+00</datetime><datetime>20030919T161009,95+00</datetime><datetime
+>20030919T161009,98+00</datetime><datetime dst='true'>20071228T101600,56-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Inicio|FrInicio</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIAAwAAAAAAAAAAAAAAAAAAAAAA8P8+AEUAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAUAAAAA
+AAEAAgAAAAAAAQAAAAAAAAADAAEAAgAUAAIAUADx/z0AEQAAAABAAAECAAEAAQAAAAAACQAAAAAA
+AQAAAAAAAABJenF1aWVyZG8BAP////QBAAAJAQD////0P/b/MAAAAAAAAwAHAA4AAAAAAAAAAAAA
+AAAAAAAAAAAAAABwTWVudUl6cXVpZXJkYfH/OwABAAAAAEAAAAMAAQABAAAAAAAHAAAAAAABAAAA
+AAAAAERlcmVjaG8BAP////QBAAAJAQD////0P/b/KgAAAAAAAwACAAgAAAAAAAAAAAAAAAAAAAAA
+AAAAAABWUGVyc1VOSXr/KAAAAAAAAAAAAA0AAAAAAAAAAAAAAAAARlJBTUVCT1JERVI9MAA=
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item></note>
+

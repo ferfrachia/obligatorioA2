@@ -1,0 +1,72 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "ConfEE 1.0"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class LogBusqueda
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const DBLOGMAIL ="LOGQUERYEE"
+
+Public Class LogBusqueda
+	
+	
+	Private session As NotesSession
+	Private db As NotesDatabase
+	Private LastTime As Long
+	Private startTime As NotesDateTime
+	Private endTime As NotesDateTime
+	Private tick As Variant
+	Private dou As Double
+'*******************************************************************************************************************	
+	Public Sub new()
+		Dim c As New Configuracion()
+		Set session = New NotesSession
+		
+		Set db = New NotesDatabase(session.CurrentDatabase.Server,c.BaseDeDatos("LOGQUERY"))	
+		StartTimer
+	End Sub
+'*******************************************************************************************************************	
+	Public Sub StartTimer()
+		On Error Goto HANDLER
+		
+		tick = Now
+		Set startTime = New NotesDateTime(tick)
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"LogBusqueda - Función STARTTIMER","",session.CommonUserName)
+		Exit Sub
+	End Sub
+'*******************************************************************************************************************	
+	Public Sub StopTimer()
+		
+		On Error Goto HANDLER
+		
+		tick = Now
+		Set endTime = New NotesDateTime(tick)
+		LastTime = endTime.TimeDifference(startTime)
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"LogBusqueda - Función STOPTIMER","",Session.CommonUserName)
+		Exit Sub
+	End Sub
+'*******************************************************************************************************************
+	Public Sub log(strQuery As String, nroDocs As Integer)
+		StopTimer
+		Dim docLog As NotesDocument
+		
+		Set docLog = db.CreateDocument
+		Call docLog.replaceItemValue ("Form","LogQuery")
+		Call docLog.replaceItemValue("Query",strQuery)
+		Call docLog.replaceItemValue("USR", session.EffectiveUserName)
+		Call docLog.replaceItemValue("Tipo","RESULTADO")
+		Call docLog.replaceItemValue("fecha",Now)
+		Call docLog.replaceItemValue("nroSec",dou)
+		Call docLog.replaceItemValue("nroDocs", nroDocs)
+		Call docLog.replaceItemValue("intTiempo",LastTime)
+		'Call docLog.send(False, DBLOGMAIL)
+		Call docLog.Save (True,False)
+	End Sub
+	
+End Class

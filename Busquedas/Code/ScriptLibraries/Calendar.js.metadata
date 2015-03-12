@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E0500598295" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="276" sequence="43" unid="7E78D206AB3C7D7A43256DB1002DFFED">
+<created><datetime>20030930T112226,37+03</datetime></created>
+<modified><datetime>20150311T131743,33-03</datetime></modified>
+<revised><datetime>20150309T094343,59-03</datetime></revised>
+<lastaccessed><datetime>20150311T131743,33-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131743,33-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Cabrera/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IMF</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030930T112227,48+03</datetime><datetime>20030930T113103,89+03</datetime><datetime>20030930T131456,02+03</datetime><datetime>20031006T174457,61+03</datetime><datetime>20031006T174616,96+03</datetime><datetime>20031006T175045,98+03</datetime><datetime>20031006T175534,59+03</datetime><datetime>20081008T152014,78-03</datetime><datetime>20090719T145719,83-03</datetime><datetime>20100609T164933,89-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>Calendar.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$Comment" sign="true"><text>ESTE ES ESPECIAL PARA EL FORMULARIO DE BUSQUEDA NO COPIAR</text></item>
+<item name="$POID"><datetime>20150309T094343,59-03</datetime></item></note>

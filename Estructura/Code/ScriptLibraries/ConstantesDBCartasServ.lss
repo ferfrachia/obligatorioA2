@@ -1,0 +1,75 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Sub MarcarDocParaBorrarCS(doc As NotesDocument) 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Valores de campos
+
+Public Const CS_CARACTER_PERSONAL					= "0"
+Public Const CS_CARACTER_UNIDAD					= "1"
+
+'Roles en la ACL de esta base
+Public Const ROL_DESARROLLO_CS					= "[Desarrollo]"
+
+
+'Campos 
+Public Const DBCS_CAMPO_FCARTASERV_HOSTDBORG			= "sHostDbOrg"
+Public Const DBCS_CAMPO_FCARTASERV_PATHDBORG			= "sPathDbOrg"
+Public Const DBCS_CAMPO_FCARTASERV_USUARIO_ACCION		= "sUsuario"
+Public Const DBCS_CAMPO_FCARTASERV_ACCION			= "sAccion"
+Public Const DBCS_CAMPO_FCARTASERV_LECTORES			= "Lectores"
+Public Const DBCS_CAMPO_FCARTASERV_LECTORES_CC		= "LectoresCC"
+Public Const DBCS_CAMPO_FCARTASERV_LECTORES_PERM		= "LectoresPer"
+
+Public Const DBCS_CAMPO_FCARTASERV_AUTORES			= "Autores"
+Public Const DBCS_CAMPO_FCARTASERV_AUTORES_PERM		= "AutoresPer"
+Public Const DBCS_CAMPO_FCARTASERV_FIRMAS			= "sFirma"
+Public Const DBCS_CAMPO_FCARTASERV_FECHAS_FIRMAS		= "fFechaFirma"
+Public Const DBCS_CAMPO_FCARTASERV_FIRMAS_USUARIO		= "sUsuarioFirma"
+Public Const DBCS_CAMPO_FCARTASERV_NRO				= "ccNroCS"
+Public Const DBCS_CAMPO_FCARTASERV_ACT_NRO			= "ccnNroAct"
+Public Const DBCS_CAMPO_FCARTASERV_NRO_ORIG			= "ccNroCSOrig"
+Public Const DBCS_CAMPO_FCARTASERV_CARACTER			= "rCaracter"
+Public Const DBCS_CAMPO_FCARTASERV_FECHA_CREACION		= "ccfCreacion"
+Public Const DBCS_CAMPO_FCARTASERV_FECHA_ENVIO		= "ccfEnvio"
+Public Const DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL	= "ccOficinaInicial"
+Public Const DBCS_CAMPO_FCARTASERV_USUARIO			= "ccUsuario"
+Public Const DBCS_CAMPO_FCARTASERV_UNIDADES_DEST		= "lUnidadesDest"
+Public Const DBCS_CAMPO_FCARTASERV_UNIDADES_CC		= "lUnidadesCC"
+Public Const DBCS_CAMPO_FCARTASERV_PERSONAS_DEST		= "lPersonasDest"
+Public Const DBCS_CAMPO_FCARTASERV_UNIDADES_SIN_RESP	= "lUnidadesSinResp"
+Public Const DBCS_CAMPO_FCARTASERV_PERSONAS_SIN_RESP	= "lPersonasSinResp"
+Public Const DBCS_CAMPO_FCARTASERV_ASUNTO			= "sAsunto"
+Public Const DBCS_CAMPO_FCARTASERV_TEXTO			= "sTexto"
+Public Const DBCS_CAMPO_FCARTASERV_DOCS_RELAC		= "lDocsRelacionados"
+Public Const DBCS_CAMPO_FCARTASERV_LOG_OPERACION		= "sLogOperacion"
+Public Const DBCS_CAMPO_FCARTASERV_LOG_USUARIO		= "sLogusuario"
+Public Const DBCS_CAMPO_FCARTASERV_LOG_FECHAHORA		= "sLogFechaHora"
+Public Const DBCS_CAMPO_FCARTASERV_ESTADO			= "ccEstado"
+Public Const DBCS_CAMPO_FCARTASERV_RESPUESTA			= "sRespuesta"
+Public Const DBCS_CAMPO_FCARTASERV_TOMARONCC			= "sTomaronCC"
+Public Const DBCS_CAMPO_FCARTASERV_ACUSES			= "sAcuses"
+
+
+'Formularios 
+Public Const DBCS_FORM_CARTASERV					= "FCartaServicio"
+Public Const DBCS_FORM_PARAM_FIRMA					= "FParametrosFirma"
+
+
+'Vistas 
+Public Const DBCS_VISTA_BUSQ_CARTA					= "VBusqCarta"
+Public Const DBCS_VISTA_BUSQ_ARCHIVADAS				= "VBusqArchivadas"
+Public Const DBCS_VISTA_BUSQ_PARA_ARCHIVAR			= "VBusqParaArchivar"
+
+'Prefijo Documentos a Borrar
+Public Const DBCS_CAMPO_FORM_BORRAR_PREFIJO				="A_BORRAR_"
+'++LotusScript Development Environment:2:2:MarcarDocParaBorrarCS:1:8
+Public Sub MarcarDocParaBorrarCS(doc As NotesDocument) 
+	'Se usa para cambiar el forms de los docs cuando hay error y dejarlos para borrar
+	'Está en esta base porque usa la cte para ella (se podría poner en funciones generales
+	'pero habría que poner el prefijo del form a borrar en constantessistema)
+	
+	Call doc.ReplaceItemValue("Form",DBCS_CAMPO_FORM_BORRAR_PREFIJO+doc.Form(0))
+	Call doc.save(True,False)
+End Sub

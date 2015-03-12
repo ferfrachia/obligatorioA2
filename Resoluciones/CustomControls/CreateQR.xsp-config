@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config>
+  <faces-config-extension>
+    <namespace-uri>http://www.ibm.com/xsp/custom</namespace-uri>
+    <default-prefix>xc</default-prefix>
+  </faces-config-extension>
+  <composite-component>
+    <component-type>CreateQR</component-type>
+    <composite-name>CreateQR</composite-name>
+    <composite-file>/CreateQR.xsp</composite-file>
+    <composite-extension>
+      <designer-extension>
+        <in-palette>true</in-palette>
+        <render-markup>&lt;?xml version="1.0" encoding="UTF-8"?&gt; &#xd;
+&lt;xp:view xmlns:xp="http://www.ibm.com/xsp/core"&gt;  &#xd;
+&lt;xp:image url="/QRCode.gif" id="image2"&gt;&lt;/xp:image&gt; &#xd;
+&lt;/xp:view&gt;</render-markup>
+      </designer-extension>
+    </composite-extension>
+    <property>
+      <property-name>URL</property-name>
+      <property-class>string</property-class>
+      <description>Write the url you want the QR Code to lead to begin with http://</description>
+    </property>
+    <property>
+      <property-name>Size</property-name>
+      <property-class>string</property-class>
+      <description>Write the Size of the QR in the following format 200 this will give a QR Code with the size of 200x200</description>
+      <property-extension>
+        <designer-extension>
+          <default-value>200</default-value>
+        </designer-extension>
+      </property-extension>
+    </property>
+  </composite-component>
+</faces-config>

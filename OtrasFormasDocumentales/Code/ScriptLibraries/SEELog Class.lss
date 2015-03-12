@@ -1,0 +1,197 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+
+Use "Configuracion Comunicaciones"
+Use "FuncionesGenerales" 
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SEELog
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+Private Const CLAVE_BASE_LOG						= "SEELOG"
+
+'Campos
+Private Const SEELOG_CAMPO_NRO					= "Numero"
+Private Const SEELOG_CAMPO_FORM					= "Form"
+Private Const SEELOG_CAMPO_DESC					= "Desc"
+Private Const SEELOG_CAMPO_USUARIO					= "Usuario"
+Private Const SEELOG_CAMPO_TIME					= "Fecha"
+Private Const SEELOG_CAMPO_TIMEACTION				= "Tiempo"
+Private Const SEELOG_CAMPO_ACCION					= "Accion"
+Private Const SEELOG_CAMPO_NIVEL					= "Nivel"
+
+'Valores
+Private Const SEELOG_CAMPO_FORM_VALOR				= "Log"
+
+'Errores
+Public Const ERROR_SEELOG_CANNOT_OPEN_DB_LOG			= 18001
+Public Const ERROR_SEELOG_CANNOT_OPEN_DB_DESC		= "No se puede acceder a la base de Log."
+
+
+
+
+'*******************************************************************************************************************
+Public Class SEELog
+	
+	Private nro As String
+	Private usuarioAccion As String
+	Private DBSEELog As NotesDatabase
+	Private s As NotesSession
+	Private LastTime As Long
+	Private startTime As NotesDateTime
+	Private endTime As NotesDateTime
+	Private tick As Variant
+	Private NOMBRE_APLICACION As String
+	
+'*******************************************************************************************************************
+	
+	Public Sub New(Byval numero As String,Byval Usr As String,Byval aplicacion As String)
+		'Constructor
+		On Error Goto HANDLER
+		Dim nombreModulo As String
+		Dim c As ConfigComunicaciones
+		
+		'Inicializo
+		NOMBRE_APLICACION = aplicacion
+		Set s = New NotesSession
+		Set c = New ConfigComunicaciones()
+		
+		usuarioAccion = usr
+		nro = numero 
+		Set DBSEELog = New NotesDatabase("","")
+		If Not DBSEELog.Open(c.ServidorDomino(CLAVE_BASE_LOG),c.BaseDeDatos(CLAVE_BASE_LOG)) Then
+			Error ERROR_SEELOG_CANNOT_OPEN_DB_LOG, ERROR_SEELOG_CANNOT_OPEN_DB_DESC
+		End If
+		
+		LastTime = 0
+		Exit Sub
+		
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - Función NEW","",S.CommonUserName)
+		Exit Sub
+	End Sub
+	
+'*******************************************************************************************************************
+	
+	
+	Public Property Get Numero As String
+		On Error Goto HANDLER
+		
+		Numero = nro
+		
+		Exit Property
+		
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - PROPERTY GET NUMERO","",S.CommonUserName)
+		Exit Property
+	End Property
+	
+	
+'*******************************************************************************************************************
+	
+	Public Property Set Numero As String
+		
+		On Error Goto HANDLER
+		
+		nro = Numero
+		
+		Exit Property
+		
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - PROPERTY SET NUMERO","",S.CommonUserName)
+		Exit Property
+	End Property
+	
+	
+'*******************************************************************************************************************
+	
+	
+	Public Property Get Usuario As String
+		On Error Goto HANDLER
+		
+		Usuario = usuarioAccion
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - PROPERTY GET USUARIO","",S.CommonUserName)
+		Exit Property
+	End Property
+	
+	
+'*******************************************************************************************************************
+	
+	Public Property Set Usuario As String
+		On Error Goto HANDLER
+		
+		usuarioAccion = Usuario
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - PROPERTY SET USUARIO","",S.CommonUserName)
+		Exit Property
+	End Property
+	
+	
+'*******************************************************************************************************************
+	
+	Public Sub StartTimer()
+		On Error Goto HANDLER
+		
+		tick = Now
+		Set startTime = New NotesDateTime(tick)
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - Función STARTTIMER","",S.CommonUserName)
+		Exit Sub
+	End Sub
+	
+	
+'*******************************************************************************************************************
+	
+	Public Sub StopTimer()
+		
+		On Error Goto HANDLER
+		
+		tick = Now
+		Set endTime = New NotesDateTime(tick)
+		LastTime = endTime.TimeDifference(startTime)
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - Función STOPTIMER","",S.CommonUserName)
+		Exit Sub
+	End Sub
+	
+'*******************************************************************************************************************
+	
+	Public Sub Log (Byval accion As String, Byval desc As String, Byval nivel As Integer)
+		
+		On Error Goto HANDLER
+		
+		Dim note As NotesDocument
+		
+		Set note = New NotesDocument(DBSEELog)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_NRO,nro)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_FORM,SEELOG_CAMPO_FORM_VALOR)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_ACCION,accion)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_USUARIO,Usuario)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_DESC,desc)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_TIMEACTION,LastTime)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_TIME,tick)
+		Call note.ReplaceItemValue(SEELOG_CAMPO_Nivel,nivel)
+		Call note.Save(True,False)
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error,NOMBRE_APLICACION,"SEE LOG - Función LOG","",S.CommonUserName)
+		Exit Sub
+	End Sub
+	
+'*******************************************************************************************************************
+End Class
+'*******************************************************************************************************************
+'*******************************************************************************************************************New(byval dateexpr as string) as notesdatetime

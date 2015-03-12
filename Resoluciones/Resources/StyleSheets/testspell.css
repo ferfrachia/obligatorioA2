@@ -1,0 +1,60 @@
+p {
+	clear: left;
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 8pt;
+}
+
+div {
+	float: left;
+	border: 1px solid silver;
+	padding: 4px;
+	width: 45%;
+	margin: 12px 12px auto auto;
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 8pt;
+}
+
+#text,#html {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	line-height: 10pt;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 8pt;
+	margin-top: 4px;
+}
+
+#text,#html {
+	width: 100%;
+	height: 200px;
+}
+
+span.underline {
+	position: relative;
+	display: inline-block;
+	background-image: url(img/underline.gif);
+	background-position: bottom;
+	background-repeat: repeat-x;
+	cursor: pointer;
+}
+
+ul.suggest {
+	position: absolute;
+	top: 16px;
+	left: 0;
+	margin: 0;
+	padding: 8px;
+	list-style: none;
+	color: gray;
+	display: block;
+	border: 1px solid #EEE;
+	background-color: #FFF;
+}
+
+strong {
+	padding: 4px;
+	background: #EEE;
+	display: block;
+}

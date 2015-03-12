@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF800416654'>
+<noteinfo noteid='296' unid='6E3D7732DEC9E753832575D3005CDD04' sequence='38'>
+<created><datetime>20090612T135418,92-03</datetime></created>
+<modified><datetime>20150309T094341,20-03</datetime></modified>
+<revised><datetime>20150309T094341,19-03</datetime></revised>
+<lastaccessed><datetime>20150309T094341,20-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T095422,31-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=IAN COATES/O=ISA</name><name>CN=Pablo Andrade/O=ISA</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IMF</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Sofia Caggiani/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090626T143029,36-03</datetime><datetime>20090629T095511,55-03</datetime><datetime
+>20090629T123252,76-03</datetime><datetime>20090629T123745,12-03</datetime><datetime
+>20090629T124547,36-03</datetime><datetime>20090629T131156,14-03</datetime><datetime
+>20090701T110354,80-03</datetime><datetime>20090703T102238,30-03</datetime><datetime
+>20090703T113108,18-03</datetime><datetime>20090706T100518,40-03</datetime><datetime
+>20090709T152840,66-03</datetime><datetime>20090713T110749,46-03</datetime><datetime
+>20090714T131737,04-03</datetime><datetime>20090715T101247,20-03</datetime><datetime
+>20090722T125008,34-03</datetime><datetime>20090811T111120,99-03</datetime><datetime
+>20090902T152345,04-03</datetime><datetime>20090902T152850,31-03</datetime><datetime
+>20090924T100444,42-03</datetime><datetime>20090924T101512,03-03</datetime><datetime
+>20090924T110117,47-03</datetime><datetime>20090924T112552,74-03</datetime><datetime
+ dst='true'>20100202T215336,42-02</datetime><datetime dst='true'>20100208T192046,23-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true'>
+<rawitemdata type='4'>
+AQB3Io+PHF/40qfYXwBAbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>BusquedasGuardadas|vBusquedasGuardadasNombre</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+igACAAwAAgAkMWkAAwAFACwAJwAEAAwAAgAJAAQAc05vbUJ1c3F1ZWRhJDEkQ29uZmxpY3QkUkVG
+AAQABAAAADgABQAEAEZvcm0BAAkARkJ1c3F1ZWRhAAoCBQAEAEZvcm0BAAoAQnVzcXVlZGFMUwoC
+HQIDAAcAFAAOAAlMMVMyUzRTNVM2UzdT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GQABAABEgGYAAAAMAHNOb21CdXNxdWVkYQ==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAQAiAAAAFZDAQAMAAYAAAAAAKwAAQAACgAgAAAIAAAAAAICAAAAVkMAAAIACAAOAAAAewAB
+AAAKACAAAAAAAAAAAgIAAABzTm9tQnVzcXVlZGFOb21icmUkMUNyZWFjaaJuDgACAAwAAgAkMWkA
+AwAmAAEAAAABAQAJAQAACgEBDgoAAC8ArSsBAAEAAQEAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAA
+AAAAAAABAMQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD///8AAQD39/cAAQAAAAAAAAAAAAAAAAABAP///wAB
+AP///wAAAAEAAAAAAAEAgICAAAAAAAAAAAAACAAAAAAAAQBYQwAMgAMAAAAAAAECAgIBAQEBBwQD
+AAAAAAAAAAAgLy86WUMAAAgAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA
+AAAAAAAAACwuJFU=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion'><text>6.5</text></item>
+<item name='$HTMLCode' summary='true'>
+<rawitemdata type='1'>
+8v8cABAAAQAAAAAAEAAAAA4AAQAEAF90b3ADAA==
+</rawitemdata></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAgQAAAAAAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAABAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/KAAAAAUAAACdAQAADgAAAAAAAABfRWRpdCBEb2N1bWVudAIAAgq+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAU2VuZCBEb2N1X21lbnQDAAMKvv8iAAAABQAAAJ0BAAAIAAAAAAAAAF9Gb3J3YXJk
+BAAECr7/LAAAAAUAAACdAQAAEgAAAAAAAABfTW92ZSBUbyBGb2xkZXIuLi4FAD18vv8uAAAABQAA
+AJ0BAAATAAAAAAAAAF9SZW1vdmUgRnJvbSBGb2xkZXJlBgA+fA==
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAgQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABTZW5kIERvY3VfbWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcmUGAD58
+</rawitemdata></item></note>
+

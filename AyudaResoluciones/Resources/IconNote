@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257E05005ABB51'>
+<noteinfo noteid='112' unid='85255D22006B789C85255D0400766638' sequence='33'>
+<created><datetime dst='true'>19920122T173314,16-04</datetime></created>
+<modified><datetime>20150311T133103,01-03</datetime></modified>
+<revised><datetime>20150311T133103,00-03</datetime></revised>
+<lastaccessed><datetime>20150311T133103,01-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133102,08-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=ISA</name><name>CN=Desarrollo/O=ISA</name><name
+>CN=Pablo Andrade/O=ISA</name><name>CN=Desarrollo/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Diego Celery/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Usuario Administracion/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060517T163045,62-03</datetime><datetime>20060518T111120,65-03</datetime><datetime
+>20060630T162753,18-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TemplateModTime' sign='true'><datetime>20030725T175430,79-03</datetime></item>
+<item name='$TemplateServerName' sign='true'><text>CN=Diego Celery/O=ISA</text></item>
+<item name='$TemplateFileName' sign='true'><text>C:\Lotus\Notes\Data\SCenterHelp.ntf</text></item>
+<item name='$DefaultNavigator' sign='true'><text>Temas de la Ayuda - Índice</text></item>
+<item name='$DefaultFrameset' sign='true'><text>Main</text></item>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAaoA//////////P////z//////////P/+B/z/8AD+f+AAfz/AADM/gAAYfwAAD/8AAA//AAA
+P/gAAB/4AAAf+AAAH/gAAB/4AAAf+AAAH/wAAD/8AAA//AAAP+YAAH/nAAD//4AB/+fAA//n+B//
+8/////H///+Z////w/////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAAAAAAA
+AAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAiIiIAAAAAA
+RAAAAAAAAIiMZmbIiAAAAARAAAAAAAjGZmZmZmyAAAAARAAAAACMZmZmZmZmyABEAEQAAAAIxmZm
+ZmZmZmyABERAAAAAjGby9vIvby9myAAAAAAAAIZmIibyL2IiZmgAAAAAAACGZiIm8i9iImZoAAAA
+AAAIxmYiJvIvYiJmbIAAAAAACGZmIibyL2IiZmaAAAAAAAhmZiIm8i9iImZmgAAAAAAIZiIiJvIv
+YiIiZoAAAAAACGYiIvbyL28iImaAAAAAAAjGZmZmZmZmZmZsgAAAAAAAhm8i9vIvbyL2aAAAAAAA
+AIZiIiYiImIiJmgAAAAAAACMbyL28i9vIvbIAAAAAARACMZmZmZmZmZsgAAAAAAEQACMZmZmZmZm
+yAAAAAAAAAAACMZmZmZmbIAAAAAAAARAAACIjGZmyIgAAAAAAAAEQAAAAAiIiIAAAAAAAAAAAEQA
+AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAARABEAAAAAAAAAAAAAAAAAAREQAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$Flags'><text>JzFn</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current Ayuda Resoluciones</text></item></note>
+

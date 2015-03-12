@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059AC63'>
+<noteinfo noteid='14e' unid='9BA4C9B5986B973403257265006FA4BB' sequence='22'>
+<created><datetime>20070116T171926,67-03</datetime></created>
+<modified><datetime>20150311T131928,67-03</datetime></modified>
+<revised><datetime>20150309T094508,35-03</datetime></revised>
+<lastaccessed><datetime>20150311T131928,67-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131928,67-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20070116T171952,25-03</datetime><datetime>20070116T172046,93-03</datetime><datetime
+>20070125T151721,53-03</datetime><datetime dst='true'>20070202T111521,94-02</datetime><datetime
+ dst='true'>20070207T133820,61-02</datetime><datetime>20070329T172814,01-03</datetime><datetime
+>20070330T103314,24-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime dst='true'>20070116T181139,79-02</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>ExpBean</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>ExpBean</text></item>
+<item name='Fecha' summary='false' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='NroExp' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='NroAct' summary='false' sign='true'><number>0</number></item>
+<item name='$Fields'><textlist><text>NroAct</text><text>NroExp</text><text
+>Fecha</text></textlist></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8QAAEAAApGZWNoYToJCd0G
+AACK//7/VAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiAAwAA
+AAAAAQICAgEBAQEHBAAAAAAAAAAAAAAAAAAAIC8vOor/KgCKAAEEGEACAAAAAAAAAAEAAAoAAAAA
+AAAAAAUAAAAAAEZlY2hhAN4GAACK/4X/CAABAAAKgQKDBAEAhf8OAAEAAApFeHA6CQndBgAAiv/+
+/1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIr/KgCKAAAFADACAAAAAAAAAgEAAAoAAAAAAAAAAAYAAAAA
+AE5yb0V4cN4GAACK/4X/CAABAAAKgQKDBAEAhf8VAAEAAApBY3R1YWNpb25lczoJAN0GAACK//7/
+UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAiv8qAIoAAQMYQAIAAAAAAAACAQAACgAAAAAAAAAABgAAAAAA
+TnJvQWN03gYAAIr/hf8IAAEAAAqBAoMEAQCF/wgAAQAACg==
+</rawitemdata></item></note>
+

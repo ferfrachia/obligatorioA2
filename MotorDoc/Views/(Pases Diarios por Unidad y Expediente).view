@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E2F3'>
+<noteinfo noteid='80e' unid='3D95DF7138653A2283257DC8005084C3' sequence='8'>
+<created><datetime dst='true'>20150109T123928,67-02</datetime></created>
+<modified><datetime>20150311T131101,72-03</datetime></modified>
+<revised><datetime>20150309T094432,01-03</datetime></revised>
+<lastaccessed><datetime>20150311T131101,72-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131101,72-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Alejandro Zinemanas/O=ISA</name><name
+>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060210T180001,02-03</datetime><datetime>20060410T180430,50-03</datetime><datetime
+>20060411T105315,61-03</datetime><datetime>20060411T134057,31-03</datetime><datetime
+>20060411T140739,47-03</datetime><datetime>20060412T173252,87-03</datetime><datetime
+ dst='true'>20061103T100700,07-02</datetime><datetime>20070201T132145,75-03</datetime><datetime
+>20070201T132443,43-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Pases Diarios por Unidad y Expediente)|PasesDelDia</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+ogACABgAAgAkMGkATgFpAE8BaQBQAUsDAwACABwABwBEZXN0aW5vAAUABwBEZXN0aW5vAAMAAgAY
+AAYATnJvRXhwBQAGAE5yb0V4cAMABQAuACoABQACAAcABgAJAAQAJDBEZXN0aW5vTnJvRXhwJENv
+bmZsaWN0JFJFRgQABAAAABgABQAEAGZvcm0BAAQAUGFzZQoCAwAHAAoABAAJTDFT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+HQACAABEAWYAAAACAIBmAAIABwAkMERlc3Rpbm8=
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAMAiAgAAFZDBQACAAUAJgAAAFAAAQAACAAAAAAAAAAAAAICAAAAVkMBAAcADgAeAAAACgEB
+AAAIAAAAAAAAAAAAAgIAAABWQwAABgADABoAAAAvAAEAAAgBAAAAAAAAAAACAgAAACQwRmVjaGEm
+AAIAGAACACQwaQBOAWkATwFpAFABSwMDAAcADAAFAAkwUzBFAERlc3Rpbm9VbmlkYWQgRGVzdGlu
+bx4AAgAcAAcARGVzdGlubwAFAAcARGVzdGlubwADAE5yb0V4cE5ybxoAAgAYAAYATnJvRXhwBQAG
+AE5yb0V4cAMAJgABAAAAAQEACQEAAAoBAQ4KAABPAK0rCQA/AAEAAAAAAAAAAABXQwEBAAkAAAAA
+AAAAAAAAAAAAAAAAAQAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAA
+AAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//
+AAAAAAAAAAAAAAAAAABCAAAAAAABAO/v7wABAOHh4QABAAAAAAAAAAAAAAAAAAEA////AAEA////
+AAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item></note>
+

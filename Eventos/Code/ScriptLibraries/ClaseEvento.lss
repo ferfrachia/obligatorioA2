@@ -1,0 +1,387 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library ClaseEvento
+	Created May 2, 2014 by Ismael Olivet/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+Use "Configuracion Eventos"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Evento
+Declare Sub Initialize
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const CRESERVADO						= "reservado"
+Private Const RESERVADO_USUARIO				= "Autores"
+%REM
+	Class Evento
+	Description: Comments for Class
+%END REM
+Public Class Evento
+	Private doc As NotesDocument
+	Private conf As  ConfigEventos
+	private dbEv As NotesDatabase
+	private view As NotesView
+
+	'NEW------------------------------------------------------
+	Public Sub New(id As String)
+		On Error GoTo handler
+		Set conf = New ConfigEventos
+		If Not id = "" Then 'no es nuevo
+			Set dbEv = conf.referenciarBasededatos("EVENTOS")
+			
+			Set doc = dbEv.Getdocumentbyunid(id)
+		Else 
+			
+		End If
+		Exit Sub
+handler:
+		MsgBox "error en new clase evento erl " + CStr(Erl) + " error " + Error 
+		Exit sub
+	End Sub
+
+	'PROPIEDADES------------------------------------------------------
+
+	Public Property Get Reservado() As integer
+		'Devuelve el estado de la resolucion
+		On Error GoTo HANDLER
+		If doc.hasItem(CRESERVADO) Then
+			If Not doc.Getitemvalue(CRESERVADO)(0)=0 then
+				Reservado = 1
+			Else  
+				Reservado =0
+			End If
+		Else
+			Reservado =0
+		End If		
+		
+		Exit Property		
+HANDLER:
+		MsgBox "clase evento en Reservado prop " + CStr(Erl)+ " error " + Error
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Get Reservado","")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set Reservado() As integer
+		'Setea el estado de la resolucion
+		On Error GoTo HANDLER
+		doc.replaceItemValue CRESERVADO , Reservado
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos" ,"Clase Evento - Propiedad Set EstadoRes","")
+		Exit Property
+		
+	End Property
+	
+	'***************************************************************************
+	Public Property Get ReservadoUsuario() As String
+		'Devuelve el estado de la resolucion
+		On Error GoTo HANDLER
+		ReservadoUsuario = doc.Getitemvalue(RESERVADO_USUARIO)(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Get ReservadoUsuario","")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set ReservadoUsuario() As String 
+		'Setea el estado de la resolucion
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue RESERVADO_USUARIO ,ReservadoUsuario 
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set ReservadoUsuario","")
+		Exit Property
+		
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Detalles() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "details",Detalles
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Detalles","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set FechaFin() As String 
+		On Error GoTo HANDLER
+		doc.replaceItemValue "end_date", CDat(FechaFin)
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set FechaFin","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set HoraFin() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "HoraFin",HoraFin
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set HoraFin","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set HoraInicio() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "HoraInicio",HoraInicio
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set HoraInicio","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set IdDoc() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "idDoc",IdDoc
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set IdDoc","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Minutos() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "minutos",Minutos
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Minutos","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Notificar() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "notificar",Notificar
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Notificar","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Personal() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "personal", personal
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Personal","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Lectores() As Vector 
+		On Error GoTo HANDLER
+		
+		Dim unlector As NotesItem
+		Set unlector = doc.replaceItemValue("lectores", Lectores.Values)
+		unlector.Isreaders = True
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Lectores","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set FechaInicio() As String  
+		On Error GoTo HANDLER
+		doc.replaceItemValue "start_date", CDat(FechaInicio)
+		Exit Property		
+HANDLER:
+		MsgBox "clase evento set prop Fecha Inicio erl " + CStr(Erl) + " error " + Error  
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set FechaInicio","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set TipoDoc() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "tipoDoc",TipoDoc
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set TipoDoc","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Unidad() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "unidad",Unidad 
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Unidad","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set UnidadNro() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "unidadNro",UnidadNro
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set UnidadNro","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Usuarios() As Vector 
+		On Error GoTo HANDLER
+		doc.replaceItemValue "usuarios",Usuarios.values
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Usuarios","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Aviso() As String 
+		On Error GoTo HANDLER
+		doc.replaceItemValue "aviso", aviso
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Usuarios","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Texto() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "text",Texto
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Texto","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Set Creador() As String 
+		On Error GoTo HANDLER
+		
+		doc.replaceItemValue "creador",Creador
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError("Eventos","Clase Evento - Propiedad Set Creador","")
+		Exit Property
+	End Property
+
+	
+	'FUNCiONES--------------------------------------------------------------------------
+
+	Public Sub save()
+		Dim v As Boolean
+		v =  doc.Save(true, False)	
+		MsgBox v
+		
+	End sub
+
+	'****************************************************
+	Public Function Reservar(usuario As String) As String 
+		On Error GoTo handler
+		If  me.Reservado = 0 Then
+			Reservado = 1
+			ReservadoUsuario = usuario
+			Reservar = "OK"
+			me.save
+		Else 
+			If usuario = ReservadoUsuario Then
+				Reservar = "OK"
+			Else' el documento está reservado
+				Dim nombre  As New NotesName(ReservadoUsuario)
+				Reservar = "El documento se esta editando por " + nombre.Common
+			End if
+		End If
+		Exit function
+handler:
+		
+		MsgBox "clase evento en Reservar " + CStr(Erl)+ " error " + error
+		Exit function
+	End Function
+	
+	'****************************************************
+	
+	Public Function Liberar(usuario As String) As String 
+		On Error GoTo handler
+		'MsgBox "----" + CStr(me.Reservado) + "-reservadoPor-" +me.ReservadoUsuario + "-usuauarioAct-" + usuario 
+		If  (me.Reservado = 1) And (usuario = me.ReservadoUsuario) Then
+			
+			Reservado = 0
+			ReservadoUsuario = ""
+			Liberar = "OK"
+			me.save
+		Else 
+			If usuario = ReservadoUsuario Then
+				Liberar = "El documento no esta reservado."
+			Else' el documento está reservado
+				Dim nombre  as New NotesName(ReservadoUsuario)
+				
+				Liberar = "Solo " + nombre.Common + " puede liberar el documento"
+			End If
+		End If
+		Exit Function
+handler:
+		
+		MsgBox "clase evento en Reservar " + CStr(Erl)+ " error " + Error
+		Exit Function
+	End Function
+
+	
+End Class
+'++LotusScript Development Environment:2:2:Initialize:1:10
+Sub Initialize
+	
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+

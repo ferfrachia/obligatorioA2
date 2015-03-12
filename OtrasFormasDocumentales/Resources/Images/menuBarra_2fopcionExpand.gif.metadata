@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="8ca" sequence="27" unid="E413917472F8160C8325796E00658E30">
+<created><datetime dst="true">20111222T162915,36-02</datetime></created>
+<modified><datetime>20150309T094401,52-03</datetime></modified>
+<revised><datetime>20150309T094401,51-03</datetime></revised>
+<lastaccessed><datetime>20150309T094401,52-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100914,99-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime>20090805T212641,46-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>opcionExpand.gif</text></item>
+<item name="$TITLE" sign="true"><text>menuBarra/opcionExpand.gif</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$Flags"><text>34CiQ</text></item></note>

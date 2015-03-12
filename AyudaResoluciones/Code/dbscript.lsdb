@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005ABB51'>
+<noteinfo noteid='122' unid='8DB0CCE7C54D5EA885256690006D5A45' sequence='27'>
+<created><datetime>19981001T145425,33-05</datetime></created>
+<modified><datetime>20150311T133102,14-03</datetime></modified>
+<revised><datetime>20150309T094423,01-03</datetime></revised>
+<lastaccessed><datetime>20150311T133102,14-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133102,14-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Lotus Notes Template Development/O=Lotus Notes</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Sandra Sayanes/O=ISA</name><name
+>CN=Administrador/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name
+>CN=Administrador/O=MEC</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060317T103043,81-03</datetime><datetime>20060630T180752,91-03</datetime><datetime
+>20060713T143602,37-03</datetime><datetime>20060802T135149,00-03</datetime><datetime
+>20060802T151925,90-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Database Script</text></item>
+<item name='$Flags'><text>t34Q</text></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item>
+<item name='$Language' sign='true'><text>es-MX</text></item>
+<item name='$LastBuildTime' sign='true'><datetime>19990412T172505,89+00</datetime></item>
+<item name='$BabelInfo' sign='true'><text>00000196</text></item></note>
+

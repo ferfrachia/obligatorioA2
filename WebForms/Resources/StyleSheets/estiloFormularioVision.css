@@ -1,0 +1,52 @@
+body
+{
+font-family:Arial;
+
+}
+a{
+color:rgb(50,100,130);
+font-weight:bold;
+font-size:15px;
+}
+
+.tituloTabla
+{
+
+color:white;
+font-weight:bold;
+font-size:13px;
+border:1px solid rgb(50,100,130);
+background-color:rgb(50,100,130);
+}
+
+.tituloTabla2
+{
+
+color:white;
+font-weight:bold;
+font-size:12px;
+border:1px solid rgb(50,100,130);
+background-color:rgb(50,100,130);
+}
+
+
+table.tablaSeccion
+{
+width:100%;
+
+border-bottom:1px solid rgb(50,100,130);
+}
+
+table.tablaTituloSeccion
+{
+width:100%;
+
+border-top:3px solid rgb(50,100,130);
+
+}
+
+.etiqueta
+{
+font-weight:bold;
+font-size:12px;
+}

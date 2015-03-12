@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500598C82'>
+<noteinfo noteid='18e' unid='508C5416D1E1A2E0832575F9005049E2' sequence='18'>
+<created><datetime>20090720T113657,94-03</datetime></created>
+<modified><datetime>20150311T131807,52-03</datetime></modified>
+<revised><datetime>20150309T094424,84-03</datetime></revised>
+<lastaccessed><datetime>20150311T131807,52-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131807,52-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=CTM</name><name>CN=Administrador Isa/O=CTM</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+CgICAJwAAgAkMQUABAB0aXBvAAAAAAAAAABCQF8CAQAkAENhbnRpZGFkIERlIEV4cGVkaWVudGVz
+IGRlIGxhIFVuaWRhZAoCrwBSACgABQAEAHRpcG8FAAQAdGlwb6YBAAAAAAAAAABCQCMCYAJeAa4A
+KgAFAAQAdGlwbwUABAB0aXBvpgEAAAAAAAAAAExAIwJgAl4BrgAEALUDAwACAIAAAgAkMwUABAB0
+aXBvAAAAAAAAAABCQF8CAQAkAENhbnRpZGFkIERlIEV4cGVkaWVudGVzIGRlIGxhIFVuaWRhZAoC
+rwA2ABoABQAEAHRpcG8AAAAAAAAAAEJAXwKuABwABQAEAHRpcG8AAAAAAAAAAExAXwKuAAQAtQMD
+AAUAIgAdAAQAAgACAAkABAAkMSQzJENvbmZsaWN0JFJFRgAEAAQAAACyAAUABABmb3JtAQAIAFJl
+cG9ydGUyCgIFAAQAdGlwbwAAAAAAAAAAQkBfAgEAJABDYW50aWRhZCBEZSBFeHBlZGllbnRlcyBk
+ZSBsYSBVbmlkYWQKAgUABAB0aXBvAAAAAAAAAABMQF8CAQA4AFRpZW1wbyBwcm9tZWRpbyBkZSBl
+bGFib3JhY2lvbiBkZSBhY3R1YWNpb25lcyBQb3IgVW5pZGFkCgIdAgQAHAIDAAcAFAAOAAlMMVM0
+UzVTMTRTMTVT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABECGYHAAACACQx
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAQACAAAAFZDAwACAAQAqAAAAGwBAQAACgABAAAAAAAAAAICAAAAVkMAAAIABACMAAAAXQEB
+AAAKAAAAAAAAAAAAAgIAAAAkMVRpcG+oAAIAnAACACQxBQAEAHRpcG8AAAAAAAAAAEJAXwIBACQA
+Q2FudGlkYWQgRGUgRXhwZWRpZW50ZXMgZGUgbGEgVW5pZGFkCgKvAFIAKAAFAAQAdGlwbwUABAB0
+aXBvpgEAAAAAAAAAAEJAIwJgAl4BrgAqAAUABAB0aXBvBQAEAHRpcG+mAQAAAAAAAAAATEAjAmAC
+XgGuAAQAtQMDAAcACgAEAAkxMFMkM1RpcG+MAAIAgAACACQzBQAEAHRpcG8AAAAAAAAAAEJAXwIB
+ACQAQ2FudGlkYWQgRGUgRXhwZWRpZW50ZXMgZGUgbGEgVW5pZGFkCgKvADYAGgAFAAQAdGlwbwAA
+AAAAAAAAQkBfAq4AHAAFAAQAdGlwbwAAAAAAAAAATEBfAq4ABAC1AwMABwAKAAQACTEwUyYAAQAA
+AAEBAAkBAAAKAQEOCgAAAQCtKwEAAQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEA
+AAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAA
+AAAAAAAAAAAAAABCAAAAAAABAP///wAFAP///wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAA
+AQAAAAAAAQAAAAAAAQAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$TITLE' sign='true'><text>Reportes Graficos Categorias x UNIDAD2|GraficosxUNIDAD2</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

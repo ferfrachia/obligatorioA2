@@ -1,0 +1,218 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "ConfEE 1.0"
+Use "UnidadExp Class"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Informes
+Declare Public Class InformesUnidad As Informes	
+Declare Public Class InformesTemas As Informes
+Declare Public Class InformesGeneralUnidad As Informes
+Declare Public Class InformesGeneralTema As Informes 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const VIEWINFORMEUNIDADES = 		"vBusqInfUnidad"
+Private Const VIEWINFORMETEMAS   = 		"vBusqInfTema"
+Private Const VIEWINFORMEUNIDADES_EXP_ACT = 	"vTotalesUNIDADEXPAct"
+Private Const VIEWINFORMETEMAS_EXP_ACT = 	"vTotalesTEMAEXPAct"
+
+Public Const INFORME_CAMPO_UNIDADNOMBRE=	"sUnidad"
+Public Const INFORME_CAMPO_UNIDADCODIGO=	"sUnidad"
+Public Const INFORME_CAMPO_MES=			"sMes"
+Public Const INFORME_CAMPO_ANIO=			"sAnio"
+Public Const INFORME_CAMPO_TEMA=			"sTema"
+
+Public Const INFORME_CANT_EXP=			"nCantExp"
+Public Const INFORME_CANT_CAR=			"nCantCar"
+Public Const INFORME_TPER_EXP=			"nTPerExp"
+Public Const INFORME_TTRA_EXP=			"nTTraExp"
+Public Const INFORME_CANT_PASES=			"nCantPases"
+Public Const INFORME_TDUR_EXP=			"nTDurExp"
+Public Const INFORME_CANT_PACT=			"nCantPAct"
+Public Const INFORME_CANT_EXP_ACTIVOS=		"nCantExpActivos"
+
+Public Const ERRODATABASENOTFOUND = 		19500
+Public Const MSGERRORDATABASENOTFOUND = 	"No se encuentra la base de Informes"
+
+
+
+Public Class Informes
+	Private dbInforme As NotesDatabase
+	Private docInf As NotesDocument	
+	
+	
+	Public Sub SumaElementos (nombreCampo As String, valor As Double, promedio As Boolean)
+		If docInf.HasItem(nombreCampo) Then
+			docInf.replaceItemvalue nombrecampo, docInf.getItemValue(nombreCampo)(0)+ valor
+		Else
+			docInf.replaceItemvalue nombrecampo,  valor
+		End If
+		If promedio Then
+			If docInf.HasItem(nombreCampo + "_nro") Then
+				docInf.ReplaceItemValue nombreCampo + "_nro", docInf.GetItemValue(nombreCampo + "_nro")(0)+1
+			Else
+				docInf.ReplaceItemValue nombreCampo + "_nro", 1
+			End If
+		End If
+		docInf.Save True,False
+	End Sub
+	
+	Public Sub RestaElementos (nombreCampo As String, valor As Double, promedio As Boolean)
+		If docInf.HasItem(nombreCampo) Then
+			docInf.replaceItemvalue nombrecampo, docInf.getitemvalue(nombreCampo)(0) - valor
+			If promedio Then
+				docInf.ReplaceItemValue nombreCampo + "_nro", docInf.GetItemValue(nombreCampo + "_nro")(0)-1
+			End If
+			
+			docInf.Save True,False
+		End If
+	End Sub
+	
+End Class
+
+Public Class InformesUnidad As Informes	
+	
+	Public Sub new (mes As String, anio As String, unidad As String)
+		
+		'On Error Goto handler
+		
+		Dim c As New Configuracion
+		Dim ses As New NotesSession
+		Dim viewInformes As NotesView
+		Dim clave (1 To 3) As String, unidadExp As UnidadExp
+		
+		Set dbInforme = New notesdatabase(ses.CurrentDatabase.Server,c.BaseDeDatos(CLAVE_DBINFORMES))
+		If dbInforme Is Nothing Then
+			Error ERRODATABASENOTFOUND, MSGERRORDATABASENOTFOUND
+		End If
+		Set viewInformes = dbInforme.getView(VIEWINFORMEUNIDADES)
+		Set unidadExp = New UnidadExp(unidad)
+		clave(1) = anio
+		clave(2) = mes
+		clave(3) = unidadExp.NombreActual
+		
+		Set docInf = viewInformes.GetDocumentByKey(clave,True)		
+		If docInf Is Nothing Then
+			'Crear Informe
+			
+			Set docInf = New NotesDocument (dbInforme)
+			docInf.replaceItemValue "Form","fInfUnidad"
+			docInf.replaceItemValue INFORME_CAMPO_UNIDADNOMBRE,unidad
+			docInf.replaceItemValue INFORME_CAMPO_UNIDADCODIGO,unidadExp.NombreActual
+			docInf.replaceItemValue INFORME_CAMPO_ANIO,anio
+			docInf.replaceItemValue INFORME_CAMPO_MES,mes
+			docInf.save True,False
+			
+		End If
+		'Exit Sub
+		
+'handler:
+		'Msgbox Error & " " & Erl
+		'Exit Sub
+	End Sub
+	
+	
+	
+	
+End Class
+
+Public Class InformesTemas As Informes
+	
+	Public Sub new (mes As String, anio As String, tema As String)
+		Dim c As New Configuracion
+		Dim ses As New NotesSession
+		Dim viewInformes As NotesView
+		Dim clave (1 To 3) As String
+		If tema="" Then
+			tema = "SIN TEMA"
+		End If
+		
+		clave(1) = anio
+		clave(2) = mes
+		clave(3) = tema
+		
+		Set dbInforme = New notesdatabase(ses.CurrentDatabase.Server,c.BaseDeDatos(CLAVE_DBINFORMES))
+		If dbInforme Is Nothing Then
+			Error ERRODATABASENOTFOUND, MSGERRORDATABASENOTFOUND
+		End If
+		Set viewInformes = dbInforme.getView(VIEWINFORMETEMAS)
+		
+		Set docInf = viewInformes.GetDocumentByKey(clave,True)
+		
+		If docInf Is Nothing Then
+			'Crear Informe
+			Set docInf = New NotesDocument (dbInforme)
+			docInf.replaceItemValue "Form","fInfTema"
+			docInf.replaceItemValue INFORME_CAMPO_TEMA,tema
+			docInf.replaceItemValue INFORME_CAMPO_ANIO,anio
+			docInf.replaceItemValue INFORME_CAMPO_MES,mes
+			docInf.save True,False
+		End If
+		
+	End Sub
+	
+End Class
+
+Public Class InformesGeneralUnidad As Informes
+	
+	Public Sub new(unidad As String)
+		On Error Goto handler
+		Dim c As New Configuracion
+		Dim ses As New NotesSession
+		Dim viewInformes As NotesView
+		Dim clave (1 To 1) As String, unidadExp As UnidadExp
+		
+		Set unidadExp = New UnidadExp(unidad)
+		clave(1) = unidadExp.NombreActual
+		
+		Set dbInforme = New notesdatabase(ses.CurrentDatabase.Server,c.BaseDeDatos(CLAVE_DBINFORMES))
+		If dbInforme Is Nothing Then
+			Error ERRODATABASENOTFOUND, MSGERRORDATABASENOTFOUND
+		End If
+		Set viewInformes = dbInforme.getView(VIEWINFORMEUNIDADES_EXP_ACT)
+		
+		Set docInf = viewInformes.GetDocumentByKey(clave,True)
+		
+		If docInf Is Nothing Then
+			'Crear Informe
+			Set docInf = New NotesDocument (dbInforme)
+			docInf.replaceItemValue "Form","fInfUnidadGeneral"
+			docInf.replaceItemValue INFORME_CAMPO_UNIDADNOMBRE,unidad
+			docInf.replaceItemValue INFORME_CAMPO_UNIDADCODIGO,unidadExp.NombreActual
+			docInf.save True,False
+		End If
+		Exit Sub
+handler:
+		Msgbox "Error InformesGeneralUnidad " & Erl & Error
+	End Sub
+	
+End Class
+
+Public Class InformesGeneralTema As Informes 
+	
+	Public Sub new(tema As String)
+		Dim c As New Configuracion
+		Dim ses As New NotesSession
+		Dim viewInformes As NotesView
+		Dim clave (1 To 1) As String
+		
+		clave(1) = tema
+		
+		Set dbInforme = New notesdatabase(ses.CurrentDatabase.Server,c.BaseDeDatos(CLAVE_DBINFORMES))
+		If dbInforme Is Nothing Then
+			Error ERRODATABASENOTFOUND, MSGERRORDATABASENOTFOUND
+		End If
+		Set viewInformes = dbInforme.getView(VIEWINFORMETEMAS_EXP_ACT)
+		
+		Set docInf = viewInformes.GetDocumentByKey(clave,True)
+		
+		If docInf Is Nothing Then
+			'Crear Informe
+			Set docInf = New NotesDocument (dbInforme)
+			docInf.replaceItemValue "Form","fInfTemaGeneral"
+			docInf.replaceItemValue INFORME_CAMPO_TEMA,tema
+			docInf.save True,False
+		End If
+	End Sub
+	
+End Class

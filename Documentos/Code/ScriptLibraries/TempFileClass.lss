@@ -1,0 +1,111 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+%REM
+A class that makes it easy to get a temporary directory and
+generate a unique file name in that directory, for use as a 
+temporary file.
+%END REM
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Class TempFileGenerator
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Class TempFileGenerator
+	Private tempDir As String
+	
+	
+	Sub New ()
+		'** If you want to force the temp directory to be
+		'** something specific, you can do it here.
+		'** Please note that this is almost always a bad
+		'** idea though, and it is generally not cross-platform.
+		'** tempDir = "C:\"
+	End Sub
+	
+	
+	Function getFileSeparator () As String
+		'** Return the file separator character used on this platform
+		Dim session As New NotesSession
+		
+		If (Instr(1, session.Platform, "Windows", 5) > 0) Then
+			getFileSeparator = "\"
+		Else
+			getFileSeparator = "/"
+		End If
+	End Function
+	
+	
+	Function getTempFileDir () As String
+		'** Return the name of a directory we can use to
+		'** create temporary files in
+		If Not (tempDir = "") Then
+			getTempFileDir = tempDir
+			Exit Function
+		End If
+		
+		'** first, try to get the TEMP environment variable
+		tempDir = Environ("Temp")
+		
+		'** if that didn't work, try the TMP environment variable
+		If (tempDir = "") Then
+			tempDir = Environ("Tmp")
+		End If
+		
+		'** if that didn't work, try to use the Notes data directory
+		If (tempDir = "") Then
+			Dim session As New NotesSession
+			tempDir = session.GetEnvironmentString("Directory", True)
+		End If
+		
+		'** if we still have nothing, just make a guess at a
+		'** directory to use
+		If (tempDir = "") Then
+			If (getFileSeparator = "\") Then
+				tempDir = "C:\"
+			Else
+				tempDir = "/tmp/"
+			End If
+		End If
+		
+		'** make sure it ends with a file separator character,
+		'** for consistency
+		Dim sep As String
+		sep = getFileSeparator()
+		If (Right(tempDir, 1) <> sep) Then
+			tempDir = tempDir & sep
+		End If
+		
+		getTempFileDir = tempDir
+	End Function
+	
+	
+	Function generateFileName (suffix As String) As String
+		'** generate a file name with the given file suffix that is
+		'** probably unique (you can use a loop like we have
+		'** in the getTempFile function just to make sure)
+		generateFileName = "Tempfile-" & _
+		Format(Now, "yyyymmdd") & "-" & _
+		Getthreadinfo(6)		' LSI_THREAD_TICKS=6
+		
+		If (suffix = "") Then
+			'** no suffix provided, so don't add one
+		Elseif (Instr(suffix, ".") > 0) Then
+			generateFileName = generateFileName & suffix
+		Else
+			generateFileName = generateFileName & "." & suffix
+		End If
+	End Function
+	
+	
+	Function getTempFile (suffix As String) As String
+		'** create a unique temp file name in the temp directory
+		Do
+			getTempFile = getTempFileDir & generateFileName(suffix)
+		Loop Until (Dir(getTempFile) = "")
+	End Function
+	
+End Class

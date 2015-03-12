@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A68FF" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="5a6" sequence="37" unid="2831FA2C20E5135003257582004C21F6">
+<created><datetime>20090323T105134,30-03</datetime></created>
+<modified><datetime>20150311T132735,74-03</datetime></modified>
+<revised><datetime>20150309T094501,02-03</datetime></revised>
+<lastaccessed><datetime>20150311T132735,74-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132735,74-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime>20130702T163246,60-03</datetime></item>
+<item name="$TITLE" sign="true"><text>sarissa.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+</note>

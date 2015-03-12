@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A40AC" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="176" sequence="121" unid="0423D61F28619F8F83257C97005CFE67">
+<created><datetime>20140310T135544,39-03</datetime></created>
+<modified><datetime>20150311T132548,67-03</datetime></modified>
+<revised><datetime>20150309T094346,87-03</datetime></revised>
+<lastaccessed><datetime>20150311T132548,67-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132548,67-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>funciones_mCalendario</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+</note>

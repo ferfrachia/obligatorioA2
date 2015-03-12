@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E0500590CD0" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="202" sequence="56" unid="6BF2C9A95430E22C03256D50005F0684">
+<created><datetime>20030625T141755,88-03</datetime></created>
+<modified><datetime>20150311T131241,22-03</datetime></modified>
+<revised><datetime>20150310T101914,79-03</datetime></revised>
+<lastaccessed><datetime>20150311T131241,22-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131241,22-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=1871</name><name>CN=Pablo Andrade/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=BSE</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=Ian Coates/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>NumeradorClient</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20150310T101914,79-03</datetime></item></note>

@@ -1,0 +1,248 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+%REM
+Esta clase contiene todas las constantes generales del sistema
+%END REM
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Estados de expedientes
+Public Const ESTADO_EN_GENERACION						= "En Generación"
+Public Const ESTADO_EN_UNIDAD							= "En Unidad"
+Public Const ESTADO_AGREGADO							= "Agregado"
+Public Const ESTADO_ARCHIVADO							= "Archivado"
+Public Const ESTADO_EN_TRANSITO						= "En Tránsito"
+
+'Estados de cartas de servicio
+Public Const ESTADOC_EN_GENERACION						= "En Generación"
+Public Const ESTADOC_ENVIADA							= "Enviada"
+Public Const ESTADOC_ARCHIVADO						= "Archivada"
+
+'CONSTANTES GLOBALES
+Public Const SYSTEM_ADMIN_1							= "Martin Cabrera/ISA"
+Public Const SYSTEM_ADMIN_2							= "Pablo Andrade/ISA"
+Public Const SYSTEM_ADMIN_3							= "Sandra Sayanes/ISA"
+Public Const SYSTEM_ADMIN_4							= "Diego Celery/ISA"
+Public Const SYSTEM_ADMIN_5							= "Ian Coates/ISA"
+Public Const ERROR_LOG								= "ErrorLogEE"
+Public Const NOMBRE_APLICACION 						= "Resoluciones"
+
+'Claves para buscar host y path de las bases en el documento de perfil
+Public Const CLAVE_DBPORTAL							= "PORTAL"
+Public Const CLAVE_DBRUTAS							= "RUTAS"
+Public Const CLAVE_DBNUMERACION						= "NUMERACION"
+Public Const CLAVE_DBORGANIZACION						= "ORGAN"
+Public Const CLAVE_DBGESTIONDOC						= "GESTIONDOC"
+Public Const CLAVE_DBTEMPLATEGESTIONDOC					= "TEMPLATEGESTIONDOC"
+Public Const CLAVE_DBMOTORDOC							= "MOTORDOC"
+Public Const CLAVE_DBAUDITORIA							= "AUDITORIAEV"
+Public Const CLAVE_DBAUDITORIA_TEMPLATE					= "AUDITORIAEVTEMP"
+Public Const CLAVE_DBBUSQUEDA							= "BUSQUEDA"
+Public Const CLAVE_DBCARTASERV						= "CARTASERV"
+Public Const CLAVE_DBTEMPLATECARTASERV					= "TEMPLATECARTASERV"
+Public Const CLAVE_DBADMINCONF						= "ADMINCONF"
+Public Const CLAVE_DBRESOLUCIONES						= "RESOLUCIONES"
+Public Const CLAVE_DBAUDITORIA_SEARCH					= "AUDITORIASEARCH"
+Public Const CLAVE_DBARCHIVO_TEMPLATE					="ARCHIVOTEMPLATE"
+Public Const CLAVE_DBARCHIVO							="ARCHIVO"
+
+Public Const CLAVE_DBARCHIVOCS_TEMPLATE					="ARCHIVOCSTEMPLATE"
+Public Const CLAVE_DBARCHIVOCS						="ARCHIVOCS"
+Public Const CLAVE_DBINFORMES							="INFORMES"
+Public Const CLAVE_DBMOTOR_RD							="MOTORRD"							
+Public Const CLAVE_DBMOTOR_EV							="MOTOREV"
+
+'VALORES_CAMPOS
+Public Const	DOCUMENTO_PROCESADO						= "1"
+Public Const	ACCION_ALTA 							= "1"
+Public Const	ACCION_BAJA 							= "2"
+Public Const	PERSONA 								= "1"
+Public Const	GRUPO_PERSONAS 						= "4"
+Public Const	PATH_BASE_NAMES						= "NAMES.NSF"
+Public Const	CLAVE_NAMES							= "Names"
+Public Const	VALOR_GRUPO_MULTIPROPOSITO				= "0"
+Public Const	VALOR_NAMES_TYPE 						= "Group"
+Public Const	VALOR_LIST_DESCRIPTION					= "Grupo generado desde la aplicación SGD"
+Public Const	RUTA_HABILITADA						= "1"
+Public Const	RUTA_DESABILITADA						= "0"
+Public Const	NOTIFDIARIA_CHECKED						= "1"
+Public Const	NOTIFARCHIVADO_CHECKED					= "1"
+Public Const	NOTIFRD_CHECKED						= "1"
+Public Const	NOTIFRECIBIR_CHECKED					= "1"
+Public Const	NOTIFFIRMAR_CHECKED						= "1"
+Public Const	ALARMAPROXEXPIRAR_CHECKED				= "1"
+Public Const	ALARMAJEFEEXPIRO_CHECKED					= "1"
+
+
+'CAMPOS
+Public Const	CAMPO_FORM 							= "form" 
+Public Const	CAMPO_RUTA 							= "sRuta" 
+Public Const	CAMPO_CLAVE 							= "sClave" 
+Public Const	CAMPO_ADMINISTRADORES 					= "sAdministradores"
+
+Public Const	CAMPO_NAMES_MEMBERS						= "Members"
+Public Const	CAMPO_NAMES_LISTNAME					= "ListName"
+Public Const	CAMPO_NAMES_GROUPTYPE					= "GroupType"
+Public Const	FORM_NAMES_GRUPO 						= "Group"
+Public Const	CAMPO_NAMES_TYPE 						= "Type"
+Public Const	CAMPO_LIST_DESCRIPTION					= "ListDescription"
+
+
+Public Const	CAMPO_VISPROFILE_CLAVEDBS				= "sClave"
+Public Const	CAMPO_VISPROFILE_RUTAS					= "sRuta"
+Public Const	CAMPO_VISPROFILE_HOSTS					= "sHost"
+Public Const	CAMPO_VISPROFILE_SERVIDORES				= "sServidor"
+Public Const	CAMPO_VISPROFILE_RUTALIBRE				= "lTipoRutas"
+Public Const	CAMPO_VISPROFILE_FORMATONUM				= "sFormato"
+Public Const	CAMPO_VISPROFILE_CLAVENUM				= "sClaveNum"
+Public Const	CAMPO_VISPROFILE_FORMADOCUMENTAL			= "sFormaDoc"
+Public Const	CAMPO_VISPROFILE_CSS					= "sCSS"
+
+Public Const	CAMPO_VISPROFILE_NOTIFDIARIA				= "lNotifDiaria"
+Public Const	CAMPO_VISPROFILE_DESTINATARIOS_DIARIA		= "lDestinatarios"
+Public Const	CAMPO_VISPROFILE_DESTINATARIOS_DIA_NOTIF	= "lDestinatariosNotif"
+
+Public Const CAMPO_VISPROFILE_NOTIFDIARIAUNIDADES			= "lNotifDiariaIngUnidades"
+Public  Const CAMPO_VISPROFILE_DEST_DIARIAUNIDADES 		= "lDestinatariosIngUnidades"
+
+Public Const	CAMPO_VISPROFILE_NOTIFARCHIVADO			= "lNotifArchivado"
+Public Const	CAMPO_VISPROFILE_NOTIF_RD				= "lNotifRD"
+Public Const	CAMPO_VISPROFILE_NOTIFRECIBIR				= "lNotifRecibir"
+Public Const	CAMPO_VISPROFILE_NOTIFFIRMAR				= "lNotifRevisar"
+Public Const	CAMPO_VISPROFILE_ALARMAPROXIMOEXPIRAR		= "lAlarmaProxExpirar"
+Public Const	CAMPO_VISPROFILE_ALARMAJEFEEXPIRO			= "lAlarmaJefeExpiro"
+Public Const	CAMPO_VISPROFILE_CANTIDAD_FIRMAS			= "lCantidadFirmas"
+Public Const	CAMPO_VISPROFILE_ARCHIVOAUTOMATICO			= "nArchivadoAuto"
+Public Const	CAMPO_VISPROFILE_ARCHIVOAUTOMATICO_CS		= "nArchivadoAutoCS"
+Public Const	CAMPO_VISPROFILE_PERMITIRDESVIOS			= "lPermitirDesvios"
+Public Const	CAMPO_VISPROFILE_DIASMAXTRAMITE			= "nDiasMaxTramite"
+Public Const	CAMPO_VISPROFILE_DIASMAXTRAMITE_EXTERNO		= "nDiasMaxTramiteExterno"
+Public Const	CAMPO_VISPROFILE_TAMMAXIMOANEXOS			= "nTamMaxAnexosAct"
+Public Const	CAMPO_VISPROFILE_CANTMAXIMOANEXOS			= "nCantMaxAnexosAct"
+Public Const	CAMPO_VISPROFILE_TIPOSANEXOS				= "sTiposPermitidosAnexos"
+Public Const	CAMPO_VISPROFILE_TIEMPODEVOLUCION			="nTiempoMaximoDev"
+Public Const	CAMPO_VISPROFILE_CANTDEVOLUCION			="nCantMaximoDev"
+Public Const 	CAMPO_TIEMPOVIDAAUDITORIA				="nTiempoVidaAuditoria"
+Public Const 	CAMPO_CREACION_AUDITORIA					="dFechaCreacionAuditoria"
+Public Const 	CAMPO_CLAVE_CREACION_AUDITORIA			="sClaveCreacionAuditoria"
+Public Const 	CAMPO_TEMPLATE_NOTIFICA					="lMsgTemplate"
+Public Const 	CAMPO_PTJE_PASAR_EXPIRAR					="nPtjePasarExpirar"
+Public Const 	CAMPO_ALARMAEXPIRO_REITERAR				="lAlarmaJefeExpiroReiterar"
+Public Const 	CAMPO_FERIADOS							="lFeriados"
+Public Const 	CAMPO_ROL_GESTION_CONFIDENCIALIDAD			= "lGestionConfidencial"
+
+Public Const CAMPO_VISPROFILE_LECTORES_CARATULA			= "sLectoresCaratula"
+Public Const CAMPO_VISPROFILE_AUTORES_CARATULA			= "sAutoresCaratula"
+Public Const CAMPO_VISPROFILE_LECTORES_ACTUACION			= "sLectoresActuacion"
+Public Const CAMPO_VISPROFILE_AUTORES_ACTUACION			= "sAutoresActuacion"
+Public Const CAMPO_VISPROFILE_ADMINISTRADORES_PAQUETE		= "lAdminPaquetes"
+Public Const CAMPO_VISPROFILE_MODIFICADORES_CARATULA		= "lModifCaratula"
+Public Const CAMPO_VISPROFILE_LECTORES_CARTA				= "sLectoresCarta"
+
+'DOCUMENTO DE PERFIL
+Public Const	DOCUMENTO_PERFIL 						= "fConfiguracion" 
+
+
+'FORMULARIOS
+Public Const	FORMULARIO_PERFIL 						= "fVisConfiguracion" 'para visualización
+
+
+'VISTAS
+Public Const	VISTA_SOLICITUDES_ABM 					= "vSolicitudABMAdmin"
+
+
+'ROLES
+Public Const	ROL_ADMIN 							= "[Admin]"
+
+'Acciones de expediente
+Public Const ACCION_CREAR					="acc_crear"
+Public Const ACCION_PASE						="acc_pase"
+Public Const ACCION_ANULAR_PASE				="acc_anular_pase"
+Public Const ACCION_ENVIAR_PASE				="acc_enviar_pase"
+Public Const ACCION_RESERVAR					="acc_reservar"
+Public Const ACCION_ARCHIVAR					="acc_archivar"
+Public Const ACCION_SACAR_ARCHIVO				="acc_sacar_archivo"
+'Public Const ACCION_RECHAZARCONFIDENCIAL		="acc_rechazaConfidencial"
+Public Const ACCION_MARCAR_CONFIDENCIAL			="acc_marcarConfidencial"
+Public Const ACCION_QUITAR_CONFIDENCIALIDAD		="acc_quitarConfidencialidad"
+'Public Const ACCION_SOLCONFIDENCIAL			="acc_solConfidencial"
+Public Const ACCION_DEVOLVER					="acc_devolver"
+Public Const ACCION_AGREGAR					="acc_agregar"
+Public Const ACCION_RUTEAR					="acc_rutear"
+Public Const ACCION_LIBERAR					="acc_liberar"
+Public Const ACCION_DESAGREGAR				="acc_desagregar"
+Public Const ACCION_FIRMAR					="acc_firmar"
+Public Const ACCION_PARA_FIRMAR				="acc_para_firmar"
+Public Const ACCION_RECIBIR					="acc_recibir"
+Public Const ACCION_ASIGNAR					="acc_asignar"
+Public Const ACCION_MODIFICAR_PLAZO			="acc_modif_plazo"
+Public Const ACCION_ADD_LECT_CONFIDENCIAL		="acc_add_lect_confidencial"
+Public Const ACCION_DEL_LECT_CONFIDENCIAL		="acc_del_lect_confidencial"
+Public Const ACCION_SET_PAQUETE				="acc_set_paquete"
+Public Const ACCION_FIRMAR_PASAR				="acc_firmarPasar"
+Public Const ACCION_EDITAR_CARAT				="acc_carat_edit"
+Public Const ACCION_TOMAR_CONOCIMIENTO			="acc_tomar_conocimiento"
+Public Const ACCION_MARCAR_EXPEDIENTE			="acc_marcar_exp"
+
+'Acciones de cartas de servicio
+Public Const ACCION_CREAR_CS					="acc_crear"
+Public Const ACCION_CREAR_RESP_CS				="acc_crear_resp"
+Public Const ACCION_FIRMAR_CS					="acc_firmar"
+Public Const ACCION_AGREGAR_FIRMA_CS			="acc_agregar_firma"
+Public Const ACCION_ENVIAR_CS					="acc_enviar"
+Public Const ACCION_REENVIAR_CS				="acc_reenviar"
+Public Const ACCION_CREAR_FIRMAR_CS			="acc_crear_firmar"
+Public Const ACCION_CREAR_RESP_FIRMAR_CS		="acc_crear_resp_firmar"
+Public Const ACCION_FIRMAR_ENVIAR_CS			="acc_firmar_enviar"
+Public Const ACCION_REENVIAR_CC_CS				="acc_reenviar_cc"
+Public Const ACCION_CREAR_RESP_CC_CS			="acc_crear_resp_cc"
+Public Const ACCION_TOMAR_CONOCIMIENTO_CS		="acc_tomarconocimiento"
+Public Const ACCION_EDITAR_CS					="acc_editar"
+Public Const ACCION_ARCHIVAR_CS				="acc_archivar"
+Public Const ACCION_SACAR_DE_ARCHIVO_CS			="acc_saco_archivar"
+Public Const ACCION_ANULAR_REE_CS				="acc_anular_ree"
+Public Const PREFIJO_UNIDAD_RESOL							="RESOL_"
+'Constantes realacionadas con el formato de la numeracion
+Public Const INDICADOR_DIGITO 						= "#"
+Public Const INDICADOR_DIGITOS_PROPIO_NRO				= "*"
+Public Const INDICADOR_AÑO_CUATRO_DIGITOS				= "yyyy"
+Public Const INDICADOR_AÑO_DOS_DIGITOS					= "yy"
+Public Const ERROR_INDICADOR_DIGITO_NOT_FOUND			= 10004
+Public Const MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND			= "No se encuetra el indicador de la cantidad de digitos en el formato del numerador"
+
+'MENSAJES DE ERROR
+'******************************************************************************************************************	
+Public Const ERRORCONF_INTERNAL_ERROR							= 10001
+
+Public Const ERRORCONF_CLAVE_NOTFOUND							= 10002
+Public Const MSG_ERRORCONF_CLAVE_NOTFOUND						= "No se puede encontrar la clave en la tabla de interoperabilidad"
+
+Public Const ERROR_NUMERATION									= 10003
+Public Const MSG_ERROR_NUMERATION								= "No se puede asignar el número automático"
+
+Public Const ERROR_PATH_INCOMPLETED								= 10005
+Public Const MSG_ERROR_PATH_INCOMPLETED							= "La tabla de interoperabilidad no tiene el path completo"
+
+Public Const ERROR_PROFILE_NOTHING								= 10006
+Public Const MSG_ERROR_PROFILE_NOTHING							= "El documento de perfil no tiene toda la información necesaria"
+
+Public Const ERROR_CREATE_DB									= 10007
+Public Const MSG_ERROR_CREATE_DB_ANIO							= "El año debe ser numérico: "
+
+Public Const ERROR_DELETE_DOCS_PAPELERA							= 10008
+'******************************************************************************************************************
+'CONSTANTES PUBLICAS
+'******************************************************************************************************************	
+Public Const CONF_SERVIDOR_ACTUAL					= "SERVER_ACTUAL"	
+Public Const CONF_SERVIDOR_LOCAL						= "LOCAL"
+'******************************************************************************************************************	
+'Constantes realacionadas con el formato de la numeracion
+'******************************************************************************************************************
+Public Const INDICADOR_INCISO								="i"
+Public Const INDICADOR_UNIDAD								="u"
+Public Const INDICADOR_DIGITOS_PROPIO_UNIDAD	="&"
+Public Const INDICADOR_DIGITOS_PROPIO_INCISO	="$"
+'******************************************************************************************************************	
+	

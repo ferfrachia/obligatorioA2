@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E9F2'>
+<noteinfo noteid='472' unid='08221B168AABA93003256D4A0060CFDC' sequence='177'>
+<created><datetime>20030619T143726,68-03</datetime></created>
+<modified><datetime>20150311T131115,29-03</datetime></modified>
+<revised><datetime>20150309T094326,04-03</datetime></revised>
+<lastaccessed><datetime>20150311T131115,29-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131115,29-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name
+>CN=Admin ISA/O=VISION</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030619T143726,79-03</datetime><datetime>20030916T133915,35+00</datetime><datetime
+>20030916T134016,54+00</datetime><datetime>20030916T161434,99+00</datetime><datetime
+>20030917T142428,37+00</datetime><datetime>20030917T142547,70+00</datetime><datetime
+>20030924T184409,28+00</datetime><datetime>20031020T191212,36+03</datetime><datetime
+>20031020T193800,40+03</datetime><datetime>20031020T193823,83+03</datetime><datetime
+>20031020T195533,39+03</datetime><datetime>20031020T195534,58+03</datetime><datetime
+>20060210T102234,53-03</datetime><datetime>20060412T122211,47-03</datetime><datetime
+>20060412T122250,80-03</datetime><datetime>20060412T122346,97-03</datetime><datetime
+>20060905T144616,97-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>(GetDBDesign)|GetDBDesign</text></item>
+<item name='$AssistType' sign='true'><number>65413</number></item>
+<item name='$AssistLastRun' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$AssistDocCount' sign='true'><number>0</number></item>
+<item name='$FlagsExt' sign='true'><text/></item>
+<item name='$AssistFlags' sign='true'><text>EHs</text></item>
+<item name='$AssistTrigger' sign='true'><text>4</text></item>
+<item name='$AssistInfo' sign='true'>
+<rawitemdata type='11'>
+AQAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</rawitemdata></item>
+<item name='$AssistQuery' sign='true'>
+<rawitemdata type='f'>
+gQYAAAAA
+</rawitemdata></item>
+<item name='$AssistAction' sign='true'>
+<rawitemdata type='10'>
+gQKF/5QCAAAAAIgCAAAnKytMb3R1c1NjcmlwdCBEZXZlbG9wbWVudCBFbnZpcm9ubWVudDoyOjU6
+KE9wdGlvbnMpOjA6NzQKT3B0aW9uIERlY2xhcmUKClVzZSAiREJEZXNpZ25DbGFzcyIKVXNlICJW
+ZWN0b3JDbGFzcyAyLjA1IgonKytMb3R1c1NjcmlwdCBEZXZlbG9wbWVudCBFbnZpcm9ubWVudDoy
+OjU6KEZvcndhcmQpOjA6MQpEZWNsYXJlIFN1YiBJbml0aWFsaXplCgonKytMb3R1c1NjcmlwdCBE
+ZXZlbG9wbWVudCBFbnZpcm9ubWVudDoyOjU6KERlY2xhcmF0aW9ucyk6MDoyCgonKytMb3R1c1Nj
+cmlwdCBEZXZlbG9wbWVudCBFbnZpcm9ubWVudDoyOjI6SW5pdGlhbGl6ZToxOjEwClN1YiBJbml0
+aWFsaXplCglEaW0gZGVzaWduIEFzIERCRGVzaWduLCBkYiBBcyBOZXcgTm90ZXNEYXRhYmFzZSgi
+IiwiIiksIGRkIEFzIERhdGFiYXNlRGVzaWduLCB2IEFzIFZlY3RvcgoJCglJZiBOb3QgZGIuT3Bl
+bigiIiwibmFtZXMubnNmIikgVGhlbiAKCQlNc2dib3ggIkZhbGxvIGFsIGFicmlyIGxhIGJhc2Ug
+ZGUgZGF0b3MiCgkJRXhpdCBTdWIKCUVuZCBJZgoJCglTZXQgZGVzaWduID0gTmV3IERCRGVzaWdu
+KGRiKQoJCglTZXQgdiA9IGRlc2lnbi5TY3JpcHRMaWJyYXJpZXMKCU1zZ2JveCB2LlRvU3RyaW5n
+KENocigxMykpCglEZWxldGUgZGVzaWduCgkKRW5kIFN1YgA=
+</rawitemdata></item>
+<item name='$Restricted' sign='true'><number>0</number></item>
+<item name='$Flags'><text>fL3</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$AssistRunInfo' summary='true'>
+<rawitemdata type='3'>
+BgAAAgAACABuBAAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAWEh+ABB1JYMEp24A43QlAwAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqq
+</rawitemdata></item>
+<item name='$AssistAction_Ex' sign='true'>
+<rawitemdata type='14'>
+gQKF/0oLAAAAAD4LAAABAAACTFNPQgMBFAhlbgAABAAXAIkAAAAAAPgFgAIsAAAAGACEAZABAAAA
+ACwAIAEgAEAAAACQAFwAAAAAAAAAAQAAACwALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+LAAsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAJABkAEAAAAAAAAAAAAAAAAAAAAAkAGQAQAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAMwA/AMAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAA/AP8A8wAzADUAtQCAAAAAAAAAAAAAAAAAQAFAExvdHVzIFByb2R1Y3QAAABWMC4w
+AAAAAAAAAAAAAAAAAAAAAAAAAACJAAAAAAAAAPgFAACAAgAAAAAAAAAAAAABAAAAAAAAAAAAAAAA
+AAAAAQAAAAAAAAAAAAAABAAAAFczMkklAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAADAIQCAAAAAP//DQAkAEEAUwBTAEkAUwBUAEEAQwBUAEkATwBOAAAA
+dAADAE4ARQBXAAAAiAAGAEQARQBMAEUAVABFAAAAAAD4AAoASQBOAEkAVABJAEEATABJAFoARQAA
+AAAATAEJAFQARQBSAE0ASQBOAEEAVABFAAAAmAEGAE8AQgBKAEUAQwBUAAAAAACwAAAAAAAAANgB
+DQBEAEIARABlAHMAaQBnAG4AQwBsAGEAcwBzAAAA0AANAEQAQgBEAEUAUwBJAEcATgBDAEwAQQBT
+AFMAAADoARAAVgBlAGMAdABvAHIAQwBsAGEAcwBzACAAMgAuADAANQAAAAAAbAEQAFYARQBDAFQA
+TwBSAEMATABBAFMAUwAgADIALgAwADUAAAAAADQBBgBEAEUAUwBJAEcATgAAAAAAjAEIAEQAQgBE
+AEUAUwBJAEcATgAAAAAAgAENAE4ATwBUAEUAUwBEAEEAVABBAEIAQQBTAEUAAAD//wYAJQBMAFMA
+WABCAEUAAAAAAP//AgBEAEIAAAAAAAACAgBEAEQAAAAAALwBDgBEAEEAVABBAEIAQQBTAEUARABF
+AFMASQBHAE4AAAAAAMQBAQBWAAAA//8GAFYARQBDAFQATwBSAAAAAABoAgQATwBQAEUATgAAAAAA
+//8JAG4AYQBtAGUAcwAuAG4AcwBmAAAARAIfAEYAYQBsAGwAbwAgAGEAbAAgAGEAYgByAGkAcgAg
+AGwAYQAgAGIAYQBzAGUAIABkAGUAIABkAGEAdABvAHMAAAD//w8AUwBDAFIASQBQAFQATABJAEIA
+UgBBAFIASQBFAFMAAAD//wgAVABPAFMAVABSAEkATgBHAAAAAAAFAPwFAAAAALt5QG0YAAAAAAC0
+AGgDCg8AAAAAAAAAABgAAAAEAPwAgOAhD2gDCg8EAAAACAAAAAAAAABEAAAAAAAAAAQAAACsAgwF
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwCvAKsAgwF5APkAwAAAAAAAAAAAAAAAAAAAAAM
+AAAAFQAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAmAAQAGE4AAAsAQADUAgAAOAEAAAAAAAAEAAAAMAF4BVwCXAIAAAAAAAAA
+AAAAAAAwATABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVAV4BQAAAAAEAAAAAAAAADABXAIBABkA
+IQDMAIROAAAIAFMAXAIAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQACAAkCkAEaAAAAcAH//wAAAAAQAAAAAAAAAFAB
+AAAAAAAAAQAAABwFHAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcBRwFAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAhQTKe0uaRC/XQDdARGGtwAAAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAAAAAAA
+AgCEASACAAAAAAAAAgABAP//AAASABQAAAAAAP//CQIAAAAAEgQAAAAAkAGEAf//AAAAAAYAAwAA
+AAkCkAEJApABBggGCBkAIQDMADxPAAAIAFMAVAUAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAgC8AgwFJAEJ
+BAAAzAADAAIA5AMAAIQBCQIEAJABJgAEACALAAALAEAA/AMAAJwBAAAAAAAAAgAAADgDlAOUA5QD
+AAAAAAAAAAAAAAAAOAM4AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAAAAAAAAA4
+A5QDAQAZACEA1AKsDAAACABTAJQDAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAgAJApABIQDUAmg3AAAIAFMAAAAA
+ADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAMAAgAMBQAAkAEJBAgA1AImABgAMAMAAAsAQAAAAAAAyAEAAAAAAAAD
+AAAAYAScBbwEvAQAAAAAAAAAAAAAAABgBGAEAAAAAAAAAAAAAAAAAAAAAJwFnAUAAAAAAAAAAAAA
+AAAMAAAAAAAAAGAEvAQBABkAIQD8A8ADAAAIAFMAvAQAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQABAAEIGQAhAPwD
+wBgAAAgAUwCcBQAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwACAAAAAADAAQkEDAD8AxIAFAAAAAAA3AEAAAAA
+AAACBAAAAACQAYQB//8AAAAABQADAAAAAAAJApABBggGCCMAzADEUQAACQBbBHgFeAVIAgkMzAB4
+BQAABAAJDPwDAAABACMAzABcUgAACQBDBgAAAABIAgkMzABUBQEABAAJDPwDAAABACEA/AP4FQAA
+BwBTAAAAAABsAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAEABQAGAAYIAQAGAAAAGQAEAI0AAAAAADoAABoEANKUADoAABoF
+ANLUAB0AABoNAF68AiuQAX2MAH2MACSmGg8AS7wCLBwFfYwAfewBI6A4DwAaEAB9BAKbgIAGBxoR
+ABwaEgAaFABerAIqzABevAIjphoWAF4MBUusAi1UBSOmGhcASwwFLJwFjw0DBkKTmyObgIAGBxoY
+AF6sAtEaGgAdAgAAABEAFAAAAAAA//8BAAMABgAAAAkARAALAAoAAABk
+</rawitemdata></item>
+<item name='$AssistVersion'><datetime>20150309T094323,68-03</datetime></item>
+<item name='$POID'><datetime>20150309T094326,04-03</datetime></item></note>
+

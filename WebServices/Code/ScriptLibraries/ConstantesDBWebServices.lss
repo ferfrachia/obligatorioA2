@@ -1,0 +1,42 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'Campos de documentos de parametros en la base web services
+Public Const CAMPO_DOCPARAM_NROS_DOCS				= "nrosDocs"
+Public Const CAMPO_DOCPARAM_NRO_EXP					= "nroExpediente"
+Public Const CAMPO_DOCPARAM_NRO_ACT					= "nroActuacion"
+Public Const CAMPO_DOCPARAM_NRO_SESION				= "nroSesion"
+Public Const CAMPO_DOCPARAM_NRO_PUNTO				= "nroPunto"
+Public Const CAMPO_DOCPARAM_NRO_RESOL				= "nroResol"
+Public Const CAMPO_DOCPARAM_TIPOS_DOCS				= "tiposDocs"
+Public Const CAMPO_DOCPARAM_UNIS_DOCS				= "unisDocs"
+Public Const CAMPO_DOCPARAM_USUARIO					= "usuario"
+Public Const CAMPO_DOCPARAM_COD_ERROR 				= "codError"
+Public Const CAMPO_DOCPARAM_MSG_ERROR 				= "msgError"
+Public Const CAMPO_DOCPARAM_UNID_ASUNTO				= "unidAsunto"
+Public Const CAMPO_DOCPARAM_DOCS_PROCESADOS			= "docsProcesados"
+Public Const CAMPO_DOCPARAM_FORM  	 				= "paramActualizarInforme"
+Public Const CAMPO_DOCPARAM_PDFS_INFORMES			= "pdfsInformes"
+Public Const CAMPO_DOCPARAM_ATTACHS					= "attachs"
+Public Const CAMPO_DOCPARAM_TEXTO_ACTUACION			= "textoActuacion"
+Public Const CAMPO_DOCPARAM_UNIDAD					= "unidad"
+Public Const CAMPO_DOCPARAM_ESTADO					= "estado"
+Public Const CAMPO_DOCPARAM_ACCION					= "accion"
+Public Const CAMPO_DOCPARAM_UNID_PDF				= "unidPdf"
+
+'Acciones de Resoluciones - Expedientes
+Public Const ACCION_RESOL_EXP_REG_PTO_EN_EXP		= "resol_exp_reg_pto_en_exp"
+Public Const ACCION_RESOL_EXP_QUITAR_PTO_DE_EXP		= "resol_exp_quitar_pto_de_exp"
+Public Const ACCION_RESOL_EXP_UPDATE_ESTADO_PTO_EXP = "resol_exp_update_pto_en_exp"
+Public Const ACCION_RESOL_EXP_REG_RESOL_EXP 		= "resol_exp_reg_resol_en_exp"
+
+'Agente cancelar Doc informe
+Public Const DBWS_AGENTE_WS_CANCEL_INF_EXP 				= "CancelarInformeExpediente"
+'Agente generar asunto
+Public Const DBWS_AGENTE_WS_GENERAR_ASUNTO_EXP 			= "GenerarAsuntoExpediente"
+'Agente registra el asunto en la carátula del expediente
+Public Const DBWS_AGENTE_WS_REGISTRAR_ASUNTO_EXP		= "ActualizarAsuntoEnExpediente"

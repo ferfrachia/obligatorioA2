@@ -1,0 +1,132 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+'** we're using Java for the encoding/decoding,
+'** which means using LS2J
+Uselsx "*javacon"
+Use "Base64Java"  
+
+ 
+'** we also use a special class that can easily generate
+'** temporary file names for us
+Use "TempFileClass"
+
+
+%REM
+This is a class that uses LS2J to make calls to the special class
+in the Base64Java library in order to convert a NotesStream to a
+Base64-encoded String, and decode a Base64-encoded String
+back into a NotesStream.
+
+While the XSD_DATATYPE_CONVERTER class in lsxsd.lss
+does this natively in LotusScript, it's a LOT faster to do it in Java
+when you're working with Strings/files greater than about 10K,
+because LotusScript is kind of slow when parsing Strings.
+The decoding routine is especially fast, and it's over 100 times
+faster for larger files.
+
+If server-based agents use this script library, make sure they have
+a "runtime security level" of "2. Allow restricted operations", and the
+person who's signing the agent has rights to run restricted and
+unrestricted operations on the server document.
+%END REM
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Class Base64Converter
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Class Base64Converter
+	
+	'** convert a binary NotesStream to a base64 encoded String
+	Function EncodeBase64 (stream As NotesStream) As String
+		Dim session As New NotesSession
+		Dim tempFileName As String
+		Dim tempFile As NotesStream
+		Dim buffer As Variant
+		
+		'** first, we need to write the stream to a temporary file (we
+		'** have to do this because we can't pass a NotesStream
+		'** to the Java class using LS2J, but we can easily pass a
+		'** file name)
+		Dim tempGen As New TempFileGenerator
+		tempFileName = tempGen.getTempFile(".b64")
+		Set tempFile = session.CreateStream
+		Call tempFile.Open(tempFileName, "binary")
+		stream.Position = 0
+		Do
+			buffer = stream.Read(32767)
+			Call tempFile.Write(buffer)
+		Loop Until stream.IsEOS
+		tempFile.Close
+		
+		'** now we'll call the Java class to do the encoding for us
+		Dim jSession As New JavaSession
+		Dim base64Class As JavaClass
+		Dim base64 As JavaObject
+		
+		Set base64Class = jSession.GetClass("Base64Java")
+		Set base64 = base64Class.CreateObject()
+		Call base64.encodeFile(tempFileName)
+		
+		'** the encodeFile method overwrites the old temp file with
+		'** a file containing the encoded content, so we can just
+		'** read the temp file as an ASCII file and return the contents
+		'** as a String
+		Call tempFile.Open(tempFileName, "ASCII")
+		EncodeBase64 = tempFile.ReadText()
+		tempFile.Close
+		
+		'** don't forget to delete the temp file when we're done
+		Kill tempFileName
+	End Function
+	
+	
+	'** convert a base64 encoded String into a decoded NotesStream
+	Function DecodeBase64 (Byval encodedText As String) As NotesStream
+		Dim session As New NotesSession
+		Dim tempFileName As String
+		Dim tempFile As NotesStream
+		Dim buffer As Variant
+		
+		'** first, we need to write the stream to a temporary file (we
+		'** have to do this because we can't pass a NotesStream
+		'** to the Java class using LS2J, but we can easily pass a
+		'** file name)
+		Dim tempGen As New TempFileGenerator
+		tempFileName = tempGen.getTempFile(".b64")
+		Set tempFile = session.CreateStream
+		Call tempFile.Open(tempFileName, "ASCII")
+		Call tempFile.WriteText(encodedText)
+		Call tempFile.Close
+		
+		'** now we'll call the Java class to do the encoding for us
+		Dim jSession As New JavaSession
+		Dim base64Class As JavaClass
+		Dim base64 As JavaObject
+		
+		Set base64Class = jSession.GetClass("Base64Java")
+		Set base64 = base64Class.CreateObject()
+		Call base64.decodeFile(tempFileName)
+		
+		'** the encodeFile method overwrites the old temp file with
+		'** a file containing the encoded content, so we can just
+		'** read the temp file as an ASCII file and return the contents
+		'** as a String
+		Set DecodeBase64 = session.CreateStream
+		Call tempFile.Open(tempFileName, "binary")
+		Do
+			buffer = tempFile.Read(32767)
+			Call DecodeBase64.Write(buffer)
+		Loop Until tempFile.IsEOS
+		tempFile.Close
+		
+		'** don't forget to delete the temp file when we're done
+		Kill tempFileName
+	End Function
+	
+	
+End Class

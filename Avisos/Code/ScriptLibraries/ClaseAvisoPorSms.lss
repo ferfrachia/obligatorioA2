@@ -1,0 +1,49 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library ClaseAvisoPorSms
+	Created Feb 19, 2013 by Francisco Alvarez/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+Use "EnviarSms_n1"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ClaseAvisoPorSms
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+%REM
+	Class ClaseAvisoPorSms
+	Description: Comments for Class
+%END REM
+Public Class ClaseAvisoPorSms
+	
+	%REM
+		Function enviarSms
+		Description: Comments for Function
+	%END REM
+	Public Function enviar(docSol As NotesDocument, destino As String, asunto As String, mensaje As String, correo As String, usuario As String, password As String, url As String, msgError As String)
+		On Error GoTo handler
+		Dim mot As EnviarSms_n1
+		Dim mt As New MotorException_n1()
+		Dim usr As New Xsd_string()
+		usr.Setvaluefromstring(usuario)
+		Dim pwd As New Xsd_string()
+		pwd.Setvaluefromstring(password)
+		Dim dest As New Xsd_string()
+		Dim msg As New Xsd_string()
+		
+		Set mot = New EnviarSms_n1(url)
+		dest.setvaluefromstring(destino)
+		msg.setvaluefromstring(mensaje)
+		mot.Enviarsms usr, pwd , dest , msg, mt
+		
+		msgError = mt.Message.Getvalueasstring()
+		Exit Function
+handler:
+		msgError = "Ocurrió un error al enviar el SMS"
+		Exit Function
+	End Function
+End Class

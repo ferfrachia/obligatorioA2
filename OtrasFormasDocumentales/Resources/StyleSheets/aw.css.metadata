@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="126" sequence="42" unid="18CDF904C39AC2CD0325733F00699DD1">
+<created><datetime>20070822T161336,81-03</datetime></created>
+<modified><datetime>20150309T094352,72-03</datetime></modified>
+<revised><datetime>20150309T094352,71-03</datetime></revised>
+<lastaccessed><datetime>20150309T094352,72-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100905,85-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Diego Celery/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20070822T161336,85-03</datetime><datetime>20080328T143612,32-03</datetime><datetime>20081029T161657,97-03</datetime><datetime dst="true">20081117T102119,04-02</datetime><datetime dst="true">20081119T085511,76-02</datetime><datetime dst="true">20081119T162408,16-02</datetime><datetime dst="true">20081122T153308,59-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>aw.css</text></item>
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+
+<item name="$FileModDT" sign="true"><datetime>20051021T161122,07-03</datetime></item>
+
+<item name="$FileNames" sign="true"><text>aw.css</text></item>
+<item name="$DesignerVersion" sign="true"><text>6.5</text></item></note>

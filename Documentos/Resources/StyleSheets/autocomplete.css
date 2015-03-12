@@ -1,0 +1,54 @@
+/* Toda la ventana modal */
+.ui-dialog
+{	font-size: 8pt;
+	font-family: 'Arial', 'Helvetica';
+}
+
+.ui-dialog .textoParamTitulo
+{	font-size: 8pt;
+	font-family: 'Arial', 'Helvetica';
+	color: #000000;
+} 
+
+/* Titulo */
+.ui-dialog .ui-dialog-titlebar
+{	height: 12px;
+	background-color: #AAAAAA;
+}
+
+/* Botones */
+.ui-dialog .ui-dialog-buttonpane 
+{	height: 16px;
+	font-size: 8pt;
+}
+
+/* Contenido */
+.ui-dialog .ui-dialog-content
+{	height: 32px;
+
+}
+.ui-dialog .ui-dialog-buttonpane  BUTTON
+{	height: 24px;
+}
+
+/* Lista de Opciones */
+.ui-autocomplete-results 
+{	position: absolute; 
+	border: 1px solid #AAAAAA; 
+	background-color: #AAAAAA;
+	z-index: 9999;
+}
+
+.ui-autocomplete-results UL
+{	list-style-type: none;
+	margin-left: 2px;
+}
+
+.ui-autocomplete-results UL LI
+{	line-height: 16px;
+	font-size: 8pt;
+	color: #444444;
+}
+.ui-autocomplete-results UL LI B
+{	color: #000000;
+}

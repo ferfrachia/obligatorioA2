@@ -1,0 +1,332 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+'*******************************************************************************************************************
+'*  
+'*                                               CLASS <Solicitud>
+'*
+'*******************************************************************************************************************
+'*
+'*CONSTRUCTOR
+'*
+'*	Public Sub new() 
+'*	-> inicializa la clase 
+'******************************************************************************************************************************	
+'*METODOS
+'*
+'*	Public Sub setParametro(vValor As Variant, comentario As String, nomCampo As String)
+'*   ->ingresa un nuevo campo (formado por nombre, valor, comentario) en la clase, actualizando un indice interno
+'*****************************************************************************************************************************	
+'*	Public Function getParameterVal(numCampo As String) As Variant
+'*   ->retorna el valor del campo numero=numCampo que contiene la clase
+'*****************************************************************************************************************************	
+'*	Public Function getParameterComentario(numCampo As String) As Variant
+'*   ->retorna el comentario del campo numero=numCampo que contiene la clase
+'*****************************************************************************************************************************	
+'*	Public Function getParameterNombre(numCampo As String) As Variant
+'*   ->retorna el nombre del campo numero=numCampo que contiene la clase
+'*****************************************************************************************************************************	
+'*	Public Function getCantCampos() As Variant
+'*   ->retorna la cantidad de campos que contiene la clase
+
+Use "VectorClass 2.05"
+Use "Errores Generales"
+'Use "ConfEE 1.0"
+Use "ConstantesSistema"
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SolicitudDoc
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Diseño
+Public Const FORM_SOLICITUD					="FSolicitud"
+Public Const CAMPO_VALOR						="campo"
+Public Const CAMPO_NOMBRE					="nombre"
+Public Const CAMPO_COMENTARIO					="comentario"
+
+'contador parametros
+Public Const CAMPO_SOL_INDICE					="indice"
+
+Public Class SolicitudDoc
+	Private db As notesDatabase
+	Private doc As notesDocument
+	Private session As NotesSession
+	Private sNoteId As String
+	Private cont As Integer
+	
+'*****************************************************************************************************************************				
+'Constructor
+	Public Sub new(b As NotesDatabase, doc_ As NotesDocument)
+		On Error Goto errorHandler
+		Set session = New NotesSession		
+		Set db = b
+		If doc_ Is Nothing Then
+			Set doc=New notesdocument(db)
+			doc.form=FORM_SOLICITUD
+			doc.replaceItemValue CAMPO_SOL_INDICE,1
+			doc.ReplaceItemValue "sEstado",0
+		Else
+			Set doc=doc_
+		End If
+		doc.save True, False
+		Exit Sub
+errorHandler:
+		Msgbox "El error en SOLICITUD es: " & Error & " " & Err & " " & Erl 
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método New", ""
+		Exit Sub
+	End Sub
+	
+'*****************************************************************************************************************************				
+	Public Function getDocument()As NotesDocument
+		On Error Goto errorHandler
+		Set getDocument=doc
+		Exit Function
+errorHandler:
+		Msgbox "El error en SOLICITUD es: " & Error & " " & Err & " " & Erl 
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método New", ""
+		Exit Function
+	End Function
+'*****************************************************************************************************************************
+'Metodos
+	Public Sub setParametro(vValor As Variant, comentario As String, nomCampo As String)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Dim campo As String
+			Dim i As Integer
+			i=doc.GetItemValue(CAMPO_SOL_INDICE)(0)
+			campo=CAMPO_VALOR & Cstr(i)
+			'guardo el indice
+			Select Case(comentario)
+			Case "fecha":
+				Dim d As NotesDateTime
+				Set d =vValor
+				doc.replaceItemValue campo,d
+			Case "double":
+				Dim d1 As Double
+				d1=vValor
+				doc.replaceItemValue campo,d1
+			Case "int"
+				Dim d2 As Integer
+				d2=vValor
+				doc.replaceItemValue campo,d2
+			Case Else
+				doc.replaceItemValue campo,vValor			
+			End Select
+			'guardo el nombre
+			campo=CAMPO_NOMBRE & Cstr(i)
+			doc.replaceItemValue campo,nomCampo
+			'guardo el comentario
+			campo=CAMPO_COMENTARIO & Cstr(i)
+			doc.replaceItemValue campo,comentario
+			i=i+1
+			doc.replaceItemValue CAMPO_SOL_INDICE,i
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionCrear", ""
+		Exit Sub
+	End Sub	
+	
+'*****************************************************************************************************************************
+'Metodos
+	Public Sub setParametroNumero(vValor As Variant,numCampo As Integer, comentario As String)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			Dim campo As String
+			campo=CAMPO_VALOR & Cstr(numCampo)
+			'guardo el indice
+			Select Case(comentario)
+			Case "fecha":
+				Dim d As NotesDateTime
+				Set d =vValor
+				doc.replaceItemValue campo,d
+			Case "double":
+				Dim d1 As Double
+				d1=vValor
+				doc.replaceItemValue campo,d1
+			Case "int"
+				Dim d2 As Integer
+				d2=vValor
+				doc.replaceItemValue campo,d2
+			Case Else
+				doc.replaceItemValue campo,vValor			
+			End Select
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionCrear", ""
+		Exit Sub
+	End Sub	
+'*****************************************************************************************************************************	
+	Public Function getParameterVal(nomCampo As Integer) As Variant
+		On Error Goto errorHandler
+		Dim campo As String
+		Dim ind As Integer
+		campo=CAMPO_VALOR & Cstr(nomCampo)
+		ind=doc.GetItemValue(CAMPO_SOL_INDICE)(0)
+		'If (nomCampo <= ind) Then
+		getParameterVal=doc.GetItemValue(campo)(0)
+		'End If
+		Exit Function
+errorHandler:
+		Msgbox "El error en getParameterVal es: " & Error & " " & Err & " " & Erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function	
+'*****************************************************************************************************************************	
+	Public Function getParameterValPorNombre(nomCampo As String) As Variant
+		On Error Goto errorHandler
+		Dim campo As String
+		Dim nombre As String
+		Dim i As Integer
+		i=1
+		For i=1 To Me.getCantCampos()-1	
+			campo=CAMPO_VALOR & Cstr(i)
+			nombre=CAMPO_NOMBRE & Cstr(i)
+			'Msgbox "El nombre del campo es: " & doc.GetItemValue(nombre)(0)
+			If (nomCampo = doc.GetItemValue(nombre)(0)) Then
+				'Msgbox "El valor del campo es: " & doc.GetItemValue(campo)(0)
+				getParameterValPorNombre=doc.GetItemValue(campo)(0)
+			End If
+		Next
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function
+'*****************************************************************************************************************************	
+	Public Function getParameterComentario(nomCampo As Integer) As Variant
+		On Error Goto errorHandler
+		Dim campo As String
+		campo=CAMPO_COMENTARIO & Cstr(nomCampo)
+		If (nomCampo <= doc.GetItemValue(CAMPO_SOL_INDICE)(0) ) Then
+			getParameterComentario=doc.GetItemValue(campo)(0)
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function
+	
+'*****************************************************************************************************************************	
+	
+	Public Function getParameterNombre(nomCampo As Integer) As Variant
+		On Error Goto errorHandler
+		Dim campo As String
+		campo=CAMPO_NOMBRE & Cstr(nomCampo)
+		If (nomCampo <= doc.GetItemValue(CAMPO_SOL_INDICE)(0) ) Then
+			getParameterNombre=doc.GetItemValue(campo)(0)
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function
+'*****************************************************************************************************************************	
+	Public Function getCantCampos() As Variant
+		On Error Goto errorHandler
+		getCantCampos=doc.GetItemValue(CAMPO_SOL_INDICE)(0)
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function
+'*****************************************************************************************************************************	
+	Public Sub save()
+		On Error Goto errorHandler
+		doc.Save True, False
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Sub
+	End Sub
+'*****************************************************************************************************************************	
+	Public Sub copy(document As NotesDocument)
+		On Error Goto errorHandler
+		Set doc=document
+		Exit Sub
+errorHandler:
+		Msgbox "El error en ClaseSol es: " & Error & " " & Err & " " & Erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Sub
+	End Sub
+'*****************************************************************************************************************************	
+	Public Function setItems(document As NotesDocument)
+		On Error Goto errorHandler
+		Dim campo As String
+		Dim nombre As String
+		Dim i As Integer
+		i=getCantCampos()
+		Forall item In document.Items
+			If (item.IsAuthors Or item.IsReaders)Then
+				campo=CAMPO_VALOR & Cstr(i)
+				doc.replaceItemValue campo,item
+				'guardo el nombre
+				campo=CAMPO_NOMBRE & Cstr(i)
+				If (item.IsAuthors)Then
+					doc.replaceItemValue campo,"autores"
+				Else
+					doc.replaceItemValue campo,"lectores"
+				End If
+				'guardo el comentario
+				campo=CAMPO_COMENTARIO & Cstr(i)
+				doc.replaceItemValue campo,"vector"
+				i=i+1				
+			End If
+		End Forall
+		doc.replaceItemValue CAMPO_SOL_INDICE,Cstr(i)
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function
+'*****************************************************************************************************************************	
+	Public Function getUnidSol() As String
+		On Error Goto errorHandler
+		getUnidSol=doc.UniversalID
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function
+'*****************************************************************************************************************************	
+	Public Sub SetDoc(d As NotesDocument)
+		On Error Goto errorHandler
+		Set Me.doc=d
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Sub
+	End Sub
+'*****************************************************************************************************************************	
+	Public Function imprimierSol()
+		On Error Goto errorHandler
+		Dim campo As String
+		Dim nombre As String
+		Dim i As Integer
+		i=1
+		For i=1 To Me.getCantCampos()-1	
+			campo=CAMPO_VALOR & Cstr(i)
+			nombre=CAMPO_NOMBRE & Cstr(i)
+			Msgbox "...........El nombre del campo "& Cstr(i) &" es: " & doc.GetItemValue(nombre)(0) & " el valor es: " & doc.GetItemValue(campo)(0)
+		Next
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function
+'**************************************************
+	Public Sub setError(vValor As Integer)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue "error",vValor
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionCrear", ""
+		Exit Sub
+	End Sub	
+'*********************************************************************************
+End Class

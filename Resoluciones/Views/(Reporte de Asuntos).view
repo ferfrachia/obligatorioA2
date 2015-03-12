@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='842' unid='1D1DB62FB787C27F032575A000478068' sequence='48'>
+<created><datetime>20090422T100059,28-03</datetime></created>
+<modified><datetime>20150311T132739,04-03</datetime></modified>
+<revised><datetime>20150309T094503,16-03</datetime></revised>
+<lastaccessed><datetime>20150311T132739,04-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132739,04-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Reporte de Asuntos)</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+gAACAA4AAgAkMWkATgEDAAIAFAACACQzAAAAAAAAAADwPwMABQA0ADAABgAHAAIACAACAAkABABz
+VW5pZGFkJDFjY0VzdGFkbyQzJENvbmZsaWN0JFJFRgQABAAAABoABQAEAEZvcm0BAAYARlB1bnRv
+CgIDAAcACgAEAAlMMVM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+LAADAABECGYHAAAHAIhmBwcAAgCIZgcJAAgAc1VuaWRhZCQxY2NFc3RhZG8=
+</rawitemdata></item>
+<item name='$Totals' sign='true'><textlist><text>0</text><text>0</text><text
+>0</text><text>1</text></textlist></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAEAAQACQAAAFZDAwQHAAEAAAAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMDBAIAAAAcAAAAUAAB
+AAAKAAEAAAAAAAAAAgIAAABWQwMECAAAAAAAAABQAAEAAAoAAQAAAAAAAAACAgAAAFZDAAACAAAA
+FgAAAFAAAQAACgQAAAAAAAAAAAICAAAAc1VuaWRhZCMkMRwAAgAOAAIAJDFpAE4BAwAHAAwABQAJ
+MFMwRQBjY0VzdGFkbyQzFgACABQAAgAkMwAAAAAAAAAA8D8DACYAAQAAAAEBAAkBAAAKAQEOCgAA
+AQCtKwEAAQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA//8AAAAAAAAA
+AAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEB
+AAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAA
+AAAAAAAAAAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAUA////AAEAAAAAAAAA
+AAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAAAAAAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$Flags'><text>Y</text></item></note>
+

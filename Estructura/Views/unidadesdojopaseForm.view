@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='c1e' unid='33FBFBEAF75DDED3032573BF004B4AD2' sequence='81'>
+<created><datetime>20071228T104223,54-03</datetime></created>
+<modified><datetime>20150311T131228,42-03</datetime></modified>
+<revised><datetime>20150309T094450,47-03</datetime></revised>
+<lastaccessed><datetime>20150311T131228,42-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131228,42-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name
+>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071228T104223,58-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>unidadesdojopaseForm</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+sgACAFIAAgAkMQEACQB7Y29kaWdvOiIABQALAHNDb2RpZ29Gb3JtACICAQAHACIsbnJvOiIAIgIF
+AAoAc05yb1VuaWRhZCICAQADACJ9LAAiAgMABQAqACYABAALAAIACQAEAHNDb2RpZ29Gb3JtJDEk
+Q29uZmxpY3QkUkVGBAAEAAAAJgAFAAQAZm9ybQEAEgBNaWVtYnJvc0Zvcm11bGFyaW8KAgMABwAK
+AAQACUwxUw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+IQACAABEiGYHAAALAABmAAsAAgBzQ29kaWdvRm9ybSQx
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAUACAAAAFZDAwALAAAAAAAAABUAAQAACgABAAAAAAAAAAICAAAAVkMBAAIAAABsAAAA2gAB
+AAAKAAAAAAAAAAAAAgIAAABzQ29kaWdvRm9ybSQxbAACAFIAAgAkMQEACQB7Y29kaWdvOiIABQAL
+AHNDb2RpZ29Gb3JtACICAQAHACIsbnJvOiIAIgIFAAoAc05yb1VuaWRhZCICAQADACJ9LAAiAgMA
+BwAYABEACTBTMVMyUzNTNFM1UzZTN1MAJgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAECAAAA
+AAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAEAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJ
+AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAUA////
+AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAICAgAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAOzp2AABAAAAAAAJAAAAAAABAOzp2AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/VgAAAAEAAACfAQAADQAAAAAAAABDb25maWd1cmFjaW9uADIAAAAkAAIADRgAAAAAAAAB
+AA4AZkNvbmZpZ3VyYWNpb27tAgMABwAMAAUACTBTMEUAvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9F
+ZGl0IERvY3VtZW50AwACCr7/KAAAAAUAAACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAQAAwq+
+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0ZvcndhcmQFAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9N
+b3ZlIFRvIEZvbGRlci4uLgYAPXy+/y4AAAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZv
+bGRlcmQHAD58
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv9WAAAAAQAAAJ8BAAANAAAAAAAAAENvbmZpZ3VyYWNpb24AMgAAACQAAgANGAAA
+AAAAAAEADgBmQ29uZmlndXJhY2lvbu0CAwAHAAwABQAJMFMwRQC+/ygAAAAFAAAAnQEAAA4AAAAA
+AAAAX0VkaXQgRG9jdW1lbnQDAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9TZW5kIERvY3VtZW50
+BAADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAUABAq+/ywAAAAFAAAAnQEAABIAAAAA
+AAAAX01vdmUgVG8gRm9sZGVyLi4uBgA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVtb3ZlIEZy
+b20gRm9sZGVy/wcAPnw=
+</rawitemdata></item></note>
+

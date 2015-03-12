@@ -1,0 +1,520 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <IGDocConfig>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'* 
+'*		New()
+'*			Constructor de la clase 
+'*
+'*	PROPIEDADES
+
+'******************************************************************************************************************
+
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Creada una versión base que sirva para todas las bases, independiente de librerías particulares de algún módulo
+
+%END REM
+
+Option Declare
+
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "Configuracion Sistema"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class IGDocConfig
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+
+
+
+'******************************************************************************************************************		
+'******************************************************************************************************************		
+
+'CONSTANTES PRIVADAS
+Private Const NOMBRE_FORM_CONF						= "IGDocConfig"
+Private Const CLAVE_ADMINCONF							= "ADMINCONF"
+
+'CONSTANTES PÚBLICAS
+Public Const CAMPO_IGDOC_PROTOCOLO						="rProtocolo"
+Public Const CAMPO_IGDOC_PUERTO						="sPuerto"
+Public Const CAMPO_IGDOC_HOST_SERVER					="sHost"
+Public Const CAMPO_IGDOC_MODULOS_INSTALADOS				="sModulos"
+Public Const CAMPO_IGDOC_EMAIL_INSTITUCIONAL				="sMail"
+Public Const CAMPO_IGDOC_INSTITUCION					="sInstitucion"
+Public Const CAMPO_IGDOC_PATH_SESION					="sPathSesion"
+Public Const CAMPO_IGDOC_PATH_DOJO						= "sPathDojo"
+Public Const CAMPO_IGDOC_PATH_CERTIFICADO				= "sPathCertificado"
+Public Const CAMPO_IGDOC_PATH_ADMINISTRACION				= "sPathAdmin"
+Public Const CAMPO_IGDOC_ADMINISTRADORES				= "sAdministradores"
+Public Const CAMPO_IGDOC_PATH_TELEFONIA					= "sPathTelefonia"
+
+'NOMBRES DE MÓDULOS
+Public Const MODULO_CARTAS = "Cartas"
+Public Const MODULO_COMUNICACIONES="Comunicaciones" 
+Public Const MODULO_EXPEDIENTE = "Expediente"
+Public Const MODULO_FORMULARIOS = "Formularios"
+Public Const MODULO_RESOLUCIONES="Resoluciones"
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class IGDocConfig
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+	
+'******************************************************************************************************************		
+	
+	
+	
+'******************************************************************************************************************		
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		
+		'Se carga el documento de profile
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(NOMBRE_FORM_CONF)
+		
+		'En caso de que nunca haya sido editado se setea el campo form para poderse editar
+		If Not docConfiguracion.HasItem("Form") Then
+			docConfiguracion.ReplaceItemValue "Form",NOMBRE_FORM_CONF
+		End If
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método new","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	Public Property Get NombreFormPerfil(modulo As String) As String
+		'Devuelve el nombre del formulario de perfil de un módulo
+		On Error Goto HANDLER
+		Dim formPerfil As String
+		
+		If Ucase(modulo) = MODULO_EXPEDIENTE Or Ucase(modulo) = MODULO_CARTAS Then
+			'legado, la constante a usar estaba en ConstantesSistema, pero se movió a la configuración particular de expediente, no tengo acceso a esa clase
+			formPerfil = "fConfiguracion"
+		Elseif Ucase(modulo) = MODULO_RESOLUCIONES Then
+			'legado, la constante está en la configuración de Resoluciones, no tengo acceso a esa clase
+			formPerfil = "ConfiguracionRD"
+		Else
+			'nueva forma, el nombre del form. de perfil se arma en base al nombre del módulo
+			formPerfil = "Conf" & modulo
+		End If
+		NombreFormPerfil = formPerfil
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método get NombreFormPerfil","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get NombrePrimerFormPerfil As String
+		'para el primer módulo de los configurados que tiene un perfil en esta base, retorna su nombre de formulario
+		On Error Goto handler
+		Dim session As New NotesSession
+		Dim db As NotesDatabase
+		Dim modulos As Vector
+		Dim modulo As String
+		Dim formPerfil As String
+		Dim i As Integer
+		
+		Set modulos = Me.ModulosInstalados
+		If modulos.CantElem = 0 Then
+			NombrePrimerFormPerfil = ""
+			Exit Property
+		End If
+		
+		'TODO: ver si se puede mejorar para no distinguir entre módulos
+		Set db = session.CurrentDatabase
+		Dim docPerfil As NotesDocument
+		For i=1 To modulos.CantElem
+			modulo = modulos.getElement(i)
+			formPerfil = Me.NombreFormPerfil(modulo)
+			
+			If db.GetProfileDocCollection(formPerfil).Count > 0 Then
+				Set docPerfil = db.GetProfileDocument(formPerfil)
+				If Ubound(docPerfil.getItemValue("sClave"))> 0 Then
+					NombrePrimerFormPerfil = formPerfil
+					Exit Property
+				End If
+			End If
+		Next
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método get Protocolo","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Set Protocolo As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_PROTOCOLO,Cstr(Protocolo)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método set Protocolo","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get Protocolo As String
+		On Error Goto handler
+		Protocolo =Cstr(docConfiguracion.GetItemValue(CAMPO_IGDOC_PROTOCOLO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método get Protocolo","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Set Puerto As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_PUERTO,Cstr(Puerto)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método set Puerto","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get Puerto As String
+		On Error Goto handler
+		Puerto =Cstr(docConfiguracion.GetItemValue(CAMPO_IGDOC_PUERTO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método get Puerto","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get Institucion As String
+		On Error Goto handler
+		Institucion = docConfiguracion.getItemValue(CAMPO_IGDOC_INSTITUCION)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get Institucion","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set Institucion As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_INSTITUCION, Institucion
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set Institucion","")
+		Exit Property
+	End Property		
+'******************************************************************************************************************	
+	Public Property Get EmailInstitucional As String
+		On Error Goto handler
+		EmailInstitucional = docConfiguracion.getItemValue(CAMPO_IGDOC_EMAIL_INSTITUCIONAL)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get EmailInstitucional","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Set EmailInstitucional As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_EMAIL_INSTITUCIONAL, EmailInstitucional
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set EmailInstitucional","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get Host() As String
+		On Error Goto HANDLER
+		
+		Host= docConfiguracion.GetItemValue(CAMPO_IGDOC_HOST_SERVER)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Propiedad Get Host","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set Host As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_HOST_SERVER, Host
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set Host","")
+		Exit Property
+	End Property	
+'*************************************************************************************************************************************	
+	Public Property Get PathSesion As String
+		On Error Goto HANDLER
+		
+		PathSesion = docConfiguracion.GetItemValue(CAMPO_IGDOC_PATH_SESION	)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Propiedad Get PathSesion","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set PathSesion As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_PATH_SESION, PathSesion
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set PathSesion","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get PathDojo As String
+		On Error Goto handler
+		PathDojo = docConfiguracion.getItemValue(CAMPO_IGDOC_PATH_DOJO)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get PathDojo","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Set PathDojo As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_PATH_DOJO, PathDojo
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set PathDojo","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	Public Property Get ModulosInstalados As Vector
+		On Error Goto handler
+		Set ModulosInstalados = New Vector(0)
+		ModulosInstalados.values = docConfiguracion.getItemValue(CAMPO_IGDOC_MODULOS_INSTALADOS)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get ModulosInstalados","")
+		Exit Property
+	End Property 
+'******************************************************************************************************************		
+	Public Property Set ModulosInstalados As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_MODULOS_INSTALADOS, ModulosInstalados.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set ModulosInstalados","")
+		Exit Property
+	End Property	
+		'******************************************************************************************************************	
+	
+	Public Property Get Administradores As Vector
+		On Error Goto handler
+		Set Administradores = New Vector(0)
+		Administradores.values = docConfiguracion.getItemValue(CAMPO_IGDOC_ADMINISTRADORES)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get Administradores","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set Administradores As Vector
+		On Error Goto handler
+		
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_ADMINISTRADORES, Administradores.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set Administradores","")
+		Exit Property
+	End Property	
+		'******************************************************************************************************************	
+	
+	Public Property Get PathCertificado As String
+		On Error Goto handler
+		PathCertificado = docConfiguracion.getItemValue(CAMPO_IGDOC_PATH_CERTIFICADO)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Get PathCertificado","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set PathCertificado As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_PATH_CERTIFICADO, PathCertificado
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set PathCertificado","")
+		Exit Property
+	End Property	
+'*************************************************************************************************************************************	
+	
+	Public Property Get PathAdministracion() As String
+		On Error Goto HANDLER
+		
+		PathAdministracion= docConfiguracion.GetItemValue(CAMPO_IGDOC_PATH_ADMINISTRACION)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Propiedad Get PathAdministracion","")
+		Exit Property
+	End Property
+	
+	''******************************************************************************************************************		
+	Public Property Set PathAdministracion As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_PATH_ADMINISTRACION, PathAdministracion
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set PathAdministracion","")
+		Exit Property
+	End Property
+	''******************************************************************************************************************		
+	Public Property Set PathTelefonia As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_IGDOC_PATH_TELEFONIA, PathTelefonia
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Método Set PathTelefonia","")
+		Exit Property
+	End Property
+	'*************************************************************************************************************************************	
+	
+	Public Property Get PathTelefonia() As String
+		On Error Goto HANDLER
+		
+		PathTelefonia= docConfiguracion.GetItemValue(CAMPO_IGDOC_PATH_TELEFONIA)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase IGDocConfig - Propiedad Get PathTelefonia","")
+		Exit Property
+	End Property
+'*************************************************************************************************************************************			
+	Public Function getConfiguracion (tipoConf As String) As Variant
+		'Retorna la clase de configuración de un módulo (clase base ConfigSistema con las operaciones básicas)
+		On Error Goto handler
+		
+		Set getConfiguracion = New ConfigSistema(Me.NombreFormPerfil(tipoConf))
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase IGDOCCONFIG - Function BaseDeDatosTipo","","")
+		Exit Function
+	End Function
+	
+'*************************************************************************************************************************************			
+	Public Sub Save () 
+		On Error Goto handler
+		
+		Dim modulos As New Vector(0)
+		Dim i As Integer
+		Dim j As Integer
+		Dim modulo As String
+		Dim configuracion As Variant
+		Dim paseporadmin As Boolean
+		Dim pathBase As String
+		Dim vClaves As Vector
+		Dim dbSetear As NotesDatabase
+		Dim docAux As NotesDocument
+		
+		'Para marcar si ya remplace el doc de Admin
+		paseporadmin = False'	
+		' Primero guardamo el doc de config
+		Call docConfiguracion.Save(True,False)
+		'Tengo que verficar que no este salvando en la base de admin
+		If Ucase(Replace(Me.pathAdministracion,"\\","/"))=Ucase(Replace(ses.CurrentDatabase.FilePath,"\\","/")) Then
+			paseporadmin = True
+		End If
+		'Ahora me tengo que fijar que modulos estan instalados para empezar a recorrer las bases
+		Set modulos = Me.modulosInstalados
+		'Recorro todos modulos instalados para replicar el perfil
+		For i=1 To modulos.CantElem
+			modulo = modulos.getElement(i)
+			Set configuracion = Me.getConfiguracion(modulo)
+			If Not Isobject(configuracion) Then
+				Error 4999,"No se puede encontrar la configuración para el modulo: " & modulo
+			End If
+			Set vclaves= configuracion.Claves()
+			For j=1 To vclaves.CantElem 
+				If Not excluirBase(vclaves.getElement(j)) Then ' Chequeo si tengo que copiar el doc de config o no
+					If Not (vclaves.getElement(j)=CLAVE_ADMINCONF And paseporadmin) Then ' Chequeo que no pase mas de una vez por el doc de admin
+						Set dbSetear = configuracion.ReferenciarBasedeDatos(vclaves.getElement(j))
+						'Aca tengo que sacar el doc de perfil
+						Set docAux = dbSetear.GetProfileDocument(NOMBRE_FORM_CONF)
+						'copiamo los datos
+						Call copiarDocConfig (docConfiguracion , docAux) 
+						If vclaves.getElement(j)=CLAVE_ADMINCONF Then
+							paseporadmin = True
+						End If
+						'salvamo el doc
+						Call docAux.save(True,False)
+					End If
+				End If
+			Next
+		Next
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase IGDOCCONFIG - Sub Save","","")
+		Exit Sub
+	End Sub
+	'*************************************************************************************************************************************			
+	Public Sub copiarDocConfig (docConfig As NotesDocument, docProfile As NotesDocument) 
+		On Error Goto handler
+		
+		' Copiamo todos los campos de la config, del documento al documento de perfil		
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_PROTOCOLO,docConfig.GetItemValue(CAMPO_IGDOC_PROTOCOLO))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_PUERTO,docConfig.GetItemValue(CAMPO_IGDOC_PUERTO))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_INSTITUCION,docConfig.GetItemValue(CAMPO_IGDOC_INSTITUCION))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_EMAIL_INSTITUCIONAL,docConfig.GetItemValue(CAMPO_IGDOC_EMAIL_INSTITUCIONAL))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_HOST_SERVER,docConfig.GetItemValue(CAMPO_IGDOC_HOST_SERVER))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_PATH_DOJO,docConfig.GetItemValue(CAMPO_IGDOC_PATH_DOJO))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_MODULOS_INSTALADOS,docConfig.GetItemValue(CAMPO_IGDOC_MODULOS_INSTALADOS))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_ADMINISTRADORES,docConfig.GetItemValue(CAMPO_IGDOC_ADMINISTRADORES))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_PATH_CERTIFICADO,docConfig.GetItemValue(CAMPO_IGDOC_PATH_CERTIFICADO))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_PATH_ADMINISTRACION,docConfig.GetItemValue(CAMPO_IGDOC_PATH_ADMINISTRACION))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_PATH_SESION,docConfig.GetItemValue(CAMPO_IGDOC_PATH_SESION))
+		Call docProfile.ReplaceItemValue(CAMPO_IGDOC_PATH_TELEFONIA,docConfig.GetItemValue(CAMPO_IGDOC_PATH_TELEFONIA))
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase IGDOCCONFIG - Sub copiarDocConfig","","")
+		Exit Sub
+	End Sub
+'*************************************************************************************************************************************				
+	Private Function excluirbase (clave As String) As Boolean
+		On Error Goto handler
+		
+		If Ucase(clave)= CLAVE_NAMES Then
+			excluirbase = True
+		Else
+			excluirbase = False
+		End If
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase IGDOCCONFIG - Function excluirbase","","")
+		Exit Function
+	End Function
+	
+'*************************************************************************************************************************************			
+End Class
+'******************************************************************************************************************

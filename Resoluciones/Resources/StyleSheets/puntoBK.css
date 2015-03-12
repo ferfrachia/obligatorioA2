@@ -1,0 +1,295 @@
+.TablaContenedorEncabezadoAct 
+{
+	width: 100%;
+}
+
+.TablaEncabezadoAct{
+	border: 0px;
+	background-color :#3399CC;
+	width: 100%;
+}
+
+.CeldaTituloAct {
+	vertical-align: top;
+	background-image: url(img/FondoEncActuacion.jpg?OpenImageResource);
+	background-position: top;
+	background-repeat: repeat-x;
+}
+.TituloAct {
+	margin-top:9px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 19px;
+	color: #D3EBF8;	
+}
+
+.SubTituloAct {
+	margin-top:15px;
+	margin-left:15px;
+	font-family: Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color:#ffffff;
+}
+
+.FondoDatosEncabezadoAct
+{
+	width: 300px; 	height: 100px;
+	vertical-align: top; 
+	background-color: #FFFFFF !important; 
+}
+
+.TablaDatosEncabezadoAct
+{
+	background-color: #FFFFFF;
+}
+
+Table.TablaDatosEncabezadoAct td
+{
+	border: solid #E1E1E1;
+	border-width: 0px 0px 1px 0px;
+}
+
+/* para que no aplique a las lineas que no deben tener bordes*/
+Table.TablaDatosEncabezadoAct td .SinBordes
+{
+	border: none;
+	border-width: 0px 0px 0px 0px;
+	border-collapse: collapse;
+}
+
+.LeyendaEncabezadoAct
+{
+	font-family: Arial,  Verdana ; 
+	font-size: 11px;
+	color : black;
+}
+
+.CampoEncabezadoAct  {
+	font-family: Arial, Verdana , Helvetica, sans-serif;
+	font-size: 11px;
+	color:#3781A5;
+}
+
+
+.TablaAct , .TablaMsgAct {
+	height:5px;
+	width:755px;
+
+	margin:6px 0px 6px 6px;
+}
+
+
+.TablaMsgActContenido {
+	background-color: #F1F5F8;
+}
+
+.TablaActContenido {
+	background-color: #F1F5F8;
+	padding:2px;
+	
+}
+
+
+.TablaActEsquina {
+	width:3px;
+	height:3px;
+	font-size:1px;
+}
+
+.TablaActBordeHoriz {
+	height:3px;
+	font-size:1px;
+}
+
+.TablaActBordeVert {
+	width:3px;
+	font-size:1px;
+}
+
+
+.TablaActEtiquetaH
+{
+	padding: 2px 2px 2px 4px;
+	width: 90px;
+	height: 21px;
+	font-size:9pt;
+	font-family: Tahoma, Verdana, Arial;
+	
+	color: #FFFFFF;
+	background-color: #80BAE4;  
+	
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+}
+
+
+
+.TablaActRestoEtiqH
+{
+	font-size:9pt;
+	font-family: Tahoma, Verdana, Arial;	
+	
+	background-color: #80BAE4;  
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+}
+
+
+.TablaActEtiqueta
+{
+	padding: 2px 2px 2px 4px;
+	width: 130px;
+	height: 21px;
+	font-size:9pt;
+	font-family: Tahoma, Verdana, Arial;
+
+
+	vertical-align: top;
+
+	color: #FFFFFF;
+	background-color: #80BAE4; 
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+	
+	
+}
+
+.TablaActContenedorCampo
+{
+	padding:2px;
+	font-size:10pt;
+	background-color: white;
+	
+	border-color:#6A9EB8;
+	border-width:0px 0px 1px 0px;	
+	border-style:solid;
+}
+
+.TablaActContenedorGral 
+{
+	padding:2px;
+	/* background-color: white; */
+	
+	border-color:#80BAE4;
+	border-width:0px 1px 1px 1px;	
+	border-style:solid;
+}
+
+.TablaActIconoChico
+{
+	padding:1px;
+	vertical-align: top;
+	font-size:1pt;
+}
+
+
+
+.BarraNavegacionAct {	
+	margin-top: 5px;
+	margin-bottom: 5px; 
+	height:30px;
+	font-size:1px;
+}
+
+
+.BordeNavInf {
+	height:5px;
+	vertical-align:top;
+	background-color:white;
+	padding:0px;
+	font-size:1px;
+}
+
+.ImagenBarraNavegacion {
+	height:1px;
+	font-size:1px;
+}
+
+
+.TextoMotivoDevolucion
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #2E7BBD;
+}
+
+.DescripcionMotivoDevolucion
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	color: red;
+}
+
+
+.TextoFirmaOK {
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #2E7BBD;
+}
+
+.TextoFirmaSinValidar {
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #2E7BBD;
+}
+
+
+.BotonAccionAct 
+{
+	width: 65;
+	height: 16;
+}
+
+
+.TablaActContenedorGrupo 
+{
+	background-color:#C2DCEF;
+	padding: 4px; 2px; 2px; 4px;
+}
+
+.TituloSeccionAct
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #346985;
+}
+
+
+.BarraAccionesAct
+{
+	font-size:2pt;
+	font-family: Tahoma, Verdana, Arial;
+}
+
+/**** GENERALES ****/
+.AnchoTotal {
+	width: 100%;
+}
+
+.AnchoCasiTotal {
+	width: 99%;
+}
+
+.SinBordes {
+	border:none;
+	border-collapse: collapse;
+}
+
+.SinDecoracionTexto{
+	text-decoration: none;
+}

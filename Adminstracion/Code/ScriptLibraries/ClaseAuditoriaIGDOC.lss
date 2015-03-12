@@ -1,0 +1,35 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+Use "ClaseAuditoriaBase" 
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class AuditoriaIGDOC As Auditoria
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'******************************************************************************************************************
+'* 
+'*								CLASS AUDITORIA
+'*
+'******************************************************************************************************************
+
+
+
+'ESTA CLASE ES LA ENCARGADA DE AUDITAR TODOS LOS EVENTOS COMUNES A TODOS LOS MÓDULOS.
+'CAMBIOS DE CONFIGURACIÓN
+'CAMBIOS EN LA ESTRUCTURA ORGANIZACIONAL
+'SUPLENCIAS
+'BÚSQUEDAS
+
+
+Public Class AuditoriaIGDOC As Auditoria
+	Sub new ()
+		Dim igdConfig As New IGDocConfig()
+		Set db = New NotesDatabase(igdConfig.ServerInstalacion,igdConfig.PathAuditoria)
+		If Not db.isOpen Then
+			Call db.open("", "")
+		End If
+		NOMBRE_APLICACION = "IGDOC"
+	End Sub
+End Class

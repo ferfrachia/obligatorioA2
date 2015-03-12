@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005ABB51'>
+<noteinfo noteid='186' unid='CDE5ACA0E66818BB8525661D005FEB3E' sequence='38'>
+<created><datetime>19980608T122741,42-05</datetime></created>
+<modified><datetime>20150311T133102,33-03</datetime></modified>
+<revised><datetime>20150309T094423,21-03</datetime></revised>
+<lastaccessed><datetime>20150311T133102,33-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133102,33-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Lotus Notes Template Development/O=Lotus Notes</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Sandra Sayanes/O=ISA</name><name
+>CN=Administrador/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name
+>CN=Administrador/O=MEC</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060317T103044,17-03</datetime><datetime>20060630T180753,34-03</datetime><datetime
+>20060713T143602,62-03</datetime><datetime>20060802T135149,25-03</datetime><datetime
+>20060802T151926,16-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Name' sign='true'><text>Search Results</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+FAABAABEAGYAAAAHAFN1YmplY3Q=
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Flags'><text>3FY</text></item>
+<item name='$TITLE'><text>Resultados de la búsqueda</text></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+NAAFABwAGAACAAcACQBTdWJqZWN0JENvbmZsaWN0BAAEAAAACABmAAMABwAKAAQACUwxUw==
+</formula></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABABkAK08AAFZDAQAHABMAAAAAAHcBBQAECAAAAgAAAAAAAAACAAAgU3ViamVjdERvY3VtZW50
+b3MgaGFsbGFkb3MmAAEAAAABAQAJAQACCgEBBAoAAAAArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRz//wAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAL7/JgAAAAUAAACdAAAACwAAAAAAAABfQ2F0ZWdv
+cqFhc1gBAE58vv8sAAAABQAAAJ0AAAARAAAAAAAAAF9FZGl0YXIgZG9jdW1lbnRvWAIAAgq+/ywA
+AAAFAAAAnQAAABEAAAAAAAAARW5fdmlhciBkb2N1bWVudG9YAwADCr7/IgAAAAUAAACdAAAACAAA
+AAAAAABfUmVtaXRpcgQABAq+/zIAAAAFAAAAnQEAABcAAAAAAAAAX01vdmVyIGEgdW5hIGNhcnBl
+dGEuLi5YBQA9fL7/MAAAAAUAAACdAQAAFgAAAAAAAABFX3h0cmFlciBkZSBsYSBjYXJwZXRhBgA+
+fA==
+</rawitemdata></item>
+<item name='$ViewScript' summary='false' sign='true'><text>'++LotusScript Development Environment:2:5:(Options):0:66
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Sub Postopen(Source As Notesuiview)
+Declare Sub Queryopen(Source As Notesuiview, Continue As Variant)
+
+'++LotusScript Development Environment:2:5:(Declarations):0:2
+
+'++LotusScript Development Environment:2:2:BindEvents:1:129
+Private Sub BindEvents(Byval Objectname_ As String)
+     Static Source As NOTESUIVIEW
+     Set Source = Bind(Objectname_)
+     On Event Postopen From Source Call Postopen
+     On Event Queryopen From Source Call Queryopen
+End Sub
+
+'++LotusScript Development Environment:2:2:Postopen:1:12
+Sub Postopen(Source As Notesuiview)
+     
+End Sub
+'++LotusScript Development Environment:2:2:Queryopen:1:12
+Sub Queryopen(Source As Notesuiview, Continue As Variant)
+     
+End Sub<break/><break/><break/></text></item>
+<item name='$ViewScript_O' sign='true'>
+<rawitemdata type='14'>
+AQAAAkxTT0IDABQIZW4AAAQADAA2AAQAAADgAlQBAAAAAAAArAC4AAAAAAAAALwAIABAAP//2ABc
+AAAAAAAAAAMAAAAEAAACAAAAAAAAAAAAAAAAWAFYAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC
+AAIAAAAABAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAEAAAC4ALgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuAC4AAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAEABABMb3R1cyBQcm9kdWN0AAAAVjAuMAAAAAAAAAAAAAAAAAAA
+AAAEAAAANgAAAAAAAADgAgAAVAEAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAA
+AAYAAABXMzJJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAwBYAQAAAAAsAA0AJABWAEkARQBXAFMAQwBSAEkAUABUAF8ATwAAAHQAAwBOAEUAVwAAAIgA
+BgBEAEUATABFAFQARQAAAAAApAAKAEkATgBJAFQASQBBAEwASQBaAEUAAAAAAPQACQBUAEUAUgBN
+AEkATgBBAFQARQAAABABBgBPAEIASgBFAEMAVAAAAAAAkAAAAAAAAAA8AQYAUwBPAFUAUgBDAEUA
+AAAAACQBCABDAE8ATgBUAEkATgBVAEUAAAAAAP//CgBCAEkATgBEAEUAVgBFAE4AVABTAAAAAAD/
+/wsATwBCAEoARQBDAFQATgBBAE0ARQBfAAAA//8LAE4ATwBUAEUAUwBVAEkAVgBJAEUAVwAAAP//
+BgAlAEwAUwBYAFUASQAAAAAA//8IAFAATwBTAFQATwBQAEUATgAAAAAA//8JAFEAVQBFAFIAWQBP
+AFAARQBOAAAABQDkAgAAAAAkix/pCAAAAFgBAADAAAAAAAAAAAIAAACcAEgBAAAAAAAAAAAAAAAA
+AAAAAJwAnAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgBSAEAAAAAAAAAAAEAAAACAAAAAwAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAADAAEASAEAANwABggAAAAAGgAAABQB//8AAAAAEAAAAAAAAAD4AAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYVEyntLmkQ
+v10A3QERhrcAAAAAAAAAAAAAAAAAAAAAZAAAAAAAAAAAAAAAAAAAAAIArAAAAMgCAAAAAAoAAQD/
+/wAAAwAgAAAAAACUAAkCAAC4AAgAAAAAAgAAKAEAAAAAAAABAAAA8AHwAQAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAfABAAAAAAAAAAABAAAAAAAAAC4AAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AwABAAAAAACUAAkCAAC4AAgAAAAAAAAAQAEAAAAAAAACAAAAmAKoAgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAACoAqgCAAAAAAAAAACYApgCAAAAAAAAAAACAAAAAAAAADIAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAB
+AKgCAACUAAkCAAC4AAMAAQAAAAAAqAAAAAEAAAATAAAAKAEAANIAAAAAAAAAEwC4AkABAADRAAAA
+AQAAAAEAAAAAAAAABAA6AAAAAAAdAAAaDABbSAFJnADKuACmGg0AR0gBy9IAAABYARoOAEdIAcvR
+AAAAAAIaDwAdGhQAHRoYAB0CAAAAEQAcAAAAAAD//wEAAwADAAAABwDAAAkAKAERAEABFQAKAAAA
+</rawitemdata></item>
+<item name='$Language' sign='true'><text>es-MX</text></item>
+<item name='$LastBuildTime' sign='true'><datetime>19990412T172447,71+00</datetime></item>
+<item name='$BabelInfo' sign='true'><text>00000172</text></item></note>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="11a2" sequence="11" unid="F7E62B1FAD6B90C1832578DC005DA452">
+<created><datetime>20110729T140249,14-03</datetime></created>
+<modified><datetime>20150309T094530,59-03</datetime></modified>
+<revised><datetime>20150309T094530,58-03</datetime></revised>
+<lastaccessed><datetime>20150309T094530,59-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161903,88-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Julian Robichaux/O=nsftools</name><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=WebApp Manager/O=1871</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>WSAttachmentHelpers</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20140814T173028,93-03</datetime></item></note>

@@ -1,0 +1,619 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+'*******************************************************************************************************************
+'*  
+'*                                               CLASS <Solicitud>
+'*
+'*******************************************************************************************************************
+'*
+'*	CONSTRUCTOR
+'*
+'*	Public Sub new(db_ As notesDatabase,doc_ As notesdocument,sNroExpediente_ As String,sUsuario_ As String)
+'*	
+'*	METODOS
+'*
+'*	Public Sub save() 
+'*	'Salva la solicitud
+'*	
+'*	Public Sub refresh() 
+'*	
+'*	Public Sub setEstado(bProcesado As Integer)
+'*	
+'*		PARAMETROS
+'*			bProcesado (IN)		-Booleano. Si es True el estado de la solicitud será Procesado.
+'*
+'*	Public Sub setParameter(operacion As String,nNroParam As Integer, vValor As Variant)
+'*	Setea el parámetro valor, en un campo(de la solicitud).Este valor se corresponde con el parameto "nroParam" 
+'*	de alguna operación "operacion" de la clase Expediente.
+'*
+'*		PARAMETROS
+'*			operacion (IN)		-String obtenido por constantes que indica para que operación de la 
+'*							clase Expediente es que se quiere setear el parámetro.
+'*			nNroParam (IN)		-Número que indica que parámetro se quiere setear para la operación.
+'*			vValor	(IN)		-Valor del parámetro. Puede ser un String, un Integer, o un Array.
+'*
+'*	Public Function getParameter(operacion As String,nNroParam As Integer) As Variant
+'*	Obtiene del documento de solicitud un parámetro para alguna operacion de la clase Expediente
+'*	Devuelve dicho valor. Puede ser un string, Integer o un array. Tambien puede ser un Vector, 
+'*	dependiendo de la interfase de la operacion solicitada.
+'*	
+'*		PARAMETROS
+'*			operacion (IN)		-String obtenido por constantes que indica para que operación de la 
+'*							clase Expediente es que se quiere obtener  el parámetro.
+'*			nNroParam (IN)		-Número que indica que parámetro se quiere obtener para la función.
+'*
+'*	Public Function isProcesada() As Integer
+'*	
+'*	Public Function getEstado() As String
+'*	
+'*	Public Function getNroExpediente() As String
+'*	
+'*	Public Function getUsuario() As String
+'*	
+'*	Public Function hayError() As Integer
+'*	
+'*	Public Sub setHayError(bHay As Integer)
+'*	
+'*	Public Function getErrorMsg() As String
+'*	
+'*	Public Function setErrorMsg(sMsg As String)
+'*	
+'*	Public Function getErrorCode() As Integer
+'*	
+'*	Public Function setErrorCode(nErrorCode  As Integer)
+'*	
+'*	Public Function getOperacion()As String
+'*	
+'*	Public Sub setOperacion(sOperacion As String)
+'*	
+
+'Use "ConstantesMotor"
+Use "VectorClass 2.05"
+Use "Errores Generales"
+Use "ConfEE 1.0"
+Use "ConstantesSistema"
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Solicitud
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Diseño
+Public Const FORM_SOLICITUD					="FSolicitud"
+Public Const CAMPO_FSOLICITUD_OPERACION			="sOperacion"
+Public Const CAMPO_FSOLICITUD_ERRORFLAG			="sError_flag"
+Public Const CAMPO_FSOLICITUD_ERRORMSG			="sError_msg"
+Public Const CAMPO_FSOLICITUD_ERRORCODE			="sError_code"
+Public Const CAMPO_FSOLICITUD_NUMEXPEDIENTE		="sNumeroExpediente"
+Public Const CAMPO_FSOLICITUD_USUARIO			="sUsuario"
+Public Const CAMPO_FSOLICITUD_ESTADO			="sEstado"
+
+'Flags
+Public Const FLAG_TRUE						="1"
+Public Const FLAG_FALSE						="0"
+
+'Parametros
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE = "acc_actualizar_informe_expediente"
+
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P2 = "nroAct"
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P3 = "usr"
+Public Const ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P4 = "nroDoc"
+
+Public Const ACCION_REGISTRAR_PUNTO_EXPEDIENTE = "acc_registrar_punto_en_expediente"
+
+Public Const ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P2 = "nroSesion"
+Public Const ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P3 = "nroPunto"
+Public Const ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P4 = "estado"
+
+Public Const ACCION_QUITAR_PUNTO_EXPEDIENTE = "acc_quitar_punto_de_expediente"
+
+Public Const ACCION_QUITAR_PUNTO_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_QUITAR_PUNTO_EXPEDIENTE_P2 = "nroSesion"
+Public Const ACCION_QUITAR_PUNTO_EXPEDIENTE_P3 = "nroPunto"
+
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE = "acc_update_punto_en_expediente"
+
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P2 = "nroSesion"
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P3 = "nroPunto"
+Public Const ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P4 = "estado"
+
+Public Const ACCION_REG_RESOL_EXPEDIENTE = "acc_reg_resol_en_expediente"
+
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P1 = "nroExp"
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P2 = "nroSesion"
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P3 = "nroPunto"
+Public Const ACCION_REG_RESOL_EXPEDIENTE_P4 = "nroResol"
+
+
+
+Public Class Solicitud
+	Private db As notesDatabase
+	Private doc As notesDocument
+	Private sNoteId As String
+	
+	'*****************************************************************************************************************************
+	
+	Public Sub save() 
+		'Salva la solicitud
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			doc.save True,False	
+			sNoteId=doc.noteId
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método Save", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************			
+	
+	Public Sub refresh() 
+		On Error GoTo errorHandler
+		Set doc=Nothing
+		If sNoteId<>"" Then
+			Set doc=db.getDocumentById(sNoteId)	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método Refresh", ""
+		Exit Sub
+	End Sub	
+	
+	
+	'*****************************************************************************************************************************				
+	
+	Public Sub new(doc_ As notesdocument,Byval sNroExpediente_ As String,Byval sUsuario_ As String)
+		On Error Goto errorHandler
+		Dim c As New Configuracion, srv As String, path As String
+		
+		If db Is Nothing Then
+			srv = c.ServidorDomino(CLAVE_DBMOTORDOC)
+			path = c.BaseDeDatos(CLAVE_DBMOTORDOC)
+			Set db = New NotesDataBase ("","")
+			Call db.Open (srv,path)			
+			If Not db.isOpen Then
+				Error ERROR_DB_NOT_OPEN,MSG_ERROR_DB_NOT_OPEN & " Motor Documental"
+			End If			
+		End If		
+		If doc_ Is Nothing Then
+			Set doc=New notesdocument(db)
+			doc.form=FORM_SOLICITUD
+			
+			doc.replaceItemValue CAMPO_FSOLICITUD_NUMEXPEDIENTE,sNroExpediente_
+			doc.replaceItemValue CAMPO_FSOLICITUD_USUARIO,sUsuario_
+			doc.replaceItemValue CAMPO_FSOLICITUD_ESTADO,FLAG_FALSE 'Procesar. Ver que pasa si el motor no la procesó aún	
+		Else
+			Set doc=doc_
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método New", ""
+		Exit Sub
+	End Sub
+	
+	
+	'*****************************************************************************************************************************
+	'*****************************************************************************************************************************
+	'Privadas
+	'*****************************************************************************************************************************			
+	
+	Public Function getUsuario() As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_USUARIO) Then
+				getUsuario=doc.getItemValue(CAMPO_FSOLICITUD_USUARIO)(0)		
+			End If		
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getUsuario", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	
+	Public Function hayError() As Integer
+		On Error Goto errorHandler
+		If doc.hasItem(CAMPO_FSOLICITUD_ERRORFLAG) Then
+			If doc.getItemValue(CAMPO_FSOLICITUD_ERRORFLAG)(0)=FLAG_TRUE Then
+				hayError=True	
+			Else
+				hayError=False	
+			End If
+		Else
+			hayError=False
+		End If
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método hayError", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Sub setHayError(Byval bHay As Integer)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If bHay Then
+				doc.replaceItemValue CAMPO_FSOLICITUD_ERRORFLAG,FLAG_TRUE	
+			Else								
+				doc.replaceItemValue CAMPO_FSOLICITUD_ERRORFLAG,FLAG_FALSE
+			End If
+		End If	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setHayError", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************		
+	
+	Public Function getErrorMsg() As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_ERRORMSG) Then
+				getErrorMsg=doc.getItemValue(CAMPO_FSOLICITUD_ERRORMSG)(0)
+			End If	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getErrorMsg", ""
+		Exit Function
+	End Function	
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function setErrorMsg(Byval sMsg As String)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue CAMPO_FSOLICITUD_ERRORMSG,sMsg	
+		End If	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setErrorMsg", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************		
+	
+	Public Function getErrorCode() As Integer
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_ERRORCODE) Then
+				If Isnumeric(doc.getItemValue(CAMPO_FSOLICITUD_ERRORCODE)(0)) Then
+					getErrorCode=Cint(doc.getItemValue(CAMPO_FSOLICITUD_ERRORCODE)(0))	
+				End If			
+			End If			
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getErrorCode", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Function setErrorCode(Byval nErrorCode  As Integer)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue CAMPO_FSOLICITUD_ERRORCODE,nErrorCode
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setErrorCode", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************		
+	
+	Public Function getOperacion()As String
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			If doc.hasItem(CAMPO_FSOLICITUD_OPERACION) Then
+				getOperacion=doc.getItemValue(CAMPO_FSOLICITUD_OPERACION)(0)
+			End If			
+		End If	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getOperacion", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************			
+	
+	Public Sub setOperacion(Byval sOperacion As String)
+		On Error Goto errorHandler
+		If Not doc Is Nothing Then
+			doc.replaceItemValue CAMPO_FSOLICITUD_OPERACION,sOperacion
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setOperacion", ""
+		Exit Sub
+	End Sub
+
+	'*****************************************************************************************************************************	
+
+	Private Sub setAccionActualizarInformeExpediente(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P4,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionActualizarInformeExpediente", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+
+	Private Sub setAccionRegistrarPuntoExpediente(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P4,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionGenerarPuntoExpediente", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+
+	Private Sub setAccionUpdatePuntoExpediente(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P4,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionUpdatePuntoExpediente", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	
+
+	Private Sub setAccionRegResolExpediente(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_REG_RESOL_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_REG_RESOL_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_REG_RESOL_EXPEDIENTE_P3,CStr(vValor)
+			Case 4:
+				doc.replaceItemValue ACCION_REG_RESOL_EXPEDIENTE_P4,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionRegResolExpediente", ""
+		Exit Sub
+	End Sub
+	
+	'*****************************************************************************************************************************	'*****************************************************************************************************************************	
+
+	Private Sub setAccionQuitarPuntoExpediente(ByVal nNroParam As Integer,vValor As Variant)
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				doc.replaceItemValue ACCION_QUITAR_PUNTO_EXPEDIENTE_P1,CStr(vValor)
+			Case 2:
+				doc.replaceItemValue ACCION_QUITAR_PUNTO_EXPEDIENTE_P2,CStr(vValor)
+			Case 3:
+				doc.replaceItemValue ACCION_QUITAR_PUNTO_EXPEDIENTE_P3,CStr(vValor)
+			Case Else
+		End Select	
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setAccionQuitarPuntoExpediente", ""
+		Exit Sub
+	End Sub
+	
+	
+
+	Private Function getAccionActualizarInformeExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionActualizarInformeExpediente=CStr(doc.getItemValue(ACCION_ACTUALIZAR_INFORME_EXPEDIENTE_P4)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionActualizarInformeExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+
+	Private Function getAccionRegistrarPuntoExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionRegistrarPuntoExpediente=CStr(doc.getItemValue(ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionRegistrarPuntoExpediente=CStr(doc.getItemValue(ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionRegistrarPuntoExpediente=CStr(doc.getItemValue(ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionRegistrarPuntoExpediente=CStr(doc.getItemValue(ACCION_REGISTRAR_PUNTO_EXPEDIENTE_P4)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionRegistrarPuntoExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+
+	Private Function getAccionUpdatePuntoExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionUpdatePuntoExpediente=CStr(doc.getItemValue(ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE_P4)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionUpdatePuntoExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+
+	Private Function getAccionRegResolExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P3)(0))
+			Case 4:
+				getAccionRegResolExpediente=CStr(doc.getItemValue(ACCION_REG_RESOL_EXPEDIENTE_P4)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionRegResolExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+
+	Private Function getAccionQuitarPuntoExpediente(ByVal nNroParam As Integer) As Variant
+		On Error GoTo errorHandler
+		If Not doc Is Nothing Then
+			Select Case(nNroParam)
+			Case 1:
+				getAccionQuitarPuntoExpediente=CStr(doc.getItemValue(ACCION_QUITAR_PUNTO_EXPEDIENTE_P1)(0))
+			Case 2:
+				getAccionQuitarPuntoExpediente=CStr(doc.getItemValue(ACCION_QUITAR_PUNTO_EXPEDIENTE_P2)(0))
+			Case 3:
+				getAccionQuitarPuntoExpediente=CStr(doc.getItemValue(ACCION_QUITAR_PUNTO_EXPEDIENTE_P3)(0))
+			Case Else	
+		End Select	
+		End If
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getAccionQuitarPuntoExpediente", ""
+		Exit Function
+	End Function
+	
+	'*****************************************************************************************************************************	
+	
+	Public Sub setParameter(Byval operacion As String,Byval nNroParam As Integer, vValor As Variant)
+		'Setea el parámetro valor, en un campo(de la solicitud) correspondiente al parameto nroParam 
+		'de la operación de negocios operacion de la clase Expediente
+		On Error Goto errorHandler
+		
+		Select Case (operacion)
+			Case ACCION_ACTUALIZAR_INFORME_EXPEDIENTE:
+				setAccionActualizarInformeExpediente nNroParam,vValor
+			Case ACCION_REGISTRAR_PUNTO_EXPEDIENTE:
+				setAccionRegistrarPuntoExpediente nNroParam,vValor
+			Case ACCION_QUITAR_PUNTO_EXPEDIENTE:
+				setAccionQuitarPuntoExpediente nNroParam,vValor
+			Case ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE:
+				setAccionUpdatePuntoExpediente nNroParam,vValor
+			Case ACCION_REG_RESOL_EXPEDIENTE
+				setAccionRegResolExpediente nNroParam,vValor
+			Case Else	
+		End Select	
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método setParameter", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************************************************************************************************************************************************************
+	
+	Public Function getParameter(Byval operacion As String,Byval nNroParam As Integer) As Variant
+		'Devuelve el valor de un campo segun el parameto nroParam de la operación de 
+		'negocios operacion que se encuentra en el documento de solicitud doc
+		On Error Goto errorHandler
+		
+		Select Case (operacion)
+			Case ACCION_ACTUALIZAR_INFORME_EXPEDIENTE:
+				getParameter=getAccionActualizarInformeExpediente( nNroParam)
+			Case ACCION_REGISTRAR_PUNTO_EXPEDIENTE:
+				getParameter=getAccionRegistrarPuntoExpediente( nNroParam)
+			Case ACCION_QUITAR_PUNTO_EXPEDIENTE:
+				getParameter=getAccionQuitarPuntoExpediente( nNroParam)
+			Case ACCION_UPDATE_ESTADO_PUNTO_EXPEDIENTE:
+				getParameter=getAccionUpdatePuntoExpediente( nNroParam)
+			Case ACCION_REG_RESOL_EXPEDIENTE:
+				getParameter=getAccionRegResolExpediente( nNroParam)
+			Case Else	
+		End Select	
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase Solicitud - Método getParameter", ""
+		Exit Function
+	End Function	
+End Class

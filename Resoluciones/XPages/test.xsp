@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xp:this.data>
+		<xp:dominoDocument var="document1" formName="FPunto"></xp:dominoDocument>
+	</xp:this.data>
+
+	<xp:br></xp:br>
+	&#160;<xp:br></xp:br>
+	
+
+	<xp:br></xp:br>
+	<xp:br></xp:br>
+	<xp:viewPanel rows="30" id="viewPanel1">
+		<xp:this.facets>
+			<xp:pager partialRefresh="true" layout="Previous Group Next"
+				xp:key="headerPager" id="pager1">
+			</xp:pager>
+		</xp:this.facets>
+		<xp:this.data>
+			<xp:dominoView var="view1"
+				viewName="pruebaResolucionesNew">
+			</xp:dominoView>
+		</xp:this.data>
+		<xp:viewColumn columnName="$11" id="viewColumn1">
+			<xp:viewColumnHeader value="1" id="viewColumnHeader1"></xp:viewColumnHeader>
+		</xp:viewColumn>
+		<xp:viewColumn columnName="$20" id="viewColumn2">
+			<xp:viewColumnHeader value="2" id="viewColumnHeader2"></xp:viewColumnHeader>
+		</xp:viewColumn>
+		<xp:viewColumn columnName="$25" id="viewColumn3">
+			<xp:viewColumnHeader value="3" id="viewColumnHeader3"></xp:viewColumnHeader>
+		</xp:viewColumn>
+		<xp:viewColumn columnName="$5" id="viewColumn4">
+			<xp:viewColumnHeader value="4" id="viewColumnHeader4"></xp:viewColumnHeader>
+		</xp:viewColumn>
+		<xp:viewColumn columnName="$10" id="viewColumn5">
+			<xp:viewColumnHeader value="5" id="viewColumnHeader5"></xp:viewColumnHeader>
+		</xp:viewColumn>
+		<xp:viewColumn columnName="$4" id="viewColumn6">
+			<xp:viewColumnHeader value="6" id="viewColumnHeader6"></xp:viewColumnHeader>
+		</xp:viewColumn>
+		<xp:viewColumn columnName="$19" id="viewColumn7">
+			<xp:viewColumnHeader value="7" id="viewColumnHeader7"></xp:viewColumnHeader>
+		</xp:viewColumn>
+	</xp:viewPanel>
+</xp:view>

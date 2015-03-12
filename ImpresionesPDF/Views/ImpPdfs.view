@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05006BDE12'>
+<noteinfo noteid='136' unid='502A402477F91A1F832577E7003FECA9' sequence='12'>
+<created><datetime dst='true'>20101126T093813,53-02</datetime></created>
+<modified><datetime>20150311T163812,22-03</datetime></modified>
+<revised><datetime dst='true'>20150206T174710,99-02</datetime></revised>
+<lastaccessed><datetime>20150311T163812,22-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T163812,22-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Fernando Moller/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>ImpPdfs</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+OgAFACwAJwADABAACQAEAE5vbWJyZUFyY2hpdm9QZGYkQ29uZmxpY3QkUkVGAAQABAAAAAgAZgAD
+AA==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAAAQABEAAAAAAG0AAQAACgAAAAAAAAAAAAICAAAATm9tYnJlQXJjaGl2b1Bk
+Zk5vbWJyZSBkZSBhcmNoaXZvJgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAEAAAAAAAAAAABX
+QwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD///8A
+BQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAAAAAAAEAAAAAAAAACAAA
+AAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$DesignerVersion'><text>8.5</text></item></note>
+

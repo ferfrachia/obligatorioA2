@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF8003FF550" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="3aa" sequence="129" unid="B5D7F82BF9BD35820325757B00725E20">
+<created><datetime>20090316T174912,00-03</datetime></created>
+<modified><datetime>20150309T094522,35-03</datetime></modified>
+<revised><datetime>20150309T094522,34-03</datetime></revised>
+<lastaccessed><datetime>20150309T094522,35-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T093839,10-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Gonzalo Rodriguez/O=ISA</name><name>CN=Victoria Acuña/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090316T174912,88-03</datetime><datetime>20090316T175211,02-03</datetime><datetime>20090316T182330,55-03</datetime><datetime>20090322T181453,83-03</datetime><datetime>20090322T181500,64-03</datetime><datetime>20090322T181542,83-03</datetime><datetime>20090322T181726,35-03</datetime><datetime>20090322T184427,33-03</datetime><datetime>20090322T185648,63-03</datetime><datetime>20090322T190746,65-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$POID"><datetime>20090505T174710,35-03</datetime></item>
+<item name="$TITLE" sign="true"><text>Roles Class</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+</note>

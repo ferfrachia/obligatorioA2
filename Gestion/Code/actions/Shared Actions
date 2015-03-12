@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='13a' unid='D5AEDBEB1BA6E95A03256D59006D4549' sequence='249'>
+<created><datetime>20030704T165331,61-03</datetime></created>
+<modified><datetime>20150311T131026,43-03</datetime></modified>
+<revised><datetime>20150309T094406,95-03</datetime></revised>
+<lastaccessed><datetime>20150311T131026,43-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131026,43-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20050119T160432,30-03</datetime><datetime>20060328T103804,07-03</datetime><datetime
+>20060410T165813,45-03</datetime><datetime>20060410T171330,35-03</datetime><datetime
+>20060410T171553,78-03</datetime><datetime>20060410T171925,31-03</datetime><datetime
+>20060410T180044,93-03</datetime><datetime>20060411T104820,96-03</datetime><datetime
+>20060412T134026,29-03</datetime><datetime>20060412T134608,29-03</datetime><datetime
+>20060412T134723,23-03</datetime><datetime>20060412T140557,77-03</datetime><datetime
+>20060412T140732,32-03</datetime><datetime>20060530T120140,35-03</datetime><datetime
+>20060623T174857,89-03</datetime><datetime>20060623T175058,59-03</datetime><datetime
+>20060623T180246,97-03</datetime><datetime>20061013T103929,03-03</datetime><datetime
+ dst='true'>20061101T113025,36-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE'><text>$ACTIONS</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>C34yQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>5</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAYAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAAAAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAL7/PAAAAAEAAACPAAEABgAAAAIAAABFZGl0YXIgAAAAEgAC
+AOgHAAAAAAAA7QEDAAcADAAFAAkwUzBFAL7/HAAAAAcAAACTAAEABQAAAAQAAABTYWxpcgD5/yAA
+AAAAAAEABAAPAAAAAAAAAAAAAAAAAAAAAAAAANz/IgD5/xAAIE4AAAAAAAAAAGhpc3RvcnkuZ28o
+LTIpAAC+/xwAAAAHAAAAiwABAAUAAAADAAAAU2FsaXJA+f8gAAAAAAABAAQADwAAAAAAAAAAAAAA
+AAAAAAAAAADc/yIA+f8QACBOAAAAAAAAAABoaXN0b3J5LmdvKC0xKQAAvv9UAAAAAQAAAJ8BAQAQ
+AAAABgAAAE51ZXZvIEV4cGVkaWVudGUuAAAAIAACAOgDAAAAAAAAAQAJAEZDYXJhdHVsYQDtAgMA
+BwAMAAUACTBTMEUA
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAYAAAAAAAAACAACAL7/PAAAAAEAAACPAAEABgAAAAIAAABFZGl0YXIg
+AAAAEgACAOgHAAAAAAAA7QEDAAcADAAFAAkwUzBFAL7/VAAAAAEAAACfAQEAEAAAAAYAAABOdWV2
+byBFeHBlZGllbnRlLgAAACAAAgDoAwAAAAAAAAEACQBGQ2FyYXR1bGEA7QIDAAcADAAFAAkwUzBF
+AA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>$ACTIONS</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1IAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJQHAAAAAAAAAAAAAAAAgwQBAIX/CAABAAAK
+</rawitemdata></item></note>
+

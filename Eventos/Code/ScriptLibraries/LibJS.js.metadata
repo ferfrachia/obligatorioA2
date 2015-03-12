@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A40AC" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="a36" sequence="9" unid="6B55232A973FCC0983257CC90060CC02">
+<created><datetime>20140429T143716,82-03</datetime></created>
+<modified><datetime>20150311T132559,77-03</datetime></modified>
+<revised><datetime>20150309T094352,51-03</datetime></revised>
+<lastaccessed><datetime>20150311T132559,77-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132559,77-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime dst="true">20101115T161040,55-02</datetime></item>
+<item name="$TITLE" sign="true"><text>LibJS</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+<item name="$Comment"><text>Libraría de funciones varias en JavaScript</text></item></note>

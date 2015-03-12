@@ -1,0 +1,192 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "ClaseExpediente"
+Use "Errores Generales"
+Use "ConstantesSistema"
+Use "FuncionesGenerales"
+Use "Usuario" 
+
+Use "ClaseNotificaciones"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Alarma
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Private Const UNIDAD_TIEMPO_ALARMAS			= 86400
+
+'********************************************************************************************************
+'********************************************************************************************************
+Public Class Alarma
+	
+'********************************************************************************************************
+	
+	Public Sub new()
+		On Error Goto errorHandler 
+		
+		
+		Exit Sub	
+errorHandler:	
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Alarma - New","")	
+		Exit Sub	
+	End Sub
+	
+'********************************************************************************************************
+	
+	Public Function ExpiroPlazoActuacion(oExp As Expediente) As Integer
+		On Error Goto errorHandler
+		
+		ExpiroPlazoActuacion=False
+		
+		Dim c As New Configuracion
+		If Weekday(Today)=1 Or Weekday(Today)=7 Then
+			Exit Function	
+		Else
+			If c.Feriados.isMember(Today,0,False) Then
+				Exit Function		
+			End If
+		End If
+		
+		Dim fechaPase As NotesDateTime,fechaHoy As New notesDateTime(Now)
+		Dim vFechaSalida As New Vector(0)
+		Set vFechaSalida=oExp.Caratula.getRecorridoColumna(2)
+		
+		If oExp.LastActuacion.NumeroActuacion > 1 Then
+			Set vFechaSalida=oExp.Caratula.getRecorridoColumna(2)
+			Set fechaPase=New NotesDateTime(vFechaSalida.getElement(vFechaSalida.cantElem))
+		Else
+			Set fechaPase=New NotesDateTime(oExp.Caratula.FechaCreacion)
+		End If			
+		
+		Dim dias As Long
+		dias=fechaHoy.TimeDifference(fechaPase) / UNIDAD_TIEMPO_ALARMAS
+		
+		Dim oUni As Unidad
+		Set oUni=oExp.Unidad
+		If oExp.LastActuacion.TiempoMax <> 0 Then
+			If oExp.LastActuacion.TiempoMax < dias Then
+				ExpiroPlazoActuacion=True
+			End If	
+		Else
+			If oUni.tipoUnidad = UNIDAD_EXTERNA Then
+				If c.TiempoMaximoActuacionExterna < dias Then
+					ExpiroPlazoActuacion=True
+				End If
+			Else
+				If c.TiempoMaximoActuacion < dias Then
+					ExpiroPlazoActuacion=True
+				End If
+			End If						
+		End If			
+		
+		
+		Exit Function
+errorHandler:	
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Alarma - ExpiroPlazoActuacion","")	
+		
+		Exit Function
+	End Function
+	
+'********************************************************************************************************
+	
+	
+	Public Function PlazoActProxVencer(oExp As Expediente) As Integer
+		On Error Goto errorHandler
+		
+		PlazoActProxVencer=False
+		
+		Dim c As New Configuracion
+		If Weekday(Today)=1 Or Weekday(Today)=7 Then
+			Exit Function	
+		Else
+			If c.Feriados.isMember(Today,0,False) Then
+				Exit Function		
+			End If
+		End If
+		
+		Dim fechaPase As NotesDateTime,fechaHoy As New notesDateTime(Now)
+		Dim vFechaSalida As New Vector(0)
+		
+		
+		If oExp.LastActuacion.NumeroActuacion > 1 Then
+			Set vFechaSalida=oExp.Caratula.getRecorridoColumna(2)
+			Set fechaPase=New NotesDateTime(vFechaSalida.getElement(vFechaSalida.cantElem))
+		Else
+			Set fechaPase=New NotesDateTime(oExp.Caratula.FechaCreacion)
+		End If			
+		
+		Dim dias As Long
+		dias=fechaHoy.TimeDifference(fechaPase) / UNIDAD_TIEMPO_ALARMAS
+		
+		Dim oUni As Unidad
+		Set oUni=oExp.Unidad
+		
+		
+		Dim ptjeAlertar As Long,tMax As Long
+		ptjeAlertar=c.PorcentajeProxExpirar
+		If oExp.LastActuacion.TiempoMax <> 0 Then
+			tMax=oExp.LastActuacion.TiempoMax
+		Else
+			If oUni.tipoUnidad = UNIDAD_EXTERNA Then
+				tMax=c.TiempoMaximoActuacionExterna
+			Else
+				tMax=c.TiempoMaximoActuacion
+			End If			
+		End If			
+		
+		If tMax <> 0 Then
+			Dim ptjeActual As Long
+			ptjeActual=(dias * 100) / tMax
+			If ptjeActual > ptjeAlertar  Then
+				PlazoActProxVencer=True	
+			End If				
+		End If			
+		
+		Exit Function
+errorHandler:	
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Alarma - PlazoActProxVencer","")	
+		Exit Function
+	End Function
+	
+'********************************************************************************************************	
+	
+	Public Function Iniciado(oExp As Expediente) As Integer
+		On Error Goto errorHandler
+		Dim oAct As Actuacion
+		'Nunca se dio el pase los que tienen el rol aun no ven la 1° cat
+		If oExp.Caratula.CantActuaciones<2 Then
+			Iniciado = False
+			Exit Function
+		End If
+		
+		Set oAct = oExp.Actuacion(2)
+		
+		' Se dio el pase pero no se recibio, los que tienen el rol aun no ven la 1° cat
+		If oAct.FechaRecibido = "" Then
+			Iniciado = False
+			Exit Function
+		End If
+		
+		Dim fCreacion As New NotesDateTime(oAct.FechaRecibido)
+		Dim fechaAyer As notesDateTime
+		Set fechaAyer=New NotesDateTime(Now)
+		
+		If fechaayer.TimeDifference(fCreacion)<86400   Then
+			Iniciado=True
+		Else
+			Iniciado=False
+		End If
+		
+		Exit Function
+errorHandler:	
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Alarma - Iniciado","")	
+		Exit Function	
+	End Function	
+	
+'********************************************************************************************************
+End Class
+'********************************************************************************************************
+'********************************************************************************************************

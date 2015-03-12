@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E2F3'>
+<noteinfo noteid='5ba' unid='2AAACA69CC87778703257261006142B4' sequence='8'>
+<created><datetime>20070112T144220,68-03</datetime></created>
+<modified><datetime>20150311T131058,74-03</datetime></modified>
+<revised><datetime>20150309T094431,91-03</datetime></revised>
+<lastaccessed><datetime>20150311T131058,74-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131058,74-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20070112T144220,69-03</datetime><datetime>20070112T145349,70-03</datetime><datetime
+>20070112T153816,88-03</datetime><datetime>20070201T132145,46-03</datetime><datetime
+>20070201T132443,16-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime dst='true'>20070112T163238,31-02</datetime></item>
+<item name='anioBandeja' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='sAdministradoresViejos' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='lVisPublica' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><textlist><text>(fConfiguracion)</text><text>fConfiguracion</text></textlist></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='sClave' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='sServidor' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='sHost' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='sRuta' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='rAvisarCuando' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>rAvisarCuando</text><text>sRuta</text><text
+>sHost</text><text>sServidor</text><text>sClave</text></textlist></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>fConfiguracion</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+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
+QXZpc2FyQ3VhbmRvAN4GAACK/4X/CAABAAAI
+</rawitemdata></item></note>
+

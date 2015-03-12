@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E0500590CD0" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="796" sequence="14" unid="08A4E9B31B57CC1383257C77004B106B">
+<created><datetime dst="true">20140206T113954,03-02</datetime></created>
+<modified><datetime>20150311T131247,90-03</datetime></modified>
+<revised><datetime>20150309T094511,99-03</datetime></revised>
+<lastaccessed><datetime>20150311T131247,90-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131247,90-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo/O=Testing</name><name>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=Ian Coates/O=ISA</name><name>CN=Fernando Albano/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+
+<item name="$FileModDT" sign="true"><datetime dst="true">20100108T105609,94-02</datetime></item>
+
+<item name="$FileNames" sign="true"><text>menuTree.css</text></item>
+<item name="$TITLE" sign="true"><text>menuTree.css</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$Flags"><text>34C=Q</text></item></note>

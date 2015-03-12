@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05006E254C" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="126" sequence="18" unid="0E53DB20B1687F9F03256CDB00782C8E">
+<created><datetime>20030228T185237,26-03</datetime></created>
+<modified><datetime>20150311T170305,27-03</datetime></modified>
+<revised><datetime dst="true">20150206T174718,21-02</datetime></revised>
+<lastaccessed><datetime>20150311T170305,27-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T170305,27-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=1871</name><name>CN=Pablo Andrade/O=ISA</name><name>CN=Pablo Andrade/O=1871</name><name>CN=Administrador/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name>CN=Administrador/O=MEC</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030228T185237,36-03</datetime><datetime>20060713T143604,04-03</datetime><datetime>20060802T135150,87-03</datetime><datetime>20060802T151927,41-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>ErrorHandlerClass 1.1</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+</note>

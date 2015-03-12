@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='1ea' unid='F7840183D00525EB43256DCD003F91B9' sequence='15'>
+<created><datetime>20031028T143420,73+03</datetime></created>
+<modified><datetime>20150311T131027,31-03</datetime></modified>
+<revised><datetime>20150309T094407,85-03</datetime></revised>
+<lastaccessed><datetime>20150311T131027,31-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131027,31-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20050119T160505,79-03</datetime><datetime>20060328T103803,22-03</datetime><datetime
+>20060410T165850,24-03</datetime><datetime>20060410T171410,78-03</datetime><datetime
+>20060410T171629,84-03</datetime><datetime>20060410T172001,07-03</datetime><datetime
+>20060410T180124,94-03</datetime><datetime>20060411T104901,86-03</datetime><datetime
+>20060412T134103,60-03</datetime><datetime>20060412T134643,24-03</datetime><datetime
+>20060412T134756,78-03</datetime><datetime>20060412T140630,30-03</datetime><datetime
+>20060412T140807,19-03</datetime><datetime>20060530T120220,33-03</datetime><datetime
+>20060623T174940,77-03</datetime><datetime>20060623T175134,69-03</datetime><datetime
+>20060623T180325,49-03</datetime><datetime>20061013T104014,71-03</datetime><datetime
+ dst='true'>20061101T113025,94-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+3QYAAPn/+f8gAAEAAAAPAAQAIwAAAAAAAAAAAAAAAAAAAAAAAADc/zYA+f8kACBOAAAAAAAAAAAN
+dmFyIG5yb0V4cDsNdmFyIGRvY0FudGU7DXZhciB3aW47AAD2/ygAAAAAAAMAGgAGAAAAAAAAAAAA
+AAAAAAAAAAAAAAAARmlybWFz9v8nAAAAAAADABoABQAAAAAAAAAAAAAAAAAAAAAAAAAAAExpYkpT
+P/b/KgAAAAAAAwAaAAgAAAAAAAAAAAAAAAAAAAAAAAAAAABUYWJsYS5qc94GAAD5//n/IAAAAAAA
+DQAEAMkAAAAAAAAAAAAAAAAAAAAAAAAA3P/cAPn/ygAgTgAAAAAAAAAAd2luPXdpbmRvdy5vcGVu
+ZXI7DWRvY0FudGU9IHdpbi5kb2N1bWVudC5mb3Jtc1swXTsgDXZhciBzdHJQcm9jZWQ9ZG9jQW50
+ZS5zUHJvY2VkLnZhbHVlOw1pZiAoc3RyUHJvY2VkPT0iIikNCXN0clByb2NlZD0iTm8gc2UgaW5n
+cmVzoiBwcm9jZWRpbWllbnRvIjsNCQ1kb2N1bWVudC5mb3Jtc1swXS5Qcm9jZWRpbWllbnRvLnZh
+bHVlPXN0clByb2NlZDsA/1//EAACAA8ABwAAAAAAAABf/xAAAgANAAcAAAAAAAAA
+</rawitemdata></item>
+<item name='$TITLE'><textlist><text>VerProcedimiento</text><text>VerProcedimiento</text></textlist></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>db:= @ReplaceSubstring(@Subset(@DbName;1)+"/"+@Subset(@DbName;-1);@Char(92);"/");
+css:=@GetProfileField("fConfiguracion";"sCSS");
+
+"&lt;META  http-equiv='Expires' content='0'&gt;&lt;META HTTP-EQUIV='Cache-Control' CONTENT='no-cache'&gt;&lt;META HTTP-EQUIV='Pragma'  CONTENT='no-cache'&gt; "+ @NewLine +
+"&lt;style type=\"text/css\"&gt;" + @NewLine +
+"&lt;!--" + @NewLine +
+"BODY {  font-family: Arial, Helvetica, sans-serif;  background-color: #F9F9F9; }" + @NewLine +
+"A:visited {color: black; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none;}"+ @NewLine +
+"A:link {color: black; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none; }"+ @NewLine +
+"A:active {  color:blue; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none;}"+ @NewLine +
+"A:hover {  color: orange; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none;}"+ @NewLine +
+".TablaItems{border:0px solid #97C1AB;}"+@NewLine+
+"A.Expediente:visited {color: blue; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none;}"+ @NewLine +
+"A.Expediente:link {color: blue; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none; }"+ @NewLine +
+"A.Expediente:active {  color:blue; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none;}"+ @NewLine +
+"A.Expediente:hover {  color: orange; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none;}"+ @NewLine +
+".CeldaItems{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:44614E; background-color:F8FBF9;font-family:Tahoma,Arial;font-size:9pt;}"+@NewLine+
+".TituloEncabezado{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:0px solid #CED4D6;color:44614E;font-family:Tahoma,Arial;font-size:12pt;}"+@NewLine+
+".CeldaTitulo{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:44614E;background-color:EDF4F0;font-family:Tahoma,Arial;font-size:9pt;}"+@NewLine+
+".CeldaHerramientas{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:44614E;background-color:EDF4F0;font-family:Tahoma,Arial;font-size:9pt;}"+@NewLine+
+".CeldaTituloNegro{color:000000;font-family:Tahoma,Arial;font-size:9pt;}"+@NewLine+
+".CeldaItemGris{color:999999;font-family:Tahoma,Arial;font-size:9pt;}"+@NewLine+
+".CeldaItemRecorrido{color:333333;font-family:Tahoma,Arial;font-size:9pt;cursor:hand}"+@NewLine+
+".CeldaItemRecorridoOvr{color:orange;font-family:Tahoma,Arial;font-size:9pt;cursor:hand}"+@NewLine+
+".CampoTransparenteVerde    { font-family: Arial, Verdana , Helvetica, sans-serif;font-size: 11px;color:#000000; border-bottom : solid 1px #CED4D6; border-left : solid 1px #CED4D6; border-right : solid 1px #CED4D6; border-top : solid 1px #CED4D6; background-color: #FFFFFF; }"+@NewLine+
+".EncabezadoCaratula{border-bottom-width :  0 px;border-left-width : 1px;border-right-width : 1px;border-top-width : 1px;border-top : none;}"+@NewLine+
+".CeldaVerdeEncabezado{background-color :#A0C1AA;}"+@NewLine+
+".CeldaTituloChico{border-bottom :  solid 1px #cccccc;border-left-width : 0px;border-right-width : 0px;border-top-width : 0px;border-top : none;font-family:Tahoma,Arial;font-size:9pt;background-color: #F9F9F9;}"+@NewLine+
+".CeldaValorEstadoCaratula{border-bottom :  solid 1px #cccccc;border-left-width : 0px;border-right-width : 0px;border-top-width : 0px;border-top : none;font-family:Tahoma,Arial;font-size:9pt;background-color: #F9F9F9;}"+@NewLine+
+".TituloCaratula{font-family:Tahoma,Arial;font-size:10pt; color:white;}"+@NewLine+
+".NroCaratula{font-family:Tahoma,Arial;font-size:20pt; color:white;}"+@NewLine+
+".TablaRecorrido{background-color: #FFFFFF; border-left:1px solid #97C1AB; border-right:1px solid #97C1AB; border-top:1px solid #97C1AB; border-bottom:1px solid #CED4D6;}"+@NewLine+
+".DivContenido{overflow:scroll;}"+@NewLine+
+"--&gt;" + @NewLine +
+"&lt;/style&gt;"</formula></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$WebFlags' sign='true'><text>F</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='SAVEOPTIONS' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='Procedimiento' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>Procedimiento</text><text>SaveOptions</text></textlist></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>VerProcedimiento</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+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
+hf8RAAUAAAgJPC90YWJsZT4Azf8IAAAAAAA=
+</rawitemdata></item></note>
+

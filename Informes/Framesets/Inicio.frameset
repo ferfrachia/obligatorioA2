@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500598C82'>
+<noteinfo noteid='13e' unid='6588A51D1D46F9ED43256EA5000D3BD2' sequence='15'>
+<created><datetime>20040531T052432,82+03</datetime></created>
+<modified><datetime>20150311T131807,12-03</datetime></modified>
+<revised><datetime>20150309T094424,42-03</datetime></revised>
+<lastaccessed><datetime>20150311T131807,12-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131807,12-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Cabrera/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=CTM</name><name>CN=Administrador Isa/O=CTM</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20040531T052434,51+03</datetime><datetime>20040531T052522,37+03</datetime><datetime
+>20040531T052522,45+03</datetime><datetime>20040531T052719,72+03</datetime><datetime
+>20040531T052719,80+03</datetime><datetime>20040531T052744,80+03</datetime><datetime
+>20040531T052744,89+03</datetime><datetime>20040531T052801,24+03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Inicio|FrInicio</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIAAwAAAAAAAAAAAAAAAAAAAAAA8P8+AEEAAAAAAAAAAAAHAAcAAAAAAAUAAAAAAAUAAAAA
+AAEAAgAAAAAAAQAAAAAAAAADAAEAAgAUAAIAUADx/z0AEQAAAABAAAECAAEAAQAAAAAACQAAAAAA
+AQAAAAAAAABJenF1aWVyZG8BAP///wABAAAJAQD///8AP/b/MAAAAAAAAwAHAA4AAAAAAAAAAAAA
+AAAAAAAAAAAAAABwTWVudUl6cXVpZXJkYfH/OwABAAAAAEAAAAMAAQABAAAAAAAHAAAAAAABAAAA
+AAAAAERlcmVjaG8BAP///wABAAAJAQD///8AP/b/MAAAAAAAAwACAA4AAAAAAAAAAAAAAAAAAAAA
+AAAAAAB2VG90YWxlc1VuaWRhZA==
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item></note>
+

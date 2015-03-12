@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="12a" sequence="42" unid="EAE5BBF35EF5930D0325734000527FBD">
+<created><datetime>20070823T120106,53-03</datetime></created>
+<modified><datetime>20150309T094352,75-03</datetime></modified>
+<revised><datetime>20150309T094352,74-03</datetime></revised>
+<lastaccessed><datetime>20150309T094352,75-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100905,87-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20070823T120106,85-03</datetime><datetime>20080328T143612,34-03</datetime><datetime>20081029T161701,11-03</datetime><datetime dst="true">20081117T102119,06-02</datetime><datetime dst="true">20081119T085511,78-02</datetime><datetime dst="true">20081119T162408,17-02</datetime><datetime dst="true">20081122T153308,61-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>NamePicker.css</text></item>
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+
+<item name="$FileModDT" sign="true"><datetime>20070504T152525,36-03</datetime></item>
+
+<item name="$FileNames" sign="true"><text>NamePicker.css</text></item>
+<item name="$DesignerVersion" sign="true"><text>6.5</text></item></note>

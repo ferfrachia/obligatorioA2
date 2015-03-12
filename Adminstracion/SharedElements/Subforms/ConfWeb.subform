@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E9F2'>
+<noteinfo noteid='4f2' unid='915727B2BC78AA1D0325717700494A62' sequence='166'>
+<created><datetime>20060523T102031,70-03</datetime></created>
+<modified><datetime>20150311T131115,87-03</datetime></modified>
+<revised><datetime>20150309T094326,54-03</datetime></revised>
+<lastaccessed><datetime>20150311T131115,87-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131115,87-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Daniel Gomez/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Administrador/O=IMA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060523T103653,62-03</datetime><datetime>20060523T145355,26-03</datetime><datetime
+>20060523T150017,78-03</datetime><datetime>20060523T150053,02-03</datetime><datetime
+>20060523T150124,73-03</datetime><datetime>20060523T150224,71-03</datetime><datetime
+>20060523T150448,99-03</datetime><datetime>20060523T150522,80-03</datetime><datetime
+>20060523T150540,76-03</datetime><datetime>20060523T150759,26-03</datetime><datetime
+>20060523T150829,23-03</datetime><datetime>20060523T151123,52-03</datetime><datetime
+>20060523T151221,63-03</datetime><datetime>20060523T151334,88-03</datetime><datetime
+>20060703T164826,76-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20060703T164555,77-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>ConfWeb</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='rProtocolo' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='sPuerto' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>sPuerto</text><text>rProtocolo</text></textlist></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>ConfWeb</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+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
+</rawitemdata></item></note>
+

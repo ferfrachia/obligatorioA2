@@ -1,0 +1,20 @@
+
+.menuxPage{
+background: #a7c7dc; /* Old browsers */
+background: -moz-linear-gradient(top, #a7c7dc 22%, #85b2d3 51%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(22%,#a7c7dc), color-stop(51%,#85b2d3)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #a7c7dc 22%,#85b2d3 51%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #a7c7dc 22%,#85b2d3 51%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #a7c7dc 22%,#85b2d3 51%); /* IE10+ */
+background: linear-gradient(to bottom, #a7c7dc 22%,#85b2d3 51%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#85b2d3',GradientType=0 ); /* IE6-9 */
+}
+.menuLetras{
+
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #E0FFFF;
+
+}

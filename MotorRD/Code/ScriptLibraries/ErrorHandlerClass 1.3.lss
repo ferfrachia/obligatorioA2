@@ -1,0 +1,296 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+' Modificación 15/07/03
+' Se elmina el uso de la VectorClass, pasando un array al método Send, para poder manejar los errores en esa clase
+
+'******************************************************************************************************************
+'*
+'*								CLASS ERRORHANDLER
+'*
+'******************************************************************************************************************
+'*
+'*	Contructor
+'*		New(Byval num As Integer, Byval desc As String, Byval app As String, _
+'*			Byval routine As String, Byval line As String)
+'*			Parametros:
+'*				num:		IN 				- código de error
+'*				desc:	IN				- descripción de error
+'*				app:		OPTIONAL("") IN	- aplicacion donde se produjo el error
+'*				routine:	OPTIONAL("") IN	- nombre de la rutina donde se produjo el error
+'*				line:	OPTIONAL("") IN	- número de la línea donde se produjo el error
+'*
+'*	Propiedades
+'*
+'*	Métodos
+'*		Send(SendTo As Vector, Byval From As String, Byval obs As String)
+'*		' Evia el mensaje de error a los destinatarios que estan en el Vector SendTo. Eventualmente
+'*		' puede ser una base de datos de ErrorLog
+'*			Parametros:
+'*				SendTo:	IN				- Vector de destinatarios a quien enviar el Error
+'*				From:	OPTIONAL("") IN	- Label con que se envia el correo (FROM)
+'*				obs:		OPTIONAL("") IN	- String adicional que se quiera presentar en el DialogBox
+'*
+'*		ShowError(Byval obs As String)
+'*		' Presenta el mensaje de Error al usuario solo con la desc del error y las obs, en un DialogBox
+'*			Parametros:
+'*				obs:		OPTIONAL("") IN	- String adicional que se quiera presentar en el DialogBox
+'*
+'*		ShowErrorComplete(Byval obs As String)
+'*		' Presenta el mensaje de Error al usuario con toda la informacion posible, en un DialogBox
+'*			Parametros:
+'*				obs:		OPTIONAL("") IN	- String adicional que se quiera presentar en el DialogBox
+'*
+'******************************************************************************************************************
+
+Option Declare
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ErrorHandler
+Declare Private Class Conf
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'Constantes publicas de ERROR
+Public Const ERROR_ERRORHANDLER_PARAMETERPROBLEM			= 14801
+
+
+'Constantes Privadas de la clase
+Private Const ERRORHANDLER_FIELD_ERRNO					= "em_ErrNo_num"
+Private Const ERRORHANDLER_FIELD_ERRDESC				= "em_ErrDesc_txt"
+Private Const ERRORHANDLER_FIELD_ERRAPP					= "em_ErrApp_txt"
+Private Const ERRORHANDLER_FIELD_ERRROUTINE				= "em_ErrRoutine_txt"
+Private Const ERRORHANDLER_FIELD_ERRLINE				= "em_ErrLine_num"
+Private Const ERRORHANDLER_FIELD_SERVER					= "em_ErrServer_txt"
+Private Const ERRORHANDLER_FIELD_FILEPATH				= "em_ErrFilePath_txt"
+Private Const ERRORHANDLER_FIELD_USER					= "em_ErrUser_txt"
+Private Const ERRORHANDLER_FIELD_DATE					= "em_ErrDate_txt"
+
+'Otras constantes privadas
+Private Const ERRORHANDLER_MSGBOX_WINDOWSTILE			= "Error"
+
+'-----------------------------------------------------------------------------
+' MsgBox parameters
+'-----------------------------------------------------------------------------
+
+Private Const MB_OK = 0                 ' OK button only
+Private Const MB_OKCANCEL = 1           ' OK and Cancel buttons
+Private Const MB_ABORTRETRYIGNORE = 2   ' Abort, Retry, and Ignore buttons
+Private Const MB_YESNOCANCEL = 3        ' Yes, No, and Cancel buttons
+Private Const MB_YESNO = 4              ' Yes and No buttons
+Private Const MB_RETRYCANCEL = 5        ' Retry and Cancel buttons
+
+Private Const MB_ICONSTOP = 16          ' Critical message
+Private Const MB_ICONQUESTION = 32      ' Warning query
+Private Const MB_ICONEXCLAMATION = 48   ' Warning message
+Private Const MB_ICONINFORMATION = 64   ' Information message
+
+
+'***************************************************************************************************************************************
+Public Class ErrorHandler
+'***************************************************************************************************************************************
+	
+	'Miembros Privados
+	Private ErrNo As Integer
+	Private ErrDesc As String
+	Private ErrApp As String
+	Private ErrRoutine As String
+	Private ErrLine As Integer
+	Private Usuario As String
+	
+'***************************************************************************************************************************************	
+	
+	Public Sub New(Byval num As Integer, Byval desc As String, Byval app As String, _
+	Byval routine As String, Byval errorline As String, Byval Usuario_ As String)
+	' Parametros:
+	' 	num:		IN 				- código de error
+	'	desc:	IN				- descripción de error
+	'	app:		OPTIONAL("") IN	- aplicacion donde se produjo el error
+	'	routine:	OPTIONAL("") IN	- nombre de la rutina donde se produjo el error
+	'	line:	OPTIONAL("") IN	- número de la línea donde se produjo el error
+		
+		If desc = "" Then Error ERROR_ERRORHANDLER_PARAMETERPROBLEM, _
+		"La descripción del error no debe ser vacía. "
+		
+		ErrNo = num
+		ErrDesc = desc
+		ErrApp = app
+		ErrRoutine = routine
+		If errorline <> 0 Then
+			ErrLine = errorline
+		Else
+			ErrLine = 0
+		End If
+		
+		Usuario = Usuario_
+		
+	End Sub
+	
+	Public Function Registrar (obs As String)
+		Dim c As New Conf() 
+		Dim db As NotesDatabase
+		Dim s As New NotesSession
+		Dim note As NotesDocument
+		
+		Set db = c.getErrorLog()
+		Set note = New NotesDocument(db)
+		
+		note.ReplaceItemValue ERRORHANDLER_FIELD_ERRNO,ErrNo
+		note.ReplaceItemValue ERRORHANDLER_FIELD_ERRDESC,ErrDesc
+		If ErrApp <> "" Then note.ReplaceItemValue ERRORHANDLER_FIELD_ERRAPP,ErrApp
+		If ErrRoutine <> "" Then note.ReplaceItemValue ERRORHANDLER_FIELD_ERRROUTINE,ErrRoutine
+		If ErrLine <> 0 Then note.ReplaceItemValue ERRORHANDLER_FIELD_ERRLINE,ErrLine
+		note.ReplaceItemValue ERRORHANDLER_FIELD_SERVER,s.CurrentDatabase.Server
+		note.ReplaceItemValue ERRORHANDLER_FIELD_FILEPATH,s.CurrentDatabase.FilePath
+		If Usuario = "" Then
+			note.ReplaceItemValue ERRORHANDLER_FIELD_USER,s.CommonUserName
+		Else
+			note.ReplaceItemValue ERRORHANDLER_FIELD_USER,Usuario
+		End If 
+		
+		note.ReplaceItemValue ERRORHANDLER_FIELD_DATE,Now
+		
+		note.ReplaceItemValue "Subject","Error Report: "+s.CurrentDatabase.FilePath
+		note.ReplaceItemValue "Body", _
+		"Número: " & Cstr(ErrNo) & Chr(13) & Chr(10) & _
+		"Descripción: " & ErrDesc & Chr(13) & Chr(10) & _
+		"Usuario: " & Usuario  & Chr(13) & Chr(10) & _
+		"Aplicación: " & ErrApp & Chr(13) & Chr(10) & _
+		"Rutina: " & ErrRoutine & Chr(13) & Chr(10) & _
+		"Línea: " & Cstr(ErrLine)
+		note.Save True,False
+	End Function
+'***************************************************************************************************************************************	
+	
+	Public Function Send(SendTo As Variant, Byval FromUser As String, Byval obs As String)
+	' Evia el mensaje de error a los destinatarios que estan en el Vector SendTo. Eventualmente
+	' puede ser una base de datos de ErrorLog
+	'	Parametros:
+	'		SendTo:	IN				- Array con destinatarios a quien enviar el Error
+	'		FromUser:	OPTIONAL("") IN	- Label con que se envia el correo (FROM)
+	'		obs:		OPTIONAL("") IN	- String adicional que se quiera presentar en el DialogBox
+		Dim s As NotesSession, note As NotesDocument
+		
+		Set s = New NotesSession
+		Set note = New NotesDocument(s.CurrentDatabase)
+		
+		note.ReplaceItemValue ERRORHANDLER_FIELD_ERRNO,ErrNo
+		note.ReplaceItemValue ERRORHANDLER_FIELD_ERRDESC,ErrDesc
+		If ErrApp <> "" Then note.ReplaceItemValue ERRORHANDLER_FIELD_ERRAPP,ErrApp
+		If ErrRoutine <> "" Then note.ReplaceItemValue ERRORHANDLER_FIELD_ERRROUTINE,ErrRoutine
+		If ErrLine <> 0 Then note.ReplaceItemValue ERRORHANDLER_FIELD_ERRLINE,ErrLine
+		note.ReplaceItemValue ERRORHANDLER_FIELD_SERVER,s.CurrentDatabase.Server
+		note.ReplaceItemValue ERRORHANDLER_FIELD_FILEPATH,s.CurrentDatabase.FilePath
+		If Usuario = "" Then
+			note.ReplaceItemValue ERRORHANDLER_FIELD_USER,s.CommonUserName
+		Else
+			note.ReplaceItemValue ERRORHANDLER_FIELD_USER,Usuario
+		End If 
+		
+		note.ReplaceItemValue ERRORHANDLER_FIELD_DATE,Now
+		
+		note.ReplaceItemValue "Subject","Error Report: "+s.CurrentDatabase.FilePath
+		note.ReplaceItemValue "Body", _
+		"Número: " & Cstr(ErrNo) & Chr(13) & Chr(10) & _
+		"Descripción: " & ErrDesc & Chr(13) & Chr(10) & _
+		"Usuario: " & Usuario  & Chr(13) & Chr(10) & _
+		"Aplicación: " & ErrApp & Chr(13) & Chr(10) & _
+		"Rutina: " & ErrRoutine & Chr(13) & Chr(10) & _
+		"Línea: " & Cstr(ErrLine)
+		
+		If FromUser <> "" Then
+			note.ReplaceItemValue "Principal",FromUser
+		Else
+			note.ReplaceItemValue "Principal","ErrorHandler"	
+		End If
+		note.ReplaceItemValue "SaveOptions","0"
+		note.Send False, SendTo
+		
+	End Function
+	
+'***************************************************************************************************************************************	
+	
+	Public Function ShowError(Byval obs As String)
+	' Presenta el mensaje de Error al usuario solo con la desc del error y las obs, en un DialogBox
+	'	Parametros:
+	'		obs:		OPTIONAL("") IN	- String adicional que se quiera presentar en el DialogBox
+		Dim msg As String
+		
+		msg = "Error " & Cstr(ErrNo) & ": " & ErrDesc
+		
+		If obs <> "" Then
+			Msgbox obs & Chr(13) & msg,MB_OK + MB_ICONSTOP,ERRORHANDLER_MSGBOX_WINDOWSTILE
+		Else
+			Msgbox msg,MB_OK + MB_ICONSTOP,ERRORHANDLER_MSGBOX_WINDOWSTILE
+		End If
+		
+	End Function
+	
+'***************************************************************************************************************************************	
+	
+	Public Function ShowErrorComplete(Byval obs As String)
+	' Presenta el mensaje de Error al usuario con toda la informacion posible, en un DialogBox
+	'	Parametros:
+	'		obs:		OPTIONAL("") IN	- String adicional que se quiera presentar en el DialogBox
+		Dim msg As String, msgApp As String, msgRoutine As String, msgErrLine As String, msgUser As String
+		
+		If ErrApp <> "" Then msgApp = Ucase(ErrApp) & " : "
+		If Usuario <> "" Then msgUser = Usuario & " : "
+		If ErrRoutine <> "" Then msgRoutine = ErrRoutine & " : "
+		If ErrLine > 0 Then msgErrLine = "Línea " & Cstr(ErrLine) & Chr(13) 
+		
+		msg =  msgUser & msgApp & msgRoutine & msgErrLine & _
+		"Error " & Cstr(ErrNo) & ": " & ErrDesc
+		
+		If obs <> "" Then
+			Msgbox obs & Chr(13) & msg,MB_OK + MB_ICONSTOP,ERRORHANDLER_MSGBOX_WINDOWSTILE
+		Else
+			Msgbox msg,MB_OK + MB_ICONSTOP,ERRORHANDLER_MSGBOX_WINDOWSTILE
+		End If
+		
+	End Function
+	
+'***************************************************************************************************************************************	
+End Class
+'***************************************************************************************************************************************
+'***************************************************************************************************************************************
+
+
+Private Const NOMBRE_FORM_CONF						= "(ConfiguracionRD)"
+Private Const CAMPO_RUTA_DB							= "sPath"
+Private Const CAMPO_SERVIDOR_DB						= "sServidor"
+
+Private Const CAMPO_CLAVE_DB 							= "sClave"
+Private Const CLAVE_ERRORLOG							= "ERRORLOG"
+
+
+Private Class Conf
+	
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	
+	
+	Public Sub new		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		
+		'Se carga el documento de profile
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(NOMBRE_FORM_CONF)				
+	End Sub
+	
+	Public Function getErrorLog () As NotesDatabase
+		Dim db As notesdatabase
+		Dim  i As Integer
+		Set db = New NotesDatabase("","")
+		If docConfiguracion.HasItem(CAMPO_CLAVE_DB ) Then
+			For i = 0 To Ubound (docConfiguracion.getItemValue(CAMPO_CLAVE_DB))
+				If docConfiguracion.GetItemValue(CAMPO_CLAVE_DB )(i)= CLAVE_ERRORLOG Then
+					db.Open docConfiguracion.GetItemValue(CAMPO_SERVIDOR_DB)(i),docConfiguracion.GetItemValue(CAMPO_RUTA_DB)(i)
+					Set getErrorLog = db
+					Exit Function
+				End If
+			Next			
+		End If
+		
+	End Function
+End Class

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1626" sequence="3" unid="4F39F0BE24E48E1383257DF1007257B1">
+<created><datetime dst="true">20150219T184855,53-02</datetime></created>
+<modified><datetime>20150309T094533,69-03</datetime></modified>
+<revised><datetime>20150309T094533,68-03</datetime></revised>
+<lastaccessed><datetime>20150309T094533,69-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161909,38-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Pablo Damseaux/O=IMM</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Pablo Damseaux/O=IMM</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Administrador/O=Banred</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Administrador/O=Banred</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Administrador/O=Banred</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Administrador/O=Banred</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Pablo Damseaux/O=DDD</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Administrador IGDoc/O=IMM</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Administrador IGDoc/O=IMM</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Administrador IGDoc/O=IMM</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Leticia Vilarino/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime dst="true">20140121T114048,83-02</datetime></item>
+<item name="$TITLE" sign="true"><text>js/RadioButton</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+</note>

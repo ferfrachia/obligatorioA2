@@ -1,0 +1,377 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+Use "VectorClass 2.05"
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SolicitudAccion
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Public Const MOTOR_NOMBRE_AGENTE	= "MotorWorkflow2.0"
+									  
+Public Const SOLIC_CMP_ESTADO_PROCESAMIENTO	= "EstadoProcesamiento"
+Public Const SOLIC_CMP_MENSAJE_ERROR		= "MensajeError"
+
+'******************************************************************************************************************	
+'*                                                 
+'*								CLASS <SOLICITUDACCION>
+'* 
+'******************************************************************************************************************	
+
+'CONSTRUCTOR:
+'		Sub New(serverWF As String, dbWF As String, proceso As String, accion As String)
+
+
+'******************************************************************************************************************	
+
+'MÉTODOS PÚBLICOS
+
+'******************************************************************************************************************
+
+'		Sub procesar()
+Public Class SolicitudAccion
+	 
+'MIEMBROS PRIVADOS
+	Private nombreAccion As String
+	Private nombreUsuario As String
+	Private fec As Variant
+	Private hor As Variant
+	Private nombreProceso As String
+	Private nombreDeCampoEstado As String
+	Private paramsNew As Vector
+	Private paramsAccion As Vector
+	' WebForms
+	Private webFormsPath As String
+	Private docDatUNID As String
+	' WorkflowSystem
+	Private docSolicUNID As String ' Faltan GET y SET
+	Private dbWorkflow As NotesDatabase
+	
+	
+'******************************************************************************************************************
+'CONSTRUCTOR
+'******************************************************************************************************************
+	
+	Public Sub New(serverWF As String, dbWF As String, proceso As String, accion As String)
+		On Error Goto errorHandler
+		Dim session As New NotesSession
+		'Obtengo la base con el motor de workflow		
+		Set dbWorkflow = New NotesDatabase(serverWF, dbWF)
+		If dbWorkflow Is Nothing Then
+			Error 10, "No se pudo abrir el subsistema de workflow"
+		End If
+		If Not dbWorkflow.Isopen Then
+			Call dbWorkflow.Open(serverWF, dbWF)
+		End If
+		Me.nombreProceso = proceso
+		Me.nombreAccion = accion
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Método New","")
+		Exit Sub
+	End Sub
+	
+	' Vendria a ser un constructor por parametro
+	Public Sub setSolicitud(docSolicitud As NotesDocument)
+		Me.nombreAccion = docSolicitud.GetItemValue("nombreAccion")
+	End Sub
+	
+	
+'******************************************************************************************************************
+'GET's
+'******************************************************************************************************************
+	
+	Public Property Get Accion As String
+		On Error Goto HANDLER
+		Accion = Me.nombreAccion
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get Accion","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Usuario As String
+		On Error Goto HANDLER
+		Usuario = Me.nombreUsuario
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get Usuario","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Fecha As Variant
+		On Error Goto HANDLER
+		Fecha = Me.fec
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get Fecha","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Hora As Variant
+		On Error Goto HANDLER
+		Hora = Me.hor
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get Hora","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Proceso As String
+		On Error Goto HANDLER
+		Proceso = Me.nombreProceso
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get Proceso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get NombreCampoEstado As String
+		On Error Goto HANDLER
+		NombreCampoEstado = Me.nombreDeCampoEstado
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get NombreCampoEstado","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get ParametrosNew As Vector
+		On Error Goto HANDLER
+		Set ParametrosNew = New Vector(0)
+		parametrosNew.values = Me.paramsNew.Values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get ParametrosNew","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get ParametrosAccion As Vector
+		On Error Goto HANDLER
+		Set ParametrosAccion = Me.paramsAccion
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get ParametrosAccion","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get DbWebFormsPath As String
+		On Error Goto HANDLER
+		DbWebFormsPath = Me.webFormsPath
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get DbWebFormsPath","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get DocDatosUNID As String
+		On Error Goto HANDLER
+		DocDatosUNID = Me.docDatUNID
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Get DocFormularioUNID","")
+		Exit Property
+	End Property
+	
+	
+	
+'******************************************************************************************************************
+'SET's
+'******************************************************************************************************************
+	
+	Public Property Set Accion As String
+		On Error Goto HANDLER
+		Me.nombreAccion = Accion
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set Accion","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Usuario As String
+		On Error Goto HANDLER
+		Me.nombreUsuario = Usuario
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set Usuario","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Fecha As Variant
+		On Error Goto HANDLER
+		Me.fec = Fecha
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set Fecha","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Hora As Variant
+		On Error Goto HANDLER
+		Me.hor = Hora
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set Hora","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Proceso As String
+		On Error Goto HANDLER
+		Me.nombreProceso = Proceso
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set Proceso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set NombreCampoEstado As String
+		On Error Goto HANDLER
+		Me.nombreDeCampoEstado = NombreCampoEstado
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set NombreCampoEstado","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set ParametrosNew As Vector
+		On Error Goto HANDLER
+		MsgBox ParametrosNew.ToString(",")
+		Set Me.paramsNew = New Vector(0)		
+		me.paramsNew.Values = ParametrosNew.values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set ParametrosNew","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set ParametrosAccion As Vector
+		On Error Goto HANDLER
+		Set Me.paramsAccion = New Vector(0)
+		me.paramsAccion.Values = parametrosaccion.Values
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set ParametrosAccion","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set DbWebFormsPath As String
+		On Error Goto HANDLER
+		Me.webFormsPath = DbWebFormsPath
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set DbWebFormsPath","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set DocDatosUNID As String
+		On Error Goto HANDLER
+		Me.docDatUNID = DocDatosUNID
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Propiedad Set DocFormularioUNID","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************
+'METODOS
+'******************************************************************************************************************
+	
+	Public Sub procesar()
+		On Error Goto HANDLER
+		
+		' ARMO EL DOCUMENTO DE SOLICITUD EN LA BASE DE WORKFLOW SYSTEM
+		Dim docSolicitud As New NotesDocument(dbWorkflow)
+		MsgBox dbworkflow.Filepath
+		MsgBox dbworkflow.Server
+		
+		' Seteo campos de la solicitud
+		Call docSolicitud.ReplaceItemValue("Accion", Me.nombreAccion)
+		Call docSolicitud.ReplaceItemValue("Usuario", Me.nombreUsuario)
+		Call docSolicitud.ReplaceItemValue("Fecha", Me.fecha)
+		Call docSolicitud.ReplaceItemValue("Hora", Me.hora)
+		Call docSolicitud.ReplaceItemValue("Proceso", me.nombreProceso)
+		Call docSolicitud.ReplaceItemValue("NombreCampoEstado", Me.NombreDeCampoEstado)
+		Call docSolicitud.ReplaceItemValue("ParametrosNew", Me.ParametrosNew.Values)		
+		Call docSolicitud.ReplaceItemValue("ParametrosAccion", Me.ParametrosAccion.Values)
+		Call docSolicitud.ReplaceItemValue("DocDatosUNID", Me.docDatUNID)
+		Call docSolicitud.ReplaceItemValue("webFormsPath", Me.webFormsPath)
+		Call docSolicitud.ReplaceItemValue("Form", "SolicitudMotor")
+		Call docSolicitud.Save(True, False)
+		Me.DocSolicUNID = docSolicitud.UniversalID
+		'EJECUTO EL MOTOR WORKFLOW QUE PROCESA LAS SOLICITUDES
+		Dim workflowAgent As NotesAgent
+		Set workflowAgent = Me.dbWorkflow.GetAgent(MOTOR_NOMBRE_AGENTE)
+		If workflowAgent.RunOnServer() <> 0 Then
+			Error 30, "El motor de workflow no se pudo ejecutar exitosamente"
+		End If
+		
+		' Refresco la solicitud
+		Set docSolicitud = Nothing
+		Set docSolicitud = dbWorkflow.GetDocumentByUNID(Me.DocSolicUNID)
+		
+		If docSolicitud.GetItemValue(SOLIC_CMP_ESTADO_PROCESAMIENTO)(0) = "ERROR" Then
+			Dim mensaje_error As String
+			mensaje_error = docSolicitud.GetItemValue(SOLIC_CMP_MENSAJE_ERROR)(0)
+			Error 1200, mensaje_error
+		End If
+		
+		Dim view As NotesView		
+		Set view = dbWorkflow.GetView("Solicitudes para Motor")
+		
+		Dim doc As NotesDocument
+		Dim doc_next As NotesDocument
+		Set doc = view.GetFirstDocument()
+		
+		While Not doc Is Nothing
+			Set doc_next = view.GetNextDocument(doc)
+			doc.Remove(True)
+			Set doc = doc_next
+		Wend
+		
+		Exit Sub
+HANDLER:
+		Msgbox "Class SolicitudAccion - Método procesar: " & Error$ & " " & Erl
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase SolicitudAccion - Método procesar","")
+		Exit Sub
+	End Sub
+	
+End Class

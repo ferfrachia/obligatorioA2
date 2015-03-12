@@ -1,0 +1,258 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library BasesPorCantidad
+	Created Apr 19, 2012 by Ian Coates/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+Use "VectorClass 2.05"
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Entrada
+Declare Public Class BasesPorCantidad
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Const VALIDACION_POR_TAMAÑO 			= "1"
+Public Const VALIDACION_POR_CANTIDADDOCS	= "2"
+
+'RENDIMIENTO
+public Const CAMPO_CONFIG_RENDIMIENTOPOR		= "rRendimientoPor"
+Public Const CAMPO_CONFIG_CANTMBXBASE			= "nCantMBxBase"
+Public Const CAMPO_CONFIG_CANTDOCXBASE			= "nCantDocxBase"
+Public Const CAMPO_CONFIG_BASESCREADAS			= "sBasesCreadas"
+Public Const CAMPO_CONFIG_BASESCREADASINI		= "sBasesCreadasIni"
+Public Const CAMPO_CONFIG_NUMERADORES			= "sNumeradores"
+Public Const CAMPO_CONFIG_NUMEROS				= "sNumeros"
+
+
+%REM
+	Class Entrada
+	Description: Esta clase es para encapsular la entrada de la clase de basesporcantidad
+	Por lo general será llenada con datos de la configuración de cada módulo.
+	Se puede agregar a los módulos de configuración o se puede utilizar desde fuera.
+	Para el caso de publicación de documentos se cargara desde un método en la configuración 
+%END REM
+Public Class Entrada
+	'Cantidad de documentos limite por base
+	Private nroDocumentos As Long
+	
+	'Lista de todas las bases que se utilizan hasta el momento
+	Private Bases As Vector
+	
+	Private NumeradoresIn As Vector	
+	Private NumerosIn As Vector	
+	Private BasesIni As Vector
+	
+	Private BaseNum As NotesDatabase
+	
+	%REM
+		Sub New
+		Description: Comments for Sub
+	%END REM
+	Public Sub New()
+		
+	End Sub
+	
+	%REM
+		Property Set NroDocumentos
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set CantidadDocumentos() As Long		
+		nroDocumentos = CantidadDocumentos
+	End Property
+	
+	%REM
+		Property Get CantidadDocumentos
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get CantidadDocumentos() As Long
+		CantidadDocumentos = nroDocumentos
+	End Property
+	
+	Public Property Get BasesCreadas() As Vector
+		Set BasesCreadas = Bases
+	End Property
+	
+	Public Property Set BasesCreadas() As Vector
+		Set Bases = BasesCreadas
+	End Property
+	
+	Public Property Get BasesCreadasIni() As Vector
+		Set BasesCreadasIni = BasesIni
+	End Property
+	
+	Public Property Set BasesCreadasIni() As Vector
+		Set BasesIni = BasesCreadasIni
+	End property
+		
+	Public Property Get NumeradoresIni () As Vector
+		Set NumeradoresIni = NumeradoresIn 
+	End Property
+	
+	Public Property Set NumeradoresIni () As Vector
+		Set NumeradoresIn = NumeradoresIni
+	End property
+	
+	Public Property Get NumerosIni() As Vector
+		Set NumerosIni = NumerosIn
+	End Property
+	
+	Public Property Set NumerosIni() As Vector
+		Set NumerosIn = NumerosIni
+	End Property
+	
+		
+	%REM
+		Property Get BaseNumerador
+		Description: Comments for Property Get
+	%END REM
+	Public Property get BaseNumerador As NotesDatabase
+		Set BaseNumerador = BaseNum
+	End Property
+	
+	%REM
+		Property Set BaseNumerador
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set BaseNumerador As NotesDatabase
+		Set BaseNum = BaseNumerador
+	End Property
+End Class
+
+
+
+%REM
+	Class BasesPorCantidad
+	Description: Esta clase sirve para calcular la base a la que debo agregar un nuevo documento
+	Presupone que las bases tendrán solo una forma documental y calcula en base a todos los
+	numeradores que se utilizen para esa forma documental en las bases dadas.
+%END REM
+Public Class BasesPorCantidad
+	Private datos As Entrada
+	Private vistaNumeradores As NotesView
+	%REM
+		Sub New
+		Description: Comments for Sub
+	%END REM
+	Public Sub New (dt As Entrada)
+		On Error GoTo Handler
+		Set datos = dt
+		If Not datos.BaseNumerador Is Nothing then
+			Set vistaNumeradores = datos.BaseNumerador.Getview("Numeradores")
+		End if
+		Exit Sub
+handler:
+		Call RegistraryGenerarError("IGDOC","Clase BasesPorCantidad Metodo New", "")
+		Exit sub
+	End Sub
+	
+	%REM
+		Function getBaseDatos
+		Description: Esta funcion devuelve "" si hay que crear una base de datos nueva o
+		la clave de la base a la que pertenece el nuevo documento a agregar
+	%END REM
+	Public Function getBaseDatos() As String
+		
+		On Error GoTo handler
+		
+		Dim NroDocs As Long
+		
+		NroDocs = CalculoDocs 
+		
+		If NroDocs = -1 Or NroDocs>= datos.CantidadDocumentos Then
+			getBaseDatos = ""
+		Else
+			getBaseDatos = datos.BasesCreadas.getElement(datos.BasesCreadas.cantElem) 
+		End If
+		
+		Exit Function
+handler:
+		Call RegistraryGenerarError("IGDOC","Clase BasesPorCantidad Function getBaseDatos", "")
+	End Function
+	
+	%REM
+		Function CalculoDocs
+		Description: Comments for Function
+	%END REM
+	Private Function CalculoDocs () As Long
+		On Error GoTo handler
+		Dim tope As Long, i As Long
+		Dim vNumeradores As New Vector(0)
+		Dim vNumeros As New Vector(0)
+		Dim Total as Long
+		total =0
+		tope = datos.BasesCreadas.cantElem
+		If tope>0 Then
+			For i = 1 To datos.BasesCreadasIni.cantElem
+				If datos.BasesCreadasIni.getElement(i)=datos.BasesCreadas.getElement(tope) Then
+					'busco todos los numeradores que se usan en la última base (la activa) y los números en los que empezó
+					Call vNumeradores.insertElement(datos.NumeradoresIni.getElement(i) , vNumeradores.cantElem+1)
+					Call vNumeros.insertElement(datos.NumerosIni.getElement(i) , vNumeros.cantElem +1)
+				End If
+			Next
+			
+			For i = 1 To vNumeradores.cantElem
+				Total = total + (BuscoNumeroActual (vNumeradores.getElement(i)) - vNumeros.getElement(i))
+			Next
+			
+			CalculoDocs = Total
+		Else
+			CalculoDocs = -1
+		End If
+		
+		Exit Function
+handler:
+		Call RegistraryGenerarError("IGDOC","Clase BasesPorCantidad Function CalculoDocs", "")
+		Exit function
+	End Function
+	
+	%REM
+		Function BuscoNumeroActual
+		Description: Comments for Function
+	%END REM
+	Private Function BuscoNumeroActual(numerador As String) As Long
+		On Error GoTo handler
+		Dim docNumerador As NotesDocument
+		
+		Set docNumerador = vistaNumeradores.Getdocumentbykey(numerador, true)
+		If Not docNumerador Is Nothing Then
+			BuscoNumeroActual = docNumerador.Getitemvalue("LastAsigned")(0)
+		Else
+			BuscoNumeroActual=0	
+		End If
+		Exit Function
+handler:
+		Call RegistraryGenerarError("IGDOC","Clase BasesPorCantidad Function BuscoNumeroActual", "")
+		Exit Function
+	End Function
+	
+	%REM
+		Function getBasePorNumero
+		Description: Comments for Function
+	%END REM
+	Public Function getBasePorNumero(numero As long, numerador As String)
+		On Error GoTo handler
+		Dim i As Long
+		
+		getBasePorNumero = datos.BasesCreadasIni.getElement(1)
+		For i = 1 To datos.NumeradoresIni.cantElem
+			
+			If datos.NumeradoresIni.getElement(i) = numerador Then
+		
+				If CLng(datos.NumerosIni.getElement(i)) <= numero Then
+					getBasePorNumero = datos.BasesCreadasIni.getElement(i)
+				End If 
+			End If
+		Next
+		Exit function
+handler:
+		Call RegistraryGenerarError("IGDOC","Clase BasesPorCantidad Function getBasePorNumero", "")
+		Exit Function
+		
+	End Function
+	
+End Class
+

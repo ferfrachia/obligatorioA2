@@ -1,0 +1,169 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library ClaseReservaNumeros
+	Created Dec 6, 2013 by Francisco Alvarez/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+Use "FuncionesGenerales"  
+Use "ConfEE 1.0"
+Use "ConstantesDBGestionDoc"
+Use "VectorClass 2.05"
+Use "Usuario"
+
+'Errores Clase Sesion: 15400 - 15499
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ReservaNumeros
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Const ERROR_DOC_NUM_NOT_FOUND				= 15400
+Public Const MSG_ERROR_DOC_NUM_NOT_FOUND			= "No se encontró el documento de números reservados."
+
+Public Const ERROR_NUM_NOT_FOUND					= 15401
+Public Const MSG_ERROR_NUM_NOT_FOUND				= "El número que intenta reservar no se encuentra dispondible."
+
+Public Const ERROR_CANT_NUM							= 15402
+Public Const MSG_ERROR_CANT_NUM_1					= "Actualmente existen "
+Public Const MSG_ERROR_CANT_NUM_2					= " números reservados. La cantidad total de números reservados no puede ser mayor a "
+%REM
+	Class ReservaNumeros
+	Description: Comments for Class
+%END REM
+Public Class ReservaNumeros
+	Private ss As NotesSession
+	Private db As NotesDatabase
+	Private c As Configuracion
+	Private usr As Usuario
+	Private codUnidad As String
+	Private nroInciso As String
+	Private anio As String
+	%REM
+		Sub New
+		Description: Comments for Sub
+	%END REM
+	Public Sub New(usuarioAccionE As Usuario, codUnidad As String, nroInciso As String)
+		On Error GoTo HANDLER
+		Set ss = New NotesSession
+		Set db = ss.CurrentDatabase
+		Set c = New Configuracion
+		Set usr = usuarioAccionE
+		
+		If c.NumerarInciso And Not c.NumeracionUnica Then
+			Me.nroInciso = nroInciso
+		End If
+
+		If c.NumerarUnidad And Not c.NumeracionUnica Then
+			Me.codUnidad = codUnidad
+		End If
+		
+		anio = Year(today)
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método New","","")			
+	End Sub
+	
+	%REM
+		Sub ReservarNumeros
+		Description: Comments for Sub
+	%END REM
+	Public Sub TomarNumero(numero As String) 
+		On Error GoTo HANDLER
+		
+		Dim vRangoNumeros As Vector
+		Dim dbAdmin As New NotesDatabase(c.ServidorDomino(CLAVE_DBADMINCONF),c.BaseDeDatos(CLAVE_DBADMINCONF))	
+		Dim vNumReservados As NotesView
+		Dim docNumReservados As NotesDocument
+		Dim cantNumActuales As Integer
+		
+		Set vNumReservados = dbAdmin.Getview("vReservasxNumCodAnio")
+		Set docNumReservados = vNumReservados.Getdocumentbykey(codUnidad & "$$" & nroInciso & "$$" & anio, True)
+		
+		If Not docNumReservados Is Nothing Then
+			Dim vAux As New Vector(0)
+			Dim pos As Long
+			vAux.values = docNumReservados.Getitemvalue("Numeros")
+			If vAux.isMember(numero, pos, true) Then
+				vAux.deleteElement(pos)
+				Call docNumReservados.Replaceitemvalue("nCantNumeros", docNumReservados.Getitemvalue("nCantNumeros")(0)-1)
+				Call docNumReservados.Replaceitemvalue("Numeros", vAux.values)
+				docNumReservados.save True, false
+			Else 
+				Error ERROR_NUM_NOT_FOUND, MSG_ERROR_NUM_NOT_FOUND
+			End If
+		Else
+			Error ERROR_DOC_NUM_NOT_FOUND, MSG_ERROR_DOC_NUM_NOT_FOUND
+		End If
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método ReservarNumeros","","")			
+	End Sub
+	
+	Public Sub ReservarNumeros(cantidad As Integer) 
+		On Error GoTo HANDLER
+		
+		Dim vRangoNumeros As Vector
+		Dim dbAdmin As New NotesDatabase(c.ServidorDomino(CLAVE_DBADMINCONF),c.BaseDeDatos(CLAVE_DBADMINCONF))	
+		Dim vNumReservados As NotesView
+		Dim docNumReservados As NotesDocument
+		Dim cantNumActuales As Integer
+		
+		Set vNumReservados = dbAdmin.Getview("vReservasxNumCodAnio")
+		Set docNumReservados = vNumReservados.Getdocumentbykey(codUnidad & "$$" & nroInciso & "$$" & anio, True)
+		
+		cantNumActuales = 0
+		If Not docNumReservados Is Nothing Then
+			cantNumActuales = docNumReservados.Getitemvalue("nCantNumeros")(0)
+		End If
+		
+		If cantNumActuales + cantidad > 1500 Then
+			Error ERROR_CANT_NUM, MSG_ERROR_CANT_NUM_1 + CStr(cantNumActuales) + MSG_ERROR_CANT_NUM_2 + CStr(1500) + "."
+		End If
+		
+		Set vRangoNumeros = c.ReservarNumeros(NUMERADOR_EXP, codUnidad, nroInciso, cantidad)
+		
+		If(vRangoNumeros.cantElem > 0) Then
+			If docNumReservados Is Nothing Then
+				Set docNumReservados = dbAdmin.Createdocument()
+				Call docNumReservados.Replaceitemvalue("FORM", "NumerosReservadosExp")
+				
+				If c.NumerarUnidad And Not c.NumeracionUnica Then
+					Call docNumReservados.Replaceitemvalue("sCodigo", codUnidad)
+				End If
+				
+				If c.NumerarInciso And Not c.NumeracionUnica Then
+					Call docNumReservados.Replaceitemvalue("sInciso", nroInciso)
+				End If
+				
+				Call docNumReservados.Replaceitemvalue("sAnio", anio)
+				
+				Call docNumReservados.Replaceitemvalue("nCantNumeros", 0)
+			End If
+			
+			Dim vAux As New Vector(0)
+			
+			Call docNumReservados.Replaceitemvalue("nCantNumeros", docNumReservados.Getitemvalue("nCantNumeros")(0)+cantidad)
+			
+			vAux.values = docNumReservados.Getitemvalue("Numeros")
+			Call vAux.Append(vRangoNumeros, False)
+			Call docNumReservados.Replaceitemvalue("Numeros", vaux.Values)
+			
+			docNumReservados.Save True, False
+		End If
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método ReservarNumeros","","")			
+	End Sub
+	
+	%REM
+		Sub setAnio
+		Description: Comments for Sub
+	%END REM
+	Public Sub setAnio (anio As integer)
+		me.anio = anio
+	End Sub
+End Class

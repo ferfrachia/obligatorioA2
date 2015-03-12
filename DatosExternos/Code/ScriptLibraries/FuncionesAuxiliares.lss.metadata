@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050059D1A3" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="2aa" sequence="10" unid="D091E2A4EC907788832577E3005908A5">
+<created><datetime dst="true">20101122T141229,17-02</datetime></created>
+<modified><datetime>20150311T132105,64-03</datetime></modified>
+<revised><datetime>20150309T094359,80-03</datetime></revised>
+<lastaccessed><datetime>20150311T132105,64-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132105,64-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>FuncionesAuxiliares</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20150309T094359,80-03</datetime></item></note>

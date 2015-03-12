@@ -1,0 +1,1061 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library Clase Documento 2.0
+	Created May 8, 2012 by Ian Coates/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+Use "Clase Definicion Documentos"
+Use "ConstantesDocumentos"
+Use "ClaseConfDocumentos"
+Use "BasesPorCantidad"
+Use "UnidadDoc Class"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Documento
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const CLAVE_NUMERADOR						="IGDOC_PDD_yy"
+Private Const INDICADOR_AÑO_CUATRO_DIGITOS 		="yyyy"
+Private Const INDICADOR_AÑO_DOS_DIGITOS 		="yy"
+
+Public Const ERROR_ESTADO_INCORRECTO = 20001
+Public Const MSG_ERROR_ESTADO_INCORRECTO = "El estado actual del documento es incorrecto: "
+
+Public Const ERROR_YA_FIRMO = 20002
+Public Const MSG_ERROR_YA_FIRMO = "Usted ya ha firmado el documento."
+%REM
+	Class Documento
+	Description: Comments for Class
+%END REM
+Public Class Documento
+	Private db As NotesDatabase
+	Private vDocs As NotesView
+	Public doc As NotesDocument
+	Private conf As ConfDocumentos
+	private BaseDatos As String	
+	Private baseArchivo As string
+	%REM
+		Sub New
+		Description: Comments for Sub
+	%END REM
+	Public Sub New (id As String, creacion As Boolean, tipoDoc As String, unidad As String)
+		On Error GoTo handler
+		
+		set conf = New ConfDocumentos
+		If creacion Then
+			'Debe estar en la última base de datos
+			Set db = conf.ReferenciarBaseDeDatos(conf.BasesCreadas.getElement(conf.BasesCreadas.cantElem))
+			Set doc = db.Getdocumentbyunid(id)	
+		Else
+			' De momento está utilizando un númerador único que es el global
+			' que tiene como constante IGDOC_PDD_yy.
+			' Se va a tener que revisar este código cuando empieze a funcionar
+			' la numeración por tipo de documento
+			
+			'Defino un objeto de entrada con los valores de la configuración
+			'En este caso como solo voy a buscar necesito los vectores de:
+			'Numeros, numeradores y BasesCreadas que son correlativos y que dan para cada i
+			'que tal base con el numerador tal empieza en el número tal
+			Dim en As New Entrada()
+			
+			Dim numerador As String
+			Dim numero As Long
+			
+			Set en.BasesCreadasIni = conf.BasesCreadasIni
+			Set en.NumeradoresIni = conf.NumeradoresIni
+			Set en.NumerosIni = conf.NumerosIni
+			'Defino un objeto de Bases por cantidad con la entrada anterior
+			Dim bs As New BasesPorCantidad(en)
+			'En los vectores tengo los nombres de los numeradores no las claves
+			numerador = obtenerNumerador(conf,id,tipoDoc,unidad)
+			'En los vectores tengo el número por el que van no el numero formateado
+			numero = obtenerNumero(conf,id,tipoDoc,unidad)		
+			BaseDatos = bs.getBasePorNumero(numero, numerador)
+			basearchivo = "_" & StrRight(basedatos,"_")
+			'Faltaría lo del archivo (si el doc está archivado)
+			Set db = conf.ReferenciarBaseDeDatos(BaseDatos)
+			Set vDocs = db.GetView("DocumentosxNro")
+			Set doc = vDocs.GetDocumentByKey(id,True)		
+			If doc Is Nothing  Then
+				Set db = conf.ReferenciarBaseDeDatos(BASE_ARCHIVO & basearchivo)
+				Set vDocs = db.GetView("DocumentosxNro")
+				Set doc = vDocs.GetDocumentByKey(id,True)
+			Else
+				If InStr(1,doc.getItemValue("form")(0),"A_BORRAR_")<>0 Then
+					Set db = conf.ReferenciarBaseDeDatos(BASE_ARCHIVO & basearchivo)
+					Set vDocs = db.GetView("DocumentosxNro")
+					Set doc = vDocs.GetDocumentByKey(id,True)
+				End If	
+			End If		
+		End If
+		If doc Is Nothing Then
+			If creacion Then
+				Error 10002, "No se encontro el Documento"
+			Else
+				Error 10002, "No se encontro el Documento N° " + id
+			End if
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Sub New" , Erl, "")
+		Exit sub
+	End Sub
+	
+	%REM
+		Function ObtenerNumerador
+		Description: Comments for Function
+	%END REM
+	Private Function ObtenerNumerador (conf As ConfDocumentos,numero As String, tipoDoc As String, unidad As String) As String
+		On Error GoTo handler
+		Dim formato As String, pos As Long, largo As Long
+		
+		Dim nombreNumeradorAux, codigo, inciso As String
+		Dim o_unidad As UnidadDoc		
+		Set o_unidad = New UnidadDoc(unidad)
+		codigo=o_unidad.Codigo()
+		inciso=o_unidad.Inciso()
+		
+		nombreNumeradorAux = CLAVE_NUMERADOR
+		
+		If conf.NumeracionUnica Then
+			If conf.NumUtilizarCodigo() Then
+				nombreNumeradorAux = nombreNumeradorAux &"_" & codigo
+			End If
+			
+			If conf.NumUtilizarInciso() Then
+				nombreNumeradorAux = nombreNumeradorAux &"_" & inciso
+			End If
+			
+			If conf.NumUtilizarAnio Then
+				nombreNumeradorAux = conf.SustituirAnio(nombreNumeradorAux)
+			End If
+		Else
+			Dim dbAdmin As NotesDatabase
+			Dim vForms 
+			Dim docDef As NotesDocument
+			
+			nombreNumeradorAux = nombreNumeradorAux &"_DEF" & tipoDoc
+			
+			Set dbAdmin = conf.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+			If dbAdmin Is Nothing Then
+				Error ERRORCONF_CLAVE_NOTFOUND, MSG_ERRORCONF_CLAVE_NOTFOUND
+			End If
+			
+			Set vForms=dbAdmin.Getview(VISTA_DEF_DOC_COD)
+			If vForms Is Nothing Then
+				Error ERROR_VIS_DEF_COD_NOT_FOUND, MSG_ERROR_VIS_DEF_COD_NOT_FOUND
+			End If
+			
+			'Obtengo los datos de la definicion
+			Set docDef = vForms.GetDocumentByKey(tipoDoc)
+			If docDef Is Nothing Then
+				Error ERROR_DEF_DOC_NOT_FOUND, MSG_ERROR_DEF_DOC_NOT_FOUND
+			End If
+			
+			Dim defDocUtilizarCodigoUni As Boolean
+			If CStr(docDef.GetItemValue(CAMPO_CONFIG_NUM_UNIDAD)(0)) = NUM_CHECK_TRUE Then
+				defDocUtilizarCodigoUni = True
+			Else
+				defDocUtilizarCodigoUni = False
+			End If
+			
+			If defDocUtilizarCodigoUni Then
+				nombreNumeradorAux = nombreNumeradorAux &"_" & codigo
+			End If
+			
+			Dim defDocUtilizarInciso As Boolean
+			If CStr(docDef.GetItemValue(CAMPO_CONFIG_NUM_INCISO)(0)) = NUM_CHECK_TRUE Then
+				defDocUtilizarInciso = True	
+			Else
+				defDocUtilizarInciso = False
+			End If
+			
+			If defDocUtilizarInciso Then
+				nombreNumeradorAux = nombreNumeradorAux &"_" & inciso
+			End If
+			
+			Dim defDocUtilizarAnio As Boolean
+			If CStr(docDef.GetItemValue(CAMPO_CONFIG_NUM_ANIO)(0)) = NUM_CHECK_TRUE Then
+				defDocUtilizarAnio = True	
+			Else
+				defDocUtilizarAnio = False
+			End If
+			
+			If defDocUtilizarAnio Then
+				nombreNumeradorAux = conf.SustituirAnio (nombreNumeradorAux)
+			End If
+		End If
+		ObtenerNumerador = nombreNumeradorAux
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Function ObtenerNumerador" , Erl, "")
+		Exit function
+	End Function
+	%REM
+		Function obtenerNumero
+		Description: Comments for Function
+	%END REM
+	Private Function obtenerNumero(conf As ConfDocumentos,numero As String,tipoDoc As String,unidad As string) As Long
+		On Error GoTo handler
+		
+		Dim formato As String, pos As Long, largo As Long
+		Dim oUnidad As UnidadDoc
+		Dim codigo, inciso As String
+		
+		Set oUnidad = New UnidadDoc(unidad)
+		codigo = oUnidad.Codigo
+		inciso = oUnidad.Inciso
+		
+		If conf.NumeracionUnica Then
+			formato = conf.NumFormato
+			formato = conf.SustituirAnio(formato)
+			
+			If conf.NumUtilizarCodigo() Then
+				formato = conf.SustituirCantDigitos(INDICADOR_UNIDAD,INDICADOR_DIGITOS_PROPIO_UNIDAD,formato,codigo)	
+			End If
+			
+			If  conf.NumUtilizarInciso() Then
+				formato = conf.SustituirCantDigitos(INDICADOR_INCISO,INDICADOR_DIGITOS_PROPIO_INCISO	,formato,inciso)	
+			End If
+		Else
+			Dim dbAdmin As NotesDatabase
+			Dim vForms 
+			Dim docDef As NotesDocument
+			
+			Set dbAdmin = conf.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+			If dbAdmin Is Nothing Then
+				Error ERRORCONF_CLAVE_NOTFOUND, MSG_ERRORCONF_CLAVE_NOTFOUND
+			End If
+			
+			Set vForms=dbAdmin.Getview(VISTA_DEF_DOC_COD)
+			If vForms Is Nothing Then
+				Error ERROR_VIS_DEF_COD_NOT_FOUND, MSG_ERROR_VIS_DEF_COD_NOT_FOUND
+			End If
+			
+			'Obtengo los datos de la definicion
+			Set docDef = vForms.GetDocumentByKey(tipoDoc)
+			If docDef Is Nothing Then
+				Error ERROR_DEF_DOC_NOT_FOUND, MSG_ERROR_DEF_DOC_NOT_FOUND
+			End If
+			
+			Dim defDocUtilizarCodigoUni As Boolean
+			If CStr(docDef.GetItemValue(CAMPO_CONFIG_NUM_UNIDAD)(0)) = NUM_CHECK_TRUE Then
+				defDocUtilizarCodigoUni = True
+			Else
+				defDocUtilizarCodigoUni = False
+			End If
+			
+			Dim defDocUtilizarInciso As Boolean
+			If CStr(docDef.GetItemValue(CAMPO_CONFIG_NUM_INCISO)(0)) = NUM_CHECK_TRUE Then
+				defDocUtilizarInciso = True	
+			Else
+				defDocUtilizarInciso = False
+			End If
+			
+			Dim defDocUtilizarAnio As Boolean
+			If CStr(docDef.GetItemValue(CAMPO_CONFIG_NUM_ANIO)(0)) = NUM_CHECK_TRUE Then
+				defDocUtilizarAnio = True	
+			Else
+				defDocUtilizarAnio = False
+			End If
+			
+			formato = docDef.Getitemvalue(CAMPO_DEF_DOC_FORMATO_NUM)(0)
+			
+			formato = conf.SustituirAnio(formato)
+			
+			If defDocUtilizarCodigoUni Then
+				formato = conf.SustituirCantDigitos(INDICADOR_UNIDAD,INDICADOR_DIGITOS_PROPIO_UNIDAD,formato,codigo)	
+			End If
+			
+			If defDocUtilizarInciso Then
+				formato = conf.SustituirCantDigitos(INDICADOR_INCISO,INDICADOR_DIGITOS_PROPIO_INCISO,Formato,inciso)	
+			End If
+
+			If (InStr(formato,INDICADOR_CODIGO) <> 0) Or (InStr(formato,INDICADOR_DIGITOS_PROPIO_CODIGO) <> 0)Then
+				formato = conf.SustituirCantDigitos(INDICADOR_CODIGO,INDICADOR_DIGITOS_PROPIO_CODIGO,formato,tipoDoc)
+			End if 
+		End If
+		pos = InStr(formato,"#")
+		'El +2 que viene es porque los str le sacan un caracter
+		largo = Len(StrRight(StrLeftBack(formato,"#"),"#"))+2
+		obtenerNumero = CLng(Mid(numero,pos,largo))
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Function obtenerNumero" , Erl, "")
+		Exit function
+	End Function
+	
+	
+	%REM
+		Function Creacion
+		Description: Comments for Function
+	%END REM
+	Public function Creacion(unidad As String, sReservadoPor As String)  As String
+		On Error GoTo handler
+		Dim unid As UnidadDoc
+		Dim ni As NotesItem
+		Dim codigo As String
+		Dim inciso As String
+		Dim valor As String
+		Dim usrRolCrear As Vector
+		Dim pos As Long
+		Dim nName As NotesName
+		Dim nombre As String
+		MsgBox "1"
+		Set unid=New UnidadDoc(unidad)
+		Set usrRolCrear = unid.UsuariosRolCreadorPDD
+		Set nName = New NotesName(sReservadoPor)
+		nombre = nName.Common + "/" + nName.Organization
+		MsgBox "2"
+		If usrRolCrear.isMember(nombre, Pos, False) Then
+			MsgBox "2,1"
+			codigo=unid.Codigo()
+			MsgBox 2.2
+			inciso=unid.Inciso()
+			MsgBox 2.3
+			valor=conf.NumerarFormateado(CLAVE_NUMERADOR,codigo,inciso,doc.Getitemvalue("formulario")(0))	
+			MsgBox 2.4
+			doc.ReplaceItemValue CAMPO_DOC_NUMERO,valor
+			MsgBox 2.5
+			doc.ReplaceItemValue CAMPO_DOC_NRO_EXTERNO_DOC,""
+			MsgBox "3"
+			Set ni = New NotesItem(doc,CAMPO_DOC_LECTORES,"PDD_" & unidad,Readers)
+			Set ni = New NotesItem(doc,CAMPO_DOC_LECTORES_PERMANENTES,"[Desarrollo]",Readers)
+			
+			Call doc.ReplaceItemValue(CAMPO_DOC_FECHA_CREACION,Now)
+			Call doc.ReplaceItemValue(CAMPO_DOC_ESTADO, ESTADO_DOC_RESERVADO)
+			Call doc.ReplaceItemValue(CAMPO_DOC_RESERVADOPARA, sReservadoPor)
+			Call doc.ReplaceItemValue(CAMPO_DOC_AUTORES, sReservadoPor)
+			MsgBox "4"
+			Call doc.Save(true, false)
+			Creacion = valor
+		Else
+			Error 1212,"El usuario no posee el rol de Creador"
+		End if
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Function Creacion" , Erl, "")
+		Exit function
+	End Function
+	
+	Public Function CreacionWs(unidad As String)  As String
+		On Error GoTo handler
+		Dim unid As UnidadDoc
+		Dim ni As NotesItem
+		Dim codigo As String
+		Dim inciso As String
+		Dim valor As String		
+		
+		'Falta validar los roles del usuario
+		
+		Set unid=New UnidadDoc(unidad)
+		
+		codigo=unid.Codigo()
+		
+		inciso=unid.Inciso()
+		
+		valor=conf.NumerarFormateado(CLAVE_NUMERADOR,codigo,inciso,doc.Getitemvalue("formulario")(0))
+			
+		doc.ReplaceItemValue CAMPO_DOC_NUMERO,valor
+		doc.ReplaceItemValue CAMPO_DOC_NRO_EXTERNO_DOC,""
+		
+		Set ni = New NotesItem(doc,CAMPO_DOC_LECTORES,"PDD_" & unidad,Readers)
+		Set ni = New NotesItem(doc,CAMPO_DOC_LECTORES_PERMANENTES,"[Desarrollo]",Readers)
+		
+		Call doc.ReplaceItemValue(CAMPO_DOC_FECHA_CREACION,Now)
+		Call doc.ReplaceItemValue(CAMPO_DOC_ESTADO, ESTADO_DOC_BORRADOR)
+		If doc.HasItem(CAMPO_DOC_AUTORES) Then
+			Call doc.ReplaceItemValue(CAMPO_DOC_AUTORES, "")
+		End If
+		
+		Call doc.ReplaceItemValue(CAMPO_DOC_FIRMAS, "")
+		Call doc.ReplaceItemValue(CAMPO_DOC_FECHAS_FIRMAS, "")
+		Call doc.ReplaceItemValue(CAMPO_DOC_USUARIOS_FIRMAS, "")
+		Call doc.ReplaceItemValue(CAMPO_DOC_HASHS_FIRMAS, "")
+		
+		Call doc.Save(True, False)
+		CreacionWs = valor
+		
+		Exit Function
+handler:
+		'MsgBox "creacionWS: " & Error$ & " - linea: " & erl
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Function Creacion" , Erl, "")
+		Exit Function
+	End Function
+	
+	%REM
+		Property Get Documento
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get Documento As NotesDocument
+		Set Documento = doc
+	End Property
+	
+	%REM
+		Sub Liberar
+		Description: Comments for Sub
+	%END REM
+	Public Sub Liberar()
+		On Error GoTo handler
+		Call doc.ReplaceItemValue(CAMPO_DOC_ESTADO, ESTADO_DOC_BORRADOR)
+		If doc.HasItem(CAMPO_DOC_AUTORES) Then
+			Call doc.ReplaceItemValue(CAMPO_DOC_AUTORES, "")
+		End If
+		Call doc.ReplaceItemValue(CAMPO_DOC_FIRMAS, "")
+		Call doc.ReplaceItemValue(CAMPO_DOC_FECHAS_FIRMAS, "")
+		Call doc.ReplaceItemValue(CAMPO_DOC_USUARIOS_FIRMAS, "")
+		Call doc.ReplaceItemValue(CAMPO_DOC_HASHS_FIRMAS, "")
+		Call doc.Save(true, false)
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub Liberar" , Erl, "")
+		Exit sub
+	End Sub
+	
+	Public Sub reservar(sReservadoPor As String)
+		On Error GoTo handler
+		
+		Dim pos As Long
+		Dim nName As NotesName
+		Dim nombre As String
+		Dim unid As UnidadDoc
+		Dim usrRolesEditar As Vector
+		Dim usrRolesFirmar As Vector
+		
+		Set unid = New UnidadDoc(doc.Getitemvalue(CAMPO_DOC_UNIDAD)(0))
+		Set usrRolesEditar = unid.UsuariosRolEditorPDD
+		Set usrRolesFirmar = unid.UsuariosRolFirmantePDD
+	
+		
+		
+	
+		Set nName = New NotesName(sReservadoPor)
+		
+		nombre = nName.Common + "/" + nName.Organization
+		
+		If usrRolesEditar.isMember(nombre, Pos, False) Or  usrRolesFirmar.isMember(nombre, Pos, False) Then
+			Call doc.ReplaceItemValue(CAMPO_DOC_ESTADO, ESTADO_DOC_RESERVADO)
+			Call doc.ReplaceItemValue(CAMPO_DOC_AUTORES, sReservadoPor)
+			Call doc.ReplaceItemValue(CAMPO_DOC_RESERVADOPARA, sReservadoPor)
+			Call doc.ReplaceItemValue(CAMPO_DOC_ACCION, ACC_PDD_RESERVAR)
+			Call doc.ReplaceItemValue(CAMPO_DOC_FIRMAS, "")
+			Call doc.ReplaceItemValue(CAMPO_DOC_FECHAS_FIRMAS, "")
+			Call doc.ReplaceItemValue(CAMPO_DOC_USUARIOS_FIRMAS, "")
+			Call doc.ReplaceItemValue(CAMPO_DOC_HASHS_FIRMAS, "")
+			doc.save True, False
+		Else
+			Error 1234, "El usuario " + nName.Common + " no posee los roles necesarios"
+		End if
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub Reservar" , Erl, "")
+		Exit sub
+	End Sub
+	
+	%REM
+		Sub anular
+		Description: Comments for Sub
+	%END REM
+	Public Sub anular()
+		On Error GoTo handler
+		
+		Call doc.Replaceitemvalue(CAMPO_DOC_ESTADO, ESTADO_DOC_ANULADO)
+		
+		Call doc.Save(True, False)	
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub Anular" , Erl, "")
+		Exit Sub
+	End Sub
+	
+	%REM
+		Sub quitarAnular
+		Description: Comments for Sub
+	%END REM
+	Public Sub quitarAnular()
+		On Error GoTo handler
+		
+		Call doc.Replaceitemvalue(CAMPO_DOC_ESTADO, ESTADO_DOC_BORRADOR)
+		
+		Call doc.Save(True, False)	
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub Quitar Anulación" , Erl, "")
+		Exit Sub
+	End Sub
+	
+	
+	%REM
+		Sub publicar
+		Description: Comments for Sub
+	%END REM
+	Public Sub publicar(usuario As String)
+		'MsgBox "Motor Doc Clase Doc2.0 Sub Publicar"
+		On Error GoTo handler
+		Dim lectores As New Vector(0)
+		Dim unidad As String
+		Dim unidadD As UnidadDoc
+		Dim unidades As New Vector(0)
+		Dim ni As NotesItem
+		Dim user As String
+		
+		Dim unidadFormCreadora As string
+		
+		Dim dbAdmin As NotesDatabase
+		Dim vForms 
+		Dim docDef As NotesDocument
+		
+		Set dbAdmin = conf.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+		If dbAdmin Is Nothing Then
+			Error ERRORCONF_CLAVE_NOTFOUND, MSG_ERRORCONF_CLAVE_NOTFOUND
+		End If
+		
+		Set vForms=dbAdmin.Getview(VISTA_DEF_DOC_COD)
+		If vForms Is Nothing Then
+			Error ERROR_VIS_DEF_COD_NOT_FOUND, MSG_ERROR_VIS_DEF_COD_NOT_FOUND
+		End If
+		
+		 
+		'Obtengo los datos de la definicion
+		Set docDef = vForms.GetDocumentByKey(doc.Getitemvalue(CAMPO_DOC_FORMULARIO)(0))
+		If docDef Is Nothing Then
+			Error ERROR_DEF_DOC_NOT_FOUND, MSG_ERROR_DEF_DOC_NOT_FOUND
+		End If
+		
+		'MsgBox "El doc configuracion anduvo"
+		If doc.HasItem(CAMPO_DOC_AUTORES) Then
+			Call doc.RemoveItem(CAMPO_DOC_AUTORES)
+		End If
+		
+		'MsgBox "No habian Autores"
+		'*******************************************
+		'Agrego a la unidad creadora en los lectores			
+		unidadFormCreadora= doc.Getitemvalue("unidadFormCreadora")(0)
+		lectores.values=doc.Getitemvalue(CAMPO_DOC_LECTORES)
+		Call lectores.insertElement(unidadFormCreadora,lectores.CantElem+1)	
+		
+		'MsgBox "La unidad "+unidadFormCreadora+" se agregó a los lectores"			
+		
+		If doc.HasItem(CAMPO_DOC_LECTORES) Then
+			Call doc.RemoveItem(CAMPO_DOC_LECTORES)
+		End If
+		
+		Set ni = New NotesItem(doc,CAMPO_DOC_LECTORES,lectores.values,READERS)	
+		'*******************************************
+		
+		
+		Call doc.ReplaceItemValue(CAMPO_DOC_ESTADO, ESTADO_DOC_PUBLICADO)
+		'MsgBox usuario
+		user=StrLeft(usuario,"/")
+		user=StrRight(user,"=")
+		'MsgBox user
+		Call doc.ReplaceItemValue(CAMPO_DOC_FINALIZADO_POR, user)
+		Call doc.ReplaceItemValue(CAMPO_DOC_FECHA_PUBLICACION,Now)
+		
+		' Si fue creado desde un expediente o desde un formulario, actualizo dicho expediente o formulario		
+		If Not doc.nroExpCreador(0) = "" Or Not doc.nroFormCreador(0) = "" Then			
+			If Not doc.Getitemvalue("PedidoInformeCancelado")(0)="Si" Then								
+				Dim agenteDoc As NotesAgent
+				Dim dbWs As NotesDatabase
+				Dim unid As String
+				Dim viewDocsParam As NotesView
+				Dim codError As String
+				Dim msgError As String
+				
+				Dim nombreAgenteActualizar As String
+		'		MsgBox "Referencia al WS"
+				Set dbWs = conf.ReferenciarBaseDeDatos(CLAVE_DBWS)
+		'		MsgBox "Ok"
+				Dim docParam As New NotesDocument(dbWs)
+				
+				docParam.form = CAMPO_DOCPARAM_FORM
+				Call docParam.replaceItemValue(CAMPO_DOCPARAM_NRO_DOC,doc.Getitemvalue(CAMPO_DOC_NUMERO))
+				
+				If Not doc.nroExpCreador(0) = "" Then 'Si fue creado desde un expediente
+					nombreAgenteActualizar=DBWS_AGENTE_WS_ACT_INF_EXP
+					Call docParam.replaceItemValue(CAMPO_DOCPARAM_NRO_EXP,doc.getItemValue(CAMPO_DOC_NRO_EXP_CREADOR))
+					Call docParam.replaceItemValue(CAMPO_DOCPARAM_NRO_ACT,doc.getItemValue(CAMPO_DOC_NRO_ACT_CREADORA))
+				
+				ElseIf Not doc.nroFormCreador(0) = "" Then 'Si fue creado desde un formulario
+					
+					nombreAgenteActualizar=DBWS_AGENTE_WS_SECCION_INF_FORM
+					Call docParam.replaceItemValue(CAMPO_DOCPARAM_NRO_FORM,doc.getItemValue(CAMPO_DOC_NRO_FORM_CREADOR))
+					Call docParam.replaceItemValue(CAMPO_DOCPARAM_NRO_SECCION,doc.getItemValue(CAMPO_DOC_NRO_SECCION_CREADORA))				
+					Call docParam.replaceItemValue(CAMPO_DOCPARAM_FECHA_PUB,cStr(now))
+					'Call docParam.Replaceitemvalue(CAMPO_DOCPARAM_PATH_FORM, Newvalue)'seteo el campo sPathWebforms				
+					Call docParam.Replaceitemvalue("sPathWebForms", doc.Getitemvalue("sPathWebForms")(0))
+		'			MsgBox"Reemplazó"
+					
+				End If					
+			
+				Call docParam.replaceItemValue(CAMPO_DOCPARAM_TIPO_DOC,doc.getItemValue(CAMPO_DOC_TIPO_DOC))
+				Call docParam.replaceItemValue(CAMPO_DOCPARAM_UNIDAD,doc.Getitemvalue(CAMPO_DOC_UNIDAD))
+				Call docParam.Replaceitemvalue(CAMPO_DOCPARAM_USUARIO,doc.getItemValue(CAMPO_DOC_RESERVADOPARA))
+				Call docParam.replaceItemValue(CAMPO_DOCPARAM_SERV,db.Server)
+				Call docParam.Replaceitemvalue(CAMPO_DOCPARAM_PATH,db.Filepath)
+				docParam.save True,False
+				
+				unid = docParam.Universalid
+		'		MsgBox unid
+		'		MsgBox "Va a setear el agente"
+				Set agenteDoc = dbWs.Getagent(nombreAgenteActualizar)
+		'		MsgBox "Paso el set del agente"
+				If (Not agenteDoc Is Nothing) And (Not agenteDoc.Run(docParam.Noteid) <> 0) Then
+					Set docParam = Nothing					
+					Set viewDocsParam = dbWs.Getview(DBWS_VISTA_DOC_PARAM_X_UNID)
+					Set docParam = viewDocsParam.Getdocumentbykey(unid,True)
+					codError = docParam.Getitemvalue(CAMPO_DOCPARAM_COD_ERROR)(0)
+					msgError = docParam.Getitemvalue(CAMPO_DOCPARAM_MSG_ERROR)(0)
+					docParam.Remove(True)
+					If Not (codError = "0") Then
+						Error codError,msgError
+					End If
+				Else
+					Error ERROR_AGENTE_NOT_FOUND, MSG_ERROR_AGENTE_NOT_FOUND
+				End If
+			End If
+		End If		
+		doc.save True, False
+		Exit Sub
+handler:
+		
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub Publicar" , Erl, "")
+		Exit sub
+		
+	End Sub
+	%REM
+		Sub Archivar
+		Description: Comments for Sub
+	%END REM
+	Public Sub Archivar(usuario As String)
+		On Error GoTo handler
+		Dim dbArchivo As NotesDatabase
+		Dim docArchivo As NotesDocument
+		Dim vDocs2 As NotesView
+		Dim docAux As NotesDocument
+		
+		Set dbArchivo = conf.ReferenciarBaseDeDatos(BASE_ARCHIVO & basearchivo)
+		If dbArchivo Is Nothing Then
+			Set dbArchivo = CrearBaseArchivo()
+		End If
+		Set vDocs2 = dbArchivo.GetView("DocumentosxNro")
+		
+		Set docAux = vDocs2.GetDocumentByKey(doc.Getitemvalue(CAMPO_DOC_NUMERO)(0),True)
+
+		If docAux Is Nothing Then
+			Set docArchivo = dbARchivo.Createdocument()
+			Call doc.Copyallitems(docArchivo, True)
+			Call docArchivo.ReplaceItemValue(CAMPO_DOC_ESTADO, ESTADO_DOC_ARCHIVADO)
+			Call docArchivo.ReplaceItemValue(CAMPO_DOC_ARCHIVADO_POR, usuario)
+			Call docArchivo.Save(True, False)
+			
+		Else
+			Call docAux.Replaceitemvalue("form",doc.Getitemvalue("form")(0))
+			Call docAux.Save(True,False)
+		End If
+		
+		
+		Call doc.ReplaceItemValue("form", "A_BORRAR_" & doc.GetItemValue("form")(0))		
+		Call doc.Save(True, False)
+		Exit sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub Archivar" , Erl, "")
+		Exit Sub
+	End Sub
+	
+	%REM
+		Sub CrearBaseArchivo
+		Description: Comments for Sub
+	%END REM
+	Private function CrearBaseArchivo() As NotesDatabase
+		On Error GoTo handler
+		Dim dbTemplate As NotesDatabase
+		Set dbTemplate = conf.ReferenciarBaseDeDatos(BASE_ARCHIVO)
+		Dim strFilePath As String
+		strFilePath = StrLeft(dbTemplate.Filepath,".nsf") & basearchivo & ".nsf" 
+		
+		Set CrearBaseARchivo = dbTemplate.Createcopy(dbTemplate.Server, strFilePath)
+		Call conf.InsertarLineaInterop(BASE_ARCHIVO & basearchivo, conf.Host, dbTemplate.Server, strFilePath)
+		Call conf.Save()
+		
+		Dim ig As NotesDocument
+		Dim igArch As NotesDocument
+		
+		Set ig = db.Getprofiledocument("IGDocConfig")
+		Set igARch = CrearBaseArchivo.Getprofiledocument("IGDocConfig")
+		Call ig.Copyallitems(igArch, true)
+		Call igARch.Save(true,false)
+		
+		Exit function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Function CrearBaseArchivo" , Erl, "")
+		Exit function
+	End Function
+	'******************************************************************************************************************
+	%REM
+		Sub cancelarInformeExpediente
+		Description: Comments for Sub
+	%END REM
+	Public Sub cancelarInformeExpediente(numExp As String,numAct As String)
+		doc.Removeitem("nroExpCreador")
+		doc.Removeitem("nroActCreadora")
+		Call doc.Replaceitemvalue("PedidoInformeCancelado","Si")
+		Call doc.Save(True,false)
+		Exit sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub cancelarInformeExpediente" , Erl, "")
+		Exit sub
+	End Sub
+	
+	'******************************************************************************************************************
+	Public Sub cancelarInformeFormulario()
+		MsgBox "clase documentos cancelar 1"
+		Call doc.Replaceitemvalue("PedidoInformeCancelado","Si")
+		
+		Call doc.Save(True,False)
+		MsgBox "clase documentos cancelar 2"
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub cancelarInformeExpediente" , Erl, "")
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************
+	
+	Public Sub desarchivar(usuario As String)
+		Dim dbDestino As NotesDatabase
+		Dim newDoc As NotesDocument
+		Dim docAux As NotesDocument
+		Dim vDocs2 As NotesView
+		Set dbDestino = conf.ReferenciarBaseDeDatos(basedatos)
+		
+		Set vDocs2 = dbDestino.GetView("DocumentosxNro")
+		
+		Set docAux = vDocs2.GetDocumentByKey(doc.Getitemvalue(CAMPO_DOC_NUMERO)(0),True)
+		If docAux Is Nothing Then
+			Set newDoc = New NotesDocument(dbDestino)
+			Call doc.Copyallitems(newDoc, True)
+			Call NewDoc.Replaceitemvalue(CAMPO_DOC_ESTADO,  ESTADO_DOC_PUBLICADO)
+			Call newdoc.Save(True,False)
+		Else
+		
+			Call docAux.Replaceitemvalue(CAMPO_DOC_ESTADO,ESTADO_DOC_PUBLICADO)
+		
+			Call docAux.Replaceitemvalue("form",doc.Getitemvalue("form")(0))
+			Call docAux.Save(True,False)
+		End If
+		Call doc.Replaceitemvalue("Form", "A_BORRAR_" & doc.GetItemValue("form")(0))
+		Call doc.Save(True,False)
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Sub desarchivar" , Erl, "")
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Sub AddFirma(ByVal sFirma As String,ByVal fFechaFirma As Variant,sUsuario As String, sHash As String) 
+		'Agrega la firma sFirma y la fecha fFechaFirma a la actuación
+		On Error GoTo HANDLER
+		
+		'Me.CantFirmas=Me.CantFirmas+1
+		Dim vFirmas As Vector,vFechas As Vector,vUsuarios As Vector,vHashs As Vector
+		
+		Set vFirmas=Me.Firmas
+		Set vFechas=Me.FechasFirmas
+		Set vUsuarios=Me.UsuariosFirmas
+		Set vHashs=Me.HashsFirmas
+		
+		vFirmas.insertElement sFirma,vFirmas.cantElem + 1
+		vFechas.insertElement fFechaFirma,vFechas.cantElem + 1
+		vUsuarios.insertElement sUsuario,vUsuarios.cantElem + 1
+		vHashs.insertElement sHash,vHashs.cantElem + 1
+		
+		Set Me.Firmas=vFirmas
+		Set Me.FechasFirmas=vFechas
+		Set Me.UsuariosFirmas=vUsuarios
+		Set Me.HashsFirmas=vHashs
+		
+		Call doc.ReplaceItemValue(CAMPO_DOC_ESTADO, ESTADO_DOC_FIRMADO)
+		
+		Call doc.Save(True,False)
+		Exit Sub 
+HANDLER:
+		'Call RegistrarYGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Método AddFirma","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Function AddFirma" , Erl, "")
+		Exit Sub 
+		
+	End Sub 
+	'******************************************************************************************************************		
+	
+	Public Property Set FechasFirmas As Vector
+		On Error GoTo HANDLER
+
+		doc.replaceItemValue CAMPO_DOC_FECHAS_FIRMAS,FechasFirmas.values
+
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Set FechasFirmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Propiedad Set FechasFirmas" , Erl, "")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get FechasFirmas As Vector
+		On Error GoTo HANDLER
+		
+		If doc.hasItem(CAMPO_DOC_FECHAS_FIRMAS) Then
+			Set FechasFirmas=New Vector(0)
+			FechasFirmas.values=doc.GetItemValue(CAMPO_DOC_FECHAS_FIRMAS)
+		Else
+			Set FechasFirmas=New Vector(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Get FechasFirmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Propiedad Get FechasFirmas" , Erl, "")
+		Exit Property
+		
+	End Property
+	'******************************************************************************************************************		
+	
+	Public Property Set HashsFirmas As Vector
+		On Error GoTo HANDLER
+
+		doc.replaceItemValue CAMPO_DOC_HASHS_FIRMAS,HashsFirmas.values
+
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Set HashsFirmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Propiedad Set HashsFirmas" , Erl, "")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get HashsFirmas As Vector
+		On Error GoTo HANDLER
+		
+		If doc.hasItem(CAMPO_DOC_HASHS_FIRMAS) Then
+			Set HashsFirmas=New Vector(0)
+			HashsFirmas.values=doc.GetItemValue(CAMPO_DOC_HASHS_FIRMAS)
+		Else
+			Set HashsFirmas=New Vector(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Get HashsFirmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Propiedad Get HashsFirmas" , Erl, "")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************		
+	
+	Public Property Set Firmas As Vector
+		On Error GoTo HANDLER
+
+		doc.replaceItemValue CAMPO_DOC_FIRMAS,Firmas.values
+
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Set Firmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 Propiedad Set Firmas" , Erl, "")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get Firmas As Vector
+		On Error GoTo HANDLER
+		
+		If doc.hasItem(CAMPO_DOC_FIRMAS) Then
+			Dim vFirmas As New Vector(0)
+			vFirmas.values=doc.GetItemValue(CAMPO_DOC_FIRMAS)
+			Set Firmas=vFirmas
+		Else
+			Set Firmas=New Vector(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Get Firmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Propiedad Get Firmas" , Erl, "")
+		Exit Property
+		
+	End Property
+	'******************************************************************************************************************		
+	
+	Public Property Get UsuariosFirmas As Vector
+		On Error GoTo HANDLER
+
+		Set UsuariosFirmas=New Vector(0)
+		If doc.HasItem(CAMPO_DOC_USUARIOS_FIRMAS) Then
+			UsuariosFirmas.values=doc.getItemValue(CAMPO_DOC_USUARIOS_FIRMAS)	
+		End If
+
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Get UsuariosFirmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Propiedad Get UsuariosFirmas" , Erl, "")
+		Exit Property		
+	End Property
+	
+	
+	'******************************************************************************************************************		
+	
+	Public Property Set UsuariosFirmas As Vector
+		On Error GoTo HANDLER
+
+		If Not UsuariosFirmas Is Nothing Then
+			doc.replaceItemValue CAMPO_DOC_USUARIOS_FIRMAS,UsuariosFirmas.values	
+		End If
+		
+		Exit Property		
+HANDLER:
+		'Call RegistraryGenerarError(NOMBRE_APLICACION,"CLASE DOCUMENTOS 2.0 - Propiedad Set UsuariosFirmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Propiedad Set UsuariosFirmas" , Erl, "")
+		Exit Property	
+	End Property
+	'******************************************************************************************************************						
+	
+	Public Sub delFirmas(usuario As string) 
+		'Elimina las firmas de la actuación
+		On Error GoTo HANDLER
+		
+		If Not doc.Getitemvalue(CAMPO_DOC_RESERVADOPARA)(0) = "" and Not doc.Getitemvalue(CAMPO_DOC_RESERVADOPARA)(0) = usuario Then
+			Error 10005,"El documento no se encuentra reservado por usted."
+		End If
+		
+		
+		If doc.HasItem(CAMPO_DOC_FIRMAS) Then
+			doc.removeItem CAMPO_DOC_FIRMAS
+		End If
+		
+		If doc.HasItem(CAMPO_DOC_FECHAS_FIRMAS) Then
+			doc.removeItem CAMPO_DOC_FECHAS_FIRMAS
+		End If
+		
+		If doc.HasItem(CAMPO_DOC_HASHS_FIRMAS) Then
+			doc.removeItem CAMPO_DOC_HASHS_FIRMAS
+		End If
+		
+		If doc.HasItem(CAMPO_DOC_FECHAS_FIRMAS) Then
+			doc.removeItem CAMPO_DOC_FECHAS_FIRMAS
+		End If
+		
+		doc.Save True, false
+		Exit Sub 
+HANDLER:
+		'Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método delFirmas","")
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Método delFirmas" , Erl, "")
+		Exit Sub 
+		
+	End Sub 
+	
+	Public Function numeroAEstado(estado As Integer) As String
+		On Error GoTo handler
+		Select Case estado
+			Case 1    : numeroAEstado = "En Borrador"
+			Case 21   : numeroAEstado = "Reservado"
+			Case 3	  : numeroAEstado = "Para Revisar"
+			Case 4	  : numeroAEstado = "Para Publicar"
+			Case 5	  : numeroAEstado = "Publicado"
+			Case 6	  : numeroAEstado = "Firmado"
+			Case 7	  : numeroAEstado = "Archivado"
+		End Select
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Método numeroAEstado" , Erl, "")
+	End Function
+	
+	%REM
+		Sub checkEstado
+		Description: Comments for Sub
+		
+		estados
+		Public Const ESTADO_DOC_BORRADOR			= 1
+		Public Const ESTADO_DOC_RESERVADO			= 21
+		Public Const ESTADO_DOC_PARA_REVISAR		= 3
+		Public Const ESTADO_DOC_PARA_PUBLICAR		= 4
+		Public Const ESTADO_DOC_PUBLICADO			= 5
+		Public Const ESTADO_DOC_FIRMADO				= 6
+		Public Const ESTADO_DOC_ARCHIVADO			= 7
+
+	%END REM
+	Public Sub checkEstado(accion As String)	
+		On Error GoTo handler
+		Dim estado As Integer
+		estado = CInt(doc.getItemValue(CAMPO_DOC_ESTADO)(0))
+		Dim estadoStr As String
+		estadoStr = numeroAEstado(estado)
+		If (accion=ACC_PDD_LIBERAR) Then
+			'estado!=21 oculto
+			If (estado <> ESTADO_DOC_RESERVADO And estado <> ESTADO_DOC_FIRMADO) Then
+				Error 1, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion=ACC_PDD_ASIGNAR) Then
+			'(estado!=1 & estado!=21 & estado!=4) oculto
+			If(estado <> ESTADO_DOC_BORRADOR And estado <> ESTADO_DOC_RESERVADO And estado <> ESTADO_DOC_PARA_PUBLICAR) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion=ACC_PDD_EDITAR) Then
+			'(estado=4) | (estado=1) | (estado=5) | (estado=7)
+			If(estado = ESTADO_DOC_PARA_PUBLICAR _
+			Or estado = ESTADO_DOC_BORRADOR _
+			Or estado = ESTADO_DOC_PUBLICADO _
+			Or estado = ESTADO_DOC_ARCHIVADO ) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion=ACC_PDD_FIRMAR) Then
+			'estado=1 |estado=5 | estado=7 oculto
+			If(estado = ESTADO_DOC_BORRADOR _
+			Or estado = ESTADO_DOC_PUBLICADO _
+			Or estado = ESTADO_DOC_ARCHIVADO ) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion=ACC_PDD_FIRMAR_Y_PUBLICAR) Then
+			'estado=1 |estado=5 | estado=7 oculto
+			If(estado = ESTADO_DOC_BORRADOR _
+			Or estado = ESTADO_DOC_PUBLICADO _
+			Or estado = ESTADO_DOC_ARCHIVADO ) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion=ACC_PDD_RESERVAR) Then	
+			'estado=21 | estado=3| estado=5 | estado=7 oculto
+			If(estado = ESTADO_DOC_RESERVADO _
+			Or estado = ESTADO_DOC_PARA_REVISAR _
+			Or estado = ESTADO_DOC_PUBLICADO  _
+			Or estado = ESTADO_DOC_ARCHIVADO) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion=ACC_PDD_PUBLICAR) Then	
+			'estado!=6 oculto
+			If (estado <> ESTADO_DOC_FIRMADO) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion = ACC_PDD_ARCHIVAR) Then
+			'estado!=5 oculto
+			If (estado <> ESTADO_DOC_PUBLICADO) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		ElseIf (accion = ACC_PDD_DESARCHIVAR) Then
+			'estado!=7 oculto
+			If (estado <> ESTADO_DOC_ARCHIVADO) Then
+				Error ERROR_ESTADO_INCORRECTO, MSG_ERROR_ESTADO_INCORRECTO & estadoStr
+			End If
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS", "CLASE DOCUMENTOS 2.0 - Método checkEstado" , Erl, "")
+	End Sub
+End Class

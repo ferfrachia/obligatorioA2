@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500598295'>
+<noteinfo noteid='532' unid='FAF08DD1ACD672C803257455004DBD96' sequence='36'>
+<created><datetime>20080526T110908,06-03</datetime></created>
+<modified><datetime>20150311T131746,75-03</datetime></modified>
+<revised><datetime>20150309T094346,77-03</datetime></revised>
+<lastaccessed><datetime>20150311T131746,75-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131746,75-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20081008T152015,27-03</datetime><datetime>20090121T174925,92-03</datetime><datetime
+>20090719T145723,88-03</datetime><datetime>20100609T164936,23-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>BusquedasxNombre</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+gAACACQADABzTm9tQnVzcXVlZGEFAAwAc05vbUJ1c3F1ZWRhAwAFACgAIwADAAwACQAEAHNOb21C
+dXNxdWVkYSRDb25mbGljdCRSRUYABAAEAAAAJAAFAAQARm9ybQEADwBCdXNxdWVkYUdlbmVyYWwA
+CgIDAAcACgAEAAlMMVM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GQABAABEAGYAAAAMAHNOb21CdXNxdWVkYQ==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAQAMAAEAJgAAAFAAAQAACgAAAAAAAAAAAAICAAAAc05vbUJ1c3F1ZWRhIyYA
+AgAkAAwAc05vbUJ1c3F1ZWRhBQAMAHNOb21CdXNxdWVkYQMAJgABAAAAAQEACQEAAAoBAQ4KAAAB
+AK0rAQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAD//wAAAAAAAAAA
+AAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAA
+AAEAAAAAAAEAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$Flags'><text>Y</text></item></note>
+

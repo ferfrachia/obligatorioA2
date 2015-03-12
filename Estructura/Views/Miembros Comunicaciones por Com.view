@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='1246' unid='959B9BEE14690D3983257C2F004F1E70' sequence='15'>
+<created><datetime dst='true'>20131126T122411,36-02</datetime></created>
+<modified><datetime>20150311T131235,88-03</datetime></modified>
+<revised><datetime>20150309T094452,57-03</datetime></revised>
+<lastaccessed><datetime>20150311T131235,88-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131235,88-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Miembros Comunicaciones por Com|MiembrosComxCom</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+1AACACYAAgAkNAUACgBzQ29kaWdvQ29tAQACACMjIgKQAFYBIgIDAAIAIAAKAHNDb2RpZ29Db20F
+AAoAc0NvZGlnb0NvbQMABQA2ADEABQAKAAIACgAJAAQAc0NvZGlnb0NvbSQ0c0NvZGlnb0NvbSRD
+b25mbGljdCRSRUYABAAEAAAAQAAFAAQARm9ybQEAFABNaWVtYnJvc0NvbXVuaWNhY2lvbgoCBAAF
+AAkAJENvbmZsaWN0AGgBHgEcAgQAAwAHABIADAAJTDFTNFM1UzdTOFM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+IAACAABEiGYHAAAKAABmAAoAAgBzQ29kaWdvQ29tJDQ=
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAcACAAAAFZDAwAKAAAAAAAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMBAAIAAAA0AAAAqAAB
+AAAKAAAAAAAAAAAAAgIAAABWQwAACgAAACIAAABQAAEAAAoAAAAAAAAAAAACAgAAAHNDb2RpZ29D
+b20kNDQAAgAmAAIAJDQFAAoAc0NvZGlnb0NvbQEAAgAjIyICkABWASICAwAHAAwABQAJMFMwRQBz
+Q29kaWdvQ29tIgACACAACgBzQ29kaWdvQ29tBQAKAHNDb2RpZ29Db20DACYAAQAAAAEBAAkBAAAK
+AQEOCgAAAQCtKwEAAQABAgAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAA//8A
+AAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAP//AAAAAAAAAAAAAAAA
+AABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD/
+//8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAgICAAAEAAAAAAAAA
+CAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAOzp2AABAAAAAAAJAAAAAAABAOzp2AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/VgAAAAEAAACfAQAADQAAAAAAAABDb25maWd1cmFjaW9uADIAAAAkAAIADRgAAAAAAAAB
+AA4AZkNvbmZpZ3VyYWNpb27tAgMABwAMAAUACTBTMEUAvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9F
+ZGl0IERvY3VtZW50AwACCr7/KAAAAAUAAACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAQAAwq+
+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0ZvcndhcmQFAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9N
+b3ZlIFRvIEZvbGRlci4uLgYAPXy+/y4AAAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZv
+bGRlcgAHAD58
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv9WAAAAAQAAAJ8BAAANAAAAAAAAAENvbmZpZ3VyYWNpb24AMgAAACQAAgANGAAA
+AAAAAAEADgBmQ29uZmlndXJhY2lvbu0CAwAHAAwABQAJMFMwRQC+/ygAAAAFAAAAnQEAAA4AAAAA
+AAAAX0VkaXQgRG9jdW1lbnQDAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9TZW5kIERvY3VtZW50
+BAADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAUABAq+/ywAAAAFAAAAnQEAABIAAAAA
+AAAAX01vdmUgVG8gRm9sZGVyLi4uBgA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVtb3ZlIEZy
+b20gRm9sZGVyZQcAPnw=
+</rawitemdata></item></note>
+

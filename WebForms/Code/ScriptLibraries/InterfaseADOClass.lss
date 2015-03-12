@@ -1,0 +1,664 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+' Clase que interfasea con los manejadores de ADO.
+' ----------------------------------------------------------------------------------------------
+' Si la clase es utilizada por un Agente que corre en el servidor la 
+' SEGURIDAD DEL AGENTE debe setearse en: "2. Permitir operaciones restringidas"
+'
+' ---------------------------------- METODOS ---------------------------------------------------
+' Sub New
+'
+' Function ConectarConDB2 ( pDatabase As String, pHost As String, pPort As String, pUser As String, pPassword As String ) As String
+'
+' Function ConectarConOracle ( pDatabase As String, pHost As String, pPort As String, pUser As String, pPassword As String ) As String
+'
+' Function ConectarConDBF ( pDatabase As String ) As String
+'
+' Function Seleccionar ( pSeleccion As String, pEsquemaTabla As String, pCondicion As String ) As String
+'
+' Function UndoSeleccion As String
+'
+' Function Insertar ( pEsquemaTabla As String, pColumnas As String, pValores As String ) As String
+'
+' Function Actualizar ( pEsquemaTabla As String, pActualizacion As String, pCondicion As String ) As String
+'
+' Function EliminarTupla ( pEsquemaTabla as String, pCondicion as String ) As String
+'
+' Function HayTuplas As Boolean
+'
+' Function CantidadTuplas as Long
+'
+' Function Iterar As String
+'
+' Function IrAlPrimero as String
+'
+' Function IrAlUltimo as String
+'
+' Function IrAlAnterior as String
+'
+' Function ObtenerValorColumna ( pNombreCol As String, pTipoDato As String ) As Variant
+'
+' Function SetearValorColumna ( pNombreCol As String, pValor As Variant ) As String 
+'
+' Function Liberar As String
+'
+' ----------------------------- METODOS COMPLETO -----------------------------------------------
+' Sub New
+'	* crea una instancia del Handler
+' ----------------------------------------------------------------------------------------------
+' Function ConectarConDB2 ( pDatabase As String, pHost As String, pPort As String, pUser As String, pPassword As String ) As String
+'	- pDatabase, nombre de la base de datos
+'	- pHost, ip o nombre del servidor
+'	- pPort, puerto de comunicacion
+'	- pUser, nombre de usuario
+'	- pPassword, password del usuario
+'
+'	* se conecta y abre la base Oracle especificada
+'	* inicializa el manejador de resultados de consultas
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function ConectarConOracle ( pDatabase As String, pHost As String, pPort As String, pUser As String, pPassword As String ) As String
+'	- pDatabase, nombre de la base de datos
+'	- pHost, ip o nombre del servidor
+'	- pPort, puerto de comunicacion
+'	- pUser, nombre de usuario
+'	- pPassword, password del usuario
+'
+'	* se conecta y abre la base Oracle especificada
+'	* inicializa el manejador de resultados de consultas
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function ConectarConDBF ( pDatabase As String ) As String
+'	- pDatabase, path a los archivos dbf
+'
+'	* se conecta y abre el directorio con los archivos dbf especificados
+'	* inicializa el manejador de resultados de consultas
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function Seleccionar ( pSeleccion As String, pEsquemaTabla As String, pCondicion As String ) As String
+'	- seleccion de tuplas, p.ej.: *; ID, NOMBRE; ID; COUNT(*)
+'	- nombre de esquema y de tabla, p.ej.: ESQUEMA1.TABLA1
+'	- (opcional) condicion, clausula WHERE
+'
+'	* obtiene los resultados solicitados
+'	* la propia clase manejara los mismos
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function UndoSeleccion As String
+'	* limpia los resultados
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function Insertar ( pEsquemaTabla As String, pColumnas As String, pValores As String ) As String
+'	- nombre de esquema y de tabla, p.ej.: ESQUEMA1.TABLA1
+'	- nombre de columnas a insertar, p.ej.: ID, NOMBRE, DESC
+'	- valores nuevos as insertar, p.ej.: 12, 'MARTIN', 'Descripcion'
+'
+'	* inserta la tupla especificada en la tabla
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function Actualizar ( pEsquemaTabla As String, pActualizacion As String, pCondicion As String ) As String
+'	- nombre de esquema y de tabla, p.ej.: ESQUEMA1.TABLA1
+'	- actualizacion, p.ej.: NOMBRE = 'Martin'
+'	- (opcional) condicion, clausula WHERE, p.ej.: WHERE ID = 12
+'	  tambien se puede ingresar un condicion basada en una query
+'
+'	* actualiza la/s tupla/s especificadas con los valores especificados
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function EliminarTupla ( pEsquemaTabla as String, pCondicion as String ) As String
+'	- nombre de esquema y de tabla, p.ej.: ESQUEMA1.TABLA1
+'	- condicion, clausula WHERE, p.ej.: WHERE ID = 12
+'
+'	* borra la/s tupla/s que cumplan la condicion
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function HayTuplas As Boolean
+'	+ devuelve true si existe tuplas en el resultado, false en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function CantidadTuplas as Long
+'	+ devuelve la cantidad de tuplas en el resultado
+' ----------------------------------------------------------------------------------------------
+' Function Iterar As String
+'	* me muevo a la proxima tupla de los resultados
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function IrAlPrimero As String
+'	* me muevo a la primer tupla de resultados
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function IrAlUltimo As String
+'	* me muevo a la ultima tupla de resultados
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function IrAlAnterior As String
+'	* me muevo a la tupla anterior de resultados
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function ObtenerValorColumna ( pNombreCol As String, pTipoDato As String ) As Variant
+'	- nombre de la columna
+'	- tipo para devolucion del dato (PRE: el tipo de origen se puede 'castear' al tipo solicitado)
+'	  tipos: "TXT", "LONG", "INT", "DBL", "DATE", "DATETIME"
+'
+'	* obtiene el valor de la columna especificada, en la tupla actual
+'
+'	+ se devuelve con el tipo seleccionado
+' ----------------------------------------------------------------------------------------------
+' Function SetearValorColumna ( pNombreCol As String, pValor As Variant ) As String
+'	- nombre de la columna a setear
+'	- valor a guardar
+'
+'	* setea y guarda el nuevo valor en la columna especificada
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+' Function Liberar As String
+'	* libera y cierra el manejador de resultados
+'	* libera y cierra la conexion
+'
+'	+ retorna STATUS_OK en caso de exito y una descripcion del error en caso contrario
+' ----------------------------------------------------------------------------------------------
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class InterfaseADO
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+' Constantes de la clase
+Private Const MENSAJE_ERROR		= "InterfaseADOClass ERROR - Rutina: "
+Private Const MENSAJE_LINEA		= " - Linea: "
+Private Const MENSAJE_DETALLE		= " - Detalle: "
+' -------------------------------------------------------------------------------------------------
+Private Const STATUS_OK			= "OK"
+' -------------------------------------------------------------------------------------------------
+Private Const TIPO_TEXTO			= "TXT"
+Private Const TIPO_LONG			= "LONG"
+Private Const TIPO_INTEGER		= "INT"
+Private Const TIPO_DOUBLE		= "DBL"
+Private Const TIPO_DATE			= "DATE"
+Private Const TIPO_DATE_TIME		= "DATETIME"
+' -------------------------------------------------------------------------------------------------
+Private Const PROVIDER_DB2		= "IBMDADB2"
+Private Const PROVIDER_ORACLE		= "MSDAORA"
+Private Const PROVIDER_DBF		= "Microsoft.Jet.OLEDB.4.0"
+' -------------------------------------------------------------------------------------------------
+Private Const ADLOCKOPTIMISTIC	= 3
+Private Const ADUSECLIENT		= 3
+Private Const ADOPENSTATIC		= 3
+' -------------------------------------------------------------------------------------------------
+
+' Definicion de la clase
+Public Class InterfaseADO
+	
+	' propiedades de la clase
+	Private cAdoCon As Variant	' coneccion
+	Private cAdoRs As Variant	' resultados
+	Private cProvider As String	' nombre del provider
+	Private cUser As String		' nombre de usuario
+	Private cPassword As String	' password
+	Private cSQL As String		' sentencia sql
+	Private cDatabase As String	' database
+	Private cHostname As String	' host name
+	Private cPort As String		' port
+	' -------------------------------------------------------------------------------------------------
+	
+	' constructor
+	Public Sub New
+		
+		On Error Goto handler
+		
+		Const RUTINA = "New"
+		
+		Set cAdoCon 	= Nothing
+		Set cAdoRs 	= Nothing
+		cProvider		= ""
+		cUser		= ""
+		cPassword		= ""
+		cSQL			= ""
+		cDatabase		= ""
+		cHostname		= ""
+		cPort		= ""
+		
+		Exit Sub
+handler:
+		Msgbox MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 	
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Sub
+	' -------------------------------------------------------------------------------------------------
+	
+	' conexion con DB2
+	Public Function ConectarConDB2 ( pDatabase As String, pHost As String, pPort As String, pUser As String, pPassword As String ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "ConectarConDB2"
+		
+		Dim adoStr As String
+		
+		cProvider = PROVIDER_DB2
+		cDatabase = pDatabase
+		cHostname = pHost
+		cPort = pPort
+		cUser = pUser
+		cPassword = pPassword
+		
+		adoStr = "Provider=" & cProvider
+		adoStr = adoStr & ";Database=" & cDatabase
+		adoStr = adoStr & ";Hostname=" & cHostname
+		adoStr = adoStr & ";Protocol=TCPIP;Port=" & cPort
+		adoStr = adoStr & ";Uid=" & cUser
+		adoStr = adoStr & ";Pwd=" & cPassword & ";"
+		
+		Set cAdoCon = CreateObject ("ADODB.Connection")
+		cAdoCon.Open adoStr
+		
+		Set cAdoRs = CreateObject ("ADODB.RecordSet")
+		cAdoRs.CursorLocation = ADUSECLIENT
+		cAdoRs.CursorType = ADOPENSTATIC
+		cAdoRs.LockType = ADLOCKOPTIMISTIC
+		
+		ConectarConDB2 = STATUS_OK
+		
+		Exit Function
+handler:
+		ConectarConDB2 = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' conexion con Oracle
+	Public Function ConectarConOracle ( pDatabase As String, pHost As String, pPort As String, pUser As String, pPassword As String ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "ConectarConOracle"
+		
+		Dim adoStr As String
+		
+		cProvider = PROVIDER_ORACLE
+		cDatabase = pDatabase
+		cHostname = pHost
+		cPort = pPort
+		cUser = pUser
+		cPassword = pPassword
+		
+		adoStr = "Provider=" & cProvider
+		adoStr = adoStr & ";Data Source=" & cHostname
+		If cPort <> "" Then
+			adoStr = adoStr & ":" & cPort
+		End If
+		adoStr = adoStr & "/" & cDatabase
+		adoStr = adoStr & ";User Id=" & cUser
+		adoStr = adoStr & ";Password=" & cPassword & ";"
+		
+		Set cAdoCon = CreateObject ("ADODB.Connection")
+		cAdoCon.Open adoStr
+		
+		Set cAdoRs = CreateObject ("ADODB.RecordSet")
+		cAdoRs.CursorLocation = ADUSECLIENT
+		cAdoRs.CursorType = ADOPENSTATIC		
+		cAdoRs.LockType = ADLOCKOPTIMISTIC
+		
+		ConectarConOracle = STATUS_OK
+		
+		Exit Function
+handler:
+		ConectarConOracle = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' conexion con Archivos DBF
+	Public Function ConectarConDBF ( pDatabase As String ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "ConectarConDBF"
+		
+		Dim adoStr As String
+		
+		cProvider = PROVIDER_DBF
+		cDatabase = pDatabase
+		cHostname = ""
+		cPort = ""
+		cUser = "Admin"
+		cPassword = ""
+		
+		adoStr = "Provider=" & cProvider
+		adoStr = adoStr & ";Data Source=" & cDatabase
+		adoStr = adoStr & ";Extended Properties=dBASE IV"
+		adoStr = adoStr & ";User ID=" & cUser
+		adoStr = adoStr & ";Password=" & cPassword & ";"
+		
+		Set cAdoCon = CreateObject ("ADODB.Connection")
+		cAdoCon.Open adoStr
+		
+		Set cAdoRs = CreateObject ("ADODB.RecordSet")
+		cAdoRs.CursorLocation = ADUSECLIENT
+		cAdoRs.CursorType = ADOPENSTATIC
+		cAdoRs.LockType = ADLOCKOPTIMISTIC
+		
+		ConectarConDBF = STATUS_OK
+		
+		Exit Function
+handler:
+		ConectarConDBF = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' seleccion de tuplas
+	Public Function Seleccionar ( pSeleccion As String, pEsquemaTabla As String, pCondicion As String ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "Seleccionar"
+		
+		cSQL = "SELECT " & pSeleccion & " FROM " & pEsquemaTabla
+		If pCondicion <> "" Then
+			cSQL = cSQL & " WHERE " & pCondicion
+		End If
+		
+		cAdoRs.Open cSQL, cAdoCon
+		
+		Seleccionar = STATUS_OK
+		
+		Exit Function
+handler:
+		Seleccionar = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' reseteo de los resultados de una consulta
+	Public Function UndoSeleccion As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "UndoSeleccion"
+		
+		If cAdoRs.State > 0 Then
+			cAdoRs.Close
+		End If
+		
+		UndoSeleccion = STATUS_OK
+		
+		Exit Function
+handler:
+		UndoSeleccion = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' insercion de tupla
+	Public Function Insertar ( pEsquemaTabla As String, pColumnas As String, pValores As String ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "Insertar"
+		
+		cSQL = "INSERT INTO " & pEsquemaTabla & " (" & pColumnas & ") VALUES (" & pValores & ")"
+		cAdoCon.Execute cSQL
+		
+		Insertar = STATUS_OK
+		
+		Exit Function
+handler:
+		Insertar = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' actualizacion de tupla
+	Public Function Actualizar ( pEsquemaTabla As String, pActualizacion As String, pCondicion As String ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "Actualizar"
+		
+		cSQL = "UPDATE " & pEsquemaTabla & " SET " & pActualizacion
+		If pCondicion <> "" Then
+			cSQL = cSQL & " WHERE " & pCondicion	
+		End If
+		cAdoCon.Execute cSQL
+		
+		Actualizar = STATUS_OK
+		
+		Exit Function
+handler:
+		Actualizar = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' borrado de una tupla
+	Function EliminarTupla ( pEsquemaTabla As String, pCondicion As String ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "EliminarTupla"
+		
+		cSQL = "DELETE FROM " & pEsquemaTabla & " WHERE " & pCondicion
+		cAdoCon.Execute cSQL
+		
+		EliminarTupla = STATUS_OK
+		
+		Exit Function
+handler:
+		Msgbox MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' existen resultados
+	Public Function HayTuplas As Boolean
+		
+		On Error Goto handler
+		
+		Const RUTINA = "HayTuplas"
+		
+		HayTuplas = Not cAdoRs.EOF
+		
+		Exit Function
+handler:
+		Msgbox MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' cantidad de resultados
+	Public Function CantidadTuplas As Long
+		
+		On Error Goto handler
+		
+		Const RUTINA = "CantidadTuplas"
+		
+		CantidadTuplas = cAdoRs.RecordCount
+		
+		Exit Function
+handler:
+		Msgbox MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' iterar sobre las tuplas
+	Public Function Iterar As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "Iterar"
+		
+		cAdoRs.MoveNext
+		
+		Iterar = STATUS_OK
+		
+		Exit Function
+handler:
+		Iterar = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' ir al primero
+	Public Function IrAlPrimero As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "IrAlPrimero"
+		
+		cAdoRs.MoveFirst
+		
+		IrAlPrimero = STATUS_OK
+		
+		Exit Function
+handler:
+		IrAlPrimero = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' ir al ultimo
+	Public Function IrAlUltimo As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "IrAlUltimo"
+		
+		cAdoRs.MoveLast
+		
+		IrAlUltimo = STATUS_OK
+		
+		Exit Function
+handler:
+		IrAlUltimo = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' ir al resultado anterior
+	Public Function IrAlAnterior As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "IrAlAnterior"
+		
+		cAdoRs.MovePrevious
+		
+		IrAlAnterior = STATUS_OK
+		
+		Exit Function
+handler:
+		IrAlAnterior = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' obtener el valor de una columna en la tupla actual
+	Public Function ObtenerValorColumna ( pNombreCol As String, pTipoDato As String ) As Variant
+		
+		On Error Goto handler
+		
+		Const RUTINA = "ObtenerValorColumna"
+		
+		Dim result As Variant
+		
+		If Isnull(cAdoRs.Fields(pNombreCol).value) Then
+			ObtenerValorColumna = Null
+			Exit Function
+		End If
+		
+		Select Case pTipoDato
+		Case TIPO_TEXTO
+			result = Cstr(cAdoRs.Fields(pNombreCol).value)
+		Case TIPO_LONG	
+			result = Clng(cAdoRs.Fields(pNombreCol).value)
+		Case TIPO_INTEGER
+			result = Cint(cAdoRs.Fields(pNombreCol).value)
+		Case TIPO_DOUBLE
+			result = Cdbl(cAdoRs.Fields(pNombreCol).value)
+		Case TIPO_DATE
+			result = Datevalue(cAdoRs.Fields(pNombreCol).value)
+		Case TIPO_DATE_TIME
+			result = Cdat(cAdoRs.Fields(pNombreCol).value)
+		Case Else
+			Error 1001, "El tipo ingresado no es correcto"
+		End Select
+		
+		ObtenerValorColumna = result
+		
+		Exit Function
+handler:
+		ObtenerValorColumna = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' setear el valor de una columna en la tupla actual
+	Public Function SetearValorColumna ( pNombreCol As String, pValor As Variant ) As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "SetearValorColumna"
+		
+		' codigo
+		cAdoRs.Update pNombreCol, pValor
+		
+		SetearValorColumna = STATUS_OK
+		
+		Exit Function
+handler:
+		SetearValorColumna = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' destructor
+	Public Function Liberar As String
+		
+		On Error Goto handler
+		
+		Const RUTINA = "Liberar"
+		
+		If cAdoRs.State > 0 Then
+			cAdoRs.Close
+		End If
+		
+		If cAdoCon.State > 0 Then
+			cAdoCon.Close
+		End If
+		
+		Liberar = STATUS_OK
+		
+		Exit Function
+handler:
+		Liberar = MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+		Msgbox "---->> " & MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Function
+	' -------------------------------------------------------------------------------------------------
+	
+	' TEMPLATE PARA METODO
+	Public Sub NombreMetodo
+		
+		On Error Goto handler
+		
+		Const RUTINA = "NombreMetodo"
+		
+		' codigo
+		
+		Exit Sub
+handler:
+		Msgbox MENSAJE_ERROR & RUTINA & MENSAJE_LINEA & Erl & MENSAJE_DETALLE & Error 		
+	End Sub
+	' -------------------------------------------------------------------------------------------------
+	
+End Class

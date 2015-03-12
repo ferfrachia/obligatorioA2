@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='1396' unid='435372233015F3F083257D0B00521D80' sequence='10'>
+<created><datetime>20140704T115655,04-03</datetime></created>
+<modified><datetime>20150311T131237,40-03</datetime></modified>
+<revised><datetime>20150309T094453,13-03</datetime></revised>
+<lastaccessed><datetime>20150311T131237,40-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131237,40-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Jorge Kleinman/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABRZUaW1lcyBOZXcgUm9tYW4AAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>tiny_mce</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>tiny_mce</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/ywAAQAACjxz
+Y3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBzcmM9It0GAACt/6n/mgABABgABACOAI4AAACC
+AAEACwBJR0RvY0NvbmZpZwABAAoAclByb3RvY29sb/cCAQADADovLwAiAgEACwBJR0RvY0NvbmZp
+ZwABAAUAc0hvc3QA9wIAAAAAAAAAAPA/awIiAgEAAQA6ACICAQALAElHRG9jQ29uZmlnAAEABwBz
+UHVlcnRvAPcCIgIDAAcACgAEAAkyOFOF/wgAAQAACqoC3gYAAK4Ahf8IAAEAAArdBgAArf+p/0AA
+AQAYAAQANAA0AAAAJgABAAsASUdET0NDT05GSUcAAQAJAHNQYXRoVGlueQD3AgMABwAMAAUACTBT
+MEUAhf8IAAEAAAqqAt4GAACuAIX/EwABAAAKIj48L3NjcmlwdD4AgQKDBAEAhf89AAEAAAo8c2Ny
+aXB0IGxhbmd1YWdlPSJqYXZhc2NyaXB0IiB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiPgCBAoMEAQCF
+/xcAAQAACgl0aW55TUNFLmluaXQoewCBAoMEAQCF/x0AAQAACgkJdGhlbWUgOiAiYWR2YW5jZWQi
+LACBAoMEAQCF/yYAAQAACgkJbW9kZSA6ICJzcGVjaWZpY190ZXh0YXJlYXMiLIECgwQBAIX/KAAB
+AAAKCQllZGl0b3Jfc2VsZWN0b3IgOiAibWNlRWRpdG9yIiyBAoMEAQCF/xoAAQAACgkJbGFuZ3Vh
+Z2UgOiAiZXMiLIECgwQBAIX/JwABAAAKCQljb250ZW50X2NzcyA6ICJhZHZhbmNlZC5jc3MiLACB
+AoMEAQCF/zoAAQAACgkJZXh0ZW5kZWRfdmFsaWRfZWxlbWVudHMgOiAiYVtocmVmfHRhcmdldHxu
+YW1lXSIsgQKDBAEAhf8TAAEAAAoJCXBsdWdpbnMgOgCF/wcBAQAACiJzYWZhcmksc3BlbGxjaGVj
+a2VyLHBhZ2VicmVhayxzdHlsZSxsYXllcix0YWJsZSxzYXZlLGFkdmhyLGFkdmltYWdlLGFkdmxp
+bmssZW1vdGlvbnMsaWVzcGVsbCxpbmxpbmVwb3B1cHMsaW5zZXJ0ZGF0ZXRpbWUscHJldmlldyxt
+ZWRpYSxzZWFyY2hyZXBsYWNlLHByaW50LGNvbnRleHRtZW51LHBhc3RlLGRpcmVjdGlvbmFsaXR5
+LGZ1bGxzY3JlZW4sbm9uZWRpdGFibGUsdmlzdWFsY2hhcnMsbm9uYnJlYWtpbmcseGh0bWx4dHJh
+cyx0ZW1wbGF0ZQCF/wwAAQAACiIsICCBAoMEAQCF/6YAAQAACgl0aGVtZV9hZHZhbmNlZF9idXR0
+b25zMSA6ICJzdHlsZXNlbGVjdCxmb250c2VsZWN0LGZvbnRzaXplc2VsZWN0LHwsYm9sZCxpdGFs
+aWMsdW5kZXJsaW5lLHN0cmlrZXRocm91Z2gsfCxqdXN0aWZ5bGVmdCxqdXN0aWZ5Y2VudGVyLGp1
+c3RpZnlyaWdodCxqdXN0aWZ5ZnVsbCIsgQKDBAEAhf9AAAEAAAoJCXRoZW1lX2FkdmFuY2VkX2J1
+dHRvbnMyX2FkZCA6ICJ8LGZvcmVjb2xvcixiYWNrY29sb3IiLIECgwQBAIX/QgABAAAKCQl0aGVt
+ZV9hZHZhbmNlZF9idXR0b25zMl9hZGRfYmVmb3JlIDogImN1dCxjb3B5LHBhc3RlLHwiLIECgwQB
+AIX/SQABAAAKCQl0aGVtZV9hZHZhbmNlZF9idXR0b25zM19hZGRfYmVmb3JlIDogInRhYmxlY29u
+dHJvbHMsc2VwYXJhdG9yIiwAgQKDBAEAhf81AAEAAAoJCXRoZW1lX2FkdmFuY2VkX2Rpc2FibGUg
+OiAiaGVscCxpbWFnZSxjb2RlIiwAgQKDBAEAhf+RAAEAAAoJCXRoZW1lX2FkdmFuY2VkX3N0eWxl
+cyA6ICJIZWFkZXIgMT1oZWFkZXIxO0hlYWRlciAyPWhlYWRlcjI7SGVhZGVyIDM9aGVhZGVyMztU
+YWJsZSBSb3c9dGFibGVSb3cxIiwgLy8gVGhlbWUgc3BlY2lmaWMgc2V0dGluZyBDU1MgY2xhc3Nl
+cwCBAoMEAQCF/woAAQAACgkJhf8wAAEAAAp0aGVtZV9hZHZhbmNlZF90b29sYmFyX2xvY2F0aW9u
+IDogInRvcCIsgQKDBAEAhf8wAAEAAAoJCXRoZW1lX2FkdmFuY2VkX3Rvb2xiYXJfYWxpZ24gOiAi
+bGVmdCIsgQKDBAEAhf8XAAEAAAoJCWRlYnVnIDogZmFsc2UAgQKDBAEAhf8MAAEAAAoJfSk7gQKD
+BAEAhf8RAAEAAAo8L3NjcmlwdD4Azf8IAAAAAAA=
+</rawitemdata></item></note>
+

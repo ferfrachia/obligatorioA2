@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E9F2'>
+<noteinfo noteid='b52' unid='933B186D85767AD583257B280065E55B' sequence='24'>
+<created><datetime dst='true'>20130308T163258,51-02</datetime></created>
+<modified><datetime>20150311T131123,05-03</datetime></modified>
+<revised><datetime>20150309T094334,32-03</datetime></revised>
+<lastaccessed><datetime>20150311T131123,05-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131123,05-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>jQueryConfig</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$WEBQuerySave' sign='true'><formula>@Command([ToolsRunMacro]; "jQuerySave")</formula></item>
+<item name='$WEBQueryOpen' sign='true'><formula>@Command([ToolsRunMacro]; "jqueryopen")</formula></item>
+<item name='$Flags'><text/></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>jQueryConfig</text></item>
+<item name='SAVEOPTIONS' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='pathJSJQuery' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='pathCssJQuery' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='pathUiJQuery' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>pathUiJQuery</text><text>pathCssJQuery</text><text
+>pathJSJQuery</text><text>SaveOptions</text></textlist></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJWHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAArdBgAAiv/+/1AA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AHgAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAIr/PgCIAQAFADACAAAAAAAAAgEAAAoOAAAAAAAAAAsAAAAAAA4A
+AAAMAAEAAQAwAAMAU2F2ZU9wdGlvbnMAYg4BAIQAAAAAAAAAAADeBgAAiv+F/wgAAQAACoECgv9a
+AAIAAAAAAAAAAACgBQAAoAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAQAAAACUhwAAAAAAAAAAAAAAAAEAAAAEAAAAgwQCAIX/CAABAAAKgQKDBAIAhf8ZAAEAAApQ
+YXRoIGpxdWVyeS5qcwkJCQDdBgAAiv/+/1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAB4AHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIr/MACKAAAFADAC
+AAAAAAAAAgEAAAoAAAAAAAAAAAwAAAAAAHBhdGhKU0pRdWVyeXr/JAAAAAAACgAAAAAAAAAAAAAA
+AAAAAAAAd2lkdGg9MTAwJWIOAQCEAAAAAAAAAAAA3gYAAIr/hf8IAAEAAAqBAoMEAgCF/xoAAQAA
+ClBhdGgganF1ZXJ5IGNzcwkJCd0GAACK//7/UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAHgAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiv8yAIoAAAUA
+MAIAAAAAAAACAQAACgAAAAAAAAAADQAAAAAAcGF0aENzc0pRdWVyeQB6/yQAAAAAAAoAAAAAAAAA
+AAAAAAAAAAAAAHdpZHRoPTEwMCViDgEAhAAAAAAAAAAAAN4GAACK/4X/CAABAAAKgQKDBAIAhf8g
+AAEAAApQYXRoIGNhcnBldGEgdWkganF1ZXJ5CQndBgAAiv/+/1AAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAB4AHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AIr/MACKAAAFADACAAAAAAAAAgEAAAoAAAAAAAAAAAwAAAAAAHBhdGhVaUpRdWVyeXr/JAAAAAAA
+CgAAAAAAAAAAAAAAAAAAAAAAd2lkdGg9MTAwJWIOAQCEAAAAAAAAAAAA3gYAAIr/hf8IAAEAAAqB
+AoMEAgCF/wgAAQAACoECgwQCAIX/CAABAAAK
+</rawitemdata></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRw/AAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAPDw8AABAAAAAAAJAAAAAAABAPDw8AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/z4AAAABAAAAnwEAAAcAAAAAAAAAR3VhcmRhcgAgAAAA
+EgACAMYLAAAAAAAA7QEDAAcADAAFAAkwUzBFAA==
+</rawitemdata></item></note>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1fe" sequence="51" unid="953470C884BA20AF0325738A00483D36">
+<created><datetime>20071105T100902,62-03</datetime></created>
+<modified><datetime>20150309T094353,96-03</datetime></modified>
+<revised><datetime>20150309T094353,95-03</datetime></revised>
+<lastaccessed><datetime>20150309T094353,96-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100906,91-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071113T165955,45-03</datetime><datetime>20071218T165052,21-03</datetime><datetime>20071218T165205,03-03</datetime><datetime>20071218T165230,34-03</datetime><datetime>20080328T143614,16-03</datetime><datetime>20081029T161703,33-03</datetime><datetime dst="true">20081117T102120,65-02</datetime><datetime dst="true">20081119T085512,97-02</datetime><datetime dst="true">20081119T162408,78-02</datetime><datetime dst="true">20081122T153309,92-02</datetime><datetime dst="true">20081124T104331,54-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$TITLE" sign="true"><text>FuncionesGeneralesBKUP</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.2</text></item>
+<item name="$POID"><datetime>20130923T103126,14-03</datetime></item></note>

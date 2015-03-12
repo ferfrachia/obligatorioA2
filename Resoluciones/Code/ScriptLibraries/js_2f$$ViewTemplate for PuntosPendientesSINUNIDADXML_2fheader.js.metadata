@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A68FF" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="2d82" sequence="8" unid="8A8BE20816794BC983257D65004C41E2">
+<created><datetime>20141002T105256,02-03</datetime></created>
+<modified><datetime>20150311T132825,12-03</datetime></modified>
+<revised><datetime>20150309T094515,32-03</datetime></revised>
+<lastaccessed><datetime>20150311T132825,12-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132825,12-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Melissa Vidal/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime>20100701T102215,70-03</datetime></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+<item name="$TITLE" sign="true"><text>js/$$ViewTemplate for PuntosPendientesSINUNIDADXML/header</text></item></note>

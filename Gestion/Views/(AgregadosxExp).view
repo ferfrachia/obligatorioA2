@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='13be' unid='336A7A57ACA92C6683257DC8004FD227' sequence='15'>
+<created><datetime dst='true'>20150109T123151,43-02</datetime></created>
+<modified><datetime>20150311T131046,99-03</datetime></modified>
+<revised><datetime>20150309T094423,43-03</datetime></revised>
+<lastaccessed><datetime>20150311T131046,99-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131046,99-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060328T103806,35-03</datetime><datetime>20060410T165850,43-03</datetime><datetime
+>20060410T171410,96-03</datetime><datetime>20060410T171630,03-03</datetime><datetime
+>20060410T172001,26-03</datetime><datetime>20060410T180125,12-03</datetime><datetime
+>20060411T104902,06-03</datetime><datetime>20060412T134103,82-03</datetime><datetime
+>20060412T134643,42-03</datetime><datetime>20060412T134756,97-03</datetime><datetime
+>20060412T140630,48-03</datetime><datetime>20060412T140807,37-03</datetime><datetime
+>20060530T120220,52-03</datetime><datetime>20060623T174940,97-03</datetime><datetime
+>20060623T175134,88-03</datetime><datetime>20060623T180325,69-03</datetime><datetime
+>20060725T121840,81-03</datetime><datetime>20060725T122042,96-03</datetime><datetime
+>20060725T122250,16-03</datetime><datetime>20061013T104014,91-03</datetime><datetime
+ dst='true'>20061101T113023,15-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(AgregadosxExp)|VAgregadosxExp</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+/AECACQADABzQ29kaWdvUGFkcmUFAAwAc0NvZGlnb1BhZHJlAwACAIAAAgAkMwEAVABbPHRyPjx0
+ZD48SU5QVVQgIG9uS2V5UHJlc3M9InJldHVybiBmYWxzZTsiIFRZUEU9Y2hlY2tib3ggTkFNRT0i
+QWdyZWdhZG9zIiAgIFZBTFVFPSIFAAgAY2NOcm9FeHAiAgEACQAiID48L3RkPl0AIgIDAAIARAAC
+ACQ3AQATAFs8dGQ+PG5vYnI+TqcgRXhwOiAABQAIAGNjTnJvRXhwIgIBAA0APC9ub2JyPjwvdGQ+
+XQAiAgMAAgBAAAIAJDgBAAsAWzx0ZD48bm9icj4ABQAHAHNBc3VudG8AIgIBABIAPC9ub2JyPjwv
+dGQ+PC90cj5dIgIDAAUALgApAAUADAACAAIAAgAJAHNDb2RpZ29QYWRyZSQzJDckOCRDb25mbGlj
+dAAEAAQAAAB8AAUABABGb3JtAQAJAEZDYXJhdHVsYQAKAgUACABjY0VzdGFkbwEACABBZ3JlZ2Fk
+bwoCBQAIAGNjRXN0YWRvAQAJAEFyY2hpdmFkbwAKAh0CBAAcAgUADABzQ29kaWdvUGFkcmVqAQAA
+AAAAAAAA8D8KAgQAHAIDAAcAJAAeAAlMMVM0UzVTNlM5UzEwUzE0UzE1UzIwUzIxUzIyUw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GQABAABEiGYHAAAMAHNDb2RpZ29QYWRyZQ==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAEAAkACgAAAFZDAwQMAAAAJgAAAAgAAQAACgABAAAAAAAAAAICAAAAVkOAAAIAQACQAAAAMQIF
+AAAJAAAAAAAAAAAAAgIAAABWQwAAAgAOAFIAAABQAAEAAQoAAAAAAAAAAAACAgAAAFZDAAACAAYA
+TgAAAFUBAQABCgAAAAAAAAAAAAICAAAAc0NvZGlnb1BhZHJlJgACACQADABzQ29kaWdvUGFkcmUF
+AAwAc0NvZGlnb1BhZHJlAwAkM1s8dGFibGUgYm9yZGVyPSIwIiBjZWxsc3BhY2luZz0iMCIgY2Vs
+bHBhZGRpbmc9IjEiIHdpZHRoPSIyMDAiPl2QAAIAgAACACQzAQBUAFs8dHI+PHRkPjxJTlBVVCAg
+b25LZXlQcmVzcz0icmV0dXJuIGZhbHNlOyIgVFlQRT1jaGVja2JveCBOQU1FPSJBZ3JlZ2Fkb3Mi
+ICAgVkFMVUU9IgUACABjY05yb0V4cCICAQAJACIgPjwvdGQ+XQAiAgMABwAOAAcACTJTM1M0UwAk
+N05ybyBFeHBlZGllbnRlUgACAEQAAgAkNwEAEwBbPHRkPjxub2JyPk6nIEV4cDogAAUACABjY05y
+b0V4cCICAQANADwvbm9icj48L3RkPl0AIgIDAAcADAAFAAkwUzBFACQ4QXN1bnRvTgACAEAAAgAk
+OAEACwBbPHRkPjxub2JyPgAFAAcAc0FzdW50bwAiAgEAEgA8L25vYnI+PC90ZD48L3RyPl0iAgMA
+BwAMAAUACTBTMEUAJgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAEAAAAAAAAAAABXQwEBAAkA
+AAAAAAAAAAAAAAAAAAAAAQAEAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAA
+AAAAAAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA
+AP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAA
+AAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAA
+AAEAgICAAAAAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text>Para desagregar Expedientes.(Descendientes Directos)</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item></note>
+

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom" dojoTheme="true"
+	dojoParseOnLoad="true" dojoForm="true">
+
+
+
+
+	<xp:this.beforePageLoad><![CDATA[#{javascript:var unid = context.getUrlParameter('aURL');
+viewScope.put("laURL", unid);
+}]]></xp:this.beforePageLoad>
+
+	<xp:br></xp:br>
+	<xp:br></xp:br>
+
+
+	
+	<xp:inputText id="inputText1">
+		<xp:dateTimeHelper id="dateTimeHelper1"></xp:dateTimeHelper>
+		<xp:this.converter>
+			<xp:convertDateTime type="date"></xp:convertDateTime>
+		</xp:this.converter>
+	</xp:inputText>
+	&#160;&#160;
+	<xp:br></xp:br>
+
+	<xp:panel id="panelQr">
+		<xp:inputText id="txtqr">
+
+
+		</xp:inputText>
+		<xc:CreateQR Size="300">
+
+
+
+			<xc:this.URL><![CDATA[#{javascript:var txt = viewScope.get("url");
+if(txt!=null)return txt;
+else return "http://www.isaltda.com.uy/";}]]></xc:this.URL>
+		</xc:CreateQR>
+		<xp:br></xp:br>
+		<xp:br></xp:br>
+		<xp:inputTextarea id="inputTextarea1"
+			style="width:230.0px;height:102.0px">
+		</xp:inputTextarea>
+		<xc:CreateQR Size="200">
+			<xc:this.URL><![CDATA[#{javascript:var txt = viewScope.get("url2");
+if(txt!=null)return txt;
+else return "http://www.isaltda.com.uy/"}]]></xc:this.URL>
+		</xc:CreateQR>
+	</xp:panel>
+	<xp:br></xp:br>
+	<xp:button value="Label" id="button1">
+		<xp:eventHandler event="onclick" submit="true"
+			refreshMode="partial" refreshId="panelQr">
+			<xp:this.action><![CDATA[#{javascript:var txtqr:com.ibm.xsp.component.xp.XspInputText = getComponent("txtqr").getValue();
+
+var inputTextarea1:com.ibm.xsp.component.xp.XspInputTextarea = getComponent("inputTextarea1").getValue();
+if(txtqr!="") viewScope.put("url",txtqr);
+else viewScope.put("url","www.isaltda.com.uy");
+
+if(inputTextarea1!= "")viewScope.put("url2",inputTextarea1);
+else viewScope.put("url2","www.isaltda.com.uy");}]]></xp:this.action>
+		</xp:eventHandler>
+	</xp:button>
+	<xp:br></xp:br>
+
+</xp:view>

@@ -1,0 +1,1 @@
+var _ini_destinoPicker={};function initPickerModal(datos){_ini_destinoPicker=datos;return true;}

@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500590CD0'>
+<noteinfo noteid='55e' unid='D2082DB999C675C0032573CB0063ECCC' sequence='36'>
+<created><datetime>20080109T151126,84-03</datetime></created>
+<modified><datetime>20150311T131245,22-03</datetime></modified>
+<revised><datetime>20150309T094510,41-03</datetime></revised>
+<lastaccessed><datetime>20150311T131245,22-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131245,22-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=BSE</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=iGDocDemos</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Inicio Notes</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIAAwAAAAAAAAAAAAAAAAAAAAAA8P8+AAAAAAABAAAAAAALAAsAAAAAAAUAAAAAAAUAAAAA
+AAEAAgAAAAAABQAAAAAAAAADAAEAAwAVAAMATwDx/zkAAAAAAABAAQADAAEAAQAAAAAAAAAAAAUA
+AQAAAAAAAABNZWRpbwEA////HAEAAAoBAAAAABw/9v8mAAAAAAADAAMABAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAE1lbnXx/zkAAAAAAABAAQADAAEAAQAAAAAABQAAAAAAAQAAAAAAAABNZWRpbwEA////
+HAEAAAoBAAAAABw/9v82AAAAAAADAAIAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAFZUZW1hRGVzYWN0
+aXZhZG9zTm9t
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQw</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

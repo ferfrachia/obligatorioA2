@@ -1,0 +1,271 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <UNIDAD>
+'*
+'******************************************************************************************************************	
+
+'*	CONSTRUCTOR
+'*
+'*		New(unidad)
+'*			Constructor de la clase
+'*
+'*	PROPIEDADES
+'*
+'*		Get/Set UltimoNroCSUnidad() As String
+'*			Retorna/setea el último nro de carta se servicio asignado para la unidad
+'*
+'*		Get CodigoUnidad() As String
+'*			Retorna el codigo de la unidad
+'*
+'*		Get Miembros() As Vector
+'*	 		Retorna una lista de miembros de la unidad
+'*
+'*		Get UnidadSuperior() As String
+'*	 		Retorna la unidad inmediatamente superior
+'*
+'*		Get CodigoUnidadSuperior() As String
+'*	 		Retorna el código de la unidad inmediatamente superior
+'*
+'*		Get JefeUnidad() As vector
+'*	 		Retorna un vector con los nombres de los jefe de la unidad
+'*
+'*		Get TipoUnidad() As String
+'*			Retorna el tipo de unidad
+'*
+'*		Get UnidadHabilitada() As String
+'*			Retorna si la unidad está habilitada a que den pase hacia ella o no
+'*
+'*		Get/Set UnidadHabilitadaArchivar() As String
+'*			Retorna/Setea si la unidad está habilitada a archivar expedientes o no
+'*
+'*		Get UnidadesPase()as vector
+'*			Retorna un vector con las unidades habilitadas a dar pase
+'*			a ésta unidad.
+'*
+'*	MÉTODOS
+'*
+'******************************************************************************************************************
+
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.00	20/08/2008	Modificado por: Alejandro Goñi
+		Creada una versión base que sirva para todas las bases, que usa solo la configuración general del sistema y no la de expediente
+
+%END REM
+
+Option Declare
+
+Use "IGDocConfig"
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "Configuracion Sistema"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class RolesManager
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PRIVADAS
+Private Const VISTA_BUSQUEDAUNIDADES						="(BusquedaUnixNro)"
+Private Const VISTA_BUSQUEDAFORMS_MIEMBROS			="MiembrosFormxUniForm"
+Private Const CLAVE_BASE_ORGANIZACION						="ORGAN"
+Private Const CLAVE_BASE_ADMINISTRACION					="ADMINCONF"
+'Valores de los campos
+'******************************************************************************************************************	
+'*
+'*									CLASS <UNIDAD>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class RolesManager
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private c As ConfigSistema
+	Private dbOrg As NotesDatabase
+	Private viewUnidades As NotesView
+	Private viewFormularios As NotesView
+	
+	Private sUnidad As String
+	Private form As String
+	Private usuario As String
+	
+	Public misRoles As Vector
+	
+	Public docUnidad As NotesDocument
+	Public docFormMiembros As NotesDocument
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+'******************************************************************************************************************		
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR
+	Public Sub new(pUsuario As String, pUnidad As String, pForm As String)
+		On Error Goto HANDLER
+		Dim igdocConf As IGDocConfig
+		Dim nombreFormPerfil As String
+		
+		usuario = pUsuario
+		sUnidad = pUnidad
+		form = pForm
+		
+		Set igdocConf = New IGDocConfig
+		If c Is Nothing Then Set c = New ConfigSistema("ConfFormularios")
+		
+		Set dbOrg = c.ReferenciarBaseDeDatos(CLAVE_BASE_ORGANIZACION)
+		'Msgbox "PATH " & dbOrg.FilePath
+		If dbOrg Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN & " " & CLAVE_BASE_ORGANIZACION
+		
+		Set ViewUnidades = dbOrg.GetView(VISTA_BUSQUEDAUNIDADES)
+		If viewUnidades Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_BUSQUEDAUNIDADES 
+		
+		If pUnidad <> "" Then _
+		Set docUnidad = ViewUnidades.GetDocumentByKey(sUnidad,True)
+		
+		Set ViewFormularios = dbOrg.GetView(VISTA_BUSQUEDAFORMS_MIEMBROS)
+		If ViewFormularios Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_BUSQUEDAFORMS_MIEMBROS
+		'Msgbox sUnidad+ "##" + form
+		If pForm <> "" Then _
+		Set docFormMiembros = ViewFormularios.GetDocumentByKey(sUnidad+ "##" + form)
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Roles - Constructor","")
+		
+	End Sub	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get NombreUsuario As String
+		On Error Goto HANDLER
+		
+		NombreUsuario =usuario
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Propiedad Get Nombre","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************			
+	
+	
+	Public Property Get Roles() As Vector
+	' Retorna una lista de miembros de la unidad
+		On Error Goto HANDLER
+		
+		Roles.Values = misRoles.Values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad Get Miembros","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get RolUsuariosUnidad(rol As String, unidad As String) As vector
+		On Error Goto handler
+		Dim UsuariosRol  As vector
+		
+		Set UsuariosRol = New vector(0)
+		UsuariosRol.values = docUnidad.GetItemValue(rol)
+		
+		Set RolUsuariosUnidad  = UsuariosRol
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Unidad - Propiedad RolUsuariosUnidad","")
+	End Property
+'******************************************************************************************************************			
+	
+	Public Function setFormulario(pFormulario As String) 
+		On Error Goto handler
+		
+		form = pFormulario
+		Set docFormMiembros = ViewFormularios.GetDocumentByKey(sUnidad+ "##" + form)
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Roles - Funcion Set Formulario","")
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function setUnidad(pUnidad As String) 
+		On Error Goto handler
+		
+		sUnidad = pUnidad
+		Set docUnidad = ViewUnidades.GetDocumentByKey(sUnidad )
+		
+		Me.setFormulario(form) 
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Roles - Funcion Set Unidad","")
+	End Function
+	
+'****************************************************************************************	
+	
+	Public Function RolUsuariosForm(rol As String) As vector
+		On Error Goto handler
+		Dim UsuariosRol  As vector
+		
+		Set UsuariosRol = New vector(0)
+		UsuariosRol.values = docFormMiembros.GetItemValue(rol)
+		Set RolUsuariosForm = UsuariosRol
+		
+		Exit Function 
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Roles - Funcion RolUsuariosForm","")
+	End Function
+'****************************************************************************************	
+	
+	Public Function RolUsuariosFormTxt(rol As String) As String
+		On Error Goto handler
+		Dim UsuariosRol  As vector
+		
+		Set UsuariosRol = New vector(0)
+		UsuariosRol.values = docFormMiembros.GetItemValue(rol)
+		RolUsuariosFormTxt = UsuariosRol.ToString(";")
+		
+		Exit Function 
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Roles - Funcion RolUsuariosForm","")
+	End Function
+'****************************************************************************************	
+	
+	Public Function tieneRolUsuarioForm(rol As String, pUnidad As String, pFormulario As String) As Boolean
+		On Error Goto handler
+		Dim posicion As Long
+		Dim UsuariosRol  As vector
+		
+		If pUnidad <> "" Then _
+		Me.setUnidad(pUnidad)
+		
+		If pFormulario <> "" Then _
+		Me.setFormulario(pFormulario)
+		
+		Set UsuariosRol = New vector(0)
+		If Not docFormMiembros Is Nothing Then
+			UsuariosRol.values = docFormMiembros.GetItemValue(rol)
+		End If
+'		Msgbox "USUARIO " & usuario
+'		Msgbox "Roles " & UsuariosRol.toString(",")
+		tieneRolUsuarioForm = UsuariosRol.IsMember(usuario, posicion, False )
+		
+		Exit Function 
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Roles - Funcion tieneRoUsuarioForm","")
+	End Function
+End Class

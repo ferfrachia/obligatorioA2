@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257E050059030D'>
+<noteinfo noteid='11a' unid='CEA10A93B3F7A61503256D4400630719' sequence='176'>
+<created><datetime>20030613T150138,81-03</datetime></created>
+<modified><datetime>20150311T131240,50-03</datetime></modified>
+<revised><datetime>20150311T131240,49-03</datetime></revised>
+<lastaccessed><datetime>20150311T131240,50-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131214,96-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030811T102255,22-03</datetime><datetime>20030811T105844,79-03</datetime><datetime
+>20030811T112435,19-03</datetime><datetime>20030912T132958,36+00</datetime><datetime
+>20060517T163245,59-03</datetime><datetime>20060518T111216,74-03</datetime></revisions>
+<item name='$DefaultWebFrameset' sign='true'><text>FrInicio</text></item>
+<item name='$DefaultFrameset' sign='true'><text>FrInicio</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$DefaultWebLaunchPage' sign='true'><text>AbrirVista</text></item>
+<item name='$Flags'><text>JFER7</text></item>
+<item name='$PIRCRefreshModTime'><datetime>20150309T160702,78-03</datetime></item>
+<item name='$TemplateModTime'><datetime>20150309T094455,92-03</datetime></item>
+<item name='$TemplateServerName'><text>CN=Ian Coates/O=ISA</text></item>
+<item name='$TemplateFileName'><text>c:\Program Files (x86)\IBM\Notes\Data\version\Organizacion.ntf</text></item>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAA//////////////////////AMA//wDAP/8AwD//AMA///v7///7+///+AP///+f//AMAw
+GADAMBgAwDAYAMAwGO/7/f7v+/3+4AP8AP9//f/wB8A/8AfAP/AHwD/wB8A//3/9//9//f//AAH/
+//7////gD///4A///+AP///gD/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEREREAEREREQAAAAAAAAARERERABEREREAAAA
+AAAAAEREREQARERERAAAAAAAAABEREREAEREREQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEREREAEREREQAREREQARE
+RERERABEREREAEREREAEREREREQARERERABERERABEREQEREAEREREQAREREQAREAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+REREREAAAEREREQAAAAAAERERERAAABEREREAAAAAABEREREQAAARERERAAAAAAAREREREAAAERE
+REQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAERERERAAAAAAAAAAAAAAABEREREQAAAAAAAAAAAAAAAREREREAAAA
+AAAAAAAAAAAERERERAAAAAAAAA==
+</rawitemdata></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current Estructura Organizacional</text></item></note>
+

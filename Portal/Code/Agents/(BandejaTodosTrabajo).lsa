@@ -1,0 +1,2918 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058B8FB'>
+<noteinfo noteid='92e' unid='1515C169FF490BA503257177005F7C12' sequence='237'>
+<created><datetime>20060523T142256,82-03</datetime></created>
+<modified><datetime>20150311T130915,59-03</datetime></modified>
+<revised><datetime>20150309T094455,74-03</datetime></revised>
+<lastaccessed><datetime>20150311T130915,59-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130915,59-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name
+>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20080811T155046,69-03</datetime><datetime>20080814T072831,63-03</datetime><datetime
+>20080814T072939,32-03</datetime><datetime>20080814T073208,46-03</datetime><datetime
+>20080814T074219,66-03</datetime><datetime>20080814T074738,99-03</datetime><datetime
+>20080814T082354,71-03</datetime><datetime>20080814T082532,36-03</datetime><datetime
+>20080814T110350,61-03</datetime><datetime>20080820T120626,46-03</datetime><datetime
+>20080820T121349,86-03</datetime><datetime>20080820T131859,72-03</datetime><datetime
+>20080820T132315,07-03</datetime><datetime>20080820T132825,59-03</datetime><datetime
+>20080820T133715,69-03</datetime><datetime>20080820T134544,33-03</datetime><datetime
+>20080820T135246,27-03</datetime><datetime>20080821T091940,93-03</datetime><datetime
+>20080821T101400,46-03</datetime><datetime>20080821T134031,30-03</datetime><datetime
+>20080821T141031,36-03</datetime><datetime>20080821T142057,62-03</datetime><datetime
+>20080822T092722,58-03</datetime><datetime>20080822T093004,61-03</datetime><datetime
+>20080822T094543,38-03</datetime><datetime>20080822T095138,54-03</datetime><datetime
+>20080822T100649,24-03</datetime><datetime>20080822T100813,95-03</datetime><datetime
+>20080822T140603,63-03</datetime><datetime>20080822T154734,87-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>(BandejaTodosTrabajo)</text></item>
+<item name='$AssistType' sign='true'><number>65413</number></item>
+<item name='$AssistLastRun' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$AssistDocCount' sign='true'><number>0</number></item>
+<item name='$FlagsExt' sign='true'><text/></item>
+<item name='$AssistFlags' sign='true'><text>EHu</text></item>
+<item name='$AssistTrigger' sign='true'><text>4</text></item>
+<item name='$AssistInfo' sign='true'>
+<rawitemdata type='11'>
+AQAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</rawitemdata></item>
+<item name='$AssistQuery' sign='true'>
+<rawitemdata type='f'>
+gQYAAAAA
+</rawitemdata></item>
+<item name='$AgentHScript' summary='false' sign='true'><text>'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "ConfEE 1.0"
+Use "SEELog Class" 
+Use "QueryString 1.1" 
+Use "ConstantesDBPortal"
+Use "Usuario"
+Use "ConstantesDBGestionDoc"
+Use "ConstantesDBCartasServ"
+Use "ClaseCartaServicio"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Sub Initialize
+Declare Sub RecorroBaseDatos ()
+Declare Sub BuscoEnBase (strClave As String, strUnidad As String)
+Declare Sub BuscoEnBaseCarta (strClave As String, strUnidad As String)
+Declare Sub CargoBandejaTrabajo(view As NotesView,doc As NotesDocument,anterior2000)
+Declare Private Function Expiro(doc As NotesDocument) As Boolean
+Declare Private Function ProxExpirar(doc As NotesDocument) As Boolean
+Declare Public Function Devuelta(doc As NotesDocument) As Integer
+Declare Public Function CantFirmas(doc As NotesDocument) As Integer
+Declare Function EstadoActuacion (doc As NotesDocument) As String
+Declare Function fecha (strFecha As String) As String
+Declare Sub CargoBandejaEntrada(view As NotesView)
+Declare Sub CargoBandejaSalida(view As NotesView)
+Declare Sub imprimirXML
+Declare Sub CargoBandejaFirma(view As NotesView,doc As NotesDocument,anterior2000)
+Declare Sub CargoBandejaReservados(view As NotesView,doc As NotesDocument,anterior2000)
+Declare Sub imprimirXMLError (Merror As String)
+Declare Function eliminarCaracteres(valor As String) As String
+Declare Function tieneCaracter(valor As String) As String
+Declare Function eliminarNumeral(valor As String) As String
+Declare Sub CargoBandejaNotificadosEnt (view As NotesView,doc As NotesDocument,anterior2000)
+Declare Sub CargoBandejaNotificadosAcu (view As NotesView,doc As NotesDocument,anterior2000) 
+Declare Sub CargoBandejaEntradaCartas(FilePath As String,col As NotesDocumentCollection)
+Declare Sub CargoBandejaListadoCartas(FilePath As String,col As NotesDocumentCollection)
+Declare Sub CargoBandejaArchivoCartas(FilePath As String, col As NotesDocumentCollection)
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Dim session As NotesSession
+Dim tipo As String
+Dim qs As QueryString
+Dim strUnidad As String
+Dim c As Configuracion
+Dim bandeja As String
+Dim docSession As NotesDocument
+Dim dbSession As NotesDatabase
+Dim viewSession As NotesView
+Dim filepath As String
+Dim dbOrg As NotesDatabase
+Dim vUnidades As NotesView
+Dim docUnidad As NotesDocument
+
+'Vistas para recorrer
+Dim vSearchTrabajo As NotesView
+Dim vSearchEntrada As NotesView
+Dim vSearchSalida As NotesView
+Dim vSearchFirma As NotesView
+Dim vSearchReservado As NotesView
+Dim vSearchReservados As NotesView
+Dim vSearchNotificadosEnt As NotesView
+Dim vSearchNotificadosAcu As NotesView
+
+Dim usuario As Usuario
+Dim serverUrl As String
+Dim contador As Integer
+Dim cantidadMaxima As Integer
+Dim oLog As SEELog
+
+' Para Bandeja de Trabajo
+Dim vFTrabajo As Vector
+Dim vTrabajo As Vector
+Dim vTrabajoAsunto As Vector
+Dim vCaratulaURL As Vector
+Dim vCaratulaUrgente As Vector
+Dim vActuacionExpiro As Vector
+Dim vActuacionAttach As Vector
+Dim vActuacionDevuelta As Vector
+Dim vActuacionFirmado As Vector
+Dim vActuacionFechaRecibido As Vector
+Dim vActuacionEstado As Vector
+Dim vActuacionURL As Vector
+Dim vCarSeguridad As Vector
+Dim vTema As Vector
+Dim vTipoRuta As Vector
+Dim vSeguridad As Vector
+Dim vAgregados As Vector
+Dim vPaqueteTrabajo As Vector
+
+'Vectores para las cartas
+Dim vFEntrada As Vector
+Dim vEntrada As Vector
+Dim vActCArtas As Vector
+Dim vSalidaTema As Vector
+Dim vSalidaTipoRuta As Vector
+Dim vSalidaSeguridad As Vector
+Dim vSalidaAgregados As Vector
+
+'Vectores para Bandeja de Entrada
+Dim vEntOficinaAnterior As Vector
+Dim  vEntOficinaActual  As Vector
+Dim vEntURL As Vector
+Dim vEntUrg As Vector
+Dim vEntAsunto As Vector
+Dim vEntFechaPase As Vector
+Dim vEntradaTema As Vector
+Dim vEntradaTipoRuta As Vector
+Dim vEntradaSeguridad As Vector
+Dim vEntradaAgregados As Vector
+Dim vPaqueteEntrada As Vector
+
+'Vectores para la Bandeja de Salida
+Dim vSalida As Vector
+Dim vFSalida As Vector
+Dim vSalidaOficinaActual As Vector
+Dim vSalidaURL As Vector
+Dim vSalidaUrg As Vector
+Dim vSalidaAsunto As Vector
+Dim vSalidaFechaPase As Vector
+Dim vPaqueteSalida As Vector
+
+'Vectores para la bandeja de cartas de servicio
+Dim urlCartas As Vector
+Dim attachCartas As Vector
+Dim atencionCartas As Vector
+Dim fechaEnvCartas As Vector
+Dim asuntoCartas As Vector
+Dim nroActCartas As Vector
+Dim unidadCartas As Vector
+
+' Para Bandeja de Todos para firmar
+Dim vFFirma As Vector
+Dim vFirma As Vector
+Dim vFirmaAsunto As Vector
+Dim vCaratulaURLFirma As Vector
+Dim vCaratulaUrgenteFirma As Vector
+Dim vActuacionExpiroFirma As Vector
+Dim vActuacionAttachFirma As Vector
+Dim vActuacionDevueltaFirma As Vector
+Dim vActuacionFirmadoFirma As Vector
+Dim vActuacionFechaRecibidoFirma As Vector
+Dim vActuacionEstadoFirma As Vector
+Dim vActuacionURLFirma As Vector
+Dim vPaqueteFirma As Vector
+
+'CONSTANTES QUE NO SE SI ESTAN EN OTRO LUGAR
+Private Const	CAMPO_FACTUACION_NOTIF_EXPIRO					="sNotificadoExpiro"
+Private Const	CAMPO_FACTUACION_NOTIF_EXPIRO_TRUE				="1"
+Private Const	CAMPO_FACTUACION_EXPIRO						="sExpiro"
+Private Const	CAMPO_FACTUACION_EXPIRO_TRUE					="1"
+
+Private Const	CAMPO_FACTUACION_PROX_EXPIRAR					="sProxExpirar"
+Private Const	CAMPO_FACTUACION_PROX_EXPIRAR_TRUE				="1"
+
+Private Const	CAMPO_FACTUACION_DEVUELTA_FLAG				="sDevueltaFlag"
+Private Const	CAMPO_FACTUACION_DEVUELTA_TRUE				="1"
+
+Private Const	SUBESTADO_EN_TRANSITO						="10"
+Private Const	SUBESTADO_PARA_ACTUAR						="15"
+Private Const	SUBESTADO_RESERVADO							="20"
+Private Const	SUBESTADO_PARA_FIRMAR						="25"
+Private Const	SUBESTADO_PARA_DAR_PASE						="30"
+Private Const	SUBESTADO_CURSADO							="35"
+Private Const	SUBESTADO_ANULADO							="40"
+Private Const	SUBESTADO_ARCHIVADO							="45"
+Private Const	SUBESTADO_AGREGADO							="50"
+
+
+'++LotusScript Development Environment:2:2:Initialize:1:10
+Sub Initialize
+	On Error Goto handler
+	contador=0
+	Set session = New NotesSession
+	Set oLog = New SEELog("",session.EffectiveUserName)
+	Call oLog.StartTimer()	
+	Call oLog.Log("BandejaTodosTrabajo","Start",1)
+	
+	Set c = New Configuracion
+	cantidadMaxima=c.NroMaxBandeja
+	Set qs = New QueryString(session.DocumentContext.Query_String_Decoded(0),"&amp;")
+	strUnidad = qs.getParameter("UNIDAD")
+	
+	tipo = qs.getParameter("TIPO")
+	bandeja = qs.getParameter("BANDEJA")
+	'Obtengo el documento de session
+	
+	Set dbSession = New NotesDatabase(c.ServidorDomino("SESSIONID"), c.BaseDeDatos("SESSIONID"))
+	Set viewSession = dbSession.GetView("Session")
+	Dim nNames As New NotesName(session.EffectiveUserName)
+	
+	Set docSession = viewSession.GetDocumentByKey(nNames.Canonical, True )
+	
+	If docSession Is Nothing Then
+		Set docSession = New NotesDocument(dbSession)
+		docSession.ReplaceItemValue "Form","Session"
+		docSession.ReplaceItemValue "UserName",nNames.Canonical
+		docSession.ReplaceItemValue "UltLog",Now
+		docSession.Save True,False
+	End If
+	
+	docSession.ReplaceItemValue "BandejaUnidad", strUnidad
+	docSession.ReplaceItemValue "BandejaAnio", "Todos"
+	docSession.ReplaceItemValue "BandejaTipo",tipo
+	docSession.ReplaceItemValue "Bandeja",bandeja
+	docSession.Save True,False
+	
+	Set usuario = New Usuario (session.EffectiveUserName)
+	
+	
+	
+	
+	Set dbOrg = c.ReferenciarBasedeDatos("ORGAN")	
+	Set vUnidades = dbOrg.GetView("(BusquedaUnixNro)")
+	
+	
+	serverUrl =session.DocumentContext.Server_Name(0)
+	
+	
+	If Tipo="Expediente" Then 
+		Set vTrabajo = New Vector(0)
+		Set vFTrabajo = New Vector(0)
+		Set vTrabajoAsunto = New Vector(0)
+		Set vCaratulaURL =New  Vector(0)
+		Set vCaratulaUrgente = New Vector(0)
+		Set vCarSeguridad=New Vector(0)
+		Set vActuacionExpiro = New Vector(0)
+		Set vActuacionAttach = New Vector(0)
+		Set vActuacionDevuelta = New Vector(0)
+		Set vActuacionFirmado = New Vector(0)
+		Set vActuacionFechaRecibido = New Vector(0)
+		Set vActuacionEstado = New Vector(0)
+		Set vActuacionURL = New Vector(0)
+		Set vEntOficinaAnterior =New Vector(0)		
+		Set vEntOficinaActual =New Vector(0)
+		Set vEntrada = New Vector(0)		
+		Set vEntURL =New Vector(0)
+		Set vEntUrg =New Vector(0)	
+		Set vEntAsunto = New Vector(0)
+		Set vEntFechaPase = New Vector(0)
+		Set vFEntrada = New Vector(0)
+		Set vEntradaTipoRuta = New Vector(0)
+		Set vEntradaTema = New Vector(0)
+		Set vSalidaTipoRuta = New Vector(0)
+		Set vSalidaTema = New Vector(0)
+		Set vTema = New Vector(0)
+		Set vTipoRuta = New Vector(0)
+		Set vSeguridad = New Vector(0)
+		Set vPaqueteTrabajo = New Vector(0)
+		Set vPaqueteEntrada = New Vector(0)
+		Set vPaqueteSalida = New Vector(0)
+		Set vPaqueteFirma = New Vector(0)
+		
+		'variables de bandeja de salida
+		Set vSalida = New  Vector(0)
+		Set vFSalida = New Vector(0)
+		Set vSalidaOficinaActual = New Vector(0)
+		Set vSalidaURL = New Vector(0)
+		Set vSalidaUrg = New Vector(0)
+		Set vSalidaAsunto = New Vector(0)
+		Set vSalidaFechaPase = New Vector(0)
+		Set vSalidaSeguridad = New Vector(0)
+		Set vEntradaSeguridad = New Vector(0)
+		'Variables Bandeja todos para firmar
+		Set vFFirma = New Vector(0)
+		Set vFirma = New Vector(0)
+		Set vFirmaAsunto = New Vector(0)
+		Set vCaratulaURLFirma = New  Vector(0)
+		Set vCaratulaUrgenteFirma =New  Vector(0)
+		Set vActuacionExpiroFirma = New  Vector(0)
+		Set vActuacionAttachFirma = New Vector(0)
+		Set vActuacionDevueltaFirma = New  Vector(0)
+		Set vActuacionFirmadoFirma = New Vector(0)
+		Set vActuacionFechaRecibidoFirma = New Vector(0)
+		Set vActuacionEstadoFirma = New Vector(0)
+		Set vActuacionURLFirma = New  Vector(0)
+		Set vAgregados = New Vector(0)
+		Set vEntradaAgregados= New Vector(0)
+		Set vSalidaAgregados= New Vector(0)
+		
+		Call RecorroBaseDatos ()
+		
+		imprimirXML
+		
+	Else
+		Set urlCartas = New Vector(0)
+		Set attachCartas= New Vector(0)
+		Set atencionCartas = New Vector(0)
+		Set fechaEnvCartas = New  Vector(0)
+		Set asuntoCartas = New  Vector(0)
+		Set nroActCartas = New  Vector(0)
+		Set vFEntrada = New Vector(0)
+		Set vEntrada = New Vector(0)
+		Set vActCartas = New Vector(0)
+		Set unidadCartas = New Vector(0)
+		Call RecorroBaseDatos ()
+		imprimirXML
+	End If 
+	
+	'docSession.Save True,False
+	Call oLog.StopTimer()
+	Call oLog.Log("BandejaTodosTrabajo Procesados " &amp; Cstr(contador),"End" ,1)	
+	Exit Sub
+handler:
+	'RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - initialize",""	
+	imprimirXMLError 	Error$ 
+	Exit Sub
+End Sub
+
+
+'++LotusScript Development Environment:2:2:RecorroBaseDatos:1:8
+Sub RecorroBaseDatos ()
+	On Error Goto handler
+	
+	Dim vKeys As Vector, i As Integer
+	If tipo="Expediente" Then
+		strUnidad="EXP_" &amp; strUnidad 
+		Set vKeys = c.GetKeysGestion()
+	Elseif bandeja="ARCHIVO" Then 
+		Set vKeys =c.GetKeysCartasArchivo()
+	Else
+		Set vKeys = c.getKeysCartas()
+	End If
+	For i = 1 To vKeys.Cantelem
+		If tipo="Expediente" Then
+			Call BuscoEnBase (vKeys.getElement(i), strUnidad)
+		Else		
+			
+			Call BuscoEnBaseCarta (vKeys.getElement(i), strUnidad)
+		End If
+	Next
+	
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - RecorroBaseDatos",""	
+	Exit Sub
+End Sub
+
+
+'++LotusScript Development Environment:2:2:BuscoEnBase:1:8
+Sub BuscoEnBase (strClave As String, strUnidad As String)
+	On Error Goto handler
+	
+	Dim dbGestion As NotesDatabase
+	Dim vSearchTrabajo As NotesView
+	Dim col As NotesDocumentCollection
+	Dim aux As String
+	Dim posicion As Integer
+	
+	
+	Set dbGestion = c.ReferenciarBaseDeDatos(strClave)
+	Set vSearchTrabajo = dbGestion.GetView(VIEW_EXP_SEARCH_TRABAJO)
+	Set vSearchEntrada = dbGestion.GetView(VIEW_EXP_SEARCH_ENTRADA)
+	Set vSearchSalida = dbGestion.GetView(VIEW_EXP_SEARCH_SALIDA)
+	Set vSearchFirma = dbGestion.GetView(VIEW_EXP_SEARCH_FIRMA)
+	Set vSearchReservados = dbGestion.GetView(VIEW_EXP_SEARCH_RESERVADOS)
+	Set vSearchNotificadosEnt = dbGestion.GetView(VIEW_EXP_SEARCH_NOTIF_ENT)
+	Set vSearchNotificadosAcu = dbGestion.GetView(VIEW_EXP_SEARCH_NOTIF_ACU)
+	
+	aux = dbGestion.FilePath
+	posicion = Instr(aux,"\")
+	
+	While posicion&gt;0
+		aux = Mid(aux,1,posicion-1) &amp; "/" &amp; Mid(aux,posicion+1) 
+		posicion = Instr(aux,"\")
+	Wend
+	
+	FilePath=aux
+	Dim doc As NotesDocument
+	Set doc= vSearchTrabajo.Getdocumentbykey(strUnidad,True)
+	' Me fijo si es o no anterior al 2000 la base que estoy usando para despues ordenarlos
+	'mejor
+	
+	If bandeja ="TODAS" Or bandeja="TRABAJO" Then 
+		If Cint(Right(strClave,2))&gt;80 Then
+			Call CargoBandejaTrabajo (vSearchTrabajo, doc, True)
+		Else
+			Call CargoBandejaTrabajo (vSearchTrabajo, doc, False)
+		End If
+	End If 
+	
+	'En caso de que la bandeja pedida sea la de entrada o todas entonces cargo la de entrada
+	If bandeja="ENTRADA" Or bandeja="TODAS" Then 
+		Call CargoBandejaEntrada(vSearchEntrada)
+	End If
+	' En caso de que la bandeja pedida se la de salida o todas cargo los vectores
+	If bandeja="SALIDA" Or bandeja="TODAS" Then 
+		Call CargoBandejaSalida(vSearchSalida)
+	End If
+	Dim user As Variant
+	Dim usuario As String
+	
+	user = Evaluate({@Name([Abbreviate];"}+session.EffectiveUserName+{")})
+	usuario = Cstr(user(0))
+	
+	If bandeja="FIRMA" Then
+		Dim key As String
+		
+		Set doc= vSearchFirma.Getdocumentbykey( strunidad &amp; usuario  ,True)
+		
+		
+		If Cint(Right(strClave,2))&gt;80 Then
+			Call CargoBandejaFirma (vSearchFirma, doc, True)
+		Else
+			Call CargoBandejaFirma (vSearchFirma, doc, False)
+		End If
+	End If
+	
+	If bandeja="RESERVADOS" Then
+		
+		Set doc= vSearchReservados.Getdocumentbykey( strunidad &amp; usuario  ,True)
+		
+		If Cint(Right(strClave,2))&gt;80 Then
+			Call CargoBandejaReservados (vSearchReservados, doc, True)
+		Else
+			Call CargoBandejaReservados (vSearchReservados, doc, False)
+		End If
+	End If
+	
+	If bandeja="NOTIFICACIONES" Then
+		If (vSearchNotificadosEnt Is Nothing) Then 
+			Msgbox "FALTA VISTA NOTIFICADOS ENTRADA EN " &amp; dbGestion.FilePath
+		End If
+		
+		If (vSearchNotificadosAcu Is Nothing) Then 
+			Msgbox "FALTA VISTA NOTIFICADOS ACUSE EN " &amp; dbGestion.FilePath
+		End If
+		
+		'  Bandeja de entrada de notificados
+		Set doc= vSearchNotificadosEnt.Getdocumentbykey ( strunidad, True)
+		
+		If Cint(Right(strClave,2))&gt;80 Then
+			Call CargoBandejaNotificadosEnt (vSearchNotificadosEnt, doc, True)
+		Else
+			Call CargoBandejaNotificadosEnt (vSearchNotificadosEnt, doc, False)
+		End If
+		
+		'  Bandeja de notificados acusados
+		Set doc= vSearchNotificadosAcu.Getdocumentbykey( strunidad, True)
+		
+		If Cint(Right(strClave,2))&gt;80 Then
+			Call CargoBandejaNotificadosAcu (vSearchNotificadosAcu, doc, True)
+		Else
+			Call CargoBandejaNotificadosAcu (vSearchNotificadosAcu, doc, False)
+		End If		
+	End If
+	
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - BuscoEnBase",""	
+	Exit Sub
+	
+End Sub
+
+'++LotusScript Development Environment:2:2:BuscoEnBaseCarta:1:8
+Sub BuscoEnBaseCarta (strClave As String, strUnidad As String)
+	On Error Goto handler
+	Dim dbCartas As NotesDatabase
+	Dim vSearchTrabajo As NotesView	
+	Dim vSearchListado As NotesView
+	Dim vSearchArchivadas As NotesView
+	Dim col As NotesDocumentCollection
+	Dim aux As String
+	Dim posicion As Integer
+	Dim FilePath As String
+	Dim strAtencion As String
+	
+	Set dbCartas = c.ReferenciarBaseDeDatos(strClave)
+	Set vSearchTrabajo = dbCartas.GetView(DBCS_VISTA_BANDEJA_ENTRADA)
+	Set vSearchListado = dbCartas.GetView(DBCS_VISTA_LISTADO_CARTA)
+	Set vSearchArchivadas = dbCartas.GetView(DBCS_VISTA_BANDEJA_ARCHIVADAS)
+	aux = dbCartas.FilePath
+	posicion = Instr(aux,"\")
+	While posicion&gt;0
+		aux = Mid(aux,1,posicion-1) &amp; "/" &amp; Mid(aux,posicion+1) 
+		posicion = Instr(aux,"\")
+	Wend
+	FilePath=aux
+	
+	If bandeja="ENTRADA" Then 
+		Set col = vSearchTrabajo.GetAllDocumentsByKey(strUnidad)
+		Call CargoBandejaEntradaCartas(FilePath,col)
+	End If 
+	If bandeja="LISTADO" Then 
+		Set col =vSearchListado.getAllDocumentsByKey(strUnidad)
+		Call CargoBandejaListadoCartas(FilePath,col)
+	End If
+	If bandeja="ARCHIVO" Then 
+		Set col= vSearchArchivadas.GetAllDocumentsByKey(strUnidad)
+		Call CargoBandejaArchivoCartas(FilePath,col)
+	End If
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - BuscoEnBaseCarta",""	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:CargoBandejaTrabajo:1:8
+Sub CargoBandejaTrabajo(view As NotesView,doc As NotesDocument,anterior2000)
+	On Error Goto handler
+	
+	'Aca cargamos todos los datos de lo expedientes en los vectores para imprimir bandeja
+	Dim pos As Long
+	Dim vUrg As New Vector(0)
+	Dim aux As NotesDocument
+	Dim seguridad As Integer
+	
+	While Not doc Is Nothing 
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		If doc.form(0)&lt;&gt;"Caratula" And doc.form(0)&lt;&gt;"FCaratula" Then
+			' ACA TENGO QUE DAR ERROR PORQUE ES INCONSISTENTE
+			Error 1023, "Formulario de Caratula Incorrecto " &amp; doc.GetItemValue("ccNroExp")(0)
+			Exit Sub
+		End If		
+		If anterior2000 Then
+			pos = vFTrabajo.InsertPos("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),True)
+			Call vFTrabajo.insertElement("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)
+		Else 
+			pos = vFTrabajo.InsertPos("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),True)
+			Call vFTrabajo.insertElement("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)			
+		End If
+		' Empiezo a cargar los datos de la caratula en los vectores
+		Call vTrabajo.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), pos)
+		If doc.GetItemValue("rTienePaquete")(0)="Si"  Or doc.GetItemValue("PaqueteEnAgregado")(0)="1" Then
+			Call vPaqueteTrabajo.insertElement("/" &amp; filepath &amp;"/paquete.gif?OpenImageResource", pos)
+		Else
+			Call vPaqueteTrabajo.insertElement("", pos)
+		End If
+		Dim vectorAux As New Vector(0)
+		
+		vectorAux.values=doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ASUNTO)
+		Call vTrabajoAsunto.insertElement(vectorAux.toString(" "),pos)
+		Call vCaratulaUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto  &amp; "/" &amp; filepath &amp;  "/0/" &amp; doc.UniversalID &amp; "?OpenDocument",pos)
+		Call vTema.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_TEMA)(0),pos)
+		If doc.GetItemValue(DBSGD_CAMPO_FCARATULA_CAMPO_TIPO_RUTA )(0)="Predefinida" Then
+			Call vTipoRuta.insertElement("/" &amp; filepath &amp;"/predefinida.gif?OpenImageResource"  ,pos)
+		Else
+			Call vTipoRuta.insertElement("",pos)
+		End If
+		If doc.GetItemValue("sListaAgregadosNro")(0)&lt;&gt;"" Then
+			Call vAgregados.insertElement("/" &amp; filepath &amp;"/organigrama.gif?OpenImageResource",pos)
+		Else
+			Call vAgregados.insertElement("",pos)
+		End If
+		vUrg.values = doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ACT_URGENTES)							
+		Set aux=doc
+		If (aux.ccSeguridad(0) ="Normal" Or aux.ccSeguridad(0)="") Then
+			Call vSeguridad.insertElement(1,pos)
+			seguridad=1
+		Else 
+			Call vSeguridad.insertElement(2,pos)
+			seguridad=2
+		End If
+		Set doc = view.GetNextSibling(doc)
+		If  doc Is Nothing And seguridad=1 Then
+			'ERROR PORQUE LA ACTUACION ES NULA
+			Error 1024,"La actuación es nula: " &amp; aux.GetItemValue("ccNroExp")(0)
+			Exit Sub
+		End If	
+		If doc Is Nothing Then 
+			
+			Call vCaratulaUrgente.insertelement(False,pos)
+			Call	vActuacionExpiro.insertElement(2,pos)
+			Call vActuacionAttach.insertElement(False,pos)
+			Call vActuacionDevuelta.insertElement(False,pos)
+			Call vActuacionFirmado.insertElement(False,pos)
+			vActuacionFechaRecibido.insertElement "-",pos
+			Call vActuacionUrl.insertelement("://?OpenDocument",pos)
+			Call vActuacionEstado.insertElement("NADA",pos)
+		Else 			
+			
+			If  doc.Form(0)&lt;&gt;"Actuacion" And doc.Form(0)&lt;&gt;"FActuacion" Then 
+			'ERROR PORQUE NO ES UNA ACTUACION
+				If seguridad=1 Then 
+					Error 1025,"Formulario de Actuación Incorrecto " &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0)
+					Exit Sub
+				End If 
+			End If
+			If Not doc Is Nothing And (doc.form(0)&lt;&gt;"Caratula" And doc.form(0)&lt;&gt;"FCaratula") Then 
+				seguridad=3
+			'Chequeo que la actuacion este dentro de las urgentes, y cargo el vector de urgentes
+				If vUrg.isMember(Cstr(doc.GetItemValue("ccnNroAct")(0)),0,False) Then
+					Call vCaratulaUrgente.insertElement(True,pos)
+				Else
+					Call vCaratulaUrgente.insertelement(False,pos)
+				End If
+		'Chequeo si esta o no por expirar la actuacion
+				If Expiro(doc) Then
+					Call vActuacionExpiro.insertElement(0,pos)
+				Elseif ProxExpirar(doc) Then
+					Call vActuacionExpiro.insertElement(1,pos)
+				Else
+					Call	vActuacionExpiro.insertElement(2,pos)
+				End If
+		'Chequeo si tiene attachments
+				If doc.HasEmbedded Then
+					Call vActuacionAttach.insertElement(True,pos)
+				Else
+					Call vActuacionAttach.insertElement(False,pos)
+				End If
+				
+		'Chequeo si la actuacion fue devuelta
+				If devuelta(doc) Then
+					Call vActuacionDevuelta.insertElement(True,pos)
+				Else
+					Call vActuacionDevuelta.insertElement(False,pos)
+				End If
+				
+		'Chequeo cuantas firmas tiene el documento
+				If cantFirmas(doc)&gt;0 Then
+					Call vActuacionFirmado.insertElement(True,pos)
+				Else
+					Call vActuacionFirmado.insertElement(False,pos)
+				End If
+				
+		'Chequeo si la actuacion fue recibida y cuando
+				If doc.HasItem(DBSGD_CAMPO_FACTUACION_FECHA_REC) Then
+					If Instr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)," ")&gt;0 Then
+						vActuacionFechaRecibido.insertElement Strleft(Cstr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0))," "),pos
+					Elseif doc.GetItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)&lt;&gt;"" Then
+						vActuacionFechaRecibido.insertElement Cstr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)),pos
+					Else
+						vActuacionFechaRecibido.insertElement "-",pos
+					End If
+				Else
+					vActuacionFechaRecibido.insertElement "-",pos
+				End If
+		'Inserto el estado de la actuacion
+				Call vActuacionUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto  &amp; "/" &amp; filepath &amp;  "/0/" &amp; doc.UniversalID &amp; "?OpenDocument",pos)
+				Call vActuacionEstado.insertElement(EstadoActuacion(doc),pos)
+				If Not doc Is Nothing Then
+					Set doc = view.GetNextSibling(doc)
+				End If
+			Else
+				If (doc Is Nothing) Then
+					Set doc=view.GetNextSibling(aux)			
+				Else
+					Call vCaratulaUrgente.insertelement(False,pos)
+					Call	vActuacionExpiro.insertElement(2,pos)
+					Call vActuacionAttach.insertElement(False,pos)
+					Call vActuacionDevuelta.insertElement(False,pos)
+					Call vActuacionFirmado.insertElement(False,pos)
+					vActuacionFechaRecibido.insertElement "-",pos
+					Call vActuacionUrl.insertelement("://?OpenDocument",pos)
+					Call vActuacionEstado.insertElement("NADA",pos)
+				End If
+			End If	
+		End If 
+		Call vCarSeguridad.insertElement(seguridad,pos)
+	Wend
+	Exit Sub
+	
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaTrabajo",""	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:1:Expiro:1:8
+Private Function Expiro(doc As NotesDocument) As Boolean
+	On Error Goto handler
+	
+	Expiro=False
+	If doc.HasItem(CAMPO_FACTUACION_NOTIF_EXPIRO) Then
+		Expiro=doc.GetItemValue(CAMPO_FACTUACION_EXPIRO)(0) = CAMPO_FACTUACION_EXPIRO_TRUE
+	End If
+	
+	
+	Exit Function
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - Expiro",""	
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:1:ProxExpirar:1:8
+Private Function ProxExpirar(doc As NotesDocument) As Boolean
+	On Error Goto handler
+	
+	ProxExpirar=False
+	
+	If doc.HasItem(CAMPO_FACTUACION_PROX_EXPIRAR) Then
+		ProxExpirar=doc.GetItemValue(CAMPO_FACTUACION_PROX_EXPIRAR)(0) = CAMPO_FACTUACION_PROX_EXPIRAR_TRUE
+	End If
+	Exit Function
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - ProxExpirar",""	
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:1:Devuelta:1:8
+Public Function Devuelta(doc As NotesDocument) As Integer
+	On Error Goto handler
+	If doc.HasItem(CAMPO_FACTUACION_DEVUELTA_FLAG) Then
+		Devuelta=(doc.getItemValue(CAMPO_FACTUACION_DEVUELTA_FLAG)(0) = CAMPO_FACTUACION_DEVUELTA_TRUE)
+	Else
+		Devuelta=False
+	End If	
+	Exit Function
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - Devuelta",""	
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:1:CantFirmas:1:8
+Public Function CantFirmas(doc As NotesDocument) As Integer
+		'Devuelve la cantidad de firmas que tiene la actuación
+	On Error Goto handler
+	
+	If doc.hasItem("nCantidadFirmas") Then
+		CantFirmas=Cint(doc.getItemValue("nCantidadFirmas")(0))
+	Else
+		CantFirmas=0
+	End If
+	Exit Function
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CantFirmas",""	
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:1:EstadoActuacion:1:8
+Function EstadoActuacion (doc As NotesDocument) As String
+	
+	On Error Goto handler
+	Dim vFirmantes As Vector, vUsuariosFirma As Vector
+	Dim i As Integer, nName As NotesName, subestado As Integer
+	If doc.GetItemValue("sSubEstado")(0)&lt;&gt;"" Then
+		subEstado = Cint(doc.GetItemValue("sSubEstado")(0))
+	Else
+		subEstado = SUBESTADO_PARA_ACTUAR
+	End If
+	If subEstado = SUBESTADO_PARA_ACTUAR Then
+		EstadoActuacion = "Para Actuar"
+	Elseif subEstado = SUBESTADO_RESERVADO Then
+		Set nName = New NotesName(doc.getItemValue("sReservadoPor")(0))
+		EstadoActuacion = "Reservado para: " &amp; nName.Common
+	Elseif subEstado=SUBESTADO_PARA_FIRMAR Then
+		Set vFirmantes = New Vector(0)
+		vFirmantes.values = doc.GetItemValue("sFirmantes")
+		If CantFirmas(doc)&gt;0 Then			
+			Set vUsuariosFirma = New Vector(0)
+			vUsuariosFirma.values= doc.GetItemValue("sUsuarioFirma")
+			EstadoActuacion = "Firmado por: "
+			For i = 1 To vUsuariosFirma.cantElem 
+				Set nName = New NotesName(vUsuariosFirma.getElement(i))
+				If i=1 Then
+					EstadoActuacion = EstadoActuacion &amp; nName.Common
+				Else
+					EstadoActuacion = EstadoActuacion &amp; ", " &amp; nName.Common
+				End If
+			Next
+			
+			If vFirmantes.cantElem&gt;0 Then
+				EstadoActuacion = EstadoActuacion &amp; " Para Firmar "
+				
+				For i = 1 To vFirmantes.cantElem
+					Set nName = New NotesName(vFirmantes.getElement(i))	
+					If i = 1 Then
+						EstadoActuacion = EstadoActuacion &amp; nName.Common
+					Else
+						EstadoActuacion = EstadoActuacion &amp; ", " &amp; nName.Common
+					End If
+				Next
+			End If
+		Else
+			EstadoActuacion = "Para Firmar "
+			For i = 1 To vFirmantes.cantElem
+				Set nName = New NotesName(vFirmantes.getElement(i))
+				If i = 1 Then
+					EstadoActuacion = EstadoActuacion &amp; nName.Common
+				Else
+					EstadoActuacion = EstadoActuacion &amp; ", " &amp; nName.Common
+				End If
+			Next
+		End If
+	Elseif subEstado=SUBESTADO_PARA_DAR_PASE Then
+		EstadoActuacion = "Para dar Pase"
+	End If
+	Exit Function
+handler:
+	If Not doc Is Nothing Then
+		RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - EstadoActuacion","Nro Exp " &amp; doc.ccNroExp(0)
+	Else
+		RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - EstadoActuacion",""
+	End If
+	
+	Exit Function
+	
+	
+End Function
+
+
+'++LotusScript Development Environment:2:1:fecha:1:8
+Function fecha (strFecha As String) As String
+	On Error Goto handler
+	If strFecha &lt;&gt; "-" Then
+		fecha = strFecha
+	Else
+		fecha=""
+	End If
+	Exit Function
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - fecha",""	
+	Exit Function
+End Function
+'++LotusScript Development Environment:2:2:CargoBandejaEntrada:1:8
+Sub CargoBandejaEntrada(view As NotesView)
+	On Error Goto handler
+	Dim pos As Long
+	Dim fVieja 
+	Dim doc As NotesDocument
+	Dim col As NotesDocumentCollection
+	
+	
+	fVieja = Cdat("01/01/1980")
+	Dim vUrg As Vector
+	Dim unidadanterior As String
+	
+	Set vUrg = New Vector(0)
+	
+	Set doc = view.GetDocumentByKey(strUnidad,True)
+	
+	While Not doc Is Nothing
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		If doc.HasItem("ccFechaPase") Then
+			If doc.GetItemValue("ccFechaPase")(0)&lt;&gt;"" Then
+				pos = vFEntrada.InsertPos(Cdat(doc.GetItemValue("ccFechaPase")(0)),True)
+				Call vFEntrada.insertElement(Cdat(doc.GetItemValue("ccFechaPase")(0)),pos)
+			Else
+				pos = vFEntrada.InsertPos(fVieja,True)
+				Call vFEntrada.insertElement(fVieja,pos)
+			End If
+		Else
+			pos = vFEntrada.InsertPos(fVieja,True)
+			Call vFEntrada.insertElement(fVieja,pos)
+		End If
+		Dim vectorAux As New Vector(0)
+		vectorAux.values=doc.GetItemValue("sAsunto")
+		Call vEntAsunto.insertElement(vectorAux.toString(" "),pos)
+		If Instr(Cstr(doc.GetItemValue("ccFechaPase")(0))," ")&gt;0 Then
+			Call vEntFechaPase.insertElement(Strleft(Cstr(doc.GetItemValue("ccFechaPase")(0))," "),pos)
+		Elseif Cstr(doc.GetItemValue("ccFechaPase")(0))&lt;&gt;"" Then
+			Call vEntFechaPase.insertElement(Cstr(doc.GetItemValue("ccFechaPase")(0)),pos)
+		Else
+			Call vEntFechaPase.insertElement("-",pos)
+		End If
+		If doc.GetItemValue("sListaAgregadosNro")(0)&lt;&gt;"" Then
+			Call vEntradaAgregados.insertElement("/" &amp; filepath &amp;"/organigrama.gif?OpenImageResource",pos)
+		Else
+			Call vEntradaAgregados.insertElement("",pos)
+		End If
+		If (doc.ccSeguridad(0) ="Normal" Or doc.ccSeguridad(0)="") Then
+			Call vEntradaSeguridad.insertElement(1,pos)
+		Else 
+			Call vEntradaSeguridad.insertElement(2,pos)
+		End If
+		If doc.GetItemValue("ccOficinaAnterior")(0)&lt;&gt; "" Then
+			unidadanterior = Strright(doc.GetItemValue("ccOficinaAnterior")(0),"EXP_")
+			Set docUnidad=vUnidades.getDocumentByKey(unidadanterior)
+			Call vEntOficinaAnterior.insertElement(docUnidad.getItemValue("sUnidad")(0),pos)
+			
+		Else
+			Call vEntOficinaAnterior.insertElement("-",pos)
+		End If
+		vUrg.values = doc.GetItemValue("sUrgenteActs")							
+		Call vEntradaTema.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_TEMA)(0),pos)
+		If doc.GetItemValue(DBSGD_CAMPO_FCARATULA_CAMPO_TIPO_RUTA )(0)="Predefinida" Then
+			Call vEntradaTipoRuta.insertElement("/" &amp; filepath &amp;"/predefinida.gif?OpenImageResource"  ,pos)
+		Else
+			Call vEntradaTipoRuta.insertElement("",pos)
+			
+		End If
+		If doc.GetItemValue("rTienePaquete")(0)&lt;&gt;""  Or doc.GetItemValue("PaqueteEnAgregado")(0)="1" Then
+			Call vPaqueteEntrada.insertElement("/" &amp; filepath &amp;"/paquete.gif?OpenImageResource",pos)
+		Else
+			Call vPaqueteEntrada.insertElement("",pos)
+		End If
+		If vUrg.isMember(Cstr(doc.GetItemValue("cCantAct")(0)),0,False) Then
+			Call vEntUrg.insertElement(True,pos)
+		Else
+			Call vEntUrg.insertelement(False,pos)
+		End If
+		Call vEntrada.insertElement(Cstr(doc.GetItemValue("ccNroExp")(0)), pos)
+		Call vEntUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; filepath  &amp; "/0/" &amp; doc.UniversalID &amp; "?OpenDocument" ,pos)
+		
+		Set doc = view.GetNextSibling(doc)
+	Wend
+	Exit Sub	
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+	
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaEntrada",""	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:CargoBandejaSalida:1:8
+Sub CargoBandejaSalida(view As NotesView)
+	On Error Goto handler
+	Dim col As NotesDocumentCollection
+	Dim doc As NotesDocument
+	Dim vUrg As Vector
+	Dim pos As Long
+	Dim fVieja 
+	Dim unidadactual As String
+	
+	fVieja = Cdat("01/01/1980")
+	Set vUrg = New Vector(0)
+	
+	Set doc = view.GetDocumentByKey(strUnidad,True)
+	While Not doc Is Nothing
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		If doc.HasItem("ccFechaPase") Then
+			If doc.GetItemValue("ccFechaPase")(0)&lt;&gt;"" Then
+				pos = vFSalida.InsertPos(Cdat(doc.GetItemValue("ccFechaPase")(0)),True)
+				Call vFSalida.insertElement(Cdat(doc.GetItemValue("ccFechaPase")(0)),pos)
+			Else
+				pos = vFSalida.InsertPos(fVieja,True)
+				Call vFSalida.insertElement(fVieja,pos)
+			End If
+		Else
+			pos = vFSalida.InsertPos(fVieja,True)
+			Call vFSalida.insertElement(fVieja,pos)
+		End If
+		Dim vectorAux As New Vector(0)
+		vectorAux.values=doc.GetItemValue("sAsunto")
+		Call vSalidaAsunto.insertElement(vectorAux.toString(" "),pos)
+		unidadactual = Strright(doc.GetItemValue("ccOficinaActual")(0),"EXP_")
+		Set docUnidad=vUnidades.getDocumentByKey(unidadactual)
+		
+		Call vSalidaOficinaActual.insertElement(docUnidad.GetItemValue("sUnidad")(0),pos)
+		vUrg.values = doc.GetItemValue("sUrgenteActs")							
+		Call vSalidaTema.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_TEMA)(0),pos)
+		If doc.GetItemValue(DBSGD_CAMPO_FCARATULA_CAMPO_TIPO_RUTA )(0)="Predefinida" Then
+			Call vSalidaTipoRuta.insertElement("/" &amp; filepath &amp;"/predefinida.gif?OpenImageResource"  ,pos)
+		Else
+			Call vSalidaTipoRuta.insertElement("",pos)
+			
+		End If
+		If doc.GetItemValue("rTienePaquete")(0)&lt;&gt;"" Or doc.GetItemValue("PaqueteEnAgregado")(0)="1" Then
+			Call vPaqueteSalida.insertElement("/" &amp; filepath &amp;"/paquete.gif?OpenImageResource",pos)
+		Else
+			Call vPaqueteSalida.insertElement("",pos)
+		End If
+		If doc.GetItemValue("sListaAgregadosNro")(0)&lt;&gt;"" Then
+			Call vSalidaAgregados.insertElement("/" &amp; filepath &amp;"/organigrama.gif?OpenImageResource",pos)
+		Else
+			Call vSalidaAgregados.insertElement("",pos)
+		End If
+		If (doc.ccSeguridad(0) ="Normal" Or doc.ccSeguridad(0)="") Then
+			Call vSalidaSeguridad.insertElement(1,pos)
+		Else 
+			Call vSalidaSeguridad.insertElement(2,pos)
+		End If
+		If vUrg.isMember(Cstr(doc.GetItemValue("cCantAct")(0)),0,False) Then
+			Call vSalidaUrg.insertElement(True,pos)
+		Else
+			Call vSalidaUrg.insertelement(False,pos)
+		End If
+		Call vSalidaUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto  &amp; "/" &amp; filepath &amp;  "/0/" &amp; doc.UniversalID &amp; "?OpenDocument" ,pos)
+		Call vSalida.insertElement(doc.GetItemValue("ccNroExp")(0), pos)
+		
+		Set doc = view.GetNextSibling(doc)
+	Wend	
+	Exit Sub
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaSalida",""	
+	Exit Sub
+End Sub
+'++LotusScript Development Environment:2:2:imprimirXML:1:8
+Sub imprimirXML
+	On Error Goto handler
+	Dim i As Integer
+	
+	Print "Content-Type: text/xml"	
+	Print {&lt;?xml version="1.0"  encoding="ISO-8859-1" ?&gt;}
+	Print {&lt;frames&gt;}
+	If tipo = "Expediente" And bandeja = "TODAS" Then
+		contador =  vTrabajo.CantElem + vEntrada.CantElem + vSalida.CantElem		
+		Print {&lt;trabajo&gt;}
+		
+		For i=1 To vTrabajo.CantElem
+			Print {&lt;expediente&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp; vTrabajo.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print  {&lt;asunto&gt;&lt;![CDATA[} &amp; eliminarCaracteres(vTrabajoAsunto.getElement(i) )&amp; {]]&gt;}&amp; {&lt;/asunto&gt;}
+			Print {&lt;caratulaURL&gt;&lt;![CDATA[} &amp; vCaratulaURL.getElement(i) &amp; {]]&gt;}&amp; {&lt;/caratulaURL&gt;}
+			Print {&lt;tema&gt;&lt;![CDATA[} &amp; eliminarCaracteres(vTema.getElement(i)) &amp;{]]&gt;} &amp; {&lt;/tema&gt;}
+			Print {&lt;tiporuta&gt;&lt;![CDATA[} &amp; vTipoRuta.getElement(i) &amp; {]]&gt;} &amp; {&lt;/tiporuta&gt;}
+			Print {&lt;urgente&gt;} &amp; vCaratulaUrgente.getElement(i) &amp;{&lt;/urgente&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteTrabajo.getElement(i) &amp; {&lt;/paquete&gt;}
+			Print {&lt;expiro&gt;} &amp; vActuacionExpiro.getElement(i) &amp; {&lt;/expiro&gt;}
+			Print {&lt;attachment&gt;} &amp; vActuacionAttach.getElement(i) &amp; {&lt;/attachment&gt;}
+			Print {&lt;devuelto&gt;} &amp; vActuacionDevuelta.getElement(i) &amp; {&lt;/devuelto&gt;}
+			Print {&lt;firmado&gt;} &amp; vActuacionFirmado.getElement(i) &amp; {&lt;/firmado&gt;}
+			Print {&lt;fechaRecibido&gt;} &amp; vActuacionFechaRecibido.getElement(i) &amp; {&lt;/fechaRecibido&gt;}
+			Print {&lt;estado&gt;} &amp; vActuacionEstado.getElement(i) &amp; {&lt;/estado&gt;}
+			Print {&lt;actuacionURL&gt;&lt;![CDATA[} &amp; vActuacionURL.getElement(i) &amp; {]]&gt;&lt;/actuacionURL&gt;}
+			Print {&lt;unidad&gt;&lt;/unidad&gt;}
+			Print {&lt;seguridad&gt;} &amp; vCarSeguridad.getElement(i) &amp; {&lt;/seguridad&gt;}
+			Print {&lt;nivelsec&gt;} &amp; vSeguridad.getElement(i) &amp; {&lt;/nivelsec&gt;}
+			Print {&lt;agregados&gt;&lt;![CDATA[} &amp; vAgregados.getElement(i) &amp; {]]&gt;} &amp; {&lt;/agregados&gt;}
+			Print {&lt;/expediente&gt;}
+		Next
+		
+		Print {&lt;/trabajo&gt;}
+		Print {&lt;entrada&gt;}
+		
+		For i=1 To vEntrada.CantElem
+			Print {&lt;expediente&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp;vEntrada.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print {&lt;asunto&gt;&lt;![CDATA[} &amp;eliminarCaracteres(vEntAsunto.getElement(i)) &amp; {]]&gt;}&amp; {&lt;/asunto&gt;}
+			Print {&lt;caratulaURL&gt;&lt;![CDATA[} &amp;vEntURL.getElement(i) &amp; {]]&gt;}&amp; {&lt;/caratulaURL&gt;}
+			Print {&lt;urgente&gt;} &amp; vEntUrg.getElement(i) &amp;{&lt;/urgente&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteEntrada.getElement(i) &amp; {&lt;/paquete&gt;}
+			Print {&lt;fechaPase&gt;} &amp; vEntFechaPase.getElement(i) &amp; {&lt;/fechaPase&gt;}
+			Print {&lt;unidad&gt;} &amp; vEntOficinaAnterior.getElement(i) &amp;  {&lt;/unidad&gt;}
+			Print {&lt;tema&gt;&lt;![CDATA[} &amp; eliminarCaracteres(vEntradaTema.getElement(i)) &amp;{]]&gt;} &amp; {&lt;/tema&gt;}
+			Print {&lt;tiporuta&gt;&lt;![CDATA[} &amp; vEntradaTipoRuta.getElement(i) &amp; {]]&gt;} &amp; {&lt;/tiporuta&gt;}
+			Print {&lt;seguridad&gt;} &amp; vEntradaSeguridad.getElement(i) &amp; {&lt;/seguridad&gt;}
+			Print {&lt;agregados&gt;&lt;![CDATA[} &amp; vEntradaAgregados.getElement(i) &amp; {]]&gt;} &amp; {&lt;/agregados&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteEntrada.getElement(i) &amp; {&lt;/paquete&gt;}
+			Print {&lt;/expediente&gt;}
+		Next
+		
+		Print {&lt;/entrada&gt;}
+		Print {&lt;salida&gt;}
+		
+		For i=1 To vSalida.CantElem
+			Print {&lt;expediente&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp;vSalida.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print {&lt;asunto&gt;&lt;![CDATA[} &amp;eliminarCaracteres(vSalidaAsunto.getElement(i)) &amp; {]]&gt;}&amp; {&lt;/asunto&gt;}
+			Print {&lt;caratulaURL&gt;&lt;![CDATA[} &amp; vSalidaURL.getElement(i) &amp; {]]&gt;}&amp; {&lt;/caratulaURL&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteSalida.getElement(i) &amp; {&lt;/paquete&gt;}
+			Print {&lt;urgente&gt;} &amp; vSalidaUrg.getElement(i) &amp;{&lt;/urgente&gt;}
+			Print {&lt;unidad&gt;} &amp; vSalidaOficinaActual.getElement(i) &amp;{&lt;/unidad&gt;}
+			Print {&lt;tema&gt;&lt;![CDATA[} &amp; eliminarCaracteres(vSalidaTema.getElement(i)) &amp;{]]&gt;} &amp; {&lt;/tema&gt;}
+			Print {&lt;tiporuta&gt;&lt;![CDATA[} &amp; vSalidaTipoRuta.getElement(i) &amp; {]]&gt;} &amp; {&lt;/tiporuta&gt;}
+			Print {&lt;seguridad&gt;} &amp; vSalidaSeguridad.getElement(i) &amp; {&lt;/seguridad&gt;}
+			Print {&lt;agregados&gt;&lt;![CDATA[} &amp; vSalidaAgregados.getElement(i) &amp; {]]&gt;} &amp; {&lt;/agregados&gt;}			
+			Print {&lt;paquete&gt;} &amp; vPaqueteSalida.getElement(i) &amp; {&lt;/paquete&gt;}
+			Print {&lt;/expediente&gt;}
+		Next
+		
+		Print {&lt;/salida&gt;}
+		
+	Elseif tipo="Expediente" And bandeja="FIRMA" Then
+		Print {&lt;firmar&gt;}
+		For i=1 To vTrabajo.CantElem
+			Print {&lt;expediente&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp;vTrabajo.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print {&lt;asunto&gt;&lt;![CDATA[} &amp;eliminarCaracteres(vTrabajoAsunto.getElement(i)) &amp; {]]&gt;}&amp; {&lt;/asunto&gt;}
+			Print {&lt;caratulaURL&gt;&lt;![CDATA[} &amp;vCaratulaURL.getElement(i) &amp; {]]&gt;}&amp; {&lt;/caratulaURL&gt;}
+			Print {&lt;urgente&gt;} &amp; vCaratulaUrgente.getElement(i) &amp;{&lt;/urgente&gt;}
+			Print {&lt;expiro&gt;} &amp; vActuacionExpiro.getElement(i) &amp; {&lt;/expiro&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteTrabajo.getElement(i) &amp; {&lt;/paquete&gt;}			
+			Print {&lt;attachment&gt;} &amp; vActuacionAttach.getElement(i) &amp; {&lt;/attachment&gt;}
+			Print {&lt;devuelto&gt;} &amp; vActuacionDevuelta.getElement(i) &amp; {&lt;/devuelto&gt;}
+			Print {&lt;firmado&gt;} &amp; vActuacionFirmado.getElement(i) &amp; {&lt;/firmado&gt;}
+			Print {&lt;fechaRecibido&gt;} &amp; vActuacionFechaRecibido.getElement(i) &amp; {&lt;/fechaRecibido&gt;}
+			Print {&lt;estado&gt;} &amp; vActuacionEstado.getElement(i) &amp; {&lt;/estado&gt;}
+			Print {&lt;actuacionURL&gt;&lt;![CDATA[} &amp; vActuacionURL.getElement(i) &amp; {]]&gt;&lt;/actuacionURL&gt;}
+			Print {&lt;unidad&gt;&lt;/unidad&gt;}
+			Print {&lt;seguridad&gt;} &amp; vCarSeguridad.getElement(i) &amp; {&lt;/seguridad&gt;}
+			Print {&lt;/expediente&gt;}
+		Next
+		Print {&lt;/firmar&gt;}
+		contador =  vTrabajo.CantElem 
+	Elseif tipo="Expediente" And bandeja="RESERVADOS" Then 
+		Print {&lt;reservados&gt;}
+		For i=1 To vTrabajo.CantElem
+			Print {&lt;expediente&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp;vTrabajo.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print {&lt;asunto&gt;&lt;![CDATA[} &amp;eliminarCaracteres(vTrabajoAsunto.getElement(i)) &amp; {]]&gt;}&amp; {&lt;/asunto&gt;}
+			Print {&lt;caratulaURL&gt;&lt;![CDATA[} &amp;vCaratulaURL.getElement(i) &amp; {]]&gt;}&amp; {&lt;/caratulaURL&gt;}
+			Print {&lt;urgente&gt;} &amp; vCaratulaUrgente.getElement(i) &amp;{&lt;/urgente&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteTrabajo.getElement(i) &amp; {&lt;/paquete&gt;}
+			Print {&lt;expiro&gt;} &amp; vActuacionExpiro.getElement(i) &amp; {&lt;/expiro&gt;}
+			Print {&lt;attachment&gt;} &amp; vActuacionAttach.getElement(i) &amp; {&lt;/attachment&gt;}
+			Print {&lt;devuelto&gt;} &amp; vActuacionDevuelta.getElement(i) &amp; {&lt;/devuelto&gt;}
+			Print {&lt;firmado&gt;} &amp; vActuacionFirmado.getElement(i) &amp; {&lt;/firmado&gt;}
+			Print {&lt;fechaRecibido&gt;} &amp; vActuacionFechaRecibido.getElement(i) &amp; {&lt;/fechaRecibido&gt;}
+			Print {&lt;estado&gt;} &amp; vActuacionEstado.getElement(i) &amp; {&lt;/estado&gt;}
+			Print {&lt;actuacionURL&gt;&lt;![CDATA[} &amp; vActuacionURL.getElement(i) &amp; {]]&gt;&lt;/actuacionURL&gt;}
+			Print {&lt;unidad&gt;&lt;/unidad&gt;}
+			Print {&lt;seguridad&gt;} &amp; vCarSeguridad.getElement(i) &amp; {&lt;/seguridad&gt;}
+			Print {&lt;/expediente&gt;}
+		Next
+		Print {&lt;/reservados&gt;}
+		contador =  vTrabajo.CantElem 
+	Elseif tipo="Expediente" And bandeja="NOTIFICACIONES" Then 
+		Print {&lt;entrada&gt;}
+		
+		For i=1 To vEntrada.CantElem
+			Print {&lt;expediente&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp;vFEntrada.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print {&lt;asunto&gt;&lt;![CDATA[} &amp;eliminarCaracteres(vEntAsunto.getElement(i)) &amp; {]]&gt;}&amp; {&lt;/asunto&gt;}
+			Print {&lt;caratulaURL&gt;&lt;![CDATA[} &amp;vEntURL.getElement(i) &amp; {]]&gt;}&amp; {&lt;/caratulaURL&gt;}
+			Print {&lt;urgente&gt;} &amp; vEntUrg.getElement(i) &amp;{&lt;/urgente&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteTrabajo.getElement(i) &amp; {&lt;/paquete&gt;}
+			Print {&lt;fechaPase&gt;} &amp; vEntFechaPase.getElement(i) &amp; {&lt;/fechaPase&gt;}
+			Print {&lt;unidad&gt;} &amp; vEntOficinaActual.getElement(i) &amp;  {&lt;/unidad&gt;}
+			Print {&lt;/expediente&gt;}
+		Next
+		
+		Print {&lt;/entrada&gt;}
+		Print {&lt;acuse&gt;}
+		
+		For i=1 To vSalida.CantElem
+			Print {&lt;expediente&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp;vFSalida.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print {&lt;asunto&gt;&lt;![CDATA[} &amp;eliminarCaracteres(vSalidaAsunto.getElement(i)) &amp; {]]&gt;}&amp; {&lt;/asunto&gt;}
+			Print {&lt;caratulaURL&gt;&lt;![CDATA[} &amp; vSalidaURL.getElement(i) &amp; {]]&gt;}&amp; {&lt;/caratulaURL&gt;}
+			Print {&lt;paquete&gt;} &amp; vPaqueteSalida.getElement(i) &amp; {&lt;/paquete&gt;}			
+			Print {&lt;urgente&gt;} &amp; vSalidaUrg.getElement(i) &amp;{&lt;/urgente&gt;}
+			Print {&lt;unidad&gt;} &amp; vSalidaOficinaActual.getElement(i) &amp;{&lt;/unidad&gt;}
+			Print {&lt;fechaPase&gt;} &amp; vSalidaFechaPase.getElement(i) &amp; {&lt;/fechaPase&gt;}
+			Print {&lt;/expediente&gt;}
+		Next
+		
+		Print {&lt;/acuse&gt;}
+		contador =   vEntrada.CantElem + vSalida.CantElem
+	Elseif tipo="Carta de Servicio" Then 
+		Print {&lt;cartas&gt;}
+		For i= vEntrada.CantElem To 1 Step -1
+			Print {&lt;carta&gt;}
+			Print {&lt;numero&gt;&lt;![CDATA[} &amp;vEntrada.getElement(i) &amp; {]]&gt;}&amp; {&lt;/numero&gt;}
+			Print {&lt;cartaURL&gt;&lt;![CDATA[} &amp; urlCartas.getElement(i) &amp; {]]&gt;}&amp; {&lt;/cartaURL&gt;}
+			Print {&lt;attach&gt;} &amp; attachCartas.getElement(i) &amp; {&lt;/attach&gt;}
+			Print {&lt;atencion&gt;&lt;![CDATA[} &amp; atencionCartas.getElement(i) &amp; {]]&gt;&lt;/atencion&gt;}		
+			Print {&lt;fecha&gt;} &amp; fechaEnvCartas.getElement(i) &amp; {&lt;/fecha&gt;}
+			Print {&lt;asunto&gt;&lt;![CDATA[} &amp;eliminarCaracteres(asuntoCartas.getElement(i)) &amp; {]]&gt;&lt;/asunto&gt;}
+			Print {&lt;actuacion&gt;} &amp; nroActCartas.getElement(i) &amp; {&lt;/actuacion&gt;}
+			Print {&lt;unidad&gt;} &amp; unidadCartas.getElement(i) &amp; {&lt;/unidad&gt;}
+			Print {&lt;nroact&gt;} &amp; nroActCartas.getElement(i) &amp; {&lt;/nroact&gt;}
+			Print {&lt;/carta&gt;}
+			contador =   vEntrada.CantElem 
+		Next
+		Print {&lt;/cartas&gt;}
+	End If
+	Print {&lt;/frames&gt;}
+	
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente  BandejaTodosTrabajo - imprimirXML",""	
+	imprimirXMLError 	Error$ &amp; " " &amp; Erl
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:CargoBandejaFirma:1:8
+Sub CargoBandejaFirma(view As NotesView,doc As NotesDocument,anterior2000)
+	On Error Goto handler
+	
+	'Aca cargamos todos los datos de lo expedientes en los vectores para imprimir bandeja
+	Dim pos As Long
+	Dim vUrg As New Vector(0)
+	Dim aux As NotesDocument
+	Dim seguridad As Integer
+	
+	While Not doc Is Nothing 
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		If doc.form(0)&lt;&gt;"Caratula" And doc.form(0)&lt;&gt;"FCaratula" Then
+			' ACA TENGO QUE DAR ERROR PORQUE ES INCONSISTENTE
+			Error 1023, "Formulario de Caratula Incorrecto " &amp; doc.GetItemValue("ccNroExp")(0)
+			Exit Sub
+		End If		
+		If anterior2000 Then
+			pos = vFTrabajo.InsertPos("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),True)
+			Call vFTrabajo.insertElement("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)
+		Else 
+			pos = vFTrabajo.InsertPos("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),True)
+			Call vFTrabajo.insertElement("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)			
+		End If
+		' Empiezo a cargar los datos de la caratula en los vectores
+		Call vTrabajo.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), pos)
+		Dim vAux As New Vector(0)
+		vAux.values=	doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ASUNTO)
+		
+		If doc.GetItemValue("rTienePaquete")(0)="Si" Or doc.GetItemValue("PaqueteEnAgregado")(0)="1" Then
+			Call vPaqueteTrabajo.insertElement("/" &amp; filepath &amp;"/paquete.gif?OpenImageResource", pos)
+		Else
+			Call vPaqueteTrabajo.insertElement("", pos)
+		End If
+		Call vTrabajoAsunto.insertElement(vAux.toString(" "),pos)
+		Call vCaratulaUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto  &amp; "/" &amp; filepath &amp;  "/0/" &amp; doc.UniversalID &amp; "?OpenDocument",pos)
+		vUrg.values = doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ACT_URGENTES)							
+		Set aux=doc
+		If (aux.ccSeguridad(0) ="Normal" Or aux.ccSeguridad(0)="") Then
+			seguridad=1
+		Else 
+			seguridad=2
+		End If
+		Set doc = view.GetNextSibling(doc)
+		If  doc Is Nothing And seguridad=1 Then
+			'ERROR PORQUE LA ACTUACION ES NULA
+			Error 1024,"La actuación es nula: " &amp; aux.GetItemValue("ccNroExp")(0)
+			Exit Sub
+		End If	
+		If doc Is Nothing Then 
+			
+			Call vCaratulaUrgente.insertelement(False,pos)
+			Call	vActuacionExpiro.insertElement(2,pos)
+			Call vActuacionAttach.insertElement(False,pos)
+			Call vActuacionDevuelta.insertElement(False,pos)
+			Call vActuacionFirmado.insertElement(False,pos)
+			vActuacionFechaRecibido.insertElement "-",pos
+			Call vActuacionUrl.insertelement("://?OpenDocument",pos)
+			Call vActuacionEstado.insertElement("NADA",pos)
+		Else 			
+			
+			If  doc.Form(0)&lt;&gt;"Actuacion" And doc.Form(0)&lt;&gt;"FActuacion" Then 
+			'ERROR PORQUE NO ES UNA ACTUACION
+				If seguridad=1 Then 
+					Error 1025,"Formulario de Actuación Incorrecto " &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0)
+					Exit Sub
+				End If 
+			End If
+			If Not doc Is Nothing And (doc.form(0)&lt;&gt;"Caratula" And doc.form(0)&lt;&gt;"FCaratula") Then 
+				seguridad=3
+			'Chequeo que la actuacion este dentro de las urgentes, y cargo el vector de urgentes
+				If vUrg.isMember(Cstr(doc.GetItemValue("ccnNroAct")(0)),0,False) Then
+					Call vCaratulaUrgente.insertElement(True,pos)
+				Else
+					Call vCaratulaUrgente.insertelement(False,pos)
+				End If
+		'Chequeo si esta o no por expirar la actuacion
+				If Expiro(doc) Then
+					Call vActuacionExpiro.insertElement(0,pos)
+				Elseif ProxExpirar(doc) Then
+					Call vActuacionExpiro.insertElement(1,pos)
+				Else
+					Call	vActuacionExpiro.insertElement(2,pos)
+				End If
+		'Chequeo si tiene attachments
+				If doc.HasEmbedded Then
+					Call vActuacionAttach.insertElement(True,pos)
+				Else
+					Call vActuacionAttach.insertElement(False,pos)
+				End If
+				
+		'Chequeo si la actuacion fue devuelta
+				If devuelta(doc) Then
+					Call vActuacionDevuelta.insertElement(True,pos)
+				Else
+					Call vActuacionDevuelta.insertElement(False,pos)
+				End If
+				
+		'Chequeo cuantas firmas tiene el documento
+				If cantFirmas(doc)&gt;0 Then
+					Call vActuacionFirmado.insertElement(True,pos)
+				Else
+					Call vActuacionFirmado.insertElement(False,pos)
+				End If
+				
+		'Chequeo si la actuacion fue recibida y cuando
+				If doc.HasItem(DBSGD_CAMPO_FACTUACION_FECHA_REC) Then
+					If Instr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)," ")&gt;0 Then
+						vActuacionFechaRecibido.insertElement Strleft(Cstr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0))," "),pos
+					Elseif doc.GetItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)&lt;&gt;"" Then
+						vActuacionFechaRecibido.insertElement Cstr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)),pos
+					Else
+						vActuacionFechaRecibido.insertElement "-",pos
+					End If
+				Else
+					vActuacionFechaRecibido.insertElement "-",pos
+				End If
+		'Inserto el estado de la actuacion
+				Call vActuacionUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl  &amp; ":" &amp; c.Puerto &amp; "/" &amp; filepath &amp; "/0/" &amp; doc.UniversalID &amp; "?OpenDocument",pos)
+				Call vActuacionEstado.insertElement(EstadoActuacion(doc),pos)
+				If Not doc Is Nothing Then
+					Set doc = view.GetNextSibling(doc)
+				End If
+			Else
+				If (doc Is Nothing) Then
+					Set doc=view.GetNextSibling(aux)			
+				Else
+					Call vCaratulaUrgente.insertelement(False,pos)
+					Call	vActuacionExpiro.insertElement(2,pos)
+					Call vActuacionAttach.insertElement(False,pos)
+					Call vActuacionDevuelta.insertElement(False,pos)
+					Call vActuacionFirmado.insertElement(False,pos)
+					vActuacionFechaRecibido.insertElement "-",pos
+					Call vActuacionUrl.insertelement("://?OpenDocument",pos)
+					Call vActuacionEstado.insertElement("NADA",pos)
+				End If
+			End If	
+		End If 
+		Call vCarSeguridad.insertElement(seguridad,pos)
+	Wend
+	
+	
+	Exit Sub
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+	
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaFirma",""	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:CargoBandejaReservados:1:8
+Sub CargoBandejaReservados(view As NotesView,doc As NotesDocument,anterior2000)
+	On Error Goto handler
+	
+	'Aca cargamos todos los datos de lo expedientes en los vectores para imprimir bandeja
+	Dim pos As Long
+	Dim vUrg As New Vector(0)
+	Dim aux As NotesDocument
+	Dim seguridad As Integer
+	
+	While Not doc Is Nothing 
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		If doc.form(0)&lt;&gt;"Caratula" And doc.form(0)&lt;&gt;"FCaratula" Then
+			' ACA TENGO QUE DAR ERROR PORQUE ES INCONSISTENTE
+			Error 1023, "Formulario de Caratula Incorrecto " &amp; doc.GetItemValue("ccNroExp")(0)
+			Exit Sub
+		End If		
+		If anterior2000 Then
+			pos = vFTrabajo.InsertPos("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),True)
+			Call vFTrabajo.insertElement("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)
+		Else 
+			pos = vFTrabajo.InsertPos("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),True)
+			Call vFTrabajo.insertElement("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)			
+		End If
+		' Empiezo a cargar los datos de la caratula en los vectores
+		Call vTrabajo.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), pos)
+		Dim vAux As New Vector(0)
+		vAux.values=	doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ASUNTO)
+		Call vTrabajoAsunto.insertElement(vAux.toString(" "),pos)
+		If doc.GetItemValue("rTienePaquete")(0)="Si" Or doc.GetItemValue("PaqueteEnAgregado")(0)="1" Then
+			Call vPaqueteTrabajo.insertElement("/" &amp; filepath &amp;"/paquete.gif?OpenImageResource", pos)
+		Else
+			Call vPaqueteTrabajo.insertElement("", pos)
+		End If
+		Call vCaratulaUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; filepath &amp;  "/0/" &amp; doc.UniversalID &amp; "?OpenDocument",pos)
+		vUrg.values = doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ACT_URGENTES)							
+		Set aux=doc
+		If (aux.ccSeguridad(0) ="Normal" Or aux.ccSeguridad(0)="") Then
+			seguridad=1
+		Else 
+			seguridad=2
+		End If
+		Set doc = view.GetNextSibling(doc)
+		If  doc Is Nothing And seguridad=1 Then
+			'ERROR PORQUE LA ACTUACION ES NULA
+			Error 1024,"La actuación es nula: " &amp; aux.GetItemValue("ccNroExp")(0)
+			Exit Sub
+		End If	
+		If doc Is Nothing Then 
+			
+			Call vCaratulaUrgente.insertelement(False,pos)
+			Call	vActuacionExpiro.insertElement(2,pos)
+			Call vActuacionAttach.insertElement(False,pos)
+			Call vActuacionDevuelta.insertElement(False,pos)
+			Call vActuacionFirmado.insertElement(False,pos)
+			vActuacionFechaRecibido.insertElement "-",pos
+			Call vActuacionUrl.insertelement("://?OpenDocument",pos)
+			Call vActuacionEstado.insertElement("NADA",pos)
+		Else 			
+			
+			If  doc.Form(0)&lt;&gt;"Actuacion" And doc.Form(0)&lt;&gt;"FActuacion" Then 
+			'ERROR PORQUE NO ES UNA ACTUACION
+				If seguridad=1 Then 
+					Error 1025,"Formulario de Actuación Incorrecto " &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0)
+					Exit Sub
+				End If 
+			End If
+			If Not doc Is Nothing And (doc.form(0)&lt;&gt;"Caratula" And doc.form(0)&lt;&gt;"FCaratula") Then 
+				seguridad=3
+			'Chequeo que la actuacion este dentro de las urgentes, y cargo el vector de urgentes
+				If vUrg.isMember(Cstr(doc.GetItemValue("ccnNroAct")(0)),0,False) Then
+					Call vCaratulaUrgente.insertElement(True,pos)
+				Else
+					Call vCaratulaUrgente.insertelement(False,pos)
+				End If
+		'Chequeo si esta o no por expirar la actuacion
+				If Expiro(doc) Then
+					Call vActuacionExpiro.insertElement(0,pos)
+				Elseif ProxExpirar(doc) Then
+					Call vActuacionExpiro.insertElement(1,pos)
+				Else
+					Call	vActuacionExpiro.insertElement(2,pos)
+				End If
+		'Chequeo si tiene attachments
+				If doc.HasEmbedded Then
+					Call vActuacionAttach.insertElement(True,pos)
+				Else
+					Call vActuacionAttach.insertElement(False,pos)
+				End If
+				
+		'Chequeo si la actuacion fue devuelta
+				If devuelta(doc) Then
+					Call vActuacionDevuelta.insertElement(True,pos)
+				Else
+					Call vActuacionDevuelta.insertElement(False,pos)
+				End If
+				
+		'Chequeo cuantas firmas tiene el documento
+				If cantFirmas(doc)&gt;0 Then
+					Call vActuacionFirmado.insertElement(True,pos)
+				Else
+					Call vActuacionFirmado.insertElement(False,pos)
+				End If
+				
+		'Chequeo si la actuacion fue recibida y cuando
+				If doc.HasItem(DBSGD_CAMPO_FACTUACION_FECHA_REC) Then
+					If Instr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)," ")&gt;0 Then
+						vActuacionFechaRecibido.insertElement Strleft(Cstr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0))," "),pos
+					Elseif doc.GetItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)&lt;&gt;"" Then
+						vActuacionFechaRecibido.insertElement Cstr(doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)),pos
+					Else
+						vActuacionFechaRecibido.insertElement "-",pos
+					End If
+				Else
+					vActuacionFechaRecibido.insertElement "-",pos
+				End If
+		'Inserto el estado de la actuacion
+				Call vActuacionUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; filepath  &amp; "/0/" &amp; doc.UniversalID &amp; "?OpenDocument",pos)
+				Call vActuacionEstado.insertElement(EstadoActuacion(doc),pos)
+				If Not doc Is Nothing Then
+					Set doc = view.GetNextSibling(doc)
+				End If
+			Else
+				If (doc Is Nothing) Then
+					Set doc=view.GetNextSibling(aux)			
+				Else
+					Call vCaratulaUrgente.insertelement(False,pos)
+					Call	vActuacionExpiro.insertElement(2,pos)
+					Call vActuacionAttach.insertElement(False,pos)
+					Call vActuacionDevuelta.insertElement(False,pos)
+					Call vActuacionFirmado.insertElement(False,pos)
+					vActuacionFechaRecibido.insertElement "-",pos
+					Call vActuacionUrl.insertelement("://?OpenDocument",pos)
+					Call vActuacionEstado.insertElement("NADA",pos)
+				End If
+			End If	
+		End If 
+		Call vCarSeguridad.insertElement(seguridad,pos)
+	Wend
+	
+	Exit Sub
+maximo:
+'	Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaReservados",""	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:imprimirXMLError:2:8
+
+Sub imprimirXMLError (Merror As String)
+	Print "ContentType: text/xml"	
+	Print {&lt;?xml version="1.0"?&gt;}
+	Print {&lt;frames&gt;}
+	Print {&lt;error&gt;&lt;![CDATA[} &amp; Merror &amp; {]]&gt;}&amp; {&lt;/error&gt;}
+	Print {&lt;trabajo&gt;}
+	Print {&lt;/trabajo&gt;}
+	Print {&lt;entrada&gt;}
+	Print {&lt;/entrada&gt;}
+	Print {&lt;salida&gt;}
+	Print {&lt;/salida&gt;}
+	Print {&lt;firmar&gt;}
+	Print {&lt;/firmar&gt;}
+	Print {&lt;reservados&gt;}
+	Print {&lt;/reservados&gt;}
+	Print {&lt;cartas&gt;}
+	Print {&lt;/cartas&gt;}
+	Print {&lt;/frames&gt;}
+	Call oLog.StopTimer()
+	Call oLog.Log("BandejaTodosTrabajo Error Procesados " &amp; Cstr(contador),"End" ,1)	
+	Exit Sub
+handler:
+	'RegistrarYGenerarError NOMBRE_APLICACION,"Agente  BandejaTodosTrabajo - imprimirXML",""	
+	imprimirXMLError ""
+	Exit Sub
+End Sub
+
+
+
+'++LotusScript Development Environment:2:1:eliminarCaracteres:1:8
+Function eliminarCaracteres(valor As String) As String
+	
+	Dim caracter As String
+	Dim valorAux As String
+	Dim caracterAux As String
+	
+	valor= eliminarNumeral(valor)
+	valorAux=valor
+	caracter=tieneCaracter(valorAux)
+	
+	While caracter&lt;&gt;""
+		
+		
+		Select Case caracter
+		Case "]"      : caracterAux="&amp;#93;"
+		Case "["      : caracterAux="&amp;#91;"
+		Case "{"      : caracterAux="&amp;#123;"
+		Case "}"      : caracterAux="&amp;#125;"
+		Case "Ñ"      : caracterAux="&amp;Ntilde;"
+		Case "ñ"      : caracterAux="&amp;ntilde;"
+		Case "á"      : caracterAux="&amp;aacute;"
+		Case "Á"      : caracterAux="&amp;Aacute;"
+		Case "é"      : caracterAux="&amp;eacute;"
+		Case "É"      : caracterAux="&amp;Eacute;"			
+		Case "í"      : caracterAux="&amp;iacute;"			
+		Case "Í"      : caracterAux="&amp;Iacute;"			
+		Case "ó"      : caracterAux="&amp;oacute;"			
+		Case "Ó"      : caracterAux="&amp;Oacute;"						
+		Case "ú"      : caracterAux="&amp;uacute;"						
+		Case "Ú"      : caracterAux="&amp;Uacute;"
+		Case "&lt;"      : caracterAux="&amp;lt;"
+		Case "&gt;"      : caracterAux="&amp;gt;"	
+		Case Chr(176)   :caracterAux="&amp;#176;"
+		Case Chr(186)   :caracterAux="&amp;#186;"			
+		Case Chr(96)   :caracterAux="&amp;#96;"	
+		Case Chr(180)   :caracterAux="&amp;#180;"				
+		Case Chr(170)   :caracterAux="&amp;#170;"				
+		Case "#"   :caracterAux="&amp;#35;"			
+			
+		Case Else    : caracterAux=""
+		End Select	
+		valorAux=Strleft(valorAux,caracter) &amp; caracterAux &amp; Strright(valorAux,caracter)
+		caracter=tieneCaracter(valorAux)
+	Wend
+	eliminarCaracteres=valorAux
+	
+	
+	
+End Function
+'++LotusScript Development Environment:2:1:tieneCaracter:1:8
+Function tieneCaracter(valor As String) As String
+	On Error Goto handler
+	
+	If (Instr(valor,"]"))&gt;0 Then 
+		tieneCaracter="]"
+		Exit Function
+	End If
+	
+	If Instr(valor,"[")&gt;0 Then 
+		tieneCaracter="["
+		Exit Function
+	End If
+	If Instr(valor,"&lt;")&gt;0 Then 
+		tieneCaracter="&lt;"
+		Exit Function
+	End If
+	
+	If Instr(valor,"&gt;")&gt;0 Then 
+		tieneCaracter="&gt;"
+		Exit Function
+	End If
+%REM	
+	If Instr(valor,"ñ")&gt;0 Then 
+		tieneCaracter="ñ"
+		Exit Function
+	End If
+	If Instr(valor,"Ñ")&gt;0 Then 
+		tieneCaracter="Ñ"
+		Exit Function
+	End If 	
+%END REM
+	tieneCaracter=""
+	Exit Function
+handler:
+	Msgbox valor
+End Function
+
+'++LotusScript Development Environment:2:1:eliminarNumeral:1:8
+Function eliminarNumeral(valor As String) As String
+	If Instr(valor,"#")&gt;0 Then 
+		eliminarNumeral= Strleft(valor,"#") &amp; "&amp;#35;" &amp; eliminarNumeral(Strright(valor,"#"))
+	Else
+		eliminarNumeral=valor
+	End If
+	
+End Function
+'++LotusScript Development Environment:2:2:CargoBandejaNotificadosEnt:1:8
+Sub CargoBandejaNotificadosEnt (view As NotesView,doc As NotesDocument,anterior2000)
+	On Error Goto handler
+	Dim pos As Long
+	Dim fVieja 
+	Dim ofNotif As String
+	Dim unidadnotif As String
+	
+	
+	fVieja = Cdat("01/01/1980")
+	Dim vUrg As Vector
+	Set vUrg = New Vector(0)
+	
+	While Not doc Is Nothing
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		If anterior2000 Then
+			pos = vEntrada.InsertPos("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), False)
+			Call vEntrada.insertElement("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)
+		Else 
+			pos = vEntrada.InsertPos("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), False)
+			Call vEntrada.insertElement("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)			
+		End If		
+		If doc.GetItemValue("rTienePaquete")(0)="Si"  Or doc.GetItemValue("PaqueteEnAgregado")(0)="1" Then
+			Call vPaqueteTrabajo.insertElement("/" &amp; filepath &amp;"/paquete.gif?OpenImageResource", pos)
+		Else
+			Call vPaqueteTrabajo.insertElement("", pos)
+		End If
+		Call vFEntrada.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)
+		Dim vAux As New Vector(0)
+		vAux.values=	doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ASUNTO)
+		
+		Call vEntAsunto.insertElement(vAux.toString(" "),pos)
+		
+		If Instr(Cstr(doc.GetItemValue("ccFechaPase")(0))," ")&gt;0 Then
+			Call vEntFechaPase.insertElement(Strleft(Cstr(doc.GetItemValue("ccFechaPase")(0))," "),pos)
+		Elseif Cstr(doc.GetItemValue("ccFechaPase")(0))&lt;&gt;"" Then
+			Call vEntFechaPase.insertElement(Cstr(doc.GetItemValue("ccFechaPase")(0)),pos)
+		Else
+			Call vEntFechaPase.insertElement("-",pos)
+		End If
+		
+		If doc.GetItemValue("ccOficinaActual")(0)&lt;&gt; "" Then
+			unidadnotif = Strright(doc.GetItemValue("ccOficinaActual")(0),"EXP_")
+			Set docUnidad=vUnidades.getDocumentByKey(unidadnotif)
+			Call vEntOficinaActual.insertElement(docUnidad.GetItemValue("sUnidad")(0),pos)
+		Else
+			Call vEntOficinaActual.insertElement("-",pos)
+		End If
+		
+		vUrg.values = doc.GetItemValue("sUrgenteActs")							
+		
+		If vUrg.isMember(Cstr(doc.GetItemValue("cCantAct")(0)),0,False) Then
+			Call vEntUrg.insertElement(True,pos)
+		Else
+			Call vEntUrg.insertelement(False,pos)
+		End If
+		
+		Call vEntUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; filepath &amp; "/0/" &amp; doc.UniversalID &amp; "?OpenDocument" ,pos)
+		
+		Set doc = view.GetNextSibling (doc)
+	Wend
+	Exit Sub	
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+	
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaNotificadosEnt",""	
+	Exit Sub
+End Sub
+
+
+'++LotusScript Development Environment:2:2:CargoBandejaNotificadosAcu:1:8
+Sub CargoBandejaNotificadosAcu (view As NotesView,doc As NotesDocument,anterior2000) 
+	On Error Goto handler
+	Dim pos As Long
+	Dim fVieja 
+	Dim unidadnotif As String
+	
+	fVieja = Cdat("01/01/1980")
+	Dim vUrg As Vector
+	Set vUrg = New Vector(0)
+	
+	While Not doc Is Nothing
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		If anterior2000 Then
+			pos = vSalida.InsertPos("0000" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), False)
+			Call vSalida.insertElement("0000" &amp;doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)
+		Else 
+			pos = vSalida.Insert</text></item>
+<item name='$AgentHScript' summary='false' sign='true'><text>Pos("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), False)
+			Call vSalida.insertElement("9" &amp; doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)			
+		End If		
+		
+		Call vFSalida.insertElement(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0),pos)
+		Dim vAux As New Vector(0)
+		vAux.values=	doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ASUNTO)
+		Call vSalidaAsunto.insertElement(vAux.toString(" "),pos)
+		If doc.GetItemValue("rTienePaquete")(0)="Si" Or doc.GetItemValue("PaqueteEnAgregado")(0)="1" Then
+			Call vPaqueteSalida.insertElement("/" &amp; filepath &amp;"/paquete.gif?OpenImageResource", pos)
+		Else
+			Call vPaqueteSalida.insertElement("", pos)
+		End If
+		If Instr(Cstr(doc.GetItemValue("ccFechaPase")(0))," ")&gt;0 Then
+			Call vSalidaFechaPase.insertElement(Strleft(Cstr(doc.GetItemValue("ccFechaPase")(0))," "),pos)
+		Elseif Cstr(doc.GetItemValue("ccFechaPase")(0))&lt;&gt;"" Then
+			Call vSalidaFechaPase.insertElement(Cstr(doc.GetItemValue("ccFechaPase")(0)),pos)
+		Else
+			Call vSalidaFechaPase.insertElement("-",pos)
+		End If
+		
+		If doc.GetItemValue("ccOficinaActual")(0)&lt;&gt; "" Then
+			unidadnotif = Strright(doc.GetItemValue("ccOficinaActual")(0),"EXP_")
+			Set docUnidad=vUnidades.getDocumentByKey(unidadnotif)
+			Call vSalidaOficinaActual.insertElement(docUnidad.GetItemValue("sUnidad")(0),pos)
+		Else
+			Call vSalidaOficinaActual.insertElement("-",pos)
+		End If
+		
+		vUrg.values = doc.GetItemValue("sUrgenteActs")							
+		
+		If vUrg.isMember(Cstr(doc.GetItemValue("cCantAct")(0)),0,False) Then
+			Call vSalidaUrg.insertElement(True,pos)
+		Else
+			Call vSalidaUrg.insertelement(False,pos)
+		End If
+		
+		Call vSalidaUrl.insertelement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; filepath  &amp; "/0/" &amp; doc.UniversalID &amp; "?OpenDocument" ,pos)
+		
+		Set doc = view.GetNextSibling (doc)
+	Wend
+	Exit Sub	
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaNotificadosAcu",""	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:CargoBandejaEntradaCartas:1:8
+Sub CargoBandejaEntradaCartas(FilePath As String,col As NotesDocumentCollection)
+	On Error Goto handler
+	
+	Dim doc As NotesDocument
+	Dim pos As Long
+	Dim strAtencion As String
+	
+	Set doc = col.GetFirstDocument
+	While Not doc Is Nothing
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		pos = vFEntrada.InsertPos(Cdat(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0)),True)
+		Call vFEntrada.insertElement(Cdat(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0)),pos)
+		Call vEntrada.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0),pos)
+		Call urlCartas.insertElement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; FilePath  &amp; "/0/" &amp; doc.UniversalID &amp; "?OpenDocument&amp;unidad=" &amp; strUnidad,pos)
+		If doc.HasEmbedded Then
+			Call attachCartas.insertElement(True,pos)
+		Else
+			Call attachCartas.insertElement(False,pos)
+		End If
+		If doc.GetItemValue(DBCS_CAMPO_FCARTASERV_PERSATENCION)(0)&lt;&gt;"" Then
+			strAtencion =  doc.GetItemValue(DBCS_CAMPO_FCARTASERV_PERSATENCION)(0) 
+			Call atencionCartas.insertElement(strAtencion,pos)
+		Else 
+			Call atencionCartas.insertElement("",pos)
+		End If
+		Call fechaEnvCartas.insertElement(Strleft(Cstr(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0))," "),pos)
+		Call asuntoCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ASUNTO)(0),pos)
+		Call nroActCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ACT_NRO)(0),pos)
+		Call unidadCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL)(0),pos)
+		Set doc = col.GetNextDocument(doc)
+	Wend
+	Exit Sub
+maximo:
+'	Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaEntradaCartas",""	
+	Exit Sub
+End Sub
+'++LotusScript Development Environment:2:2:CargoBandejaListadoCartas:1:8
+Sub CargoBandejaListadoCartas(FilePath As String,col As NotesDocumentCollection)
+	On Error Goto handler
+	
+	Dim doc As NotesDocument
+	Dim pos As Long
+	Dim strAtencion As String
+	
+	Set doc = col.GetFirstDocument
+	While Not doc Is Nothing
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		pos = vFEntrada.InsertPos(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0) &amp; "-" &amp; Cstr(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ACT_NRO)(0)),True)
+		Call vFEntrada.insertElement(Cdat(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0)),pos)
+		Call vEntrada.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0), pos)
+		Call urlCartas.insertElement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; FilePath &amp; "/0/" &amp; doc.UniversalID &amp; "?OpenDocument&amp;unidad=" &amp; strUnidad,pos)
+		If doc.HasEmbedded Then
+			Call attachCartas.insertElement(True,pos)
+		Else
+			Call attachCartas.insertElement(False,pos)
+		End If
+		If doc.GetItemValue(DBCS_CAMPO_FCARTASERV_PERSATENCION)(0)&lt;&gt;"" Then
+			strAtencion =  doc.GetItemValue(DBCS_CAMPO_FCARTASERV_PERSATENCION)(0) 
+			Call atencionCartas.insertElement(strAtencion,pos)
+		Else 
+			Call atencionCartas.insertElement("",pos)
+		End If
+		Call fechaEnvCartas.insertElement(Strleft(Cstr(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0))," "),pos)
+		Call asuntoCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ASUNTO)(0),pos)
+		Call nroActCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ACT_NRO)(0),pos)
+		Call unidadCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL)(0),pos)
+		Set doc = col.GetNextDocument(doc)
+	Wend
+	Exit Sub
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos. "
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+	
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaListadoCartas",""	
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:CargoBandejaArchivoCartas:1:8
+Sub CargoBandejaArchivoCartas(FilePath As String, col As NotesDocumentCollection)
+	On Error Goto handler
+	
+	Dim doc As NotesDocument
+	Dim pos As Long
+	Dim strAtencion As String
+	
+	Set doc = col.GetFirstDocument
+	While Not doc Is Nothing
+		contador= contador+1
+		If contador&gt;cantidadMaxima Then
+			Goto maximo
+		End If
+		pos = vFEntrada.InsertPos(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0) &amp; "-" &amp; Cstr(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ACT_NRO)(0)),True)
+		Call vFEntrada.insertElement(Cdat(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0)),pos)
+		Call vEntrada.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_NRO)(0), pos)
+		Call urlCartas.insertElement(c.Protocolo &amp; "://" &amp; serverUrl &amp; ":" &amp; c.Puerto &amp; "/" &amp; FilePath &amp;"/0/" &amp; doc.UniversalID &amp; "?OpenDocument&amp;unidad=" &amp; strUnidad,pos)
+		If doc.HasEmbedded Then
+			Call attachCartas.insertElement(True,pos)
+		Else
+			Call attachCartas.insertElement(False,pos)
+		End If
+		If doc.GetItemValue(DBCS_CAMPO_FCARTASERV_PERSATENCION)(0)&lt;&gt;"" Then
+			strAtencion =  doc.GetItemValue(DBCS_CAMPO_FCARTASERV_PERSATENCION)(0) 
+			Call atencionCartas.insertElement(strAtencion,pos)
+		Else 
+			Call atencionCartas.insertElement("",pos)
+		End If
+		Call fechaEnvCartas.insertElement(Strleft(Cstr(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_FECHA_ENVIO)(0))," "),pos)
+		Call asuntoCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ASUNTO)(0),pos)
+		Call nroActCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_ACT_NRO)(0),pos)
+		Call unidadCartas.insertElement(doc.GetItemValue(DBCS_CAMPO_FCARTASERV_OFICINA_INICIAL)(0),pos)
+		Set doc = col.GetNextDocument(doc)
+	Wend
+	Exit Sub
+maximo:
+	'Error 1024 , "Se exedieron los " &amp; cantidadMaxima &amp; " de documentos."
+	Error 1024 , "Se excedieron los " &amp; cantidadMaxima &amp; " documentos. "
+	Exit Sub
+handler:
+	RegistrarYGenerarError NOMBRE_APLICACION,"Agente BandejaTodosTrabajo - CargoBandejaArchivoCartas",""	
+	Exit Sub
+End Sub<break/><break/></text></item>
+<item name='$AssistAction' sign='true'>
+<rawitemdata type='10'>
+gQKF/wwAAAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$Restricted' sign='true'><number>1</number></item>
+<item name='$Flags'><text>fL3u</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$AssistRunInfo' summary='true'>
+<rawitemdata type='3'>
+BgAAAgAACAAqCQAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAYB9wABB1JYNrInAA43QlAwAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+qqqqqqqqqqqqqqqqqqqqqqqq
+</rawitemdata></item>
+<item name='$AssistAction_Ex' sign='true'>
+<rawitemdata type='14'>
+gQKF/6DTAAAAAJTTAAABAAACTFNPQgUAFAhlbgAABACiAbBPZAEAACA6rEbYEAAAfDGkAOQtCDoA
+ACwArAAgAEAAAAAEAlwAAAAAAAAAmwAAAHABYDnkBmA5NAbAONwDLCK0BiA5gAFAOUQGEDIsCBgz
+qAKQN3AB0DK4Alg2PAg4NuwDADmEBeA4AQAAAJgxmDEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAACYMZgxAAAAAAAAAAAAAAAABwAAALAA5C38A/wDAAAAAPQT9BMAAAAAwARwEQAA
+AAAAAAAAAAAAAAAAAAAAAAAAsACkBeQt5C0AAAAABQAAAJgBpAkAAAAAAAAAAAAAAAAAAAAAmAGY
+AQAAAAAAAAAADAekCQAAAAAAAAAA0ALQAgAAAAAAAAAAAQAFAExvdHVzIFByb2R1Y3QAAABWMC4w
+AAAAAAAAAAAAAAAAAAAAAGQBAACwTwAAAAAAACA6AACsRgAAAAAAAAAAAAABAAAAAAAAAAEAAAAA
+AAAAAQAAAAAAAAAAAAAAHAAAAFczMkklAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAAKxGAAADAPwPAAAAAMgADQAkAEEAUwBTAEkAUwBUAEEA
+QwBUAEkATwBOAAAAdAADAE4ARQBXAAAAiAAGAEQARQBMAEUAVABFAAAAAADMAgoASQBOAEkAVABJ
+AEEATABJAFoARQAAAAAA6AAJAFQARQBSAE0ASQBOAEEAVABFAAAAkAAGAE8AQgBKAEUAQwBUAAAA
+AACoAQAAAAAAAHwBCgBDAG8AbgBmAEUARQAgADEALgAwAAAAAAAIAQoAQwBPAE4ARgBFAEUAIAAx
+AC4AMAAAAAAA0AEMAFMARQBFAEwAbwBnACAAQwBsAGEAcwBzAAAAAAAsAQwAUwBFAEUATABPAEcA
+IABDAEwAQQBTAFMAAAAAAFABDwBRAHUAZQByAHkAUwB0AHIAaQBuAGcAIAAxAC4AMQAAADgCDwBR
+AFUARQBSAFkAUwBUAFIASQBOAEcAIAAxAC4AMQAAALwBEgBDAG8AbgBzAHQAYQBuAHQAZQBzAEQA
+QgBQAG8AcgB0AGEAbAAAAAAAEAMSAEMATwBOAFMAVABBAE4AVABFAFMARABCAFAATwBSAFQAQQBM
+AAAAAABsAgcAVQBzAHUAYQByAGkAbwAAACgDBwBVAFMAVQBBAFIASQBPAAAAfAMWAEMAbwBuAHMA
+dABhAG4AdABlAHMARABCAEcAZQBzAHQAaQBvAG4ARABvAGMAAAAAAKACFgBDAE8ATgBTAFQAQQBO
+AFQARQBTAEQAQgBHAEUAUwBUAEkATwBOAEQATwBDAAAAAAD4AhYAQwBvAG4AcwB0AGEAbgB0AGUA
+cwBEAEIAQwBhAHIAdABhAHMAUwBlAHIAdgAAAAAARAMWAEMATwBOAFMAVABBAE4AVABFAFMARABC
+AEMAQQBSAFQAQQBTAFMARQBSAFYAAAAAANgDEgBDAGwAYQBzAGUAQwBhAHIAdABhAFMAZQByAHYA
+aQBjAGkAbwAAAAAAxAMSAEMATABBAFMARQBDAEEAUgBUAEEAUwBFAFIAVgBJAEMASQBPAAAAAAA4
+AwgAUwBUAFIAQwBMAEEAVgBFAAAAAAC4AwkAUwBUAFIAVQBOAEkARABBAEQAAABkAwQAVgBJAEUA
+VwAAAAAAoAMDAEQATwBDAAAADAQMAEEATgBUAEUAUgBJAE8AUgAyADAAMAAwAAAAAADcBAgAUwBU
+AFIARgBFAEMASABBAAAAAACQAwYATQBFAFIAUgBPAFIAAAAAAEQEBQBWAEEATABPAFIAAAAoBAgA
+RgBJAEwARQBQAEEAVABIAAAAAACMBQMAQwBPAEwAAAD4AwcAUwBFAFMAUwBJAE8ATgAAAEwEDABO
+AE8AVABFAFMAUwBFAFMAUwBJAE8ATgAAAAAAHAQGACUATABTAFgAQgBFAAAAAABoBQQAVABJAFAA
+TwAAAAAAKAUCAFEAUwAAAAAAgAQLAFEAVQBFAFIAWQBTAFQAUgBJAE4ARwAAAPQEAQBDAAAAbAQN
+AEMATwBOAEYASQBHAFUAUgBBAEMASQBPAE4AAACwBQcAQgBBAE4ARABFAEoAQQAAAJwECgBEAE8A
+QwBTAEUAUwBTAEkATwBOAAAAAAC8BA0ATgBPAFQARQBTAEQATwBDAFUATQBFAE4AVAAAABAFDQBO
+AE8AVABFAFMARABBAFQAQQBCAEEAUwBFAAAA0AUJAEQAQgBTAEUAUwBTAEkATwBOAAAAUAULAFYA
+SQBFAFcAUwBFAFMAUwBJAE8ATgAAABgGCQBOAE8AVABFAFMAVgBJAEUAVwAAADgFBQBEAEIATwBS
+AEcAAAD0BgkAVgBVAE4ASQBEAEEARABFAFMAAACEBwkARABPAEMAVQBOAEkARABBAEQAAAAYBw4A
+VgBTAEUAQQBSAEMASABUAFIAQQBCAEEASgBPAAAAAADwBQ4AVgBTAEUAQQBSAEMASABFAE4AVABS
+AEEARABBAAAAAAC4Bg0AVgBTAEUAQQBSAEMASABTAEEATABJAEQAQQAAAHAGDABWAFMARQBBAFIA
+QwBIAEYASQBSAE0AQQAAAAAAoAYQAFYAUwBFAEEAUgBDAEgAUgBFAFMARQBSAFYAQQBEAE8AAAAA
+AEAGEQBWAFMARQBBAFIAQwBIAFIARQBTAEUAUgBWAEEARABPAFMAAAAEBxUAVgBTAEUAQQBSAEMA
+SABOAE8AVABJAEYASQBDAEEARABPAFMARQBOAFQAAABYCRUAVgBTAEUAQQBSAEMASABOAE8AVABJ
+AEYASQBDAEEARABPAFMAQQBDAFUAAAAwBwkAUwBFAFIAVgBFAFIAVQBSAEwAAADQBggAQwBPAE4A
+VABBAEQATwBSAAAAAABACA4AQwBBAE4AVABJAEQAQQBEAE0AQQBYAEkATQBBAAAAAABEBwQATwBM
+AE8ARwAAAAAAbAcGAFMARQBFAEwATwBHAAAAAADIBwkAVgBGAFQAUgBBAEIAQQBKAE8AAABsCAYA
+VgBFAEMAVABPAFIAAAAAAKgHEABWAEUAQwBUAE8AUgBDAEwAQQBTAFMAIAAyAC4AMAA1AAAAAACU
+CAgAVgBUAFIAQQBCAEEASgBPAAAAAAAYCA4AVgBUAFIAQQBCAEEASgBPAEEAUwBVAE4AVABPAAAA
+AADwBwwAVgBDAEEAUgBBAFQAVQBMAEEAVQBSAEwAAAAAAEAJEABWAEMAQQBSAEEAVABVAEwAQQBV
+AFIARwBFAE4AVABFAAAAAAAQCRAAVgBBAEMAVABVAEEAQwBJAE8ATgBFAFgAUABJAFIATwAAAAAA
+MAkQAFYAQQBDAFQAVQBBAEMASQBPAE4AQQBUAFQAQQBDAEgAAAAAAMwJEgBWAEEAQwBUAFUAQQBD
+AEkATwBOAEQARQBWAFUARQBMAFQAQQAAAAAA8AgRAFYAQQBDAFQAVQBBAEMASQBPAE4ARgBJAFIA
+TQBBAEQATwAAAMgIFwBWAEEAQwBUAFUAQQBDAEkATwBOAEYARQBDAEgAQQBSAEUAQwBJAEIASQBE
+AE8AAACQChAAVgBBAEMAVABVAEEAQwBJAE8ATgBFAFMAVABBAEQATwAAAAAA5AoNAFYAQQBDAFQA
+VQBBAEMASQBPAE4AVQBSAEwAAAB0CQ0AVgBDAEEAUgBTAEUARwBVAFIASQBEAEEARAAAALQJBQBW
+AFQARQBNAEEAAACQCQkAVgBUAEkAUABPAFIAVQBUAEEAAAAcCgoAVgBTAEUARwBVAFIASQBEAEEA
+RAAAAAAA5AkKAFYAQQBHAFIARQBHAEEARABPAFMAAAAAALwKDwBWAFAAQQBRAFUARQBUAEUAVABS
+AEEAQgBBAEoATwAAAAAKCQBWAEYARQBOAFQAUgBBAEQAQQAAAJALCABWAEUATgBUAFIAQQBEAEEA
+AAAAAEAKCgBWAEEAQwBUAEMAQQBSAFQAQQBTAAAAAAD4CgsAVgBTAEEATABJAEQAQQBUAEUATQBB
+AAAA4AsPAFYAUwBBAEwASQBEAEEAVABJAFAATwBSAFUAVABBAAAAaAoQAFYAUwBBAEwASQBEAEEA
+UwBFAEcAVQBSAEkARABBAEQAAAAAAAwLEABWAFMAQQBMAEkARABBAEEARwBSAEUARwBBAEQATwBT
+AAAAAABgDBMAVgBFAE4AVABPAEYASQBDAEkATgBBAEEATgBUAEUAUgBJAE8AUgAAAGgLEQBWAEUA
+TgBUAE8ARgBJAEMASQBOAEEAQQBDAFQAVQBBAEwAAABICwcAVgBFAE4AVABVAFIATAAAACgLBwBW
+AEUATgBUAFUAUgBHAAAAfAwKAFYARQBOAFQAQQBTAFUATgBUAE8AAAAAAAQMDQBWAEUATgBUAEYA
+RQBDAEgAQQBQAEEAUwBFAAAAGAwMAFYARQBOAFQAUgBBAEQAQQBUAEUATQBBAAAAAAC4CxAAVgBF
+AE4AVABSAEEARABBAFQASQBQAE8AUgBVAFQAQQAAAAAABA0RAFYARQBOAFQAUgBBAEQAQQBTAEUA
+RwBVAFIASQBEAEEARAAAAKQNEQBWAEUATgBUAFIAQQBEAEEAQQBHAFIARQBHAEEARABPAFMAAAC4
+DA8AVgBQAEEAUQBVAEUAVABFAEUATgBUAFIAQQBEAEEAAAAwDAcAVgBTAEEATABJAEQAQQAAADwN
+CABWAEYAUwBBAEwASQBEAEEAAAAAAAwRFABWAFMAQQBMAEkARABBAE8ARgBJAEMASQBOAEEAQQBD
+AFQAVQBBAEwAAAAAAOAMCgBWAFMAQQBMAEkARABBAFUAUgBMAAAAAACYDAoAVgBTAEEATABJAEQA
+QQBVAFIARwAAAAAAtA4NAFYAUwBBAEwASQBEAEEAQQBTAFUATgBUAE8AAAAMDhAAVgBTAEEATABJ
+AEQAQQBGAEUAQwBIAEEAUABBAFMARQAAAAAAHA0OAFYAUABBAFEAVQBFAFQARQBTAEEATABJAEQA
+QQAAAAAA5A0JAFUAUgBMAEMAQQBSAFQAQQBTAAAAYA0MAEEAVABUAEEAQwBIAEMAQQBSAFQAQQBT
+AAAAAABUDg4AQQBUAEUATgBDAEkATwBOAEMAQQBSAFQAQQBTAAAAAACEDQ4ARgBFAEMASABBAEUA
+TgBWAEMAQQBSAFQAQQBTAAAAAADEDQwAQQBTAFUATgBUAE8AQwBBAFIAVABBAFMAAAAAAPgNDABO
+AFIATwBBAEMAVABDAEEAUgBUAEEAUwAAAAAAGA8MAFUATgBJAEQAQQBEAEMAQQBSAFQAQQBTAAAA
+AACMDwcAVgBGAEYASQBSAE0AQQAAALwPBgBWAEYASQBSAE0AQQAAAAAALA4MAFYARgBJAFIATQBB
+AEEAUwBVAE4AVABPAAAAAACEDhEAVgBDAEEAUgBBAFQAVQBMAEEAVQBSAEwARgBJAFIATQBBAAAA
+TBEVAFYAQwBBAFIAQQBUAFUATABBAFUAUgBHAEUATgBUAEUARgBJAFIATQBBAAAA5A4VAFYAQQBD
+AFQAVQBBAEMASQBPAE4ARQBYAFAASQBSAE8ARgBJAFIATQBBAAAAxBAVAFYAQQBDAFQAVQBBAEMA
+SQBPAE4AQQBUAFQAQQBDAEgARgBJAFIATQBBAAAATA8XAFYAQQBDAFQAVQBBAEMASQBPAE4ARABF
+AFYAVQBFAEwAVABBAEYASQBSAE0AQQAAAPQTFgBWAEEAQwBUAFUAQQBDAEkATwBOAEYASQBSAE0A
+QQBEAE8ARgBJAFIATQBBAAAAAAAIEBwAVgBBAEMAVABVAEEAQwBJAE8ATgBGAEUAQwBIAEEAUgBF
+AEMASQBCAEkARABPAEYASQBSAE0AQQAAAAAA0BIVAFYAQQBDAFQAVQBBAEMASQBPAE4ARQBTAFQA
+QQBEAE8ARgBJAFIATQBBAAAA6A8SAFYAQQBDAFQAVQBBAEMASQBPAE4AVQBSAEwARgBJAFIATQBB
+AAAAAAC8EA0AVgBQAEEAUQBVAEUAAwD8D/gPAABUAEUARgBJAFIATQBBAAAASBAdAEMAQQBNAFAA
+TwBfAEYAQQBDAFQAVQBBAEMASQBPAE4AXwBOAE8AVABJAEYAXwBFAFgAUABJAFIATwAAAHAQEQBz
+AE4AbwB0AGkAZgBpAGMAYQBkAG8ARQB4AHAAaQByAG8AAAAIFSIAQwBBAE0AUABPAF8ARgBBAEMA
+VABVAEEAQwBJAE8ATgBfAE4ATwBUAEkARgBfAEUAWABQAEkAUgBPAF8AVABSAFUARQAAAAAA+BAB
+ADEAAACsERcAQwBBAE0AUABPAF8ARgBBAEMAVABVAEEAQwBJAE8ATgBfAEUAWABQAEkAUgBPAAAA
+PBIHAHMARQB4AHAAaQByAG8AAACMERwAQwBBAE0AUABPAF8ARgBBAEMAVABVAEEAQwBJAE8ATgBf
+AEUAWABQAEkAUgBPAF8AVABSAFUARQAAAAAAXBIdAEMAQQBNAFAATwBfAEYAQQBDAFQAVQBBAEMA
+SQBPAE4AXwBQAFIATwBYAF8ARQBYAFAASQBSAEEAUgAAAPgRDABzAFAAcgBvAHgARQB4AHAAaQBy
+AGEAcgAAAAAA3BIiAEMAQQBNAFAATwBfAEYAQQBDAFQAVQBBAEMASQBPAE4AXwBQAFIATwBYAF8A
+RQBYAFAASQBSAEEAUgBfAFQAUgBVAEUAAAAAAKASHgBDAEEATQBQAE8AXwBGAEEAQwBUAFUAQQBD
+AEkATwBOAF8ARABFAFYAVQBFAEwAVABBAF8ARgBMAEEARwAAAAAARBMNAHMARABlAHYAdQBlAGwA
+dABhAEYAbABhAGcAAADAEx4AQwBBAE0AUABPAF8ARgBBAEMAVABVAEEAQwBJAE8ATgBfAEQARQBW
+AFUARQBMAFQAQQBfAFQAUgBVAEUAAAAAABgTFQBTAFUAQgBFAFMAVABBAEQATwBfAEUATgBfAFQA
+UgBBAE4AUwBJAFQATwAAAFATAgAxADAAAAAAAAwTFQBTAFUAQgBFAFMAVABBAEQATwBfAFAAQQBS
+AEEAXwBBAEMAVABVAEEAUgAAAEQVAgAxADUAAAAAAIATEwBTAFUAQgBFAFMAVABBAEQATwBfAFIA
+RQBTAEUAUgBWAEEARABPAAAAYBYCADIAMAAAAAAAzBMVAFMAVQBCAEUAUwBUAEEARABPAF8AUABB
+AFIAQQBfAEYASQBSAE0AQQBSAAAAjBMCADIANQAAAAAAABQXAFMAVQBCAEUAUwBUAEEARABPAF8A
+UABBAFIAQQBfAEQAQQBSAF8AUABBAFMARQAAAGAUAgAzADAAAAAAADQUEQBTAFUAQgBFAFMAVABB
+AEQATwBfAEMAVQBSAFMAQQBEAE8AAACYFAIAMwA1AAAAAAAoFBEAUwBVAEIARQBTAFQAQQBEAE8A
+XwBBAE4AVQBMAEEARABPAAAA9BUCADQAMAAAAAAApBQTAFMAVQBCAEUAUwBUAEEARABPAF8AQQBS
+AEMASABJAFYAQQBEAE8AAABsFAIANAA1AAAAAAAYFxIAUwBVAEIARQBTAFQAQQBEAE8AXwBBAEcA
+UgBFAEcAQQBEAE8AAAAAAPwUAgA1ADAAAAAAALgUBwBIAEEATgBEAEwARQBSAAAA4BQRAEUARgBG
+AEUAQwBUAEkAVgBFAFUAUwBFAFIATgBBAE0ARQAAADAWCgBTAFQAQQBSAFQAVABJAE0ARQBSAAAA
+AAA0FQMATABPAEcAAADgFRMAQgBhAG4AZABlAGoAYQBUAG8AZABvAHMAVAByAGEAYgBhAGoAbwAA
+AGQVBQBTAHQAYQByAHQAAAC4FQ0ATgBSAE8ATQBBAFgAQgBBAE4ARABFAEoAQQAAAIgVDwBEAE8A
+QwBVAE0ARQBOAFQAQwBPAE4AVABFAFgAVAAAABgWFABRAFUARQBSAFkAXwBTAFQAUgBJAE4ARwBf
+AEQARQBDAE8ARABFAEQAAAAAAMAVAQAmAAAACBcMAEcARQBUAFAAQQBSAEEATQBFAFQARQBSAAAA
+AAB0FgYAVQBOAEkARABBAEQAAAAAAJwYDgBTAEUAUgBWAEkARABPAFIARABPAE0ASQBOAE8AAAAA
+AIgWCQBTAEUAUwBTAEkATwBOAEkARAAAAEwWCwBCAEEAUwBFAEQARQBEAEEAVABPAFMAAADIFgcA
+RwBFAFQAVgBJAEUAVwAAAKAWBwBTAGUAcwBzAGkAbwBuAAAAdBcGAE4ATgBBAE0ARQBTAAAAAAB0
+GAkATgBPAFQARQBTAE4AQQBNAEUAAAC8FxAARwBFAFQARABPAEMAVQBNAEUATgBUAEIAWQBLAEUA
+WQAAAAAA4BYJAEMAQQBOAE8ATgBJAEMAQQBMAAAAkBcQAFIARQBQAEwAQQBDAEUASQBUAEUATQBW
+AEEATABVAEUAAAAAADAXBABGAG8AcgBtAAAAAABUFwgAVQBzAGUAcgBOAGEAbQBlAAAAAABEFwYA
+VQBsAHQATABvAGcAAAAAADwYBABTAEEAVgBFAAAAAADQFw0AQgBhAG4AZABlAGoAYQBVAG4AaQBk
+AGEAZAAAAKAXCwBCAGEAbgBkAGUAagBhAEEAbgBpAG8AAABIGQUAVABvAGQAbwBzAAAABBgLAEIA
+YQBuAGQAZQBqAGEAVABpAHAAbwAAABQYBwBCAGEAbgBkAGUAagBhAAAA2BkWAFIARQBGAEUAUgBF
+AE4AQwBJAEEAUgBCAEEAUwBFAEQARQBEAEEAVABPAFMAAAAAAFgYBQBPAFIARwBBAE4AAABwGhEA
+KABCAHUAcwBxAHUAZQBkAGEAVQBuAGkAeABOAHIAbwApAAAAuBgLAFMARQBSAFYARQBSAF8ATgBB
+AE0ARQAAABQZCgBFAHgAcABlAGQAaQBlAG4AdABlAAAAAADQGBAAUgBFAEMATwBSAFIATwBCAEEA
+UwBFAEQAQQBUAE8AUwAAAAAAIBkLAEkATQBQAFIASQBNAEkAUgBYAE0ATAAAAFgZCQBTAFQATwBQ
+AFQASQBNAEUAUgAAAGAZHwBCAGEAbgBkAGUAagBhAFQAbwBkAG8AcwBUAHIAYQBiAGEAagBvACAA
+UAByAG8AYwBlAHMAYQBkAG8AcwAgAAAA+BkDAEUAbgBkAAAAqBkQAEkATQBQAFIASQBNAEkAUgBY
+AE0ATABFAFIAUgBPAFIAAAAAAJQZBQBWAEsARQBZAFMAAAA0HQEASQAAAHAZBABFAFgAUABfAAAA
+AACcGw4ARwBFAFQASwBFAFkAUwBHAEUAUwBUAEkATwBOAAAAAAAQGgcAQQBSAEMASABJAFYATwAA
+AEgaFABHAEUAVABLAEUAWQBTAEMAQQBSAFQAQQBTAEEAUgBDAEgASQBWAE8AAAAAACwaDQBHAEUA
+VABLAEUAWQBTAEMAQQBSAFQAQQBTAAAA3BwIAEMAQQBOAFQARQBMAEUATQAAAAAAzBoLAEIAVQBT
+AEMATwBFAE4AQgBBAFMARQAAACwbCgBHAEUAVABFAEwARQBNAEUATgBUAAAAAACkGhAAQgBVAFMA
+QwBPAEUATgBCAEEAUwBFAEMAQQBSAFQAQQAAAAAAJB0WAFIARQBHAEkAUwBUAFIAQQBSAFkARwBF
+AE4ARQBSAEEAUgBFAFIAUgBPAFIAAAAAAEQbEQBOAE8ATQBCAFIARQBfAEEAUABMAEkAQwBBAEMA
+SQBPAE4AAAB4Gy0AQQBnAGUAbgB0AGUAIABCAGEAbgBkAGUAagBhAFQAbwBkAG8AcwBUAHIAYQBi
+AGEAagBvACAALQAgAFIAZQBjAG8AcgByAG8AQgBhAHMAZQBEAGEAdABvAHMAAACEGwkARABCAEcA
+RQBTAFQASQBPAE4AAAAEHBcATgBPAFQARQBTAEQATwBDAFUATQBFAE4AVABDAE8ATABMAEUAQwBU
+AEkATwBOAAAA0BsDAEEAVQBYAAAASB0IAFAATwBTAEkAQwBJAE8ATgAAAAAApBwXAFYASQBFAFcA
+XwBFAFgAUABfAFMARQBBAFIAQwBIAF8AVABSAEEAQgBBAEoATwAAAGgcFwBWAEkARQBXAF8ARQBY
+AFAAXwBTAEUAQQBSAEMASABfAEUATgBUAFIAQQBEAEEAAAA4HBYAVgBJAEUAVwBfAEUAWABQAF8A
+UwBFAEEAUgBDAEgAXwBTAEEATABJAEQAQQAAAAAAdB0VAFYASQBFAFcAXwBFAFgAUABfAFMARQBB
+AFIAQwBIAF8ARgBJAFIATQBBAAAAHB0aAFYASQBFAFcAXwBFAFgAUABfAFMARQBBAFIAQwBIAF8A
+UgBFAFMARQBSAFYAQQBEAE8AUwAAAAAABCAZAFYASQBFAFcAXwBFAFgAUABfAFMARQBBAFIAQwBI
+AF8ATgBPAFQASQBGAF8ARQBOAFQAAAAUHRkAVgBJAEUAVwBfAEUAWABQAF8AUwBFAEEAUgBDAEgA
+XwBOAE8AVABJAEYAXwBBAEMAVQAAAFweAQBcAAAAQB4BAC8AAACIHQUAVABPAEQAQQBTAAAAyB0H
+AFQAUgBBAEIAQQBKAE8AAAD0HRMAQwBBAFIARwBPAEIAQQBOAEQARQBKAEEAVABSAEEAQgBBAEoA
+TwAAALQdBwBFAE4AVABSAEEARABBAAAAUB4TAEMAQQBSAEcATwBCAEEATgBEAEUASgBBAEUATgBU
+AFIAQQBEAEEAAAAEHgYAUwBBAEwASQBEAEEAAAAAAJggEgBDAEEAUgBHAE8AQgBBAE4ARABFAEoA
+QQBTAEEATABJAEQAQQAAAAAAhB4EAFUAUwBFAFIAAAAAADQeFABAAE4AYQBtAGUAKABbAEEAYgBi
+AHIAZQB2AGkAYQB0AGUAXQA7ACIAAAAAAKAeAgAiACkAAAAAANwiBQBGAEkAUgBNAEEAAADUHgMA
+SwBFAFkAAADcIBEAQwBBAFIARwBPAEIAQQBOAEQARQBKAEEARgBJAFIATQBBAAAAjB8KAFIARQBT
+AEUAUgBWAEEARABPAFMAAAAAAPgeFgBDAEEAUgBHAE8AQgBBAE4ARABFAEoAQQBSAEUAUwBFAFIA
+VgBBAEQATwBTAAAAAABcIA4ATgBPAFQASQBGAEkAQwBBAEMASQBPAE4ARQBTAAAAAABEHyMARgBB
+AEwAVABBACAAVgBJAFMAVABBACAATgBPAFQASQBGAEkAQwBBAEQATwBTACAARQBOAFQAUgBBAEQA
+QQAgAEUATgAgAAAARCIhAEYAQQBMAFQAQQAgAFYASQBTAFQAQQAgAE4ATwBUAEkARgBJAEMAQQBE
+AE8AUwAgAEEAQwBVAFMARQAgAEUATgAgAAAAyB8aAEMAQQBSAEcATwBCAEEATgBEAEUASgBBAE4A
+TwBUAEkARgBJAEMAQQBEAE8AUwBFAE4AVAAAAAAADCIaAEMAQQBSAEcATwBCAEEATgBEAEUASgBB
+AE4ATwBUAEkARgBJAAMA/A/wHwAAQwBBAEQATwBTAEEAQwBVAAAAAAB0ICgAQQBnAGUAbgB0AGUA
+IABCAGEAbgBkAGUAagBhAFQAbwBkAG8AcwBUAHIAYQBiAGEAagBvACAALQAgAEIAdQBzAGMAbwBF
+AG4AQgBhAHMAZQAAAAAA0CMIAEQAQgBDAEEAUgBUAEEAUwAAAAAAGCEOAFYAUwBFAEEAUgBDAEgA
+TABJAFMAVABBAEQATwAAAAAAwCARAFYAUwBFAEEAUgBDAEgAQQBSAEMASABJAFYAQQBEAEEAUwAA
+AFAhCwBTAFQAUgBBAFQARQBOAEMASQBPAE4AAAD4IhoARABCAEMAUwBfAFYASQBTAFQAQQBfAEIA
+QQBOAEQARQBKAEEAXwBFAE4AVABSAEEARABBAAAAAACQIRgARABCAEMAUwBfAFYASQBTAFQAQQBf
+AEwASQBTAFQAQQBEAE8AXwBDAEEAUgBUAEEAAAAAAPghHQBEAEIAQwBTAF8AVgBJAFMAVABBAF8A
+QgBBAE4ARABFAEoAQQBfAEEAUgBDAEgASQBWAEEARABBAFMAAADAIRQARwBFAFQAQQBMAEwARABP
+AEMAVQBNAEUATgBUAFMAQgBZAEsARQBZAAAAAADoIxkAQwBBAFIARwBPAEIAQQBOAEQARQBKAEEA
+RQBOAFQAUgBBAEQAQQBDAEEAUgBUAEEAUwAAABAjBwBMAEkAUwBUAEEARABPAAAAZCMZAEMAQQBS
+AEcATwBCAEEATgBEAEUASgBBAEwASQBTAFQAQQBEAE8AQwBBAFIAVABBAFMAAAB8IhkAQwBBAFIA
+RwBPAEIAQQBOAEQARQBKAEEAQQBSAEMASABJAFYATwBDAEEAUgBUAEEAUwAAAJAkLQBBAGcAZQBu
+AHQAZQAgAEIAYQBuAGQAZQBqAGEAVABvAGQAbwBzAFQAcgBhAGIAYQBqAG8AIAAtACAAQgB1AHMA
+YwBvAEUAbgBCAGEAcwBlAEMAYQByAHQAYQAAAOgiAwBQAE8AUwAAAHAkBABWAFUAUgBHAAAAAABM
+IwkAUwBFAEcAVQBSAEkARABBAEQAAAAkIwYATQBBAFgASQBNAE8AAAAAADQjBABGAE8AUgBNAAAA
+AACUJQgAQwBhAHIAYQB0AHUAbABhAAAAAAAQJAkARgBDAGEAcgBhAHQAdQBsAGEAAACwIyIARgBv
+AHIAbQB1AGwAYQByAGkAbwAgAGQAZQAgAEMAYQByAGEAdAB1AGwAYQAgAEkAbgBjAG8AcgByAGUA
+YwB0AG8AIAAAAAAAnCQMAEcARQBUAEkAVABFAE0AVgBBAEwAVQBFAAAAAAA0JQgAYwBjAE4AcgBv
+AEUAeABwAAAAAAAAJAkASQBOAFMARQBSAFQAUABPAFMAAACsJQQAMAAwADAAMAAAAAAASCQZAEQA
+QgBTAEcARABfAEMAQQBNAFAATwBfAEYAQwBBAFIAQQBUAFUATABBAF8ATgBSAE8AAABoJA0ASQBO
+AFMARQBSAFQARQBMAEUATQBFAE4AVAAAACAlAQA5AAAAdCUNAHIAVABpAGUAbgBlAFAAYQBxAHUA
+ZQB0AGUAAADEJAIAUwBpAAAAAAAIJREAUABhAHEAdQBlAHQAZQBFAG4AQQBnAHIAZQBnAGEAZABv
+AAAAjCUeAC8AcABhAHEAdQBlAHQAZQAuAGcAaQBmAD8ATwBwAGUAbgBJAG0AYQBnAGUAUgBlAHMA
+bwB1AHIAYwBlAAAAAAC4JQkAVgBFAEMAVABPAFIAQQBVAFgAAAD8JQYAVgBBAEwAVQBFAFMAAAAA
+ABAnHABEAEIAUwBHAEQAXwBDAEEATQBQAE8AXwBGAEMAQQBSAEEAVABVAEwAQQBfAEEAUwBVAE4A
+VABPAAAAAADUJQgAVABPAFMAVABSAEkATgBHAAAAAADAJQEAIAAAAOAlCQBQAFIATwBUAE8AQwBP
+AEwATwAAAAQoAwA6AC8ALwAAABwmAQA6AAAAqCYGAFAAVQBFAFIAVABPAAAAAADEJgMALwAwAC8A
+AAAoKAsAVQBOAEkAVgBFAFIAUwBBAEwASQBEAAAAWCYNAD8ATwBwAGUAbgBEAG8AYwB1AG0AZQBu
+AHQAAACIJxoARABCAFMARwBEAF8AQwBBAE0AUABPAF8ARgBDAEEAUgBBAFQAVQBMAEEAXwBUAEUA
+TQBBAAAAAAA8JyUARABCAFMARwBEAF8AQwBBAE0AUABPAF8ARgBDAEEAUgBBAFQAVQBMAEEAXwBD
+AEEATQBQAE8AXwBUAEkAUABPAF8AUgBVAFQAQQAAABwpCwBQAHIAZQBkAGUAZgBpAG4AaQBkAGEA
+AACMKCIALwBwAHIAZQBkAGUAZgBpAG4AaQBkAGEALgBnAGkAZgA/AE8AcABlAG4ASQBtAGEAZwBl
+AFIAZQBzAG8AdQByAGMAZQAAAAAA1CcSAHMATABpAHMAdABhAEEAZwByAGUAZwBhAGQAbwBzAE4A
+cgBvAAAAAABkKCIALwBvAHIAZwBhAG4AaQBnAHIAYQBtAGEALgBnAGkAZgA/AE8AcABlAG4ASQBt
+AGEAZwBlAFIAZQBzAG8AdQByAGMAZQAAAAAAYCkiAEQAQgBTAEcARABfAEMAQQBNAFAATwBfAEYA
+QwBBAFIAQQBUAFUATABBAF8AQQBDAFQAXwBVAFIARwBFAE4AVABFAFMAAAAAAPAnCwBDAEMAUwBF
+AEcAVQBSAEkARABBAEQAAAA0KQYATgBvAHIAbQBhAGwAAAAAALQoDgBHAEUAVABOAEUAWABUAFMA
+SQBCAEwASQBOAEcAAAAAAFwoFgBMAGEAIABhAGMAdAB1AGEAYwBpAPMAbgAgAGUAcwAgAG4AdQBs
+AGEAOgAgAAAAAACcKAEALQAAALApEAA6AC8ALwA/AE8AcABlAG4ARABvAGMAdQBtAGUAbgB0AAAA
+AADQKAQATgBBAEQAQQAAAAAA4CkJAEEAYwB0AHUAYQBjAGkAbwBuAAAATCkKAEYAQQBjAHQAdQBh
+AGMAaQBvAG4AAAAAAJgpIwBGAG8AcgBtAHUAbABhAHIAaQBvACAAZABlACAAQQBjAHQAdQBhAGMA
+aQDzAG4AIABJAG4AYwBvAHIAcgBlAGMAdABvACAAAADMKQgASQBTAE0ARQBNAEIARQBSAAAAAAB8
+KQkAYwBjAG4ATgByAG8AQQBjAHQAAAAoKgYARQBYAFAASQBSAE8AAAAAAEwrCwBQAFIATwBYAEUA
+WABQAEkAUgBBAFIAAABMKgsASABBAFMARQBNAEIARQBEAEQARQBEAAAApCsIAEQARQBWAFUARQBM
+AFQAQQAAAAAA9CsKAEMAQQBOAFQARgBJAFIATQBBAFMAAAAAAGwsBwBIAEEAUwBJAFQARQBNAAAA
+mCogAEQAQgBTAEcARABfAEMAQQBNAFAATwBfAEYAQQBDAFQAVQBBAEMASQBPAE4AXwBGAEUAQwBI
+AEEAXwBSAEUAQwAAAAAAACsPAEUAUwBUAEEARABPAEEAQwBUAFUAQQBDAEkATwBOAAAAeCoSAFMA
+ZQAgAGUAeABjAGUAZABpAGUAcgBvAG4AIABsAG8AcwAgAAAAAAAYLA0AIABkAG8AYwB1AG0AZQBu
+AHQAbwBzAC4AIAAAAKAvMABBAGcAZQBuAHQAZQAgAEIAYQBuAGQAZQBqAGEAVABvAGQAbwBzAFQA
+cgBhAGIAYQBqAG8AIAAtACAAQwBhAHIAZwBvAEIAYQBuAGQAZQBqAGEAVAByAGEAYgBhAGoAbwAA
+AAAAaC0jAEEAZwBlAG4AdABlACAAQgBhAG4AZABlAGoAYQBUAG8AZABvAHMAVAByAGEAYgBhAGoA
+bwAgAC0AIABFAHgAcABpAHIAbwAAABAuKABBAGcAZQBuAHQAZQAgAEIAYQBuAGQAZQBqAGEAVABv
+AGQAbwBzAFQAcgBhAGIAYQBqAG8AIAAtACAAUAByAG8AeABFAHgAcABpAHIAYQByAAAAAACsLCUA
+QQBnAGUAbgB0AGUAIABCAGEAbgBkAGUAagBhAFQAbwBkAG8AcwBUAHIAYQBiAGEAagBvACAALQAg
+AEQAZQB2AHUAZQBsAHQAYQAAAPAsDwBuAEMAYQBuAHQAaQBkAGEAZABGAGkAcgBtAGEAcwAAANAu
+JwBBAGcAZQBuAHQAZQAgAEIAYQBuAGQAZQBqAGEAVABvAGQAbwBzAFQAcgBhAGIAYQBqAG8AIAAt
+ACAAQwBhAG4AdABGAGkAcgBtAGEAcwAAAIgsCgBWAEYASQBSAE0AQQBOAFQARQBTAAAAAAC8LA4A
+VgBVAFMAVQBBAFIASQBPAFMARgBJAFIATQBBAAAAAADULAUATgBOAEEATQBFAAAADC0JAFMAVQBC
+AEUAUwBUAEEARABPAAAAqC4KAHMAUwB1AGIARQBzAHQAYQBkAG8AAAAAACwtCwBQAGEAcgBhACAA
+QQBjAHQAdQBhAHIAAABULQ0AcwBSAGUAcwBlAHIAdgBhAGQAbwBQAG8AcgAAAMQtEABSAGUAcwBl
+AHIAdgBhAGQAbwAgAHAAYQByAGEAOgAgAAAAAACELQYAQwBPAE0ATQBPAE4AAAAAANAtCgBzAEYA
+aQByAG0AYQBuAHQAZQBzAAAAAACkLQ0AcwBVAHMAdQBhAHIAaQBvAEYAaQByAG0AYQAAADAuDQBG
+AGkAcgBtAGEAZABvACAAcABvAHIAOgAgAAAA8C0CACwAIAAAAAAAHC8NACAAUABhAHIAYQAgAEYA
+aQByAG0AYQByACAAAAA8MgwAUABhAHIAYQAgAEYAaQByAG0AYQByACAAAAAAAJAuDQBQAGEAcgBh
+ACAAZABhAHIAIABQAGEAcwBlAAAATC8sAEEAZwBlAG4AdABlACAAQgBhAG4AZABlAGoAYQBUAG8A
+ZABvAHMAVAByAGEAYgBhAGoAbwAgAC0AIABFAHMAdABhAGQAbwBBAGMAdAB1AGEAYwBpAG8AbgAA
+AAAAwC4IAE4AcgBvACAARQB4AHAAIAAAAAAAfDAIAEMAQwBOAFIATwBFAFgAUAAAAAAAJDEFAEYA
+RQBDAEgAQQAAAFgxIgBBAGcAZQBuAHQAZQAgAEIAYQBuAGQAZQBqAGEAVABvAGQAbwBzAFQAcgBh
+AGIAYQBqAG8AIAAtACAAZgBlAGMAaABhAAAAAAAwLwYARgBWAEkARQBKAEEAAAAAAHAvCgAwADEA
+LwAwADEALwAxADkAOAAwAAAAAADILw4AVQBOAEkARABBAEQAQQBOAFQARQBSAEkATwBSAAAAAACM
+LwsAYwBjAEYAZQBjAGgAYQBQAGEAcwBlAAAA/C8HAHMAQQBzAHUAbgB0AG8AAABUMhEAYwBjAE8A
+ZgBpAGMAaQBuAGEAQQBuAHQAZQByAGkAbwByAAAA3C8HAHMAVQBuAGkAZABhAGQAAADAMAwAcwBV
+AHIAZwADAPwP6C8AAGUAbgB0AGUAQQBjAHQAcwAAAAAAFDAIAGMAQwBhAG4AdABBAGMAdAAAAAAA
+nDAwAEEAZwBlAG4AdABlACAAQgBhAG4AZABlAGoAYQBUAG8AZABvAHMAVAByAGEAYgBhAGoAbwAg
+AC0AIABDAGEAcgBnAG8AQgBhAG4AZABlAGoAYQBFAG4AdAByAGEAZABhAAAAAADQMQwAVQBOAEkA
+RABBAEQAQQBDAFQAVQBBAEwAAAAAADAyDwBjAGMATwBmAGkAYwBpAG4AYQBBAGMAdAB1AGEAbAAA
+AMAyLwBBAGcAZQBuAHQAZQAgAEIAYQBuAGQAZQBqAGEAVABvAGQAbwBzAFQAcgBhAGIAYQBqAG8A
+IAAtACAAQwBhAHIAZwBvAEIAYQBuAGQAZQBqAGEAUwBhAGwAaQBkAGEAAAC4MRYAQwBvAG4AdABl
+AG4AdAAtAFQAeQBwAGUAOgAgAHQAZQB4AHQALwB4AG0AbAAAAAAACDItADwAPwB4AG0AbAAgAHYA
+ZQByAHMAaQBvAG4APQAiADEALgAwACIAIAAgAGUAbgBjAG8AZABpAG4AZwA9ACIASQBTAE8ALQA4
+ADgANQA5AC0AMQAiACAAPwA+AAAAUDMIADwAZgByAGEAbQBlAHMAPgAAAAAA6DEJADwAdAByAGEA
+YgBhAGoAbwA+AAAA9DIMADwAZQB4AHAAZQBkAGkAZQBuAHQAZQA+AAAAAAB8MhEAPABuAHUAbQBl
+AHIAbwA+ADwAIQBbAEMARABBAFQAQQBbAAAAfDMDAF0AXQA+AAAAqDIJADwALwBuAHUAbQBlAHIA
+bwA+AAAAGDMRADwAYQBzAHUAbgB0AG8APgA8ACEAWwBDAEQAQQBUAEEAWwAAADwzEgBFAEwASQBN
+AEkATgBBAFIAQwBBAFIAQQBDAFQARQBSAEUAUwAAAAAAUDQJADwALwBhAHMAdQBuAHQAbwA+AAAA
+MDQWADwAYwBhAHIAYQB0AHUAbABhAFUAUgBMAD4APAAhAFsAQwBEAEEAVABBAFsAAAAAALAzDgA8
+AC8AYwBhAHIAYQB0AHUAbABhAFUAUgBMAD4AAAAAAOQzDwA8AHQAZQBtAGEAPgA8ACEAWwBDAEQA
+QQBUAEEAWwAAAAA0BwA8AC8AdABlAG0AYQA+AAAAwDQTADwAdABpAHAAbwByAHUAdABhAD4APAAh
+AFsAQwBEAEEAVABBAFsAAACYMwsAPAAvAHQAaQBwAG8AcgB1AHQAYQA+AAAAGDQJADwAdQByAGcA
+ZQBuAHQAZQA+AAAAzDMKADwALwB1AHIAZwBlAG4AdABlAD4AAAAAAKg0CQA8AHAAYQBxAHUAZQB0
+AGUAPgAAAHA0CgA8AC8AcABhAHEAdQBlAHQAZQA+AAAAAAD8NQgAPABlAHgAcABpAHIAbwA+AAAA
+AABkNwkAPAAvAGUAeABwAGkAcgBvAD4AAAAcNgwAPABhAHQAdABhAGMAaABtAGUAbgB0AD4AAAAA
+AOA1DQA8AC8AYQB0AHQAYQBjAGgAbQBlAG4AdAA+AAAAjDQKADwAZABlAHYAdQBlAGwAdABvAD4A
+AAAAAAA1CwA8AC8AZABlAHYAdQBlAGwAdABvAD4AAADcNAkAPABmAGkAcgBtAGEAZABvAD4AAAAo
+NQoAPAAvAGYAaQByAG0AYQBkAG8APgAAAAAAODYPADwAZgBlAGMAaABhAFIAZQBjAGkAYgBpAGQA
+bwA+AAAAWDUQADwALwBmAGUAYwBoAGEAUgBlAGMAaQBiAGkAZABvAD4AAAAAAEA1CAA8AGUAcwB0
+AGEAZABvAD4AAAAAAIw1CQA8AC8AZQBzAHQAYQBkAG8APgAAALg1FwA8AGEAYwB0AHUAYQBjAGkA
+bwBuAFUAUgBMAD4APAAhAFsAQwBEAEEAVABBAFsAAACANxIAXQBdAD4APAAvAGEAYwB0AHUAYQBj
+AGkAbwBuAFUAUgBMAD4AAAAAAIQ2EQA8AHUAbgBpAGQAYQBkAD4APAAvAHUAbgBpAGQAYQBkAD4A
+AADgNgsAPABzAGUAZwB1AHIAaQBkAGEAZAA+AAAAVDYMADwALwBzAGUAZwB1AHIAaQBkAGEAZAA+
+AAAAAADENgoAPABuAGkAdgBlAGwAcwBlAGMAPgAAAAAA+DYLADwALwBuAGkAdgBlAGwAcwBlAGMA
+PgAAAKQ2FAA8AGEAZwByAGUAZwBhAGQAbwBzAD4APAAhAFsAQwBEAEEAVABBAFsAAAAAABQ3DAA8
+AC8AYQBnAHIAZQBnAGEAZABvAHMAPgAAAAAAADgNADwALwBlAHgAcABlAGQAaQBlAG4AdABlAD4A
+AACwNwoAPAAvAHQAcgBhAGIAYQBqAG8APgAAAAAANDcJADwAZQBuAHQAcgBhAGQAYQA+AAAATDcL
+ADwAZgBlAGMAaABhAFAAYQBzAGUAPgAAAHw5DAA8AC8AZgBlAGMAaABhAFAAYQBzAGUAPgAAAAAA
+dDgIADwAdQBuAGkAZABhAGQAPgAAAAAANDgJADwALwB1AG4AaQBkAGEAZAA+AAAAmDcKADwALwBl
+AG4AdAByAGEAZABhAD4AAAAAACA4CAA8AHMAYQBsAGkAZABhAD4AAAAAAMg3CQA8AC8AcwBhAGwA
+aQBkAGEAPgAAAOA3CAA8AGYAaQByAG0AYQByAD4AAAAAAOg4CQA8AC8AZgBpAHIAbQBhAHIAPgAA
+APA5DAA8AHIAZQBzAGUAcgB2AGEAZABvAHMAPgAAAAAAlDkNADwALwByAGUAcwBlAHIAdgBhAGQA
+bwBzAD4AAADMOAcAPABhAGMAdQBzAGUAPgAAAEw4CAA8AC8AYQBjAHUAcwBlAD4AAAAAAMA6EQBD
+AGEAcgB0AGEAIABkAGUAIABTAGUAcgB2AGkAYwBpAG8AAACMOAgAPABjAGEAcgB0AGEAcwA+AAAA
+AACgOAcAPABjAGEAcgB0AGEAPgAAAAA5EwA8AGMAYQByAHQAYQBVAFIATAA+ADwAIQBbAEMARABB
+AFQAQQBbAAAAGDkLADwALwBjAGEAcgB0AGEAVQBSAEwAPgAAAEQ5CAA8AGEAdAB0AGEAYwBoAD4A
+AAAAANA5CQA8AC8AYQB0AHQAYQBjAGgAPgAAAGg5EwA8AGEAdABlAG4AYwBpAG8AbgA+ADwAIQBb
+AEMARABBAFQAQQBbAAAAADwOAF0AXQA+ADwALwBhAHQAZQBuAGMAaQBvAG4APgAAAAAAIDoHADwA
+ZgBlAGMAaABhAD4AAAAIOggAPAAvAGYAZQBjAGgAYQA+AAAAAAC0OQwAXQBdAD4APAAvAGEAcwB1
+AG4AdABvAD4AAAAAADg6CwA8AGEAYwB0AHUAYQBjAGkAbwBuAD4AAAAAPQwAPAAvAGEAYwB0AHUA
+YQBjAGkAbwBuAD4AAAAAAFA6CAA8AG4AcgBvAGEAYwB0AD4AAAAAANA7CQA8AC8AbgByAG8AYQBj
+AHQAPgAAAGg6CAA8AC8AYwBhAHIAdABhAD4AAAAAACg8CQA8AC8AYwBhAHIAdABhAHMAPgAAANA6
+CQA8AC8AZgByAGEAbQBlAHMAPgAAAKA7KQBBAGcAZQBuAHQAZQAgACAAQgBhAG4AZABlAGoAYQBU
+AG8AZABvAHMAVAByAGEAYgBhAGoAbwAgAC0AIABpAG0AcAByAGkAbQBpAHIAWABNAEwAAAA0OwQA
+VgBBAFUAWAAAAAAAqDwuAEEAZwBlAG4AdABlACAAQgBhAG4AZABlAGoAYQBUAG8AZABvAHMAVABy
+AGEAYgBhAGoAbwAgAC0AIABDAGEAcgBnAG8AQgBhAG4AZABlAGoAYQBGAGkAcgBtAGEAAAAAAEA8
+MwBBAGcAZQBuAHQAZQAgAEIAYQBuAGQAZQBqAGEAVABvAGQAbwBzAFQAcgBhAGIAYQBqAG8AIAAt
+ACAAQwBhAHIAZwBvAEIAYQBuAGQAZQBqAGEAUgBlAHMAZQByAHYAYQBkAG8AcwAAAJA8FQBDAG8A
+bgB0AGUAbgB0AFQAeQBwAGUAOgAgAHQAZQB4AHQALwB4AG0AbAAAAJA9FQA8AD8AeABtAGwAIAB2
+AGUAcgBzAGkAbwBuAD0AIgAxAC4AMAAiAD8APgAAAMA8EAA8AGUAcgByAG8AcgA+ADwAIQBbAEMA
+RABBAFQAQQBbAAAAAAA4PQgAPAAvAGUAcgByAG8AcgA+AAAAAADQPSUAQgBhAG4AZABlAGoAYQBU
+AG8AZABvAHMAVAByAGEAYgBhAGoAbwAgAEUAcgByAG8AcgAgAFAAcgBvAGMAZQBzAGEAZABvAHMA
+IAAAACA9CABDAEEAUgBBAEMAVABFAFIAAAAAAFA9CABWAEEATABPAFIAQQBVAFgAAAAAANw8CwBD
+AEEAUgBBAEMAVABFAFIAQQBVAFgAAABAPQ8ARQBMAEkATQBJAE4AQQBSAE4AVQBNAEUAUgBBAEwA
+AAB0PQ0AVABJAEUATgBFAEMAQQBSAEEAQwBUAEUAUgAAACg9AQBdAAAA8D0FACYAIwA5ADMAOwAA
+APA+AQBbAAAAWD0FACYAIwA5ADEAOwAAAOg9AQB7AAAAbD0GACYAIwAxADIAMwA7AAAAAACIPQEA
+fQAAAMg9BgAmACMAMQAyADUAOwAAAAAAsD0BANEAAACoPQgAJgBOAHQAaQBsAGQAZQA7AAAAAADQ
+PgEA8QAAAEg+CAAmAG4AdABpAGwAZABlADsAAAAAABA+AQDhAAAAKD4IACYAYQBhAGMAdQB0AGUA
+OwAAAAAAUD4BAMEAAAAIPggAJgBBAGEAYwB1AHQAZQA7AAAAAABoPgEA6QAAAHA+CAAmAGUAYQBj
+AHUAdABlADsAAAAAADA+AQDJAAAAiD4IACYARQBhAGMAdQB0AGUAOwAAAAAAED8BAO0AAAAIPwgA
+JgBpAGEAYwB1AHQAZQA7AAAAAACwPgEAzQAAAKg+CAAmAEkAYQBjAHUAdABlADsAAAAAAJA+AQDz
+AAAAyD4IACYAbwBhAGMAdQB0AGUAOwAAAAAA6D4BANMAAAA4QQgAJgBPAGEAYwB1AHQAZQA7AAAA
+AAA4PwEA+gAAAIQ/CAAmAHUAYQBjAHUAdABlADsAAAAAACg/AQDaAAAAmD8IACYAVQBhAGMAdQB0
+AGUAOwAAAAAATD8BADwAAAAgPwQAJgBsAHQAOwAAAAAAcD8BAD4AAACQRAQAJgBnAHQAOwAAAAAA
+YD8GACYAIwAxADcANgA7AAAAAABwQQYAJgAjADEAOAA2ADsAAAAAAPBABQAmACMAOQA2ADsAAABs
+QgYAJgAjADEAOAAwADsAAAAAAKA/BgAmACMAMQA3ADAAOwAAAAAAsD8BACMAAABUQAUAJgAjADMA
+NQA7AAAAxD8HAE8ARgBOAE8AVABJAEYAAADgPwsAVQBOAEkARABBAEQATgBPAFQASQBGAAAAAwDQ
+BuA/AADIQDcAQQBnAGUAbgB0AGUAIABCAGEAbgBkAGUAagBhAFQAbwBkAG8AcwBUAHIAYQBiAGEA
+agBvACAALQAgAEMAYQByAGcAbwBCAGEAbgBkAGUAagBhAE4AbwB0AGkAZgBpAGMAYQBkAG8AcwBF
+AG4AdAAAAOBCNwBBAGcAZQBuAHQAZQAgAEIAYQBuAGQAZQBqAGEAVABvAGQAbwBzAFQAcgBhAGIA
+YQBqAG8AIAAtACAAQwBhAHIAZwBvAEIAYQBuAGQAZQBqAGEATgBvAHQAaQBmAGkAYwBhAGQAbwBz
+AEEAYwB1AAAAyEMQAEcARQBUAEYASQBSAFMAVABEAE8AQwBVAE0ARQBOAFQAAAAAAOxBIQBEAEIA
+QwBTAF8AQwBBAE0AUABPAF8ARgBDAEEAUgBUAEEAUwBFAFIAVgBfAEYARQBDAEgAQQBfAEUATgBW
+AEkATwAAAKBBGQBEAEIAQwBTAF8AQwBBAE0AUABPAF8ARgBDAEEAUgBUAEEAUwBFAFIAVgBfAE4A
+UgBPAAAAVEQVAD8ATwBwAGUAbgBEAG8AYwB1AG0AZQBuAHQAJgB1AG4AaQBkAGEAZAA9AAAALEIi
+AEQAQgBDAFMAXwBDAEEATQBQAE8AXwBGAEMAQQBSAFQAQQBTAEUAUgBWAF8AUABFAFIAUwBBAFQA
+RQBOAEMASQBPAE4AAAAAADxEHABEAEIAQwBTAF8AQwBBAE0AUABPAF8ARgBDAEEAUgBUAEEAUwBF
+AFIAVgBfAEEAUwBVAE4AVABPAAAAAAD//x0ARABCAEMAUwBfAEMAQQBNAFAATwBfAEYAQwBBAFIA
+VABBAFMARQBSAFYAXwBBAEMAVABfAE4AUgBPAAAAvEIlAEQAQgBDAFMAXwBDAEEATQBQAE8AXwBG
+AEMAQQBSAFQAQQBTAEUAUgBWAF8ATwBGAEkAQwBJAE4AQQBfAEkATgBJAEMASQBBAEwAAABUQw8A
+RwBFAFQATgBFAFgAVABEAE8AQwBVAE0ARQBOAFQAAAC0RDYAQQBnAGUAbgB0AGUAIABCAGEAbgBk
+AGUAagBhAFQAbwBkAG8AcwBUAHIAYQBiAGEAagBvACAALQAgAEMAYQByAGcAbwBCAGEAbgBkAGUA
+agBhAEUAbgB0AHIAYQBkAGEAQwBhAHIAdABhAHMAAAAAAFRGNgBBAGcAZQBuAHQAZQAgAEIAYQBu
+AGQAZQBqAGEAVABvAGQAbwBzAFQAcgBhAGIAYQBqAG8AIAAtACAAQwBhAHIAZwBvAEIAYQBuAGQA
+ZQBqAGEATABpAHMAdABhAGQAbwBDAGEAcgB0AGEAcwAAAAAA2EQ2AEEAZwBlAG4AdABlACAAQgBh
+AG4AZABlAGoAYQBUAG8AZABvAHMAVAByAGEAYgBhAGoAbwAgAC0AIABDAGEAcgBnAG8AQgBhAG4A
+ZABlAGoAYQBBAHIAYwBoAGkAdgBvAEMAYQByAHQAYQBzAAAAAACARAkATgBPAFQARQBTAEkAVABF
+AE0AAAA8RRIARgBVAE4AQwBJAE8ATgBFAFMARwBFAE4ARQBSAEEATABFAFMAAAAAAPxEBQBJAEcA
+RABvAGMAAACgRQ8AdgBCAGEAbgBkAGUAagBhAFQAcgBhAGIAYQBqAG8AAAAARg8AdgBCAGEAbgBk
+AGUAagBhAEUAbgB0AHIAYQBkAGEAAAAYRQ4AdgBCAGEAbgBkAGUAagBhAFMAYQBsAGkAZABhAAAA
+AABARgsAdgBQAGEAcgBhAEYAaQByAG0AYQByAAAAdEUOAHYATQBpAHMARABvAGMAcwBSAGUAcwBl
+AHIAdgAAAAAA8EUZAEIAYQBuAGQAZQBqAGEARQBuAHQAcgBhAGQAYQBOAG8AdABpAGYAaQBjAGEA
+ZABvAHMAAAAQRhIAdgBCAGEAbgBkAGUAagBhAE4AbwB0AGkAZgBBAGMAdQBzAGUAAAAAAMRFDwB2
+AEIAYQBuAGQAZQBqAGEATABpAHMAdABhAGQAbwAAAChGEgB2AEIAYQBuAGQAZQBqAGEAQQByAGMA
+aABpAHYAYQBkAGEAcwAAAAAA//8FAHMAVABlAG0AYQAAAP//BQBzAFIAdQB0AGEAAAD//wkAZgBS
+AGUAYwBpAGIAaQBkAG8AAAD//wgAYwBjAGYARQBuAHYAaQBvAAAAAACERgcAYwBjAE4AcgBvAEMA
+UwAAAP//FQBjAGMAUABlAHIAcwBvAG4AYQBEAGUAcwB0AGkAbgBhAHQAYQByAGkAYQAAAP//EABj
+AGMATwBmAGkAYwBpAG4AYQBJAG4AaQBjAGkAYQBsAAAAAAANAAgAAAAAACA6AAAFAPwPAAAAALyy
+Nd0YAAAAAACwAGhvzgkAAAAAAAAAABgAAAAEAOwA8BHmCQAAAAAAAAAAGAAAABgAMAGgPuYJAAAA
+AAAAAAAYAAAALACAAdAJ4wkAAAAAAAAAABgAAABAAMABgKbQCQAAAAAAAAAAGAAAAFQACAIIrNAJ
+AAAAAAAAAAAYAAAAaABwApju0AkAAAAAAAAAABgAAAB8ANACKAHjCQCN1AkYAAAAGgAAAPwD//8A
+AAAAEAAAAPwDpAXcAwAAAAAAAAIAAADkKggsAAAAAAAAAAAILAgsAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAOQq5CoAAAAAAAAAAAEUEyntLmkQv10A3QERhrcAAAAAAAAAAAAAAAAAAAAAZAAA
+AAAAAAAAAAAAAAAAAAIApABAAQAAAAAAAAIAAQD//wAAEgAUAAAAAAD//wkCAAAAALIEAAAAALAA
+pAD//wAAAAAEAAEAAAAJArAACQKwABkAAwAAAIABlAvIAwkCAACwAAMAAACoAsQGEAQGAAQAAAAm
+ACwAcAAAAAsAQADQAgAALAQAAAAAAAADAAAA/AFALFgCWAIAAAAAAAAAAAAAAAD8AfwBAAAAAAAA
+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
+NktkICy4M304KSOFZAGbiIUjOBUAGtUES/QKLHA0glgDEAAjGtYEOhIAGtcES/QKLHA0g1gDEAAj
+GtgEGtoEKZQXXWQgIzgTABrbBEsECyxwNIVYAxAAIxs6NQAa3AQpXBhdZCAjOBUAGt0ESwQLLHA0
+hlgDEAAjGt4EOhMAGt8ESwQLLHA0jgJYAxAAIxrgBBriBEtkIC08NyM4FQAa4wRLFAsscDSCWAMQ
+ACMa5AQ6EgAa5QRLFAsscDSDWAMQACMa5gQa6QQpJBldZCAjOBUAGuoESyQLLHA0glgDEAAjGusE
+OhIAGuwESyQLLHA0g1gDEAAjGu0EGvAEKewZXWQgI4W0OBUAGvEESzQLLHA0glgDEAAjGvIEOhIA
+GvMESzQLLHA0g1gDEAAjGvQEGvcES2QgLGA3fRRGIzibABr4BIBLZCAsuDN9FEYjhWQBnH2QJZAA
+AAYZiLQ4KQAa+QRLRAsscDRLZCAsuDN9FEYjhWQBm32QJZAAAIAGplgDEAAjGzpNABr6BEtkICy4
+M30URiOFZAF9jAC7OCIAGvsES0QLLHA0S2QgLLgzfRRGI4VkAZtYAxAAIxr8BDoUABr9BEtECyxw
+NH1gKFgDEAAjGv4EGv8EOhQAGgAFS0QLLHA0fWAoWAMQACMaAQUaAwVLZAsscDRL3AMtnDUjfbAl
+v0csCL99vCW/S9wDLdw1I799IB2/R0QGv33YJb9LZCAtFDYjv30AJr9YAxAAIxoEBUtUCyxwNCm0
+Gl1kICNYAxAAIxoFBUlkIIHFoDgRABoGBV1kIEtUICykNklkICOmGgcFGggFOqcAGgkFSWQggcU4
+FwAaCgVdZCBLVCAspDZKpCAjphoLBTqCABoMBUv0CixwNINYAxAAIxoNBUsECyxwNI4CWAMQACMa
+DgVLFAsscDSDWAMQACMaDwVLJAsscDSDWAMQACMaEAVLNAsscDSDWAMQACMaEQVLRAsscDR9YChY
+AxAAIxoSBUtkCyxwNH1oKFgDEAAjGhMFS1QLLHA0fZAoWAMQACMaFAUaFQUaFgUaFwVLdAsscDRi
+AhwAWAMQACMaGAU6K/kaGwUcGhwFGh4FkAAEfVAqVgJeAL99fCq/ERofBRwaIQUaIgUpmDF9hER9
+1Dp9jAAjGiMFHBokBR0aKAULAAAAAAk6AgcaLAVezCEqpAmFI6YaMAUbSZwhgcWgOMsGGjEFYAJc
+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
+4Dw2BpAfPwbMH4sGxCHSBhAi/gZIIiwHCgAAAA==
+</rawitemdata></item>
+<item name='$AssistVersion'><datetime>20150309T094449,21-03</datetime></item>
+<item name='$POID'><datetime>20150309T094455,74-03</datetime></item></note>
+

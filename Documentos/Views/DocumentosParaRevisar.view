@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A23D7'>
+<noteinfo noteid='152' unid='BC7A0705CF06BC0E83257646005B168B' sequence='108'>
+<created><datetime dst='true'>20091005T143455,47-02</datetime></created>
+<modified><datetime>20150311T132434,72-03</datetime></modified>
+<revised><datetime>20150309T094400,52-03</datetime></revised>
+<lastaccessed><datetime>20150311T132434,72-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132434,72-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Administrador/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name
+>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>DocumentosParaRevisar</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+wgACAAwAAgAkMKAAAwACABgABgB0aXR1bG8FAAYAdGl0dWxvAwACACAACgBkZXNhcnJvbGxvBQAK
+AGRlc2Fycm9sbG8DAAUAMgAtAAUAAgAGAAoACQAEACQwdGl0dWxvZGVzYXJyb2xsbyRDb25mbGlj
+dCRSRUYABAAEAAAAOAAFAAQAZm9ybQEACgBmRG9jdW1lbnRvCgIFAAsAcGFyYVJldmlzYXIAAQAC
+AHNpCgIcAgMABwAOAAgACUwxUzRTNVM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAUACAAAAFZDAAACAAEADgAAAFAAAQAACgAAAAAAAAAAAAICAAAAVkMAAAYABgAaAAAAUAAB
+AAAKAAAAAAAAAAAAAgIAAABWQwAACgAKACIAAACNAAEAAAoAAAAAAAAAAAACAgAAACQwIw4AAgAM
+AAIAJDCgAAMAdGl0dWxvVGl0dWxvGgACABgABgB0aXR1bG8FAAYAdGl0dWxvAwBkZXNhcnJvbGxv
+RGVzYXJyb2xsbyIAAgAgAAoAZGVzYXJyb2xsbwUACgBkZXNhcnJvbGxvAwAmAAEAAAABAQAJAQAA
+CgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//
+AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAA
+AAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA
+////AAUA////AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAAAAAAABAAAAAAAA
+AAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

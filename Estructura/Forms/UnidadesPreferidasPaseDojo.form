@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='95a' unid='0CEC59A8DA02229E032573310077BA46' sequence='42'>
+<created><datetime>20070808T184744,70-03</datetime></created>
+<modified><datetime>20150311T131225,04-03</datetime></modified>
+<revised><datetime>20150309T094446,87-03</datetime></revised>
+<lastaccessed><datetime>20150311T131225,04-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131225,04-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071228T100936,36-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070713T144722,68-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>UnidadesPreferidasPaseDojo</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$WebFlags' sign='true'><text>H</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='QUERY_STRING_DECODED' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>Query_String_Decoded</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>UnidadesPreferidasPaseDojo</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJWHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAArdBgAAiv/+/1AA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAIr/OACKAAAFADACAAAAAAAAAgEAAAoAAAAAAAAAABQAAAAAAFF1
+ZXJ5X1N0cmluZ19EZWNvZGVk3gYAAIr/hf8IAAEAAArdBgAAiv/+/1AAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAIr/bgCAAQAFADACAAAAAAAAAgEAAApCAAAAAAAAAAgAAAAAAEIAAAA0AAUAFABRdWVyeV9T
+dHJpbmdfRGVjb2RlZAEACQAmdXN1YXJpbz0AAQABACYAZQMDAAcADAAFAAkwUzBFAHNVc3Vhcmlv
+3gYAAIr/hf8IAAEAAArdBgAAiv/+/1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIr/bACAAQAFADACAAAA
+AAAAAgEAAApAAAAAAAAAAAcAAAAAAEAAAAAyAAUAFABRdWVyeV9TdHJpbmdfRGVjb2RlZAEACAAm
+dW5pZGFkPQEAAQAmAGUDAwAHAAwABQAJMFMwRQBzVW5pZGFkAN4GAACK/4X/CAABAAAKgQKC/1oA
+AgAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAIAhf8IAAEAAArdBgAArf+p/8QEAQAYAAQA
+uAS4BAoABAABACYABQB2aWV3MQABABMAVW5peFVuaVBvc2libGVQYXNhcgADAAcADAAFAAkwUzBF
+AAEAJAAFAHZpZXcyAAEAEgBVbmlSZWNpYmVQYXNlVG9kYXMDAAcACgADAAkwUgABACIABQB2aWV3
+MwABAA8AUGVyc29uYWxpemFjaW9uAAMABwAKAAMACTBSAAEAGAADAGtleQAFAAcAc1VuaWRhZAAD
+AAcACgADAAkwUgABAF4ABgBsaXN0YTEBAAAAAQAHAE5vQ2FjaGUAHwIFAAYAc2VydmVyBQAHAGJh
+c2VPcmcAHwIFAAUAdmlldzEABQADAGtleQABAAoAc05yb1VuaWRhZIMF+wFDAQMABwAoACEACTBS
+UjlTMTBTMTFTMTJTMTNTMTRTMTVTMTZTMTdTMTlTAAEAUgAGAGxpc3RhMgEAAAABAAcATm9DYWNo
+ZQAfAgUABgBzZXJ2ZXIFAAcAYmFzZU9yZwAfAgUABQB2aWV3MgAAAAAAAAAAAPA/qgT7AUMBAwAH
+ACAAGgAJMFI5UzEwUzExUzEyUzEzUzE0UzE1UzE2UwEAqgAKAGxpc3RhZmluYWwFAAYAbGlzdGEx
+AQAAAAsCBQAGAGxpc3RhMgEAAAALAhwCrwBwABwABQAGAGxpc3RhMQUABgBsaXN0YTIfAq4AVAAF
+AAYAbGlzdGExAQAAAAsCrwBAABAABQAGAGxpc3RhMa4AMAAFAAYAbGlzdGEyAQAAAAsCrwAcABAA
+BQAGAGxpc3RhMq4ADAABAAAArgAEALUH+wE8AQMABwA4ADIACTBSUjhTOVMxMFMxMVMxMlMxM1Mx
+NlMxOFIxOVMyMFMyMVMyNFIyNVMyNlMyN1MzMFIBAGAABQBsaXN0YQAFAAMAa2V5AAUACgBsaXN0
+YWZpbmFsdAKvADgAFAAFAAoAbGlzdGFmaW5hbK4AJAAFAAoAbGlzdGFmaW5hbAUAAwBrZXkAHwL7
+ATwBrgAEALUDAwAHAAoABAAJMFJSAQAiAAUAdmlldzEAAQAPAFBlcnNvbmFsaXphY2lvbgADAAcA
+CgAEAAkwUlIBABIABgBsaXN0YTIBAAAAAwAHAAoAAwAJMFIAAQAaAAMAa2V5AAUACABzVXN1YXJp
+b14BAwAHAAoAAwAJMFIAAQBMAAYAbGlzdGExAQAAAAEABwBOb0NhY2hlAB8CiwAFAAUAdmlldzEA
+BQADAGtleQABAA0Ac1VuaWRhZGVzUGFzZQCDBfsBQwEDAAcAHgAXAAkwUjlTMTBTMTJTMTNTMTRT
+MTVTMTdTAAgApAAFAAEAbgAAAAAAAAAAAPA/CQIFAAEAbgAFAAYAbGlzdGExagEMAgUAAQBuAAUA
+AQBuAAAAAAAAAAAA8D8iAgkCBQAGAGxpc3RhMQUAAQBuACACBQAFAGxpc3RhAHQCrwA6ADAABQAG
+AGxpc3RhMgUABgBsaXN0YTIFAAYAbGlzdGExBQABAG4AIAIfAgkCrgAKAHoArgAEALUD+wRIAQMA
+BwAcABUACTBSUjZTMTNTMTVTMTZTMTdTMTlSAAAAIAAFAAYAbGlzdGEyXgEBAAUAT3RyYXMAHwJe
+AQMABwAKAAMACTBSAIX/CAABAAAKqgLeBgAArgCF/wgAAQAACg==
+</rawitemdata></item></note>
+

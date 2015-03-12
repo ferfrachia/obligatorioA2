@@ -1,0 +1,479 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+	2.'	24/09/2009	Modificado por: Ian Coates
+		Versión base, se modifico para que esta base sea independiente en el modulo
+%END REM
+
+'******************************************************************************************************************	
+'*  
+'*									CLASS <CONFIGURACION>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'*
+'*		New()
+'*			Constructor de la clase 
+'*
+
+
+'******************************************************************************************************************
+
+Option Declare
+
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigCom 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Constantes realacionadas con el formato de la numeracion
+
+'Public Const INDICADOR_CODIGO							="c"
+
+
+'CONSTANTES PRIVADAS
+Private Const DOCUMENTO_PERFIL						= "ConfComunicaciones"
+Private Const CAMPO_CLAVE_DB					= "sClave"
+Private Const CAMPO_RUTA_DB					= "sPath"
+Private Const CAMPO_SERVIDOR_DB				= "sServer"
+Private Const CAMPO_HOST_DB 					= "sHost"
+
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+ 
+'******************************************************************************************************************
+Public Class ConfigCom 
+'******************************************************************************************************************	
+	
+	
+	Private ses As NotesSession	
+	Private docConfiguracion As NotesDocument
+	
+	Private vServer As Vector	
+	Private vKeyDB As Vector
+	Private vFilePath As Vector
+	Private vHost As Vector
+	
+	
+	
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		Set ses = New NotesSession	
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(DOCUMENTO_PERFIL)
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vFilePath = New Vector(0)
+		Set vHost = New Vector(0)		
+		
+		vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+		vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+		vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB)
+		vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Método new","")
+		Exit Sub
+	End Sub	
+	
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+'******************************************************************************************************************		
+	Private Function ObtenerNombreServidor(Byval sValor As String) As String
+	' Retorna el verdadero valor del servidor en caso que sea una clave
+		On Error Goto HANDLER
+		
+		If sValor = CONF_SERVIDOR_ACTUAL Then
+			ObtenerNombreServidor = ses.CurrentDatabase.Server
+		Elseif sValor = CONF_SERVIDOR_LOCAL Then
+			ObtenerNombreServidor = ""
+		Else
+			ObtenerNombreServidor = sValor
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Procedimiento ObtenerNombreServidor","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************				
+	
+	Public Property Get BaseDeDatos(Byval clave As String) As String
+	' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		BaseDeDatos = vFilePath.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set BaseDeDatos(Byval clave As String) As String
+	' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vFilePath.ReplaceElement(pos,BaseDeDatos)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Set BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get ServidorDomino(Byval clave As String) As String
+	' Dada una clave retorna el Servidor. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		ServidorDomino = ObtenerNombreServidor(vServer.getElement(pos))
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get ServidorDomino(" & clave & ")","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set ServidorDomino(Byval clave As String) As String
+	' Dada una clave setea el Servidor. Si no lo genera un error
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vServer.ReplaceElement(pos,ServidorDomino)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "ServidorDomino: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Set ServidorDomino","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	
+	Public Function PedirNumero (Byval nombrenumerador As String) As Long
+	'Pide un número a la clase numeración para el numerador que recibe y lo devuelve
+	'Suposiciones:
+		' 1) Si se utiliza un numerador diferente por año, el nombre del numerador indicará que va 
+		'    el año con yy o yyyy en el lugar que corresponda. Esta función sustituye ese indicador
+		'	por el año actual
+		On Error Goto HANDLER
+		
+		Dim num As NumClient, BASENUMERACION As String, SERVIDORNUMERACION As String
+		
+		'Sustituyo el indicador de año por el año actual
+		nombrenumerador = SustituirAnio(nombrenumerador)
+		
+		'Pido el número
+		'Busco srv y path de la base de numeracion
+		SERVIDORNUMERACION  = Me.ServidorDomino(CLAVE_DBNUMERACION)
+		BASENUMERACION  = Me.BaseDeDatos(CLAVE_DBNUMERACION)
+		If (nombrenumerador <> "") And (BASENUMERACION <> "") Then
+			'Creo el objeto numerador
+			Set num = New NumClient(nombrenumerador,SERVIDORNUMERACION,BASENUMERACION)		
+			PedirNumero = num.GetNumber()			
+		Else
+			Error ERROR_NUMERATION,MSG_ERROR_NUMERATION
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Funcion PedirNumero","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function SustituirAnio (Byval formato As String)As String
+	'Busca el indicador del año (yy o yyyy) dentro del formato y lo sustituye por el año actual
+	'Si el indicador del año no está devuelve el formato como lo recibió
+		On Error Goto HANDLER
+		
+		Dim anioactual As String, pos As Integer
+		
+		'Veo si va el año con cuatro digitos
+		anioactual = Cstr(Year(Today))
+		pos = Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)
+		If pos = 0 Then  'veo si va el año con dos digitos
+			anioactual = Right(Cstr(Year(Today)),2)
+			pos = Instr(formato, INDICADOR_AÑO_DOS_DIGITOS)
+		End If
+		If pos <> 0 Then  'va el año
+			Mid$ (formato, pos,Len(anioactual)) = anioactual
+		End If  'si no va el año no modifiqué nada al texto		
+		SustituirAnio = formato
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Funcion SustituirAnio","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function SustituirCantDigitos (Byval formato As String, Byval nro As String) As String
+	'Chequea la cantidad de veces que aparece el indicador de un digito y lo sustituye
+	'por el nro formateado con esa cantidad de digitos
+		On Error Goto HANDLER
+		
+		Dim pos As Integer, digitos As Integer, prefijo As String, resto As String, sufijo As String
+		
+		'Busco la cantidad de dígitos para el número
+		pos = Instr(formato,INDICADOR_DIGITO)	'debe haber por lo menos un indicador (digitos segun los que tenga el nro)
+		If pos <> 0 Then
+			digitos = 1
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			resto = Right(formato, Len(formato)-pos)
+			pos = Instr(resto,INDICADOR_DIGITO)		
+			While pos <> 0  'cuento los dígitos
+				digitos = digitos + 1
+				resto = Right(resto, Len(resto)-pos)
+				pos = Instr(resto,INDICADOR_DIGITO)
+			Wend
+			sufijo = resto
+		'Agrego 0's al nro hasta llegar a la cant de dígitos
+			While Len(nro)<digitos
+				nro = "0" + nro
+			Wend 
+		'Armo el nuevo formato
+			SustituirCantDigitos = prefijo + nro + sufijo
+		Else   'no está el #
+		'busco el *
+			pos = Instr(formato,INDICADOR_DIGITOS_PROPIO_NRO)
+			If pos = 0 Then Error ERROR_INDICADOR_DIGITO_NOT_FOUND, MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND
+			
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			If pos = Len(formato) Then  'no hay sufijo
+				sufijo = ""
+			Else
+				sufijo = Right(formato, Len(formato)-pos)
+			End If
+			
+			SustituirCantDigitos = prefijo + nro + sufijo
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Funcion SustituirCantDigitos","")
+		Exit Function
+	End Function
+	
+	
+	
+'******************************************************************************************************************					
+	Public Property Get cabezalBusqueda As String
+		On Error Goto handler
+		cabezalBusqueda = docConfiguracion.getItemValue("cabezalBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get cabezalBusqueda","")
+		Exit Property
+	End Property
+'******************************************************************************************************************					
+	Public Property Get filaBusqueda As String
+		On Error Goto handler
+		filaBusqueda = docConfiguracion.getItemValue("filaBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get filaBusqueda","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get pieBusqueda As String
+		On Error Goto handler
+		pieBusqueda = docConfiguracion.getItemValue("pieBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get pieBusqueda","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Get MaxBusqueda As Long
+		On Error Goto handler
+		MaxBusqueda = Clng(docConfiguracion.getItemValue("MaxBusqueda")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get MaxBusqueda","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Get docsPorPaginaBusqueda As String
+		On Error Goto handler
+		docsPorPaginaBusqueda = Clng(docConfiguracion.getItemValue("docsPorPagina")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Propiedad Get docsPorPaginaBusqueda","")
+		Exit Property
+	End Property
+'******************************************************************************************************************						
+	Public Function NumerarFormateado (Byval NOMBRENUMERADOR As String,formato As String,codigo As String) As String
+	'Devuelve el nro que corresponde según el nombre del numerador y con el formato indicado en el doc de perfil	
+		On Error Goto HANDLER
+		
+		Dim nro As String
+		
+		'Pido número a la clase de numeración
+		nro = Cstr(PedirNumero(NOMBRENUMERADOR))
+		'Obtengo el formato del nro
+		If formato = "" Then Error ERRORCONF_CLAVE_NOTFOUND, "FormatoNumerador: No se encuentra la clave " _ 
+		& NOMBRENUMERADOR & " en la tabla de Formato de numeradores."
+		'Sustituyo el indicador de año por el año actual
+		formato = SustituirAnio(formato)
+		'Sustituyo el indicador de digitos por el nro
+		formato = SustituirCantDigitos(formato,nro)	
+		'Sustituyo el codigo si es que esta
+		NumerarFormateado = Replace(formato,INDICADOR_CODIGO,codigo)
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Comunicaciones - Método NumerarFormateado","")
+		Exit Function
+	End Function
+	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Claves() As vector
+	' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = docConfiguracion.GetItemValue(CAMPO_CLAVE_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get Claves","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Host(Byval clave As String) As String
+	' Dada una clave retorna el Host. Si lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		Host = vHost.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get Host","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Host(Byval clave As String) As String
+	' Dada una clave setea el Host. Si no retorna un error ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vHost.ReplaceElement(pos,Host)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "Host: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set Host","")
+		Exit Property
+	End Property		
+'**************************************************************************************************************************************************	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PUBLICOS	
+	
+'******************************************************************************************************************			
+	
+	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
+		'Retorna una referencia a la base de datos que recibe como parámetro.
+		'En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+		On Error Goto HANDLER
+		Dim pos As Long
+		
+		
+		Set ReferenciarBaseDeDatos = Nothing
+		If vKeyDB.isMember(Ucase(clave), pos, False) Then _
+		Set ReferenciarBaseDeDatos = New NotesDatabase(ObtenerNombreServidor(vServer.getElement(pos)), vFilePath.getElement(pos))
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método ReferenciarBaseDeDatos","")
+		Exit Function
+		
+	End Function
+'**************************************************************************************************************************************************		
+	
+End Class
+'******************************************************************************************************************

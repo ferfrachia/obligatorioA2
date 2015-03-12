@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A126E" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="736" sequence="42" unid="11E02FB601832FD183257A70004E1710">
+<created><datetime>20120905T111257,12-03</datetime></created>
+<modified><datetime>20150311T132357,39-03</datetime></modified>
+<revised><datetime>20150309T094438,94-03</datetime></revised>
+<lastaccessed><datetime>20150311T132357,39-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132357,39-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Jorge Kleinman/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Jorge Kleinman/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$TITLE" sign="true"><text>ClaseConfDocumentos</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.3</text></item>
+
+
+
+<item name="$POID"><datetime>20150309T094438,94-03</datetime></item></note>

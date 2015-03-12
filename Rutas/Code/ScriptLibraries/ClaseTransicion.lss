@@ -1,0 +1,191 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*
+'*	 								CLASS <PASO>
+'*
+'******************************************************************************************************************	
+%REM
+Esta clase representa un objeto PASO de una ruta
+Este objeto no "conoce" lo que es el NotesDocument ni nada de eso. El NotesDocument es manejado por la clase ruta	
+
+CONSTRUCTOR
+new () - Solo crea el objeto en memoria. Deben setearse sus variables utilizando las propiedades set
+
+PROPIEDADES
+Get/Set CodTema () As Integer
+Get/Set VersionRuta () As Integer
+Get Set IdPasoInicio () As Integer
+Get/Set IdPasoDestino () As Integer
+Get/Set TextoSeleccion () As String
+
+%END REM
+
+
+Option Declare
+Use "FuncionesGenerales"   
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Transicion
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+'ERRORES GENERADOS
+'CONSTANTES PRIVADAS
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <Transicion>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Transicion
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private codtemaT As Integer
+	Private versionrutaT As Integer
+	Private idPasoInicioT As String
+	Private idPasoDestinoT As String 
+	Private textoSeleccionT As String
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR
+	
+	Public Sub new()
+		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'PROPIEDADES
+	
+	Public Property Set CodTema () As Integer
+		
+		On Error Goto HANDLER
+		
+		codtemaT = CodTema
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase transicion - Propiedad Set CodTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get CodTema () As Integer
+		
+		On Error Goto HANDLER
+		
+		CodTema = codtemaT
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase transicion - Propiedad Get CodTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set VersionRuta () As Integer
+		
+		On Error Goto HANDLER
+		
+		versionrutaT = VersionRuta
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Set VersionRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get VersionRuta () As Integer
+		
+		On Error Goto HANDLER
+		
+		VersionRuta = versionrutaT
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Get VersionRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+'Get/Set TextoSeleccion () As Integer	
+	Public Property Set IdPasoInicio() As String
+		On Error Goto HANDLER
+		
+		idPasoInicioT = IdPasoInicio
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Set IdPasoInicio","")
+		Exit Property
+		
+	End Property
+'******************************************************************************************************************		
+	Public Property Get IdPasoInicio() As String
+		On Error Goto HANDLER
+		
+		IdPasoInicio = idPasoInicioT
+		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Get IdPasoInicio","")
+		Exit Property
+	End Property
+'****************************************************************************************************************************
+	Public Property Set IdPasoDestino() As String
+		On Error Goto HANDLER
+		
+		idPasoDestinoT = IdPasoDestino
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Set IdPasoDestino","")
+		Exit Property
+		
+	End Property
+'******************************************************************************************************************		
+	Public Property Get IdPasoDestino() As String
+		On Error Goto HANDLER
+		
+		IdPasoDestino = idPasoDestinoT
+		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Get IdPasoDestino","")
+		Exit Property
+	End Property
+'******************************************************************************************************************			
+	Public Property Set TextoSeleccion() As String
+		On Error Goto HANDLER
+		
+		TextoSeleccionT = TextoSeleccion
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Set TextoSeleccion","")
+		Exit Property
+		
+	End Property
+'******************************************************************************************************************		
+	Public Property Get TextoSeleccion() As String
+		On Error Goto HANDLER
+		
+		TextoSeleccion = TextoSeleccionT
+		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Transicion - Propiedad Get TextoSeleccion","")
+		Exit Property
+	End Property
+End Class

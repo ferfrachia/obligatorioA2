@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='1f4a' unid='5991F7134B38D73283257C0E0043C3DC' sequence='23'>
+<created><datetime dst='true'>20131024T102010,52-02</datetime></created>
+<modified><datetime>20150311T132807,36-03</datetime></modified>
+<revised><datetime>20150309T094511,62-03</datetime></revised>
+<lastaccessed><datetime>20150311T132807,36-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132807,36-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>sfrmSesionComentarios</text></item>
+<item name='rComentarios' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>rComentarios</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAzP8IAAAAAACF/wkAAQAACiAA
+zf8IAAAAAACF/wkAAQAACiAA3QYAAIr//v9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAeAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACw/xQAAAAAAAQA
+AAAAAAAAAAAAAIr/MACCABkAAAACAAAAAAAAAgEAAAoAAAAAAAAAAAwAAAAAAHJDb21lbnRhcmlv
+c3r/JgAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAckNvbWVudGFyaW9zYg4BAIQAAAAAAAEAAADeBgAA
+iv+F/wkAAQAACiAAzP8IAAAAAACF/wkAAQAACiAAgQKDBAEAhf8IAAEAAArN/wgAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>sfrmComentariosAsunto</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item></note>
+

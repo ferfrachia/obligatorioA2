@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E05005A68FF" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="200a" sequence="80" unid="B172703FB2F895BD83257C27005F8626">
+<created><datetime dst="true">20131118T152322,62-02</datetime></created>
+<modified><datetime>20150311T132808,32-03</datetime></modified>
+<revised><datetime>20150309T094512,10-03</datetime></revised>
+<lastaccessed><datetime>20150311T132808,32-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132808,32-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Melissa Vidal/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>gC~4K</text></item>
+<item name="$TITLE"><text>test.xsp</text></item>
+
+
+
+<item name="$FileNames" sign="true"><text>test.xsp</text></item>
+<item name="$DesignerVersion"><text>8.5</text></item>
+
+
+
+</note>

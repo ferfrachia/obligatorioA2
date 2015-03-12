@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='c16' unid='9A00FB236BC98CEA032575890062DD72' sequence='44'>
+<created><datetime>20090330T145952,18-03</datetime></created>
+<modified><datetime>20150311T131228,38-03</datetime></modified>
+<revised><datetime>20150309T094450,43-03</datetime></revised>
+<lastaccessed><datetime>20150311T131228,38-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131228,38-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>UnidadesDeshabilitadas|VUniDes</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+oAACABwABwBzVW5pZGFkAAUABwBzVW5pZGFkAAMABQAiAB4AAwAHAAkABABzVW5pZGFkJENvbmZs
+aWN0JFJFRgQABAAAAEgABQAEAGZvcm0BAAcARlVuaWRhZAAKAgUACgBsRXN0YWRvVW5pAQABADEA
+CgIcAgUACQAkQ29uZmxpY3QAaAEeARwCAwAHABQADgAJTDFTNFM1UzdTOFM5Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+FAABAABEAGYAAAAHAHNVbmlkYWQ=
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAIAiAAAAFZDAAADAAAAWAA2AAgAAQAACgAAAAAAAAAAAAICAAAAVkMBAAcAUAAeAAAACAEF
+AAAIACAAAAAAAAAAAgIAAAAkMjFYAAIASgADACQyMQABACcAPGlucHV0IHR5cGU9ImhpZGRlbiIg
+bmFtZT0iTnJvIiB2YWx1ZT0iAAEAAACSAVYBIgIBAAIAIj4iAgMABwAMAAUACTBTMEUAAQUBADAA
+PGlucHV0IHR5cGU9ImhpZGRlbiIgbmFtZT0iTnJvIiB2YWx1ZT0if0ExOzA9/yI+c1VuaWRhZDxU
+QUJMRSBXSURUSD0iNjIzIiBjbGFzcz0idGFibGEiIGNlbGxzcGFjaW5nPTAgYm9yZGVyPSIwIiBi
+b3JkZXJjb2xvcj0iIzAwNjQ5RiI+HgACABwABwBzVW5pZGFkAAUABwBzVW5pZGFkAAMAJgABAAAA
+AQEACQEAAAoBAQ4KAAAvAK0rAQABAAEBAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAE
+AAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA//8AAAAA
+AAAAAAAAAAAAAEIAAAAAAAEA////AAEA9PT0AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAAB
+AAAAAAABAICAgAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL0c5wAAAAEAAQAAAAEAAAAA
+AAAABQABCQgAAgB5/2wAAQADO2oAAQAAAAAAAQD///8AAQADO2oAAAAfAAAAAAAAAAAAAwAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAD8/zoAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA
+AAAAAAAAvv8mAAAABQAAAJwBAAALAAAAAAAAAENhdGVnb3JpX3plZgEATny+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX0VkaXQgRG9jdW1lbnQCAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAFNlbmQgRG9j
+dV9tZW50AwADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAQABAq+/ywAAAAFAAAAnQEA
+ABIAAAAAAAAAX01vdmUgVG8gRm9sZGVyLi4uBQA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVt
+b3ZlIEZyb20gRm9sZGVyRgYAPnw=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRznAAAAAQABAAAAAQAAAAAAAAAXAAEJCAACAL7/JgAAAAUAAACcAQAACwAAAAAAAABDYXRlZ29y
+aV96ZWwBAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABTZW5kIERvY3VfbWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcnoGAD58
+</rawitemdata></item></note>
+

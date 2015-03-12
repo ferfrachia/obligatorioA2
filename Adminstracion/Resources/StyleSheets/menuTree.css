@@ -1,0 +1,239 @@
+.menuTreeAreaMenu {
+	vertical-align: top;
+	padding-left: 4px;
+	width: 180px;
+}
+.menuTreeAreaDatos {
+	vertical-align: top;
+	padding: 4px;
+	font-size: 8pt;
+	font-family: 'Arial', 'Helvetica', 'Sans serif';
+}
+
+ul.menuTree {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+	font-size: 8pt;
+	font-family: 'Arial', 'Helvetica', 'Sans serif';
+	position: relative;
+}
+ul.submenuTree {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	margin-left: 10px;
+	position: float;
+}
+.submenuTree {
+ 	display: none;
+	position: float;
+/*	overflow: hidden;  */
+}
+.subMenuTree li {
+	margin: 0px !important;
+	padding: 0px;
+	position: relative !important;
+}
+.opcionMTree , .opcionMTreeOvr {
+	cursor: pointer;
+	margin: 0px; padding: 0px;
+	color: #333388;
+	height: 20px;
+	vertical-align: middle;
+	background-color: transparent;
+	background-image: url(i/accordion-left.gif); 
+	background-position: top left; 
+	background-repeat: no-repeat; 
+/*	border: none !important;
+	border-collapse: collapse !important;
+*/	position: relative;
+/*	top: 100px; left: 200px;*/
+
+}
+.opcionSMTree , .opcionSMTreeOvr {
+	cursor: pointer;
+	margin: 0px; padding: 0px;
+	color: #333388;
+	height: 20px; 
+	width: 100%;
+	vertical-align: middle;
+	background-color: transparent;
+	background-image: url(i/accordion-left.gif); 
+	background-position: top left; 
+	background-repeat: no-repeat; 
+/*	border: 1px solid #0000FF;  */
+	border: none !important;
+	border-collapse: collapse !important;
+	position: relative;
+	top: 0px; left: 0px;
+}
+.opcionMTree SPAN, .opcionMTreeOvr SPAN{
+	display:-moz-inline-box; display:inline-block; 
+	width: 160px;
+	margin-left: 4px;
+	margin-top: 0px !important;
+	padding-top: 3px;
+	padding-left: 2px;
+	height: 20px !important;
+	border: none !important;
+	border-collapse: collapse !important; 
+	background-color: transparent;
+	background-image: url(i/accordion-fondo.gif); 
+	background-position: top; 
+	background-repeat: repeat-x;
+/*	border: 1px solid #FF0000; */
+}
+.opcionSMTree  SPAN, .opcionSMTreeOvr SPAN{
+	display:-moz-inline-box; display:inline-block; 
+	width: 160px;
+	margin-left: 4px;
+	margin-top: 0px !important;
+	padding-top: 3px;
+	padding-left: 2px;
+	height: 20px !important;
+	border: none !important;
+	border-collapse: collapse !important;  
+	background-color: transparent;
+	background-image: url(i/accordion-fondo.gif); 
+	background-position: top; 
+	background-repeat: repeat-x; 
+/*	border: 1px solid #FF0000; */
+}
+
+.opcionMTree DIV.menuTree-right {
+	display:-moz-inline-box; display:inline-block; 
+	font-size: 10pt;
+	width: 4px;
+	margin: 0px; padding: 0px;
+	height: 20px; 
+	display:inline;
+	background-color: transparent;
+	background-image: url(i/accordion-right.gif); 
+	background-position: top right; 
+	background-repeat: no-repeat; 
+	border: none !important;
+	border-collapse: collapse !important; 
+	margin-bottom: 10px;	
+/*	border: 1px solid #FF0000; */
+}
+.opcionMTreeOvr DIV.menuTree-right {
+	display:-moz-inline-box; display:inline-block; 
+	font-size: 10pt;
+	width: 4px;
+	margin: 0px; padding: 0px;
+	height: 20px; 
+	display:inline;
+	background-color: transparent;
+	background-image: url(i/accordion-rightOvr.gif); 
+	background-position: top right; 
+	background-repeat: no-repeat; 
+/*	margin-bottom: 10px;	*/
+}
+.opcionSMTree  DIV.menuTree-right {
+	display:-moz-inline-box; display:inline-block; 
+	font-size: 10pt;
+	width: 4px;
+	margin: 0px; padding: 0px;
+	height: 20px; 
+	display:inline;
+	background-color: transparent;
+	background-image: url(i/accordion-right.gif); 
+	background-position: top right; 
+	background-repeat: no-repeat; 
+	border: none !important;
+	border-collapse: collapse !important; 
+/*	margin-bottom: 10px;	*/
+/*	border: 1px solid #00FF00; */
+}
+
+.opcionSMTreeOvr DIV.menuTree-right {
+	display:-moz-inline-box; display:inline-block; 
+	font-size: 10pt;
+	width: 4px;
+	margin: 0px; padding: 0px;
+	height: 20px; 
+	display:inline;
+	background-color: transparent;
+	background-image: url(i/accordion-rightOvr.gif); 
+	background-position: top right; 
+	background-repeat: no-repeat; 
+/*	margin-bottom: 10px;	*/
+}
+
+.menuTree-right {
+	display:-moz-inline-box; display:inline-block; 
+	font-size: 10pt;
+	width: 4px;
+	margin: 0px; padding: 0px;
+	height: 20px; 
+	display:inline;
+	background-color: transparent;
+	/*line-height: 20px;*/
+}
+.opcionMTreeOvr{
+	cursor: pointer;
+	color: #777777;
+	background-image: url(i/accordion-leftOvr.gif); 
+}
+.opcionSMTreeOvr {
+	cursor: pointer;
+	color: #777777;
+	background-image: url(i/accordion-sub-leftOvr.gif); 
+}
+
+.opcionMTreeOvr SPAN{
+	background-image: url(i/accordion-fondoOvr.gif); 
+}
+
+.opcionSMTreeOvr SPAN{
+	background-image: url(i/accordion-fondoOvr.gif); 
+}
+
+
+
+/*  Sub menues*/
+.subMenuTree li.opcionMTree  {
+	background-image: url(i/accordion-sub-left.gif);
+}
+.subMenuTree li.opcionMTreeOvr  {
+	background-image: url(i/accordion-sub-leftOvr.gif);
+}
+
+.subMenuTree li.opcionMTree  SPAN{
+	background-image: url(i/accordion-sub-fondo.gif); 
+	width: 150px;
+}
+.subMenuTree li.opcionMTreeOvr SPAN {
+	background-image: url(i/accordion-sub-fondoOvr.gif); 
+	width: 150px;
+}
+
+.subMenuTree li.opcionMTree  DIV.menuTree-right {
+	background-image: url(i/accordion-sub-right.gif); 
+}
+.subMenuTree li.opcionMTreeOvr DIV.menuTree-right {
+	background-image: url(i/accordion-sub-rightOvr.gif); 
+}
+
+/** ** ** ** *** ** ** ** **/
+.seccionMenuTree {
+	display: none; 
+	width: 99%;
+	height: 100%; 
+	padding: 4px;
+	font-size: 8pt;
+	font-family: 'Arial', 'Helvetica', 'Sans serif';	
+	/*overflow: hidden;*/
+	border: 1px solid #BBBBBB;
+}
+
+
+SPAN.seccionMTreeTitulo {
+	font-size: 10pt;
+	font-family: 'Arial', 'Helvetica', 'Sans serif';	
+	font-weight: bold;
+	color: #999999;
+	display: block;
+	margin-bottom: 10px;
+	}

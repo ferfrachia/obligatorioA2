@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='b8a' unid='34A1F86895A6DC0F832579BB0063AA95' sequence='27'>
+<created><datetime dst='true'>20120308T160837,33-02</datetime></created>
+<modified><datetime>20150311T132742,78-03</datetime></modified>
+<revised><datetime>20150309T094506,80-03</datetime></revised>
+<lastaccessed><datetime>20150311T132742,78-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132742,78-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070424T181839,57-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>index</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$WindowTitle' sign='true'><formula>"Sistema de Resoluciones"</formula></item>
+<item name='$HTMLHeadTag' sign='true'><formula>claves:=@GetProfileField("(ConfiguracionRD)" ; "sClave");
+paths:=@GetProfileField("(ConfiguracionRD)" ; "sPath");
+posPath:=@Member("RESOLUCIONES"; claves);
+
+pathresol:= "/" + @ReplaceSubstring(@Subset(@Subset(paths;posPath);-1);@Char(92);"/");
+
+
+dir:= pathresol +  "/inicio?OpenFrameset";
+
+ret:=  "&lt;META  http-equiv='Expires' content='0'&gt;&lt;META HTTP-EQUIV='Cache-Control' CONTENT='no-cache'&gt;&lt;META HTTP-EQUIV='Pragma'  CONTENT='no-cache'&gt; "+ @NewLine ;
+ret := ret + "&lt;STYLE type=\"text/css\"&gt;Body {background-color: WHITE;}"+@NewLine+
+".textoTitulo{font-family: Arial,  Verdana ; font-size: 12px;font-weight: bold;color : white}"+@NewLine+
+"&lt;/STYLE&gt;";
+ret := ret + "&lt;META HTTP-EQUIV=\"REFRESH\" CONTENT=\"1;URL="+dir+"\"&gt;";
+ret</formula></item>
+<item name='$StyleSheetList' sign='true'>
+<rawitemdata type='1'>
+9v8sAAAAAAADACEACgAAAAAAAAAAAAAAAAAAAAAAAAAAAGVzdGlsby5jc3M=
+</rawitemdata></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>index</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/yoAAQAACjx0
+YWJsZSBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIj6BAoMEAQCF/wwAAQAACjx0cj6BAoMEAQCF
+/ysAAQAACjx0ZCB2YWxpZ249ImNlbnRlciIgYWxpZ249ImNlbnRlciI+AIECgwQBAIX/EwABAAAK
+CTxpbWcgc3JjPSIA3QYAAK3/qf/wAAEAGAAEAOQA5AAAANYAAQARAChDb25maWd1cmFjaW9uUkQp
+AAEACgByUHJvdG9jb2xv9wIBAAMAOi8vACICAQARAChDb25maWd1cmFjaW9uUkQpAAEABQBzSG9z
+dAD3AgAAAAAAAAAA8D8gAiICAQABADoAIgIBABEAKENvbmZpZ3VyYWNpb25SRCkAAQAHAHNQdWVy
+dG8A9wIiAgEAAQAvACICiwAAAAAAAAAAAPA/EAFrAgEAAQBcAAEAAQAvAIQDIgIBABMAL2luZ3Jl
+c29fbW9kdWxvLnBuZwAiAgMABwAMAAUACTBTMEUAhf8IAAEAAAqqAt4GAACuAIX/CgABAAAKIj6B
+AoMEAQCF/w0AAQAACjwvdGQ+AIECgwQBAIX/DAABAAAKPHRyPoECgwQBAIX/EAABAAAKPC90YWJs
+ZT7N/wgAAAAAAA==
+</rawitemdata></item></note>
+

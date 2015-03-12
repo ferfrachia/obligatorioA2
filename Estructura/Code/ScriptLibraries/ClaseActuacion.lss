@@ -1,0 +1,1998 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*   
+'*	 	 	  						CLASS <ACTUACION>
+'*
+'******************************************************************************************************************	
+%REM
+Esta clase representa un objeto ACTUACION de un expediente	
+ 
+CONSTRUCTOR
+new(byval sNroExpediente As String,byval sNroActuacion As String,byval nCrear As Integer)
+	Si nCrear = True crea un nuevo documento en la base de datos de gestion doc del año actual
+	Si nCrear = False busca el doc de actuacion nro sNroActuacion en el expediente sNroExpediente
+
+Parámetros:
+	sNroExpediente (IN) - Número de expediente
+	sNroActuacion  (IN) - Número de actuación a crear o buscar
+	nCrear		(IN) - Indica si se quiere crear la actuacion (True) o buscarla (False)
+
+ 
+PROPIEDADES
+Get/Set NumeroActuacion As Integer
+		'Devuelve/Setea el número de actuación
+Get/Set NumeroExpediente As String
+		'Devuelve/Setea el número de expediente al que corresponde la actuación
+Get/Set FechaSalida As Variant
+		'Devuelve/Setea la fecha de salida de la actuación
+Get/Set FechaEntrada As Variant
+		'Devuelve/Setea la fecha de entrada (fecha de pase hacia esta unidad) de la actuación
+Get/Set Procedimiento As Variant
+		'Devuelve el procedimiento (tarea que debe realizar la unidad) correspondiente a la actuación
+Get/Set personaSalida As String
+		'Devuelve/Setea el nombre de la persona que dio pase al expediente en esta actuación
+Get/Set TiempoPermanecio As Integer
+		'Devuelve/Setea el tiempo transcurrido entre la recepción y el pase
+Get/Set TiempoMax As Integer
+		'Devuelve/Setea el tiempo máximo de esta actuación
+Get/Set Oficina As String
+		'Devuelve/Setea el nombre de la unidad actuante
+Get/Set Autores As Vector
+		'Devuelve/Setea los autores de esta actuación
+Get/Set Lectores As Vector
+		'Devuelve/Setea los lectores de esta actuación
+Get/Set Tema As String
+		'Devuelve/Setea el nombre del tema al que corresponde el expediente al cual pertenece esta actuación
+Get/Set CantFirmas As Integer
+		'Devuelve/Setea la cantidad de firmas que tiene la actuación
+Get/Set SubEstado As String
+		'Devuelve/Setea el estado de esta actuación (subestado del expediente)
+Get/Set ReservadoPor As String
+		'Devuelve/Setea el nombre del usuario que tiene reservada la actuación
+Get/Set FechaRecibido As Variant
+		'Devuelve/Setea la fecha de recepción del expediente en esta actuación
+Get aBorrar As Integer
+		'Devuelve true si el nombre del formulario indica que la actuación debe borrarse y false en caso contrario
+		'Obs: Cuando una actuación se anula (a causa de las operaciones de "Anular pase"
+		'o "Devolver"), la misma deja de ser una actuación y por tanto se cambia su formulario
+		'por otro que indica que es una actuación que ha sido borrada
+Set aBorrar As Integer 
+		'Setea la actuación como borrada o como activa (cambiando el nombre del formulario)
+Get Devuelta As Integer
+		'Devuelve true si la actuación ha sido devuelta y false en caso contrario
+Set Devuelta As Integer 
+		'Setea una actuación como devuelta o como no devuelta
+Get/Set MotivoDevolucion As String
+		'Devuelve/Setea el motivo de devolución de la actuación
+Get/Set UnidadesDevolucion As Variant
+		'Devuelve/Setea la lista de unidades que devolvieron el expediente hacia esta actuación
+Get Migrado as Boolean
+		'Retorna True si la actuación es migrada
+
+
+MÉTODOS
+Sub save
+		'Salva el documento de actuación
+
+Sub AddFirma(Byval sFirma As String,Byval fFechaFirma As Variant) 
+		'Agrega la firma sFirma y la fecha fFechaFirma a la actuación
+Parámetros:
+	sFirma		(IN) = firma a agregar
+	fFechaFirma	(IN) = fecha de la firma
+
+Sub delFirmas() 
+		'Elimina las firmas de la actuación
+
+Sub addUnidadDevolucion(byval sUnidad As String)
+		'Agrega una unidad a la lista de unidades que devolvieron el expediente a esta actuación
+Parámetros:
+	sUnidad		(IN) = nombre de la unidad a agregar
+
+
+
+%END REM
+
+Option Declare
+Use "FuncionesGenerales"
+Use "ConfEE 1.0"
+Use "Errores Generales"
+Use "ConstantesDBGestionDoc"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Actuacion
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'CONSTANTES PÚBLICAS
+Public Const	CAMPO_FACTUACION_LECT_NOTIFICADOS				="NotifLectores"
+
+Public Const	CAMPO_FACTUACION_LECTORES_PERMANENTES			="LectoresPer"
+Public Const	CAMPO_FACTUACION_SUBESTADO					="sSubEstado"
+
+'ERRORES GENERADOS
+
+'CONSTANTES PRIVADAS
+Private Const	CAMPO_FACTUACION_RESERVADOPOR					="sReservadoPor"
+Private Const	CAMPO_FACTUACION_UNIDADES_DEVOLVIERON			="sUnidadesDevolvieron"
+Private Const	CAMPO_FACTUACION_DEVUELTA_FLAG				="sDevueltaFlag"
+Private Const	CAMPO_FACTUACION_MOTIVO_DEVOLUCION				="sMotivoDevolucion"
+Private Const	CAMPO_FACTUACION_RECIBIDOPOR					="sPersRecibido"
+
+Private Const	CAMPO_FACTUACION_MARCO_CONFID					="sMarcoConfid"
+Private Const	CAMPO_FACTUACION_MARCO_CONFID_TRUE				="1"
+Private Const	CAMPO_FACTUACION_MARCO_CONFID_FALSE			="0"
+
+Private Const	CAMPO_FACTUACION_PASO						="sRealizoPase"
+Private Const	CAMPO_FACTUACION_PASO_TRUE					="1"
+Private Const	CAMPO_FACTUACION_PASO_FALSE					="0"
+
+
+Private Const	CAMPO_FACTUACION_DEVUELTA_TRUE				="1"
+Private Const	CAMPO_FACTUACION_DEVUELTA_FALSE				="0"
+
+Private Const	CAMPO_FACTUACION_NOTIF_EXPIRO					="sNotificadoExpiro"
+Private Const	CAMPO_FACTUACION_NOTIF_EXPIRO_TRUE				="1"
+
+Private Const	CAMPO_FACTUACION_NOTIF_PROX_EXPIRAR			="sNotificadoProxExpirar"
+Private Const	CAMPO_FACTUACION_NOTIF_PROX_EXPIRAR_TRUE		="1"
+
+Private Const	CAMPO_FACTUACION_PROX_EXPIRAR					="sProxExpirar"
+Private Const	CAMPO_FACTUACION_PROX_EXPIRAR_TRUE				="1"
+
+Private Const	CAMPO_FACTUACION_EXPIRO						="sExpiro"
+Private Const	CAMPO_FACTUACION_EXPIRO_TRUE					="1"
+
+Private Const	CAMPO_FACTUACION_FIRMANTES					="sFirmantes"
+Private Const	CAMPO_FACTUACION_ULTIMO_EDITOR				="sUltimoEditor"
+
+Private Const 	CAMPO_FACTUACION_MIGRADO						="Migrado"
+Private Const	ACTUACION_MIGRADA_OK						=1
+Private Const	ACTUACION_MIGRADA_NA						=2
+Private Const 	UNIDAD_FILES_SIZE							=1024	'Kb
+
+'Rutas
+Public Const CAMPO_PASO_RUTA 	=	"NroPasoRuta"
+
+'Estados
+Public Const	SUBESTADO_EN_TRANSITO						="10"
+Public Const	SUBESTADO_PARA_ACTUAR						="15"
+Public Const	SUBESTADO_RESERVADO							="20"
+Public Const	SUBESTADO_PARA_FIRMAR						="25"
+Public Const	SUBESTADO_PARA_DAR_PASE						="30"
+Public Const	SUBESTADO_CURSADO							="35"
+Public Const	SUBESTADO_ANULADO							="40"
+Public Const	SUBESTADO_ARCHIVADO							="45"
+Public Const	SUBESTADO_AGREGADO							="50"
+
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <ACTUACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Actuacion
+'******************************************************************************************************************	
+	
+	'MIEMBROS PRIVADOS
+	Private db As notesDatabase
+	Private doc As notesDocument
+	
+	'PROPIEDADES
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set LectNotificados As Vector
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_LECT_NOTIFICADOS) Then
+			doc.RemoveItem CAMPO_FACTUACION_LECT_NOTIFICADOS
+		End If
+		Dim it As notesItem
+		If Not LectNotificados Is Nothing Then
+			If LectNotificados.cantElem > 0 Then
+				Set it = New NotesItem(doc,CAMPO_FACTUACION_LECT_NOTIFICADOS,LectNotificados.values,READERS)
+			Else
+				Set it = New NotesItem(doc,CAMPO_FACTUACION_LECT_NOTIFICADOS,"",READERS)
+			End If	
+		Else
+			Set it = New NotesItem(doc,CAMPO_FACTUACION_LECT_NOTIFICADOS,"",READERS)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set LectNotificados","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get LectNotificados As Vector
+		On Error Goto HANDLER
+		
+		Set LectNotificados=New Vector(0)
+		
+		If doc.HasItem(CAMPO_FACTUACION_LECT_NOTIFICADOS) Then
+			LectNotificados.values=doc.getItemValue(CAMPO_FACTUACION_LECT_NOTIFICADOS)
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get LectNotificados","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get LastEditor As String
+		On Error Goto HANDLER
+		
+		LastEditor=""
+		If doc.HasItem(CAMPO_FACTUACION_ULTIMO_EDITOR) Then
+			LastEditor=doc.getItemValue(CAMPO_FACTUACION_ULTIMO_EDITOR)(0)
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get LastEditor","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set LastEditor As String
+		On Error Goto HANDLER
+		
+		
+		If LastEditor <> "" Then
+			doc.ReplaceItemValue CAMPO_FACTUACION_ULTIMO_EDITOR,LastEditor
+		Else
+			If doc.HasItem(CAMPO_FACTUACION_ULTIMO_EDITOR) Then
+				doc.RemoveItem CAMPO_FACTUACION_ULTIMO_EDITOR
+			End If			
+		End If
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set LastEditor","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	Public Property Set PasoRuta As Integer
+		On Error Goto HANDLER
+		
+		doc.ReplaceItemValue CAMPO_PASO_RUTA,PasoRuta
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set PasoRuta","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get PasoRuta As Integer
+		On Error Goto HANDLER
+		PasoRuta = doc.GetItemValue (CAMPO_PASO_RUTA)(0)
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get PasoRuta","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Paso As Integer
+		On Error Goto HANDLER
+		
+		If Paso Then
+			doc.ReplaceItemValue CAMPO_FACTUACION_PASO,CAMPO_FACTUACION_PASO_TRUE	
+		Else
+			doc.ReplaceItemValue CAMPO_FACTUACION_PASO,CAMPO_FACTUACION_PASO_FALSE
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Paso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Paso As Integer
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_PASO) Then
+			Paso=doc.getItemValue(CAMPO_FACTUACION_PASO)(0) = CAMPO_FACTUACION_PASO_FALSE	
+		Else
+			Paso=False
+		End If
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Paso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set MarcoConfidencial As Integer
+		On Error Goto HANDLER
+		
+		If MarcoConfidencial Then
+			doc.replaceItemValue CAMPO_FACTUACION_MARCO_CONFID,CAMPO_FACTUACION_MARCO_CONFID_TRUE
+		Else
+			doc.replaceItemValue CAMPO_FACTUACION_MARCO_CONFID,CAMPO_FACTUACION_MARCO_CONFID_FALSE
+		End If			
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set MarcoConfidencial","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get MarcoConfidencial As Integer
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_MARCO_CONFID) Then
+			MarcoConfidencial=doc.getItemValue(CAMPO_FACTUACION_MARCO_CONFID)(0) = CAMPO_FACTUACION_MARCO_CONFID_TRUE
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get MarcoConfidencial","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set ExtractoActuacion As String
+		'Setea el extracto de actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_EXTRACTO,ExtractoActuacion
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set ExtractoActuacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get ExtractoActuacion As String
+		'Devuelve el extracto de la actuacion
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_EXTRACTO) Then
+			ExtractoActuacion=doc.getItemValue(DBSGD_CAMPO_FACTUACION_EXTRACTO)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get ExtractoActuacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	
+'******************************************************************************************************************	
+	
+	Public Property Set TextoActuacion As String
+		'Setea el texto de actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_TEXTO,TextoActuacion
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set TextoActuacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get TextoActuacion As String
+		'Devuelve el texto de la actuacion
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_TEXTO) Then
+			TextoActuacion=doc.getItemValue(DBSGD_CAMPO_FACTUACION_TEXTO)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get TextoActuacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	
+	Public Property Set ProxExpirar As Integer
+		On Error Goto HANDLER
+		
+		
+		If ProxExpirar Then
+			doc.replaceItemValue CAMPO_FACTUACION_PROX_EXPIRAR,CAMPO_FACTUACION_PROX_EXPIRAR_TRUE
+		Else
+			If doc.HasItem(CAMPO_FACTUACION_PROX_EXPIRAR) Then
+				doc.RemoveItem CAMPO_FACTUACION_PROX_EXPIRAR
+				Me.save
+			End If
+		End If
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad set ProxExpirar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get ProxExpirar As Integer
+		On Error Goto HANDLER
+		
+		ProxExpirar=False
+		If doc.HasItem(CAMPO_FACTUACION_PROX_EXPIRAR) Then
+			ProxExpirar=doc.GetItemValue(CAMPO_FACTUACION_PROX_EXPIRAR)(0) = CAMPO_FACTUACION_PROX_EXPIRAR_TRUE
+		End If
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get ProxExpirar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NotificadoProxExpirar As Integer
+		On Error Goto HANDLER
+		
+		NotificadoProxExpirar=False
+		If doc.HasItem(CAMPO_FACTUACION_NOTIF_PROX_EXPIRAR) Then
+			NotificadoProxExpirar=doc.GetItemValue(CAMPO_FACTUACION_NOTIF_PROX_EXPIRAR)(0) = CAMPO_FACTUACION_NOTIF_PROX_EXPIRAR_TRUE
+		End If
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get NotificadoProxExpirar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set NotificadoProxExpirar As Integer
+		On Error Goto HANDLER
+		
+		
+		If NotificadoProxExpirar Then
+			doc.replaceItemValue CAMPO_FACTUACION_NOTIF_PROX_EXPIRAR,CAMPO_FACTUACION_NOTIF_PROX_EXPIRAR_TRUE
+		End If
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set NotificadoProxExpirar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Expiro As Integer
+		On Error Goto HANDLER
+		
+		
+		Expiro=False
+		If doc.HasItem(CAMPO_FACTUACION_NOTIF_EXPIRO) Then
+			Expiro=doc.GetItemValue(CAMPO_FACTUACION_EXPIRO)(0) = CAMPO_FACTUACION_EXPIRO_TRUE
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Expiro","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Expiro As Integer
+		On Error Goto HANDLER
+		
+		
+		If Expiro Then
+			doc.replaceItemValue CAMPO_FACTUACION_EXPIRO,CAMPO_FACTUACION_EXPIRO_TRUE
+		Else
+			If doc.HasItem(CAMPO_FACTUACION_EXPIRO) Then
+				doc.removeItem CAMPO_FACTUACION_EXPIRO
+				Me.Save
+			End If
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Expiro","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************		
+	
+	Public Property Get NotificadoExpiro As Integer
+		On Error Goto HANDLER
+		
+		
+		NotificadoExpiro=False
+		If doc.HasItem(CAMPO_FACTUACION_NOTIF_EXPIRO) Then
+			NotificadoExpiro=doc.GetItemValue(CAMPO_FACTUACION_NOTIF_EXPIRO)(0) = CAMPO_FACTUACION_NOTIF_EXPIRO_TRUE
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get NotificadoExpiro","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set NotificadoExpiro As Integer
+		On Error Goto HANDLER
+		
+		
+		If NotificadoExpiro Then
+			doc.replaceItemValue CAMPO_FACTUACION_NOTIF_EXPIRO,CAMPO_FACTUACION_NOTIF_EXPIRO_TRUE
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set NotificadoExpiro","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Files As Variant
+		On Error Goto HANDLER
+		
+		Files=doc.Embeddedobjects	
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Files","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get UsuariosFirmas As Vector
+		On Error Goto HANDLER
+		
+		
+		Set UsuariosFirmas=New Vector(0)
+		If doc.HasItem(DBSGD_CAMPO_FACTUACION_USUARIOS_FIRMAS) Then
+			UsuariosFirmas.values=doc.getItemValue(DBSGD_CAMPO_FACTUACION_USUARIOS_FIRMAS)	
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get UsuariosFirmas","")
+		Exit Property		
+	End Property
+	
+	
+'******************************************************************************************************************		
+	
+	Public Property Set UsuariosFirmas As Vector
+		On Error Goto HANDLER
+		
+		
+		If Not UsuariosFirmas Is Nothing Then
+			doc.replaceItemValue DBSGD_CAMPO_FACTUACION_USUARIOS_FIRMAS,UsuariosFirmas.values	
+		End If
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set UsuariosFirmas","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set FechasFirmas As Vector
+		On Error Goto HANDLER
+		
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_FECHAS_FIRMAS,FechasFirmas.values
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set FechasFirmas","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FechasFirmas As Vector
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_FECHAS_FIRMAS) Then
+			Set FechasFirmas=New Vector(0)
+			FechasFirmas.values=doc.GetItemValue(DBSGD_CAMPO_FACTUACION_FECHAS_FIRMAS)
+		Else
+			Set FechasFirmas=New Vector(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get FechasFirmas","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	Public Property Set FirmaDo As Vector
+		On Error Goto HANDLER
+		
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_FIRMADO,Firmado.values
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Firmado","")
+		Exit Property
+		
+	End Property
+	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Firmado As Vector
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_FIRMAS) Then
+			Dim vFirmas As New Vector(0)
+			vFirmas.values=doc.GetItemValue(DBSGD_CAMPO_FACTUACION_FIRMADO)
+			Set Firmado=vFirmas
+		Else
+			Set Firmado=New Vector(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Firmado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Firmas As Vector
+		On Error Goto HANDLER
+		
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_FIRMAS,Firmas.values
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Firmas","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Firmas As Vector
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_FIRMAS) Then
+			Dim vFirmas As New Vector(0)
+			vFirmas.values=doc.GetItemValue(DBSGD_CAMPO_FACTUACION_FIRMAS)
+			Set Firmas=vFirmas
+		Else
+			Set Firmas=New Vector(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Firmas","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get RecibidoPor As String
+		'Devuelve el número de actuación
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FACTUACION_RECIBIDOPOR) Then
+			RecibidoPor=doc.GetItemValue(CAMPO_FACTUACION_RECIBIDOPOR)(0)	
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get RecibidoPor","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set RecibidoPor As String
+		'Devuelve el número de actuación
+		On Error Goto HANDLER
+		
+		
+		doc.replaceItemValue CAMPO_FACTUACION_RECIBIDOPOR,RecibidoPor
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set RecibidoPor","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Id As String
+		'Devuelve el número de actuación
+		On Error Goto HANDLER
+		
+		Id=Cstr(doc.UniversalID)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Id","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NumeroActuacion As Integer
+		'Devuelve el número de actuación
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_NRO) Then
+			NumeroActuacion=doc.getItemValue(DBSGD_CAMPO_FACTUACION_NRO)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get NumeroActuacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NumeroActuacion As Integer
+		'Setea el número de actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_NRO,NumeroActuacion
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set NumeroActuacion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NumeroExpediente As String
+		'Devuelve el número de expediente al que corresponde la actuación
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_NRO_EXP) Then
+			NumeroExpediente=doc.getItemValue(DBSGD_CAMPO_FACTUACION_NRO_EXP)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get NumeroExpediente","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NumeroExpediente As String
+		'Setea el número de expediente en la actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_NRO_EXP,NumeroExpediente	
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set NumeroExpediente","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FechaSalida As Variant
+		'Devuelve la fecha de salida de la actuación (si la tiene)
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_FECHA_SAL) Then
+			FechaSalida=doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_SAL)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get FechaSalida","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set FechaSalida As Variant
+		'Setea la fecha de salida de la actuación
+		On Error Goto HANDLER
+		
+		If Isnull(FechaSalida) Then
+			If doc.HasItem(DBSGD_CAMPO_FACTUACION_FECHA_SAL) Then
+				doc.RemoveItem DBSGD_CAMPO_FACTUACION_FECHA_SAL
+			End If
+		Else
+			doc.replaceItemValue DBSGD_CAMPO_FACTUACION_FECHA_SAL,FechaSalida	
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set FechaSalida","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FechaEntrada As Variant
+		'Devuelve la fecha de entrada (fecha de pase hacia esta unidad) de la actuación
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_FECHA_ENT) Then
+			FechaEntrada=doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_ENT)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get FechaEntrada","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set FechaEntrada As Variant
+		'Setea la fecha de entrada (fecha de pase hacia esta unidad) de la actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_FECHA_ENT,FechaEntrada
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set FechaEntrada","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Procedimiento As Variant
+		'Devuelve el procedimiento (tarea que debe realizar la unidad) correspondiente a la actuación
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_PROCED) Then
+			Procedimiento=doc.getItemValue(DBSGD_CAMPO_FACTUACION_PROCED)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Procedimiento","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Procedimiento As Variant
+		'Setea el procedimiento (tarea que debe realizar la unidad) correspondiente a la actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_PROCED,Procedimiento
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Procedimiento","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get personaSalida As String
+		'Devuelve el nombre de la persona que dio pase al expediente en esta actuación
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_PERS_SAL) Then
+			personaSalida=doc.getItemValue(DBSGD_CAMPO_FACTUACION_PERS_SAL)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get personaSalida","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set personaSalida As String
+		'Setea el nombre de la persona que dio pase al expediente en esta actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_PERS_SAL,personaSalida
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set personaSalida","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get TiempoPermanecio As Integer
+		'Devuelve el tiempo transcurrido entre la recepción y el pase
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_TIEMPO_PERMANECIO) Then
+			TiempoPermanecio=doc.getItemValue(DBSGD_CAMPO_FACTUACION_TIEMPO_PERMANECIO)(0)	
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Tiempo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set TiempoPermanecio As Integer
+		'Setea el tiempo transcurrido entre la recepción y el pase
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_TIEMPO_PERMANECIO,TiempoPermanecio
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Tiempo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get TiempoMax As Integer
+		'Devuelve el tiempo máximo de esta actuación
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_TIEMPO) Then
+			If Isnumeric(doc.getItemValue(DBSGD_CAMPO_FACTUACION_TIEMPO)(0)) Then
+				TiempoMax=Cint(doc.getItemValue(DBSGD_CAMPO_FACTUACION_TIEMPO)(0))
+			Else
+				TiempoMax=0
+			End If
+			
+		End If
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get TiempoMax","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set TiempoMax As Integer
+		'Setea el tiempo máximo de esta actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_TIEMPO,TiempoMax
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set TiempoMax","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Oficina As String
+		'Devuelve el nombre de la unidad actuante
+		On Error Goto HANDLER
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_OFICINA) Then
+			Oficina=doc.getItemValue(DBSGD_CAMPO_FACTUACION_OFICINA)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Oficina","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Oficina As String
+		'Setea el nombre de la unidad actuante
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_OFICINA,Oficina
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Oficina","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Autores As Vector
+		'Devuelve un vector con los autores de esta actuación
+		On Error Goto HANDLER
+		
+		Dim vTransformar As New Vector(0)
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_AUTORES) Then
+			Dim vAutores As New Vector(0)
+			vAutores.values=doc.getItemValue(DBSGD_CAMPO_FACTUACION_AUTORES)	
+			If vAutores.cantElem > 0 Then
+				Dim i As Integer,nom As NotesName
+				For i = 1 To vAutores.cantElem
+					Set nom=New notesName(vAutores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next	
+			End If			
+		End If
+		Set Autores=vTransformar
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Autores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Autores As Vector
+		'Setea los autores de esta actuación
+		On Error Goto HANDLER
+		
+		If doc.HasItem(DBSGD_CAMPO_FACTUACION_AUTORES) Then
+			doc.removeitem DBSGD_CAMPO_FACTUACION_AUTORES
+		End If
+		Dim vTransformar As New Vector(0),nom As NotesName
+		If Autores.cantElem > 0 Then
+			Dim i As Integer
+			For i = 1 To Autores.cantElem
+				Set nom=New notesName(Autores.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next	
+		End If
+		Dim itAutores As NotesItem
+		Set itAutores=New notesItem(doc,DBSGD_CAMPO_FACTUACION_AUTORES,vTransformar.values,AUTHORS)
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Autores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get Lectores As Vector
+		'Devuelve un vector con los lectores de esta actuación
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0),vTransformar As New Vector(0)
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_LECTORES) Then
+			Dim i As Integer,nom As notesName
+			vLectores.values=doc.getItemValue(DBSGD_CAMPO_FACTUACION_LECTORES)
+			If vLectores.cantElem > 0 Then
+				For i = 1 To vLectores.cantElem
+					Set nom=New notesName(vLectores.getElement(i))
+					vTransformar.insertElement nom.Abbreviated,vTransformar.cantElem + 1
+				Next	
+			End If
+		End If
+		Set Lectores=vTransformar
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Lectores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Lectores As Vector
+		'Setea los lectores de esta actuación
+		On Error Goto HANDLER
+		
+		
+		If Lectores.cantElem > 0 Then
+			Dim i As Integer,vTransformar As New Vector(0),nom As notesName
+			For i = 1 To Lectores.cantElem
+				Set nom=New notesName(Lectores.getElement(i))
+				vTransformar.insertElement nom.Canonical,vTransformar.cantElem + 1
+			Next
+			
+			If doc.HasItem(DBSGD_CAMPO_FACTUACION_LECTORES) Then
+				doc.removeItem DBSGD_CAMPO_FACTUACION_LECTORES
+			End If
+			Dim itLectores As NotesItem
+			Set itLectores=New  NotesItem(doc,DBSGD_CAMPO_FACTUACION_LECTORES,vTransformar.values,READERS)	
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Lectores","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************					
+	
+	Public Property Get LectoresPermanentes As Vector
+		'Devuelve un vector con los lectores de esta actuación
+		On Error Goto HANDLER
+		
+		Dim vLectores As New Vector(0)
+		
+		If doc.hasItem(CAMPO_FACTUACION_LECTORES_PERMANENTES) Then
+			vLectores.values=doc.getItemValue(CAMPO_FACTUACION_LECTORES_PERMANENTES)	
+		End If
+		Set LectoresPermanentes=vLectores
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get LectoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set LectoresPermanentes As Vector
+		'Setea los lectores de esta actuación
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_LECTORES_PERMANENTES) Then
+			doc.removeItem CAMPO_FACTUACION_LECTORES_PERMANENTES
+		End If
+		Dim itLectores As NotesItem
+		Set itLectores=New  NotesItem(doc,CAMPO_FACTUACION_LECTORES_PERMANENTES,LectoresPermanentes.values,READERS)
+		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set LectoresPermanentes","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************					
+	
+	Public Property Get Tema As String
+		'Devuelve el nombre del tema al que corresponde el expediente al cual pertenece esta actuación
+		On Error Goto HANDLER		
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_TEMA) Then
+			Tema=doc.getItemValue(DBSGD_CAMPO_FACTUACION_TEMA)(0)
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Tema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Tema As String
+		'Setea el nombre del tema al que corresponde el expediente al cual pertenece esta actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_TEMA,Tema
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Tema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************					
+	
+	Public Property Get CantFirmas As Integer
+		'Devuelve la cantidad de firmas que tiene la actuación
+		On Error Goto HANDLER
+		
+		
+		If doc.hasItem(DBSGD_CAMPO_FACTUACION_CANT_FIRMAS) Then
+			CantFirmas=Cint(doc.getItemValue(DBSGD_CAMPO_FACTUACION_CANT_FIRMAS)(0))
+		Else
+			CantFirmas=0
+		End If
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get CantFirmas","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set CantFirmas As Integer
+		'Setea la cantidad de firmas que tiene la actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_CANT_FIRMAS,CantFirmas
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set CantFirmas","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************						
+	
+	Public Property Get SubEstado As String
+		'Devuelve el estado de esta actuación (subestado del expediente)
+		On Error Goto HANDLER
+		
+		If doc.hasItem(CAMPO_FACTUACION_SUBESTADO) Then
+			SubEstado=doc.getItemValue(CAMPO_FACTUACION_SUBESTADO)(0)
+		End If		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get SubEstado","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set SubEstado As String
+		'Setea el estado de esta actuación (subestado del expediente)
+		On Error Goto HANDLER		
+		
+		doc.replaceItemValue CAMPO_FACTUACION_SUBESTADO,SubEstado
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set SubEstado","")
+		Exit Property
+		
+	End Property
+	
+'*****************************************************************************************************************			
+	
+	Public Property Get ReservadoPor As String
+		'Devuelve el nombre del usuario que tiene reservada la actuación
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_RESERVADOPOR) Then
+			ReservadoPor=doc.getItemValue(CAMPO_FACTUACION_RESERVADOPOR)(0)
+		End If		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get ReservadoPor","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set ReservadoPor As String
+		'Setea el nombre del usuario que tiene reservada la actuación
+		On Error Goto HANDLER		
+		
+		
+		doc.replaceItemValue CAMPO_FACTUACION_RESERVADOPOR,ReservadoPor
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set ReservadoPor","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get FechaRecibido As Variant
+		'Devuelve la fecha de recepción del expediente en esta actuación
+		On Error Goto HANDLER
+		
+		If doc.HasItem(DBSGD_CAMPO_FACTUACION_FECHA_REC) Then
+			FechaRecibido=doc.getItemValue(DBSGD_CAMPO_FACTUACION_FECHA_REC)(0)
+		End If		
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get FechaRecibido","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set FechaRecibido As Variant
+		'Setea la fecha de recepción del expediente en esta actuación
+		On Error Goto HANDLER
+		
+		
+		doc.replaceItemValue DBSGD_CAMPO_FACTUACION_FECHA_REC,FechaRecibido
+		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set FechaRecibido","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get aBorrar As Integer
+		'Devuelve true si el nombre del formulario indica que la actuación debe borrarse
+		'Obs: Cuando una actuación se anula (a causa de las operaciones de "Anular pase"
+		'o "Devolver"), la misma deja de ser una actuación y por tanto se cambia su formulario
+		'por otro que indica que es una actuación que ha sido borrada
+		On Error Goto HANDLER
+		
+		If Instr(doc.GetItemValue(CAMPO_FORM)(0),DBSGD_CAMPO_FORM_BORRAR_PREFIJO) > 0 Then
+			aBorrar=True
+		Else
+			aBorrar=False
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get aBorrar","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set aBorrar As Integer
+		'Setea una actuación como borrada o como activa (modificando su form)
+		On Error Goto HANDLER
+		
+		If aBorrar Then
+			doc.ReplaceItemValue CAMPO_FORM,DBSGD_CAMPO_FORM_BORRAR_PREFIJO & DBSGD_FORM_ACTUACION
+		Else
+			doc.ReplaceItemValue CAMPO_FORM,DBSGD_FORM_ACTUACION
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set aBorrar","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get Devuelta As Integer
+		'Devuelve true si la actuación ha sido devuelta y false en caso contrario
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_DEVUELTA_FLAG) Then
+			Devuelta=(doc.getItemValue(CAMPO_FACTUACION_DEVUELTA_FLAG)(0) = CAMPO_FACTUACION_DEVUELTA_TRUE)
+		Else
+			Devuelta=False
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get Devuelta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set Devuelta As Integer
+		'Setea una actuación como devuelta o como no devuelta
+		On Error Goto HANDLER
+		
+		If Devuelta Then
+			doc.ReplaceItemValue CAMPO_FACTUACION_DEVUELTA_FLAG,CAMPO_FACTUACION_DEVUELTA_TRUE
+		Else
+			doc.ReplaceItemValue CAMPO_FACTUACION_DEVUELTA_FLAG,CAMPO_FACTUACION_DEVUELTA_FALSE
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set Devuelta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get MotivoDevolucion As String
+		'Devuelve el motivo de devolución de la actuación (si lo tiene)
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_MOTIVO_DEVOLUCION) Then
+			MotivoDevolucion=doc.getItemValue(CAMPO_FACTUACION_MOTIVO_DEVOLUCION)(0)
+		Else
+			MotivoDevolucion=""
+		End If		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Get MotivoDevolucion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set MotivoDevolucion As String
+		'Setea el motivo de devolución de la actuación		
+		On Error Goto HANDLER		
+		
+		doc.ReplaceItemValue CAMPO_FACTUACION_MOTIVO_DEVOLUCION,MotivoDevolucion		
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Propiedad Set MotivoDevolucion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get UnidadesDevolucion As Variant
+		'Devuelve la lista de unidades que devolvieron el expediente hacia esta actuación
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_UNIDADES_DEVOLVIERON) Then
+			UnidadesDevolucion=doc.GetItemValue(CAMPO_FACTUACION_UNIDADES_DEVOLVIERON)	
+		End If		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Property Get UnidadesDevolucion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************							
+	
+	Public Property Set UnidadesDevolucion As Variant
+		'Setea la lista de unidades que devolvieron el expediente hacia esta actuación
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FACTUACION_UNIDADES_DEVOLVIERON,UnidadesDevolucion
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Property Set UnidadesDevolucion","")
+		Exit Property
+		
+	End Property
+	
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Migrado As Boolean
+	'Retorna True si la actuación es migrada
+		
+		On Error Goto HANDLER
+		
+		If doc.HasItem(CAMPO_FACTUACION_MIGRADO) Then
+			Migrado = (doc.GetItemValue(CAMPO_FACTUACION_MIGRADO)(0) = ACTUACION_MIGRADA_OK _
+			Or doc.GetItemValue(CAMPO_FACTUACION_MIGRADO)(0) = ACTUACION_MIGRADA_NA)
+		Else
+			Migrado = False
+		End If
+		
+		Exit Property
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Property Get Migrado","")
+		Exit Property
+		
+	End Property
+	
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Document As NotesDocument
+		Set Document = doc
+	End Property
+	
+'******************************************************************************************************************		
+	
+	
+	
+	
+'******************************************************************************************************************	
+'******************************************************************************************************************		
+'******************************************************************************************************************	
+	
+'Privadas	
+	
+	Private Sub SetearDbGestionDoc(Byval anio As Integer)
+	'Si aún no está seteada, setea la base de gestión documental que corresponda según el anio que recibe
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion	
+		
+		If db Is Nothing Then
+			If Not Isnumeric(anio) Then Error ERROR_ANIO_NOTHING, MSG_ERROR_ANIO_NOTHING
+			
+			Set db = c.BaseDeDatosAnio(anio,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)
+			If Not db.isOpen Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBGESTIONDOC
+		End If
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Procedimiento SetearDbGestionDoc","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Private Function getActuacionPorNro(sNroExp As String,sNroActuacion As String) As notesDocument
+		On Error Goto HANDLER	
+		
+		'Devuelve el doc de actuación nro sNroActuacion en el expediente sNroExp
+		Dim vActuacionesPorNro As notesview,sKey As String,docActuacion As notesDocument
+		
+		Set vActuacionesPorNro=db.getView(DBSGD_VISTA_BUSQ_ACTUACION_NRO)
+		If vActuacionesPorNro Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND
+		End If
+		
+		sKey=sNroActuacion & sNroExp
+		Set docActuacion=vActuacionesPorNro.getdocumentByKey(sKey,True)
+		Set getActuacionPorNro=docActuacion
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Procedimiento getActuacionPorNro ","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************				
+	
+	Public Property Set Firmantes As Vector
+		'Son las personas a quien se va a notificar para que firmen el expediente
+		On Error Goto HANDLER
+		
+		doc.replaceItemValue CAMPO_FACTUACION_FIRMANTES, Firmantes.values
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Set Firmantes","")
+		Exit Property
+		
+	End Property
+	
+	'******************************************************************************************************************				
+	
+	Public Property Get Firmantes As Vector
+		'Son las personas a quien se va a notificar para que firmen el expediente
+		On Error Goto HANDLER
+		
+		Dim vFir As New Vector(0)
+		If doc.HasItem(CAMPO_FACTUACION_FIRMANTES) Then
+			vFir.values=doc.getItemValue(CAMPO_FACTUACION_FIRMANTES)
+		End If
+		Set Firmantes=vFir
+		
+		Exit Property		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Caratula - Propiedad Get Firmantes","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+'******************************************************************************************************************	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR
+	Public Sub new(Byval sNroExpediente As String,Byval sNroActuacion As String,Byval nCrear As Integer)
+		'Si nCrear = True crea un nuevo documento en la base de datos de gestion doc que corresponda al año del expediente
+		'Si nCrear = False busca el doc de actuacion nro sNroActuacion en el expediente sNroExpediente
+		On Error Goto HANDLER	
+		
+		Dim c As New Configuracion
+		
+		Set db = c.BaseDeDatosNroDoc(sNroExpediente,NUMERADOR_EXP,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)		
+		If Not db.isOpen Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBGESTIONDOC+" - Expediente "
+		
+		If nCrear Then
+			Set doc=New notesDocument(db)
+			doc.form=DBSGD_FORM_ACTUACION			
+			Me.NumeroExpediente=sNroExpediente
+			Me.NumeroActuacion=sNroActuacion
+		Else
+			Set doc=getActuacionPorNro(sNroExpediente,sNroActuacion)
+			If doc Is Nothing Then
+				'podria estar archivado
+				Set db = c.BaseDeDatosNroDoc(sNroExpediente,NUMERADOR_EXP,CLAVE_DBARCHIVO_TEMPLATE	,CLAVE_DBARCHIVO)
+				If Not db.isOpen Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBGESTIONDOC+" - Expediente "
+				Set doc=getActuacionPorNro(sNroExpediente,sNroActuacion)					
+			End If	
+			If doc Is Nothing Then
+				Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND			
+			End If			
+		End If		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Procedimiento New " & sNroExpediente,"")
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'METODOS	
+	
+	Public Sub save
+		'Salva el documento de actuación
+		On Error Goto HANDLER
+		
+		doc.save True,False
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Procedimiento Save ","")
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub AddFirma(Byval sFirma As String,Byval fFechaFirma As Variant,sUsuario As String) 
+		'Agrega la firma sFirma y la fecha fFechaFirma a la actuación
+		On Error Goto HANDLER
+		
+		Me.CantFirmas=Me.CantFirmas+1
+		
+		Dim vFirmas As Vector,vFechas As Vector,vUsuarios As Vector
+		
+		Set vFirmas=Me.Firmas
+		Set vFechas=Me.FechasFirmas
+		Set vUsuarios=Me.UsuariosFirmas
+		
+		vFirmas.insertElement sFirma,vFirmas.cantElem + 1
+		vFechas.insertElement fFechaFirma,vFechas.cantElem + 1
+		vUsuarios.insertElement sUsuario,vUsuarios.cantElem + 1
+		
+		Set Me.Firmas=vFirmas
+		Set Me.FechasFirmas=vFechas
+		Set Me.UsuariosFirmas=vUsuarios
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método AddFirma","")
+		Exit Sub 
+		
+	End Sub 
+	
+'******************************************************************************************************************						
+	
+	Public Sub delFirmas() 
+		'Elimina las firmas de la actuación
+		On Error Goto HANDLER
+		
+		If doc.HasItem(DBSGD_CAMPO_FACTUACION_FIRMAS) Then
+			doc.removeItem DBSGD_CAMPO_FACTUACION_FIRMAS
+		End If
+		If doc.HasItem(DBSGD_CAMPO_FACTUACION_FECHAS_FIRMAS) Then
+			doc.removeItem DBSGD_CAMPO_FACTUACION_FECHAS_FIRMAS
+		End If
+		If doc.HasItem(DBSGD_CAMPO_FACTUACION_USUARIOS_FIRMAS) Then
+			doc.removeItem DBSGD_CAMPO_FACTUACION_USUARIOS_FIRMAS
+		End If
+		
+		Me.CantFirmas=0
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método delFirmas","")
+		Exit Sub 
+		
+	End Sub 
+	
+'******************************************************************************************************************						
+	
+	Public Sub addUnidadDevolucion(Byval sUnidad As String)
+		'Agrega una unidad a la lista de unidades que devolvieron el expediente a esta actuación
+		On Error Goto HANDLER
+		
+		Dim itUnidadesDevolvieron As NotesItem
+		
+		If doc.HasItem(CAMPO_FACTUACION_UNIDADES_DEVOLVIERON) Then
+			Set itUnidadesDevolvieron=doc.GetFirstItem(CAMPO_FACTUACION_UNIDADES_DEVOLVIERON)
+			itUnidadesDevolvieron.AppendToTextList sUnidad
+		Else
+			Set itUnidadesDevolvieron=New notesItem(doc,CAMPO_FACTUACION_UNIDADES_DEVOLVIERON,sUnidad)
+		End If
+		
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método addUnidadDevolucion","")
+		Exit Sub 
+		
+	End Sub 
+	
+'******************************************************************************************************************						
+	
+	Public Sub checkFileSize()
+		
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion
+		
+		Dim limit As Long 'limit viene en Kb
+		limit = c.TamañoMaximoAnexo
+		
+		Dim attachs As Variant,attach As NotesEmbeddedObject
+		attachs=Evaluate("@AttachmentNames",doc)
+		
+		Dim Total As Long
+		Total=0	
+		If doc.HasEmbedded Then
+			If Not Isempty(attachs) Then
+				Forall f In attachs
+					If f <> "" Then
+						Set attach=doc.GetAttachment(f)
+						Total=Total + attach.FileSize
+						If Clng(Total / UNIDAD_FILES_SIZE) > limit Then
+							Error ERROR_FILE_SIZE_EXCEDED, MSG_ERROR_FILE_SIZE_EXCEDED
+						End If								
+					End If					
+				End Forall				
+			End If			
+		End If		
+		
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método checkFileSize","")
+		Exit Sub 	
+	End Sub
+	
+'******************************************************************************************************************						
+	
+	Public Sub checkFileNumber()
+		
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion
+		
+		Dim limit As Integer 'limit viene en enteros
+		limit = c.CantMaximoAnexo
+		
+		Dim attachs As Variant
+		attachs=Evaluate("@Attachments",doc)
+		
+		If limit < Cint(attachs(0)) Then
+			Error ERROR_FILE_NUMBER_EXCEDED, MSG_ERROR_FILE_NUMBER_EXCEDED
+		End If
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método checkFileNumber","")
+		Exit Sub 	
+	End Sub	
+'*********************************************************************************************************	
+	Public Sub checkFileExtensions()
+		'vPosibles trae doc,jpg,xsl,etc..
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion,vPosibles As New Vector(0)
+		Set vPosibles=c.TiposArchivosAnexos 
+		
+		Dim attachs As Variant,attach As NotesEmbeddedObject,esta As Integer
+		attachs=Evaluate("@AttachmentNames",doc)
+		
+		If vPosibles.cantElem > 0 Then			
+			If Not Isempty(attachs) Then
+				Forall f In attachs
+					If Trim(f) <> "" Then
+						esta=False
+						Forall e In vPosibles.values
+							If e <> "" Then
+								'Comparo la extensión del archivo f con la extnsión e
+								If Right(Ucase(f),Len(Ucase("." & e))) = Ucase("." & e) Then 
+									esta=True
+								End If	
+							End If								
+						End Forall	
+						If Not esta Then
+							Error ERROR_FILE_TYPE_NOT_ALLOWED,MSG_ERROR_FILE_TYPE_NOT_ALLOWED & " Archivo: " & f
+						End If								
+					End If					
+				End Forall
+			End If			
+		End If
+		
+		
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método checkFileExtensions","")
+		Exit Sub 		
+	End Sub
+	
+'*******************************************************************************************************	
+	
+	Public Sub setDocAttachsActuacion(docAttachs As NotesDocument)
+		On Error Goto HANDLER
+		
+		If Not docAttachs.HasEmbedded Then
+			Exit Sub
+		End If
+		
+		Dim rtitem As NotesRichTextItem,NewO As NotesEmbeddedObject
+		Set rtitem=doc.GetFirstItem(DBSGD_CAMPO_FACTUACION_TEXTO)
+		
+		Dim aAttachs As Variant,i As Integer,attach As NotesEmbeddedObject
+		
+		aAttachs=Evaluate("@AttachmentNames",docAttachs)
+		
+		
+		For i=Lbound(aAttachs) To Ubound(aAttachs)
+			If aAttachs(i) <> "" Then
+				Set attach=docAttachs.GetAttachment(aAttachs(i))
+				If ( attach.Type = EMBED_ATTACHMENT ) Then
+					attach.Extractfile attach.Name
+					Set NewO =rtitem.EmbedObject ( EMBED_ATTACHMENT, "", _ 
+					attach.Name, "" )	
+				End If		
+			End If	
+		Next
+		
+		
+		Exit Sub 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método setDocAttachsActuacion","")
+		Exit Sub 		
+	End Sub
+	
+'*******************************************************************************************************	
+	
+	Public Function setItemTextoActuacion(textoOrig As NotesRichTextItem)
+		'Setea el texto de actuación copiando el item del doc que recibe
+		On Error Goto HANDLER
+		
+		Call doc.CopyItem(textoOrig,DBSGD_CAMPO_FACTUACION_TEXTO)
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método setItemTextoActuacion","")
+		Exit Function
+		
+	End Function
+	
+	
+'*******************************************************************************************************	
+	
+	Public Function getItemTextoActuacion() As NotesRichTextItem
+		'Devuelve el item del texto de actuación
+		On Error Goto HANDLER
+		
+		Set getitemTextoActuacion = doc.GetFirstItem(DBSGD_CAMPO_FACTUACION_TEXTO)
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método getItemTextoActuacion","")
+		Exit Function
+		
+	End Function
+	
+'*******************************************************************************************************	
+	
+	Public Sub copyTextoActuacion(docaux As NotesDocument, nombreitem As String)
+		
+		On Error Goto HANDLER
+		
+		Dim rtitem As Variant
+		
+		Set rtitem = doc.GetFirstItem(DBSGD_CAMPO_FACTUACION_TEXTO)
+		Call rtitem.CopyItemToDocument( docaux, nombreitem )
+		docaux.Save True,False
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Actuacion - Método copyTextoActuacion","")
+		Exit Sub
+		
+	End Sub
+	
+	
+End Class

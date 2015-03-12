@@ -1,0 +1,111 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Const wAPIModule = "NNOTES"  ' Windows
+Const NSF_INFO_SIZE = 128
+Const INFOPARSE_DESIGN = 3
+Const NOTE_ID_ICON = &HFFFF0010
+
+
+
+
+
+
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Sub ReplaceDesign(templateserver$, templatename$, dbserver$, dbfilepath$)
+Declare Function GetCAPIErrorMsg(iStatus As Integer) As String
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Declare Private Function DesignRefresh Lib wAPIModule Alias "DesignRefresh" _
+(  Byval S As String, Byval hDB As Long, Byval F As Long, Byval zA As Long, Byval zM As Long) As Integer
+Declare Private Function OSPathNetConstruct Lib wAPIModule Alias "OSPathNetConstruct" _
+(  Byval zP As Long, Byval S As String, Byval F As String, Byval N As String) As Integer
+Declare Private Function NSFDbInfoGet Lib wAPIModule Alias "NSFDbInfoGet" _
+(  Byval hDB As Long, Byval D As String) As Integer
+Declare Private Sub NSFDbInfoModify Lib wAPIModule Alias "NSFDbInfoModify" _
+(  Byval S As String, Byval W As Integer, Byval D As String)
+Declare Private Function NSFDbInfoSet Lib wAPIModule Alias "NSFDbInfoSet" _
+(  Byval hDB As Long, Byval D As String) As Integer
+Declare Private Function NSFDbOpen Lib wAPIModule Alias "NSFDbOpen" _
+(  Byval P As String, hDB As Long) As Integer
+Declare Private Function NSFDbClose Lib wAPIModule Alias "NSFDbClose" _
+(  Byval hDB As Long) As Integer
+Declare Private Function NSFItemSetText Lib wAPIModule Alias "NSFItemSetText" _
+(  Byval hNT As Long, Byval N As String, Byval D As String, Byval nD As Integer) As Integer
+Declare Private Function NSFNoteOpen Lib wAPIModule Alias "NSFNoteOpen" _
+(  Byval hDB As Long, Byval NoteID As Long, Byval F As Integer, hNT As Long) As Integer
+Declare Private Function NSFNoteClose Lib wAPIModule Alias "NSFNoteClose" _
+(  Byval hNT As Long) As Integer
+Declare Private Function NSFNoteUpdate Lib wAPIModule Alias "NSFNoteUpdate" _
+(  Byval hNT As Long, Byval F As Integer) As Integer
+
+Declare Private Function OSLoadString Lib "nnotes" Alias "OSLoadString" _
+( Byval hModule As Long, Byval StringCode As Integer, Byval retBuffer As Lmbcs String, Byval BufferLength As Integer) As Integer
+
+'++LotusScript Development Environment:2:2:ReplaceDesign:1:8
+Public Sub ReplaceDesign(templateserver$, templatename$, dbserver$, dbfilepath$)
+	dp$ = String(1024, " ")
+	OSPathNetConstruct 0, dbserver$, dbfilepath$, dp$
+	
+	Dim hDB As Long
+	Dim r As Integer
+	r = NSFDbOpen( dp$, hDB)
+	If hDB = 0 Then
+		Msgbox GetCAPIErrorMsg(r)
+		Exit Sub
+	End If
+	
+	d$ = Space(NSF_INFO_SIZE)
+	NSFDbInfoGet hDB, d$
+	NSFDbInfoModify d$, INFOPARSE_DESIGN, templatename$
+	NSFDbInfoSet hDB, d$
+	
+	Dim hNT As Long
+	NSFNoteOpen hDB, NOTE_ID_ICON, 0, hNT
+	NSFItemSetText hNT, "$TITLE", d$, Instr(d$, Chr$(0))
+	NSFNoteUpdate hNT, 0
+	NSFNoteClose hNT
+	
+	DesignRefresh templateserver$, hDB, 1, 0, 0
+	
+	NSFDbClose hDB
+End Sub
+
+'++LotusScript Development Environment:2:1:GetCAPIErrorMsg:1:8
+Function GetCAPIErrorMsg(iStatus As Integer) As String
+%REM
+CAPIErrorMsg - This function takes a status code returned from a C API call, retrieves the
+corresponding error message from Notes' internal string tables, and returns the string to the caller.
+
+This function was originally written by Paul Ray of the view @ www.eview.com.
+%END REM
+	
+	Dim iLen As Integer
+	Dim lenBuffer As Integer
+	Dim sBuffer As String
+	
+  ' --- initialize a buffer of adequate length to accept the error string
+	lenBuffer = 256
+	sBuffer = String$(lenBuffer, 0)
+	
+  ' --- get the API error message from the internal Notes/Domino string tables
+	iLen = OSLoadString(NULLHANDLE, iStatus, sBuffer, lenBuffer - 1)
+	
+	If iLen > 0 Then
+    ' --- remove any trailing characters from the string and return it to the caller
+		GetCAPIErrorMsg = Left$(sBuffer, Instr(1, sBuffer, Chr$(0)) - 1)
+	Else
+    ' --- couldn't locate the error message in the string tables
+		GetCAPIErrorMsg = ""
+	End If
+End Function

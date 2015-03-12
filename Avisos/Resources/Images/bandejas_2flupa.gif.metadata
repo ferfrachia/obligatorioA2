@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257DF800416654" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="32a" sequence="12" unid="86A64F6D5C0225F8832575D60055C9CD">
+<created><datetime>20090615T123702,21-03</datetime></created>
+<modified><datetime>20150309T094341,86-03</datetime></modified>
+<revised><datetime>20150309T094341,85-03</datetime></revised>
+<lastaccessed><datetime>20150309T094341,86-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T095423,05-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090615T123701,86-03</datetime><datetime>20090615T123718,65-03</datetime><datetime>20090615T123823,91-03</datetime><datetime>20090924T100440,10-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime>20071008T172635,15-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>lupa.gif</text></item>
+<item name="$EditFilePath" sign="true"><text>C:\Users\compaq\AppData\Local\Temp\notesE1EF34\~lupa.gif</text></item>
+<item name="$Flags"><text>34CiQ$</text></item>
+<item name="$TITLE" sign="true"><text>bandejas/lupa.gif</text></item>
+<item name="$DesignerVersion"><text>7</text></item></note>

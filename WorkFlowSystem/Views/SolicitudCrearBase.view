@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF8003FF550'>
+<noteinfo noteid='582' unid='8C018B1307F59B0283257A44006CA319' sequence='13'>
+<created><datetime>20120723T164636,41-03</datetime></created>
+<modified><datetime>20150309T094523,41-03</datetime></modified>
+<revised><datetime>20150309T094523,40-03</datetime></revised>
+<lastaccessed><datetime>20150309T094523,41-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T093841,38-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true'>
+<rawitemdata type='4'>
+AQBH3oASqFvohsP0XwCMdyWD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>SolicitudCrearBase</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+7gAFABoAFQACAAkABAAkQ29uZmxpY3QkUkVGAAQABAAAAKAABQAEAEZvcm0BABIAU29saWNpdHVk
+Q3JlYXJCYXNlCgIFABMARXN0YWRvUHJvY2VzYW1pZW50bwABAAUARVJST1IACwIcAgUAEwBFc3Rh
+ZG9Qcm9jZXNhbWllbnRvAAEAAgBPSwsCHAIFABoARXN0YWRvUHJvY2VzYW1pZW50b0ludGVybm8B
+AAkAUFJPQ0VTQURBAAsCHAIEAAMABwAuACcACUwxUzNTNFM1UzZTN1M4UzlTMTBTMTFTMTJTMTNT
+MTRTMTVTMTZTAA==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAAACAAEACgAKAIYAAQAACgAAAAAAAAAAAAICAAAAJDAjCgAAAAgAkgADAAEF
+AQAEAH9BMP8mAAEAAAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABCAAAAAAABAP///wAFAP///wABAAAA
+AAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQAAAAAAAQAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item></note>
+

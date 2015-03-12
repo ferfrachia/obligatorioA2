@@ -1,0 +1,296 @@
+/*=============================================
+ VARS
+==============================================*/
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font: 400 12px/1.625 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #444;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Clearfix */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+/* Clear */
+.cl {
+  clear: left;
+}
+
+.cr {
+  clear: right;
+}
+
+.cb {
+  clear: both;
+}
+
+/* Wrapper */
+.wrapper {
+  max-width: 650px;
+  width: 95%;
+  margin: 0 auto;
+  padding-top: 30px;
+}
+
+/* Form */
+#form-auf {
+  text-shadow: 0 1px 0 #FFF;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+#form-auf input[type="text"],
+#form-auf input[type="email"],
+#form-auf input[type="tel"],
+#form-auf input[type="url"],
+#form-auf input[type="number"],
+#form-auf textarea,
+#form-auf select,
+#form-auf button[type="submit"] {
+  font: 400 12px/12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    vertical-align: top;
+
+}
+#form-auf input[type="text"],
+#form-auf input[type="email"],
+#form-auf input[type="tel"],
+#form-auf input[type="url"],
+#form-auf select {
+  width: 100%;
+  box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  -webkit-box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  -moz-box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  border: 1px solid #CCC;
+  background: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+  border-radius: 5px;
+
+}
+.textareaa{
+	  resize: none;
+	width: 100%;
+  box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  -webkit-box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  -moz-box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  border: 1px solid #CCC;
+  background: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+  border-radius: 5px;
+  height: 200px;
+  text-align: justify;
+  white-space: normal;
+
+  
+	}
+#form-auf input[type="textarea"]{
+ width: 100%;
+  box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  -webkit-box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  -moz-box-shadow: inset 0 1px 2px #DDD, 0 1px 0 #FFF;
+  border: 1px solid #CCC;
+  background: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+  border-radius: 5px;
+  height: 200px;
+  text-align: justify;
+  white-space: normal;
+
+  
+	}
+#form-auf input[type="text"]:hover,
+#form-auf input[type="email"]:hover,
+#form-auf input[type="tel"]:hover,
+#form-auf input[type="url"]:hover,
+#form-auf input[type="number"]:hover,
+#form-auf input[type="textarea"]:hover,
+#form-auf select:hover {
+  -webkit-transition: border-color 0.3s ease-in-out;
+  -moz-transition: border-color 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
+  border: 1px solid #5795c9;
+}
+#form-auf input:focus,
+#form-auf textarea:focus,
+#form-auf select:focus {
+  outline: 0;
+  border: 1px solid #478ec6;
+}
+.textarea2 {
+  height: 100px;
+  max-width: 100%;
+}
+
+/* Secciones */
+.section {
+  padding: 25px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  background: #F9F9F9;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+.section h3 {
+  font-size: 22px;
+  line-height: 1;
+  display: "";
+}
+.section h4 {
+  margin: 5px 0 15px;
+  display: block;
+  font-size: 13px;
+  font-weight: normal;
+}
+.section label span {
+  cursor: pointer;
+  color: #629ed0;
+  display: block;
+  margin: 5px 0;
+  font-weight: 900;
+}
+.section label.info-require span {
+  font-weight: normal;
+  font-style: italic;
+  text-transform: lowercase;
+}
+
+/* Half-field */
+.section .actions {
+  display: block;
+  text-shadow: none;
+  width: 70%;
+  margin: 0 auto;
+}
+.section .half-field,
+.section .player-pic {
+  display: inline-block;
+  width: 49.33%;
+  vertical-align: top;
+}
+@media only screen and (min-width: 320px) and (max-width: 600px) {
+  .section .half-field,
+  .section .player-pic {
+    width: 100%;
+  }
+}
+.section .half-field {
+  padding-right: 5px;
+}
+.section .player-pic {
+  padding-left: 5px;
+  text-align: center;
+}
+.section .player-pic img {
+  border: 1px solid #ddd;
+  padding: 3px;
+}
+.section .club-logo {
+  margin-top: 10px;
+}
+.section .club-logo img {
+  border: none;
+  padding: 0;
+}
+
+/* Btn */
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  border: none;
+  background: #ddd;
+  color: #FFF;
+  margin: 5px 0 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.btn-sm {
+  padding: 4px;
+  font-size: 10px;
+}
+
+.btn-default {
+  background: #478ec6;
+}
+
+.btn-exito {
+  background-color: #54e282;
+}
+
+.btn-cambio {
+  background-color: #478ec6;
+}
+
+.btn-text {
+  color: #478ec6;
+}
+
+/* Placeholders */
+::-webkit-input-placeholder {
+  color: #888;
+}
+
+:-moz-placeholder {
+  color: #888;
+}
+
+::-moz-placeholder {
+  color: #888;
+}
+
+:-ms-input-placeholder {
+  color: #888;
+}
+
+/* Media Queries */
+.brand {
+  position: absolute;
+  left: 8.85%;
+  top: 50px;
+}
+@media only screen and (min-width: 320px) and (max-width: 960px) {
+  .brand {
+    position: relative;
+    text-align: center;
+    left: inherit;
+    top: inherit;
+  }
+}
+@media only screen and (min-width: 961px) and (max-width: 1111px) {
+  .brand {
+    position: relative;
+    text-align: center;
+    left: inherit;
+    top: inherit;
+  }
+}
+

@@ -1,0 +1,100 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "ClaseConfDocumentos"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class DefDocumentos
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'NOMBRE DOCUMENTO DE PERFIL
+Private Const NOMBRE_DOC_PERFIL				= "ConfDocumentos"
+Private Const NOMBRE_DOC_PERFIL_IGDOC			= "IGDocConfig"
+
+Private Const VISTA_DEF_DOC_X_NOM                = "vDefDocsActxNom"
+Private Const CAMPO_LISTA_CAMPOS				= "sClave"
+Private Const CAMPO_LISTA_TIPOS_CAMPOS			= "sTipoCampo"
+Private Const KEY_INTEROP_ADMIN						= "ADMINCONF"
+Private Const CAMPO_NOMBRE					="sNombre"
+
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <DEFDOCUMENTOS>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class DefDocumentos
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private c As ConfDocumentos
+	Private  db As NotesDatabase
+	Private doc As NotesDocument
+	
+	
+'******************************************************************************************************************
+' CONSTRUCTOR	
+'******************************************************************************************************************
+	Public Sub new(nom As String)
+		On Error Goto HANDLER
+		
+		Dim vis As NotesView
+		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		Set c = New ConfDocumentos()
+		Set db =c.ReferenciarBaseDeDatos(KEY_INTEROP_ADMIN)
+		Set vis=db.GetView(VISTA_DEF_DOC_X_NOM)
+		
+		If vis Is Nothing Then Messagebox "no es nada la vista"
+		'Se carga el documento de profile
+		Set doc = vis.GetDocumentByKey(nom,True)
+		If doc Is Nothing Then Messagebox "no es nada"
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase DefDocumentos - Método new","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************
+	Public Property Get Nombre() As String
+		Nombre = doc.GetItemValue(CAMPO_NOMBRE)(0)	
+	End Property
+	
+'******************************************************************************************************************
+	Public Function ListaCampos As Vector
+		Dim v As vector
+		Dim aux As Variant
+		Set v = New vector(0)
+		aux=Split(doc.GetItemValue(CAMPO_LISTA_CAMPOS)(0),"; ")
+		v.values=aux
+		Set ListaCampos= v
+	End Function
+	
+'******************************************************************************************************************
+	Public Function ListaTiposCampos As Vector
+		
+		Dim v As Vector
+		Dim aux As Variant
+		If doc Is Nothing Then Messagebox "no es nada"
+		Set v = New Vector(0)
+		'Messagebox doc.GetItemValue(CAMPO_LISTA_TIPOS_CAMPOS)(0)
+		
+		aux=Split(doc.GetItemValue(CAMPO_LISTA_TIPOS_CAMPOS)(0),"; ")
+		v.values=aux
+		Set ListaTiposCampos= v
+	End Function
+	
+'******************************************************************************************************************
+End Class

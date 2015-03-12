@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058B8FB'>
+<noteinfo noteid='232' unid='590877A2C5DE4FA443256DCF003DF034' sequence='173'>
+<created><datetime>20031030T141631,88+03</datetime></created>
+<modified><datetime>20150311T130906,93-03</datetime></modified>
+<revised><datetime>20150309T094446,64-03</datetime></revised>
+<lastaccessed><datetime>20150311T130906,93-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130906,93-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name>CN=AdministradorEE/O=IMF</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Daniel Gomez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Daniel Gomez/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Administrador/O=IMF</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20080811T155054,55-03</datetime><datetime>20080814T072841,56-03</datetime><datetime
+>20080814T072948,63-03</datetime><datetime>20080814T073216,17-03</datetime><datetime
+>20080814T074228,97-03</datetime><datetime>20080814T074747,96-03</datetime><datetime
+>20080814T082402,87-03</datetime><datetime>20080814T082541,03-03</datetime><datetime
+>20080814T110358,23-03</datetime><datetime>20080820T120633,87-03</datetime><datetime
+>20080820T121358,92-03</datetime><datetime>20080820T132323,90-03</datetime><datetime
+>20080820T132833,69-03</datetime><datetime>20080820T133726,45-03</datetime><datetime
+>20080820T134555,01-03</datetime><datetime>20080820T135255,92-03</datetime><datetime
+>20080821T091953,77-03</datetime><datetime>20080821T101410,05-03</datetime><datetime
+>20080821T134045,79-03</datetime><datetime>20080821T141045,03-03</datetime><datetime
+>20080821T142111,35-03</datetime><datetime>20080822T092738,29-03</datetime><datetime
+>20080822T093023,30-03</datetime><datetime>20080822T094600,24-03</datetime><datetime
+>20080822T095156,31-03</datetime><datetime>20080822T100704,45-03</datetime><datetime
+>20080822T100830,40-03</datetime><datetime>20080822T140621,41-03</datetime><datetime
+>20080822T154745,31-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$DBAction1' sign='true'><formula>@Command([FileCloseWindow])</formula></item>
+<item name='$TITLE' sign='true'><text>Database Script</text></item>
+<item name='$Flags'><text>t34Q</text></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item>
+<item name='$POID'><datetime>20150309T094446,64-03</datetime></item></note>
+

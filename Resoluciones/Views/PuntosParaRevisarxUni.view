@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='2f3e' unid='34E42DBEAE0364F683257DA4004022F1' sequence='4'>
+<created><datetime dst='true'>20141204T094032,49-02</datetime></created>
+<modified><datetime>20150311T132827,34-03</datetime></modified>
+<revised><datetime>20150309T094513,72-03</datetime></revised>
+<lastaccessed><datetime>20150311T132827,34-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132827,34-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>PuntosParaRevisarxUni</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+cAAFACIAHgADAAcACQAEAHNVbmlkYWQkQ29uZmxpY3QkUkVGBAAEAAAAOgAFAAQARm9ybQEABgBG
+UHVudG8KAgUACABjY0VzdGFkbwEADABQYXJhIFJldmlzYXIKAhwCAwAHAA4ACAAJTDFTNFM1Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+FAABAABEAGYAAAAHAHNVbmlkYWQ=
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAQAHAAYAAAAAAFAAAQAACgAAAAAAAAAAAAICAAAAc1VuaWRhZHVuaWRhZCYA
+AQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEAAQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAA
+AQD///8AAQD///8AAAABAAAAAAABAAAAAAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item></note>
+

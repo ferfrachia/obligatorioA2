@@ -1,0 +1,76 @@
+#tblCabezal{
+	/*padding-top: 20px;*/
+}
+
+
+.barraMenu {
+	margin-top: 0px;
+	width: 100%;
+	background: #B5B5FF;
+	position: fixed;
+	z-index: 1;
+	font-family: Tahoma, Arial, Verdana, Helvetica, sans-serif;
+	font-size: 10pt;
+	font-style: normal;
+	font-weight: normal;
+
+	
+}
+
+.nav {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	/*position: fixed;*/
+	
+}
+
+.nav li {
+	float: left;
+	width: auto;
+	position: relative;
+	padding: 0px 3px;
+}
+
+.nav li a {
+	background: #B5B5FF;
+	color: #444444;
+	display: block;
+	padding: 0px 6px 0px;/*0px 8px;*/
+	text-decoration: none;
+	border-top: 1px solid #BCBCFF; /*#069;*/
+	border-bottom: 1px solid #BCBCFF;
+	width: auto;
+}
+
+.nav li a:hover {
+	color: #069;
+	background-color: #8181ff;
+}
+
+/*=== submenu ===*/
+.nav ul {
+	display: none;
+	position: absolute;
+	margin-left: 0px;
+	list-style: none;
+	padding: 0px;
+}
+
+.nav ul li {
+	width: 200px;
+	float: left;
+}
+
+.nav ul a {
+	display: block;	
+	height: 10px;
+	padding: 5px 5px 8px;
+	color: #444444;
+	text-decoration: none;
+	border-bottom: 1px solid #222;
+}
+
+.nav ul li a:hover {
+	color: #069;
+}

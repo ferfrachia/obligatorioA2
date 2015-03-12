@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF800416654'>
+<noteinfo noteid='176' unid='AE153336B4DC5F25832575CF005FB641' sequence='65'>
+<created><datetime>20090608T142525,77-03</datetime></created>
+<modified><datetime>20150309T094340,10-03</datetime></modified>
+<revised><datetime>20150309T094340,09-03</datetime></revised>
+<lastaccessed><datetime>20150309T094340,10-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T095420,95-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090626T143026,06-03</datetime><datetime>20090629T095510,13-03</datetime><datetime
+>20090629T123251,14-03</datetime><datetime>20090629T123743,40-03</datetime><datetime
+>20090629T124545,61-03</datetime><datetime>20090629T131154,15-03</datetime><datetime
+>20090701T110352,87-03</datetime><datetime>20090703T102236,67-03</datetime><datetime
+>20090703T113106,21-03</datetime><datetime>20090706T100516,51-03</datetime><datetime
+>20090709T152834,68-03</datetime><datetime>20090713T110746,31-03</datetime><datetime
+>20090714T131735,20-03</datetime><datetime>20090715T101244,22-03</datetime><datetime
+>20090722T125004,85-03</datetime><datetime>20090811T111118,79-03</datetime><datetime
+>20090902T152342,83-03</datetime><datetime>20090902T152848,17-03</datetime><datetime
+>20090924T100449,83-03</datetime><datetime>20090924T101509,71-03</datetime><datetime
+>20090924T110115,80-03</datetime><datetime>20090924T112550,36-03</datetime><datetime
+ dst='true'>20100202T215334,61-02</datetime><datetime dst='true'>20100208T192044,56-02</datetime><datetime
+ dst='true'>20100209T151321,10-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>$$ViewTemplate for SolicitudXML</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$StyleSheetList' sign='true'>
+<rawitemdata type='1'>
+9v80AAAAAAADACEAEgAAAAAAAAAAAAAAAAAAAAAAAAAAAEVzdGlsb0JhbmRlamFzLmNzcw==
+</rawitemdata></item>
+<item name='$Flags'><text/></item>
+<item name='$MimeType'><text>text/xml</text></item>
+<item name='$WebFlags'><text>H</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>$$ViewTemplate for SolicitudXML</text></item>
+<item name='$$ViewBody' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>$$ViewBody</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAhf80AAEAAAg8P3htbCB2ZXJz
+aW9uPSIxLjAiIGVuY29kaW5nPSJpc28tODg1OS0xIiA/PoECgwQBAIX/LwABAAAIPD94bWwtc3R5
+bGVzaGVldCB0eXBlPSJ0ZXh0L3hzbCIgaHJlZj0iAN0GAACt/6n/ZgABABgABABaAFoAAABYAAEA
+TgBodHRwOi8vZGVzYXJyb2xsbzIuaXNhbHRkYS5jb20udXkvRGVzYXJyb2xsby9Bdmlzb3MubnNm
+L1NvbGljaXR1ZC54c2w/UmVhZEZvcm0DAIX/CAABAAAKqgLeBgAArgCF/wwAAQAACCIgPz6BAoME
+AQCF/xUAAQAACDxTb2xpY2l0dWRlcz4AgQKC/1oAAgAAAAAAAAAAAKAFAACgBQgAjgheCy4O/hDO
+E54Wbhk+HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQA
+AAC7/zwAAgAYANLVpGMEHS4AAAAgAAUACQBUb3RhbEhpdHMAAAAAAAAAAAAAAAoCAwAHAAwABQAJ
+MFMwRQCDBAIAhf8IAAEAAAjdBgAAiv/+/1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIr/LgCKAAAFADAC
+AAAAAAAAAgEAAAgAAAAAAAAAAAoAAAAAACQkVmlld0JvZHliDgEAhAAAAAAAAAAAAN4GAACK/4X/
+CAABAAAIgQKC/1oAAwAAAAAAAAAAAKAFAACgBQgAjgheCy4O/hDOE54Wbhk+HAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAAC7/zgAAwAYANLVpGMEHSoA
+AAAcAAUABQBDb3VudAAAAAAAAAAAAAAACgIDAAcADAAFAAkwUzBFAIMEAwCF/xYAAQAACDwvU29s
+aWNpdHVkZXM+
+</rawitemdata></item></note>
+

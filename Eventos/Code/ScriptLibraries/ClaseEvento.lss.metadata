@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A40AC" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="aba" sequence="73" unid="AAB01F5E73141DCE83257CD20063CEA7">
+<created><datetime>20140508T151009,67-03</datetime></created>
+<modified><datetime>20150311T132600,41-03</datetime></modified>
+<revised><datetime>20150309T094352,93-03</datetime></revised>
+<lastaccessed><datetime>20150311T132600,41-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132600,41-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>ClaseEvento</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+</note>

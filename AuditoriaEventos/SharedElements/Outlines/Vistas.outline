@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A499A'>
+<noteinfo noteid='156' unid='F33935C7F72DD0B803256D6D00500C21' sequence='25'>
+<created><datetime>20030724T113419,85-03</datetime></created>
+<modified><datetime>20150311T132611,22-03</datetime></modified>
+<revised><datetime>20150309T094334,68-03</datetime></revised>
+<lastaccessed><datetime>20150311T132611,22-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132611,22-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Diego Celery/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Melissa Vidal/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030724T114544,43-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Flags'><text>m34</text></item>
+<item name='$TITLE'><text>Vistas</text></item>
+<item name='$SiteMapList' sign='true'>
+<rawitemdata type='1a'>
+AQIBAAEABABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAEAEgAVwABCAAAAQAAAAAAAAAWAAAAOAAAAAAAAAAJAAAAAAAAAAAA
+AwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFUmVnaXN0cm9zIHBvciBGZWNoYQAB
+APb/NgAAAAAAAwACABQAAAAAAAAAAAAAAAAAAAAAAAAAAABWT3BlcmFjaW9uZXNQb3JGZWNoYQAF
+VmlzdGFzAEgAWwABCAAABAAAAAAAAAAYAAAAOgAAAAAAAAAJAAAAAAAAAAAAAwACAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFUmVnaXN0cm9zIHBvciBVc3VhcmlvAAEA9v84AAAAAAAD
+AAIAFgAAAAAAAAAAAAAAAAAAAAAAAAAAAFZPcGVyYWNpb25lc1BvclVzdWFyaW8ABVZpc3RhcwBI
+AF8AAQgAAAUAAAAAAAAAGgAAADwAAAAAAAAACQAAAAAAAAAAAAMAAgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAABVJlZ2lzdHJvcyBwb3IgT3BlcmFjaaJuAAEA9v86AAAAAAADAAIAGAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAFZPcGVyYWNpb25lc1Bvck9wZXJhY2lvbgAFVmlzdGFzAEgAXwAB
+CAAABgAAAAAAAAAaAAAAPAAAAAAAAAAJAAAAAAAAAAAAAwACAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAFUmVnaXN0cm9zIHBvciBEb2N1bWVudG8AAQD2/zoAAAAAAAMAAgAYAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAVk9wZXJhY2lvbmVzUG9yRG9jdW1lbnRvAAVWaXN0YXMA
+</rawitemdata></item>
+<item name='$DesignerVersion' sign='true'><text>5</text></item>
+<item name='$POID'><datetime>20070810T160810,14-03</datetime></item></note>
+

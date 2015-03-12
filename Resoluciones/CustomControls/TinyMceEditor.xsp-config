@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config>
+  <faces-config-extension>
+    <namespace-uri>http://www.ibm.com/xsp/custom</namespace-uri>
+    <default-prefix>xc</default-prefix>
+  </faces-config-extension>
+  <composite-component>
+    <component-type>TinyMceEditor</component-type>
+    <composite-name>TinyMceEditor</composite-name>
+    <composite-file>/TinyMceEditor.xsp</composite-file>
+    <composite-extension>
+      <designer-extension>
+        <in-palette>true</in-palette>
+        <render-markup>&lt;?xml version="1.0" encoding="UTF-8"?&gt; &#xd;
+&lt;xp:view xmlns:xp="http://www.ibm.com/xsp/core"&gt;  &#xd;
+&lt;% if(this.Type=='Simple' ){ %&gt;&#xd;
+	&lt;xp:image url="/Simple.GIF" id="image1"&gt;&lt;/xp:image&gt; &#xd;
+&lt;% } else { %&gt;&#xd;
+&lt;xp:image url="/Advanced.GIF" id="image2"&gt;&lt;/xp:image&gt; &#xd;
+&lt;%}%&gt;&#xd;
+&#xd;
+&lt;/xp:view&gt;</render-markup>
+      </designer-extension>
+    </composite-extension>
+    <property>
+      <property-name>RichTextFieldName</property-name>
+      <property-class>string</property-class>
+      <property-extension>
+        <collection-property>false</collection-property>
+        <required>true</required>
+        <designer-extension>
+          <validation-formula>"You need to write a RichText FieldName"</validation-formula>
+        </designer-extension>
+      </property-extension>
+    </property>
+    <property>
+      <property-name>Type</property-name>
+      <property-class>string</property-class>
+      <property-extension>
+        <designer-extension>
+          <editor>com.ibm.workplace.designer.property.editors.comboParameterEditor</editor>
+          <editor-parameter>Simple&#xd;
+Advanced&#xd;
+Custom</editor-parameter>
+          <validation-formula>"You need to select a editor type"</validation-formula>
+          <default-value>Simple</default-value>
+        </designer-extension>
+        <required>true</required>
+      </property-extension>
+    </property>
+    <property>
+      <property-name>CustomString</property-name>
+      <property-class>string</property-class>
+      <property-extension>
+        <designer-extension>
+          <editor>com.ibm.std.String</editor>
+          <visible>Type="Custom"</visible>
+        </designer-extension>
+      </property-extension>
+    </property>
+    <property>
+      <property-name>TinyMcePath</property-name>
+      <property-class>string</property-class>
+    </property>
+    <property>
+      <property-name>RequiredField</property-name>
+      <property-class>boolean</property-class>
+      <property-extension>
+        <designer-extension>
+          <editor>com.ibm.std.Boolean</editor>
+          <editor-parameter/>
+          <default-value>false</default-value>
+        </designer-extension>
+      </property-extension>
+      <description/>
+    </property>
+    <property>
+      <property-name>DisableClientValidation</property-name>
+      <property-class>boolean</property-class>
+      <property-extension>
+        <designer-extension>
+          <editor>com.ibm.std.Boolean</editor>
+          <default-value>true</default-value>
+        </designer-extension>
+      </property-extension>
+      <description/>
+    </property>
+    <property>
+      <property-name>RequiredMessage</property-name>
+      <property-class>string</property-class>
+      <property-extension>
+        <designer-extension>
+          <editor>com.ibm.std.String</editor>
+        </designer-extension>
+      </property-extension>
+      <description/>
+    </property>
+    <property>
+      <property-name>ancho</property-name>
+      <property-class>string</property-class>
+    </property>
+  </composite-component>
+</faces-config>

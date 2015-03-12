@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="13da" sequence="34" unid="3460C1B224C9542783257C6300578BB3">
+<created><datetime dst="true">20140117T135613,95-02</datetime></created>
+<modified><datetime>20150311T130928,43-03</datetime></modified>
+<revised><datetime>20150309T094506,76-03</datetime></revised>
+<lastaccessed><datetime>20150311T130928,43-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130928,43-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Fernando Albano/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>js/BandejasExpedientes.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+
+<item name="$POID"><datetime>20150309T094506,76-03</datetime></item></note>

@@ -1,0 +1,243 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+ 
+Option Declare
+
+Use "ClaseIndice"
+Use "UnidadForm Class"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class IndiceFormularios As Indice
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Class IndiceFormularios As Indice
+	Public Sub New(), Indice(Ucase("Formularios"), "ConfFormularios")
+		
+	End Sub
+	
+	Public Sub ActualizarIndiceFormularios(clave As String, dbForms As NotesDatabase)
+		On Error Goto HANDLER
+		Dim session As New NotesSession
+		
+		Dim dbAdmin As NotesDatabase
+		Dim dbOrgan As NotesDatabase
+		Dim dbPortal As NotesDatabase
+		Dim vTodos As NotesView
+		Dim vTiposForm As NotesView
+		Dim vUnidades As NotesView
+		Dim docForm As NotesDocument
+		Dim docTipoForm As NotesDocument
+		Dim docIndice As NotesDocument
+		Dim docUnidad As NotesDocument
+		Dim conf As ConfigForms
+		Dim vCampos As Vector
+		Dim vCampos2 As Vector
+		Dim unidad As String
+		Dim año As String
+		Dim codigo As String
+		Dim unid As String
+		
+		'Obtengo el documento con el formulario
+		Set conf = New ConfigForms
+		
+		'Set dbForms = conf.ReferenciarBaseDeDatos(CLAVE_DBFORMULARIOS)
+'''		Messagebox "dbforms "+dbForms.FilePath+dbForms.FilePath
+
+		Set vTodos = dbForms.GetView("TodosXClave")
+		If vTodos Is Nothing Then Messagebox "vTodos nada"	
+		Set docForm = vTodos.GetDocumentByKey(clave,True)
+		
+		If docForm Is Nothing Then
+			Msgbox"CAISTE MAL !!!"
+			Exit Sub
+		End If
+		
+		'Obtengo la vista con los tipos de formulario
+		Set dbAdmin = conf.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+		Set vTiposForm = dbAdmin.GetView("vDefFormxCodigo")
+		Set docTipoForm = vTiposForm.GetDocumentByKey(docForm.GetItemValue("codigo")(0))
+		
+		'Cargo los campos necesarios del índice
+		clave = docForm.GetItemValue("numero")(0)
+		unidad = docForm.GetItemValue("UnidadActual")(0)
+		año = Cstr(Year(docForm.Created))
+		
+
+		'Actualizo el índice
+		Set vCampos = New Vector(0)
+		Call vCampos.insertElement("sEstado", vCampos.CantElem+1)	
+		Call vCampos.insertElement("Seccion", vCampos.CantElem+1)
+		Call vCampos.insertElement("FechasEnvio", vCampos.CantElem+1)
+		Call vCampos.insertElement("sReservadoPor", vCampos.CantElem+1)
+		Call vCampos.insertElement("fFinalizacion", vCampos.CantElem+1)
+		Call vCampos.insertElement("sUsuarioFin", vCampos.CantElem+1)
+		Call vCampos.insertElement("UnidadActual", vCampos.CantElem+1)
+		Call vCampos.insertElement("UnidadAnterior", vCampos.CantElem+1)
+		Call vCampos.insertElement("Codigo", vCampos.CantElem+1)	
+		Set vCampos2 = New Vector(0)
+		Call vCampos2.insertElement("sNombre", vCampos2.CantElem+1)
+		
+		Dim ounidad As UnidadFormClass
+		Set ounidad = New UnidadFormClass(unidad)
+		unid = ActualizarIndiceDocs(clave, unidad, ounidad.Nombre, año, docForm, vCampos, docTipoForm, vCampos2)
+		Set dbPortal = conf.ReferenciarBaseDeDatos(CLAVE_DBPORTAL)
+		Set docIndice = dbPortal.GetDocumentByUNID(unid)
+		'Calculo los colores
+		
+		Call docIndice.replaceItemValue("sColorBandejas",docTipoForm.Getitemvalue("sColorNormal")(0))
+		If docTipoForm.Getitemvalue("rColorBandejas")(0)="2" Then
+			Dim condicionColor As String
+			Dim Valor As Variant
+			condicionColor = |@text(| & docTipoForm.Getitemvalue("sCampoCondicion")(0) & |)|	
+			condicionColor = condicionColor & " "
+			condicionColor = condicionColor &   docTipoForm.Getitemvalue("cOperadorCondicion")(0) 
+			condicionColor = condicionColor & " "
+			condicionColor = condicionColor & |@text(| & docTipoForm.Getitemvalue("sValorCondicion")(0) & |)|
+			condicionColor = | valor:= | & condicionColor
+			condicionColor = condicioncolor & |; @if(@isError(valor);"ERROR";valor) |
+			
+			valor = Evaluate(condicionColor,docForm)
+			
+			
+			
+			If valor(0)<>"ERROR" Then
+				If valor(0)="1" Then
+					Call docIndice.replaceItemVAlue("sColorBandejas",docTipoForm.Getitemvalue("sColorCondicion")(0))					
+				End If
+			End If
+		End If
+		If docTipoForm.Getitemvalue("rColorVencimiento")(0)="1" Then
+			Dim valorFecha As String
+			Dim ndt As NotesDateTime
+			Dim hoy As NotesDateTime
+			Dim cant As Long
+			Set hoy = New NotesDateTime(Now)
+			
+			valorFecha = docForm.Getitemvalue(docTipoForm.getItemValue("sCampoVencimiento")(0))(0)
+			
+			If Isdate(valorFecha) And Isnumeric(docTipoForm.getItemvalue("sCantDiasVencimiento")(0))Then
+				Set ndt = New NotesDateTime(valorFecha)
+				cant = Clng(docTipoForm.getItemvalue("sCantDiasVencimiento")(0))
+				cant = cant*24*60*60	
+				If hoy.Timedifference(ndt)> cant Then
+					Call docIndice.Replaceitemvalue("sColorBandejas", docTipoForm.getItemValue("sColorVencimiento")(0))
+				End If
+			End If
+		End If
+		
+		'Actualizo los nombres de unidades
+		
+		
+		Set dbOrgan = conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set vUnidades = dbOrgan.GetView("BusquedaUnixNro")
+		Set docUnidad = vUnidades.GetDocumentByKey(docForm.GetItemValue("UnidadAnterior")(0))
+		If Not docUnidad Is Nothing Then
+			Call docIndice.ReplaceItemValue("nombreUnidadAnterior", docUnidad.GetItemValue("sUnidad")(0))
+		End If
+		Set docUnidad = vUnidades.GetDocumentByKey(docForm.GetItemValue("UnidadActual")(0))
+		If Not docUnidad Is Nothing Then
+			Call docIndice.ReplaceItemValue("nombreUnidadActual", docUnidad.GetItemValue("sUnidad")(0))
+		End If
+		Call docIndice.Save(False, False)
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndiceFormularios: " & Erl & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"ClaseIndiceFormularios - Método ActualizarIndiceFormularios","")
+		Exit Sub
+	End Sub
+	
+	Public Sub ActualizarIndiceFormularios2(clave As String, dbForms As NotesDatabase)
+		On Error Goto HANDLER
+		
+		Dim session As New NotesSession
+	'	Dim dbForms As NotesDatabase
+		Dim dbAdmin As NotesDatabase
+		Dim dbOrgan As NotesDatabase
+		Dim dbPortal As NotesDatabase
+		Dim vTodos As NotesView
+		Dim vTiposForm As NotesView
+		Dim vUnidades As NotesView
+		Dim docForm As NotesDocument
+		Dim docTipoForm As NotesDocument
+		Dim docIndice As NotesDocument
+		Dim docUnidad As NotesDocument
+		Dim conf As ConfigForms
+		Dim vCampos As Vector
+		Dim vCampos2 As Vector
+		Dim unidad As String
+		Dim año As String
+		Dim codigo As String
+		Dim unid As String
+		
+		MsgBox "ClaseIndiceFormularios2 - mensaje 2"
+		
+		'Obtengo el documento con el formulario
+		Set conf = New ConfigForms
+		'Set dbForms = conf.ReferenciarBaseDeDatos(CLAVE_DBFORMULARIOS)
+'''		Messagebox "dbforms "+dbForms.FilePath+dbForms.FilePath
+		Set vTodos = dbForms.GetView("TodosXClave")
+		If vTodos Is Nothing Then Messagebox "vTodos nada"
+		Set docForm = vTodos.GetDocumentByKey(clave, True)
+		
+		If docForm Is Nothing Then
+			'Msgbox"CAISTE EN LA ACTUALIZACION  !!!"
+			Exit Sub
+		End If
+		
+		'Obtengo la vista con los tipos de formulario
+		Set dbAdmin = conf.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+		Set vTiposForm = dbAdmin.GetView("vDefFormxCodigo")
+		Set docTipoForm = vTiposForm.GetDocumentByKey(docForm.GetItemValue("codigo")(0))
+		
+		'Cargo los campos necesarios del índice
+		clave = docForm.GetItemValue("numero")(0)
+		unidad = docForm.GetItemValue("UnidadActual")(0)
+		año = Cstr(Year(docForm.Created))
+		
+		'Actualizo el índice
+		Set vCampos = New Vector(0)
+		Call vCampos.insertElement("sEstado", vCampos.CantElem+1)	
+		Call vCampos.insertElement("Seccion", vCampos.CantElem+1)
+		Call vCampos.insertElement("FechasEnvio", vCampos.CantElem+1)
+		Call vCampos.insertElement("sReservadoPor", vCampos.CantElem+1)
+		Call vCampos.insertElement("fFinalizacion", vCampos.CantElem+1)
+		Call vCampos.insertElement("sUsuarioFin", vCampos.CantElem+1)
+		Call vCampos.insertElement("UnidadActual", vCampos.CantElem+1)
+		Call vCampos.insertElement("UnidadAnterior", vCampos.CantElem+1)
+		Call vCampos.insertElement("Codigo", vCampos.CantElem+1)	
+		Set vCampos2 = New Vector(0)
+		Call vCampos2.insertElement("sNombre", vCampos2.CantElem+1)
+		Dim ounidad As UnidadFormClass
+		Set ounidad = New UnidadFormClass(unidad)
+		unid = ActualizarIndiceDocs(clave, unidad, ounidad.nombre, año, docForm, vCampos, docTipoForm, vCampos2)
+		
+		'Actualizo los nombres de unidades
+		Set dbPortal = conf.ReferenciarBaseDeDatos(CLAVE_DBPORTAL)
+		Set docIndice = dbPortal.GetDocumentByUNID(unid)
+		Set dbOrgan = conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set vUnidades = dbOrgan.GetView("BusquedaUnixNro")
+		Set docUnidad = vUnidades.GetDocumentByKey(docForm.GetItemValue("UnidadAnterior")(0))
+		If Not docUnidad Is Nothing Then
+			Call docIndice.ReplaceItemValue("nombreUnidadAnterior", docUnidad.GetItemValue("sUnidad")(0))
+		End If
+		Set docUnidad = vUnidades.GetDocumentByKey(docForm.GetItemValue("UnidadActual")(0))
+		If Not docUnidad Is Nothing Then
+			Call docIndice.ReplaceItemValue("nombreUnidadActual", docUnidad.GetItemValue("sUnidad")(0))
+		End If
+		Call docIndice.Save(False, False)
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndiceFormularios: " & Erl & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"ClaseIndiceFormularios - Método ActualizarIndiceFormularios","")
+		Exit Sub
+	End Sub
+End Class

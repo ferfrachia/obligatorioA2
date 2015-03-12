@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058E9F2" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="f62" sequence="95" unid="649FEC64095A103E83257C8400406F33">
+<created><datetime dst="true">20140219T094347,71-02</datetime></created>
+<modified><datetime>20150311T131128,05-03</datetime></modified>
+<revised><datetime>20150309T094331,62-03</datetime></revised>
+<lastaccessed><datetime>20150311T131128,05-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131128,05-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Catalina Seoane/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>FuncionesAgentes</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+
+<item name="$POID"><datetime>20150309T094331,62-03</datetime></item></note>

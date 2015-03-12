@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058B8FB'>
+<noteinfo noteid='e62' unid='412F8F6A4BE0027383257731005E4D36' sequence='48'>
+<created><datetime>20100528T141001,50-03</datetime></created>
+<modified><datetime>20150311T130921,83-03</datetime></modified>
+<revised><datetime>20150309T094504,26-03</datetime></revised>
+<lastaccessed><datetime>20150311T130921,83-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130921,83-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070706T132455,60-03</datetime></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
++f8gAAAAAAANAAQAzQAAAAAAAAAAAAAAAAAAAAAAAADc/+AA+f/OACBOAAAAAAAAAAB2YXIgbWlk
+aXYgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYWN0Jyk7DXZhciBpZGVudCA9IGRvY3VtZW50
+LmZvcm1zWzBdLmlkZW50aWZpY2Fkb3I7DXZhciBkb2NVcCA9IHdpbmRvdy5vcGVuZXIuZG9jdW1l
+bnQ7DXZhciBlbGVtID0gZG9jVXAuZ2V0RWxlbWVudEJ5SWQoaWRlbnQudmFsdWUpOw1taWRpdi5p
+bm5lckhUTUwgPSBlbGVtLmlubmVySFRNTDsA8V//EAACAA8ABwAAAAAAAABf/xAAAgANAAcAAAAA
+AAAA
+</rawitemdata></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$WindowTitle' sign='true'><formula>"Copia de Texto de Actuacion"</formula></item>
+<item name='$Flags'><text/></item>
+<item name='query_string' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='id' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>id</text><text>query_string</text></textlist></item>
+<item name='$TITLE' sign='true'><text>CopiarActuacion</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>CopiarActuacion</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJWHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAArdBgAAiv/+/1AA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAIr/SACKAAAFADACAAAAAAAAAgEAAAoYAAAAAAAAAAwAAAAAABgA
+AAAWAAUADABxdWVyeV9zdHJpbmcDAHF1ZXJ5X3N0cmluZ94GAACK/4X/CAABAAAKgQKDBAEAhf8I
+AAEAAArdBgAAiv/+/1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIr/VACKAAAFADACAAAAAAAAAgEAAAou
+AAAAAAAAAAIAAAAAAC4AAAAgAAUADABxdWVyeV9zdHJpbmcBAAQAJmlkPWACAwAHAAwABQAJMFMw
+RQBpZN4GAACK/4X/CAABAAAKgQKC/1oAAgAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOA
+FgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAJWHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAIA
+hf8IAAEAAAqBAoL/WgADAAAAAAAAAAAAoAUAAKAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAEAAAAAlIcAAAAAAAAAAAAAAAABAAAABAAAAIMEAwDM/wgAAAAAAIX/
+OAABAAAKPGlucHV0IHR5cGU9ImhpZGRlbiIgbmFtZT0iaWRlbnRpZmljYWRvciIgdmFsdWU93QYA
+AK3/qf8aAAEAGAAEAA4ADgAAAAwABQACAGlkAwCF/wgAAQAACqoC3gYAAK4Ahf8JAAEAAAo+AIEC
+gwQDAIX/FgABAAAKPGRpdiBpZD0nYWN0Jz6BAoMEAwCF/w4AAQAACjwvZGl2Ps3/CAAAAAAAgQKD
+BAMAhf8IAAEAAAo=
+</rawitemdata></item></note>
+

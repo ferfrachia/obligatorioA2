@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+
+	<div style="display: none">
+	<xp:panel style="height:33.0px">
+		<xp:text escape="false" id="computedField1">
+			<xp:this.value><![CDATA[#{javascript:return "<script type='text/javascript'  src='/jquery/jquery-1.9.1.js'></script>"}]]></xp:this.value>
+		</xp:text>
+		<xp:br></xp:br>
+		<xp:text escape="false" id="computedField2"><xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("IGDocConfig","");
+
+var protocolo = profileDoc.getItemValue("rProtocolo")[0];
+var host = profileDoc.getItemValue("sHost")[0];
+var puerto = profileDoc.getItemValue("sPuerto")[0]; 
+return "<script type='text/javascript' src='"+protocolo+"://"+host+":"+puerto +"/jquery/jquery-ui-1.10.3.custom.min.js'></script>"
+}]]></xp:this.value></xp:text>
+		<xp:br></xp:br>
+		<xp:text escape="false" id="computedField3"><xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("IGDocConfig","");
+
+var protocolo = profileDoc.getItemValue("rProtocolo")[0];
+var host = profileDoc.getItemValue("sHost")[0];
+var puerto = profileDoc.getItemValue("sPuerto")[0]; 
+
+
+return "<link type='text/css' href='"+protocolo+"://"+host+":"+puerto +"/jquery/css/iGDocJqueryStyle/igdoc-jquery-ui.css' rel='stylesheet' />"}]]></xp:this.value></xp:text>
+		<xp:br></xp:br>
+		<xp:text escape="false" id="computedField4"><xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("IGDOCCONFIG","");
+
+var pathcssjquery = profileDoc.getItemValue("pathCssJQuery")[0];
+
+return "<link rel='stylesheet' href='"+ pathcssjquery +"'>";
+}]]></xp:this.value></xp:text>
+		<xp:br></xp:br>
+		<xp:text escape="false" id="computedField5"><xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("IGDOCCONFIG","");
+
+var pathjquery = profileDoc.getItemValue("pathJSJQuery")[0];
+
+return "<script src='"+pathjquery+"'></script>";}]]></xp:this.value></xp:text></xp:panel></div></xp:view>

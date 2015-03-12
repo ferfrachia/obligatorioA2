@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E0500599B47" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="7f2" sequence="10" unid="FA172E68A140E62583257C6D005A7AFD">
+<created><datetime dst="true">20140127T142817,25-02</datetime></created>
+<modified><datetime>20150311T131852,82-03</datetime></modified>
+<revised><datetime>20150309T094511,06-03</datetime></revised>
+<lastaccessed><datetime>20150311T131852,82-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131852,82-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=CURSO</name><name>CN=Admin ISA/O=VISION</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Jose Emilio Caceres Baez/O=VISION</name><name>CN=Victoria Acuña/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=ServerDomDesa/O=VISION</name><name>CN=Admin ISA/O=VISION</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=BSE</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Pablo Damseaux/O=IMM</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Administrador IGDoc/O=IMM</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Administrador/O=desarrolloURSEA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$TITLE" sign="true"><text>QueryString 1.1</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+
+
+<item name="$POID"><datetime>20150309T094511,06-03</datetime></item></note>

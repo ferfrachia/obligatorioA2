@@ -1,0 +1,236 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************
+'*
+'*								CLASS COLA
+'*
+'******************************************************************************************************************
+'* 
+'*	Contructor
+'*		New()
+'*
+'*	Propiedades
+'*		EstaVacia() As Boolean
+'*		' Retorna true si la cola está vacía
+'*
+'*		Get/Set Values as Vector
+'*		' Get/Set de los elementos de la Cola como un Vector
+'*
+'*	Métodos
+'*		EnColar(elemento As Variant)
+'*		' Agrega un elemento a la cola
+'*
+'*		DeColar() As Variant
+'*		' Saca el primer elemento de la cola
+'*
+'*		ColaToString(Byval Separador As String) As String
+'*		' Retorna un string con todos los elementos de la cola
+'*		' separados por el string de parámetro
+'*
+'******************************************************************************************************************
+
+Option Declare
+
+Use "VectorClass 2.04"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Private Class Elemento
+Declare Public Class Cola
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Códigos de error que retorna la clase
+Public Const ERROR_COLA_VACIA			= 17801
+
+'******************************************************************************************************************
+'******************************************************************************************************************
+Private Class Elemento
+'******************************************************************************************************************
+	
+	'Variables privadas de la clase
+	Private Valor As Variant			'Valor de este nodo
+	Public Siguiente As Elemento		'Siguiente elemento de la cola
+	Public Anterior As Elemento		'Elemento anterior en la cola
+	
+'******************************************************************************************************************
+	
+	Public Sub new()
+	' Constructor de la clase
+		Set Siguiente = Nothing
+		Set Anterior = Nothing
+	End Sub
+	
+'******************************************************************************************************************
+	
+	Public Sub delete()
+	' Destructor de la clase
+		If Not Me.Anterior Is Nothing Then
+			If Not Me.Anterior.Anterior Is Nothing Then Delete Anterior
+			Set Anterior = Nothing
+		End If
+		
+		If Not Me.Siguiente Is Nothing Then
+			If Not Me.Siguiente.Siguiente Is Nothing Then Delete Siguiente
+			Set Siguiente = Nothing
+		End If
+	End Sub
+	
+'******************************************************************************************************************
+	Private Sub Asignar(Value1 As Variant, Value2 As Variant)
+	' Asigna el valor de Value2 a Value1
+		If Isobject(value2)  Then
+			Set Value1 = Value2
+		Else
+			Value1 = Value2
+		End If	
+	End Sub
+	
+'******************************************************************************************************************
+	
+	Public Sub SetValor(value As Variant)
+	' Setea el valor de la variable Value del objeto
+		Asignar Valor,value
+	End Sub
+	
+'******************************************************************************************************************
+	
+	Public Function GetValor() As Variant
+	' Retorna el contenido de la variable privada Valor
+		Asignar GetValor, Valor
+	End Function
+	
+	
+End Class
+'******************************************************************************************************************
+'******************************************************************************************************************
+
+
+'******************************************************************************************************************
+'******************************************************************************************************************
+Public Class Cola
+'******************************************************************************************************************
+	
+	FirstElem As Elemento	'Primer elemento de la cola	
+	LastElem As Elemento	'Úlimo elemento de la cola
+	cantElem As Long		'Cantidad de elementos de la clase
+	
+'******************************************************************************************************************	
+	
+	Private Sub VaciarCola()
+		' Resetea la cola
+		Set FirstElem = Nothing
+		Set LastElem = Nothing
+		cantElem = 0
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub New()
+	' Constructor de la clase
+		Call Me.VaciarCola()
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Values As Vector
+	' Get de los elementos de la Cola como un Vector
+		Dim nodo As Elemento
+		
+		Set Values = New Vector(0)
+		Set nodo = FirstElem
+		Do While Not nodo Is Nothing
+			Values.InsertElement nodo.GetValor(),Values.CantElem + 1
+			Set nodo = nodo.Siguiente
+		Loop
+		
+	End Property
+	
+'******************************************************************************************************************	
+	Public Property Set Values As Vector
+	' Set de los valores de la cola dado un Vector
+		Dim i As Long
+		
+		Call Me.VaciarCola()
+		For i = 1 To Values.CantElem
+			Me.EnColar Values.GetElement(i)
+		Next
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Function EstaVacia() As Integer
+	' Retorna true si la cola esta vacia
+		If FirstElem Is Nothing Then 
+			EstaVacia = True
+		Else
+			EstaVacia = False
+		End If
+	End Function
+	
+'******************************************************************************************************************
+	
+	Public Sub Encolar(elem As Variant)
+	' Agrega un elemento a la cola
+		Dim nuevoElem As Elemento
+		
+		cantElem = cantElem + 1
+		Set nuevoElem = New Elemento				'Creo el nuevo nodo
+		nuevoElem.SetValor elem					'Le asigno el valor a encolar
+		If Me.EstaVacia() Then					'Si la cola esta vacia
+			Set FirstElem = nuevoElem			'Que el unico elemento de la cola sea el primero
+			Set LastElem = nuevoElem				' y el último
+		Else									'La cola no está vacía
+			Set LastElem.Siguiente = nuevoElem		'Que el siguiente elemento del ultimo elemento
+											' sea el nuevo eleemento
+			Set nuevoElem.Anterior = LastElem
+			Set LastElem = nuevoElem				'Que el ultimo elemento ahora sea el nuevo
+											' elemento que estamos encolando
+		End If
+	End Sub
+	
+'******************************************************************************************************************
+	
+	Public Function Decolar() As Variant
+	' Saca de la cola el primer elemento y retorna su valor
+		Dim primero As Elemento
+		
+		If Me.EstaVacia() Then	'Si la cola esta vacía
+			Error ERROR_COLA_VACIA, "La cola esta vacía." 
+		End If
+		
+		cantElem = cantElem - 1
+		If cantElem = 0 Then Set LastElem = Nothing	'Si no queda ningun elemento en la cola
+		Decolar = FirstElem.GetValor()			'Retorno el valor del primer elemento encolado
+		Set primero = FirstElem					'Guardo en una variable auxiliar el primer elemento
+		Set FirstElem = FirstElem.Siguiente		'Que el primer elemento sea ahora el segundo
+		Set Primero.Siguiente = Nothing			'Que el siguiente elemento del anterior primer 
+											'elemento no tenga a nadie mas atras
+		Delete Primero							'Borramos el anterior primer elemento
+		If Not FirstElem Is Nothing Then			'Si estamos sacando el último elemento de la cola
+			Set FirstElem.Anterior = Nothing		'Que el nuevo primer elemento no tenga a nadie
+											'adelante
+		End If
+	End Function
+	
+'******************************************************************************************************************
+	
+	Public Function ColaToString(Byval Separador As String) As String
+	' Retorna un string con todos los elementos de la cola
+	' separados por el string de parámetro
+		Dim valor As Variant, nodo As Elemento
+		
+		Set nodo = FirstElem
+		Do While Not nodo Is Nothing
+			If Not ColaToString = "" Then
+				ColaToString = ColaToString & Separador & nodo.GetValor()
+			Else	'Si es el primer elemento a concatenar
+				ColaToString = nodo.GetValor()	
+			End If
+			Set nodo = nodo.Siguiente	'Voy al siguiente nodo de la cola
+		Loop
+		
+	End Function
+	
+'******************************************************************************************************************
+End Class
+'******************************************************************************************************************
+'******************************************************************************************************************

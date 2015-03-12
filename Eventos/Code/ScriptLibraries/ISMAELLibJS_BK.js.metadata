@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A40AC" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="73e" sequence="9" unid="3D2309EF97124EC983257C9E006BC578">
+<created><datetime>20140317T163709,04-03</datetime></created>
+<modified><datetime>20150311T132556,01-03</datetime></modified>
+<revised><datetime>20150309T094352,33-03</datetime></revised>
+<lastaccessed><datetime>20150311T132556,01-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132556,01-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$POID"><datetime>20130702T163244,41-03</datetime></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$Comment" sign="true"><text>Libraría de funciones varias en JavaScript</text></item>
+<item name="$TITLE" sign="true"><text>ISMAELLibJS_BK</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.3</text></item></note>

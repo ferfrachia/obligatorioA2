@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257E050058E9F2'>
+<noteinfo noteid='11a' unid='CBF8018913D5421203256D40005FD8AB' sequence='261'>
+<created><datetime>20030609T142653,87-03</datetime></created>
+<modified><datetime>20150311T132121,69-03</datetime></modified>
+<revised><datetime>20150311T132121,68-03</datetime></revised>
+<lastaccessed><datetime>20150311T132121,69-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131111,09-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Diego Ricca/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060802T140031,98+03</datetime><datetime>20060802T140047,53+03</datetime><datetime
+>20060810T170734,62+03</datetime><datetime>20060810T170744,70+03</datetime><datetime
+>20061006T105359,33+03</datetime><datetime>20061006T105403,09+03</datetime><datetime
+>20061006T112005,66+03</datetime><datetime>20061006T112009,26+03</datetime><datetime
+ dst='true'>20140206T110025,81-02</datetime><datetime>20140721T120529,95-03</datetime><datetime
+ dst='true'>20141105T143405,30-02</datetime><datetime dst='true'>20141105T150500,20-02</datetime><datetime
+ dst='true'>20141105T150517,40-02</datetime><datetime dst='true'>20141110T181642,36-02</datetime><datetime
+ dst='true'>20141112T111018,72-02</datetime><datetime dst='true'>20141113T164413,40-02</datetime></revisions>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAAgAAAAIAAAACAAAAA4AAAAOAAAADwAAAA/AAAAPwAAAD+AAAA/wAAAP4AAACAAAAAwAAA
+AoAAAAaAAAAHgAAAB4AAAAeAAAAHgAAAB4AAAAeAAAAHgEAAB8BgAAf/wAAH/8AAB//AAAf/wAAH
+/8AAB//AAAf/wAAP/8AAD/////8KqqqqqqqqqqqqqqqqqqqqCuyqCqCqqqqqqqoKoKoOoA7s7szs
+zszszszszszszuAADmZmZmZmZmZmZmZmZm7gAArmZmZmZmZmZmZmZmb8AAAArmZmzMzMzMzMzMzO
+4AAAAADsyqqqqqqqqqqqqqqqAAAAruqu7v7v7u7u7u7u6gAAAAzq7/Ef8f8RERER/+oAAAAAiIjv
+/u/u8RERERHqAAAACIiIiIiI7v/u7u4R+giIiIiO6IiIiI8eAAAO8foAj///7v///+iP8f7/7x4K
+CCERH/7xERH4ju/////wCgghH/7u7//x+AqqqqqqoAAI4R///vH/8fgKqqqqqqAACOEf//7x//H4
+Cr7u7uqgAAghH//u7//x+I7xH/H+oAAIIR//7vH+8fiN7v7vH6AACOEf//7xH/H4Dd3d3f+gAAgh
+ER/u/xER+A3d3d3+oAAIL///4O7//+3d3d3d/6AAAI7u7uAO7u7t3d3d3R+gAAAAAAAA4brd3d3d
+3d3+oAAAAAAAAOG63d3d3d3d/6AAAAAAAADhut3d3d3d3R+gAAAAAAAA4bp3fd3d3d3+oAAAAAAA
+AOGq3dqqqqqt/6AAAAAAAADh6qqqqqqqqh+gAAAAAAAA4R//8REREfEfAAAAAAAAAO//////////
+/gAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$LaunchXPageRunOnServer'><text>0</text></item>
+<item name='$FlagsNoRefresh'><text/></item>
+<item name='$TemplateServerName'><text>CN=Ian Coates/O=ISA</text></item>
+<item name='$TemplateFileName'><text>c:\Program Files (x86)\IBM\Notes\Data\version\Administ.ntf</text></item>
+<item name='$Flags'><text>JF7</text></item>
+<item name='$DefaultFrameset'><text>Inicio</text></item>
+<item name='$DefaultWebFrameset'><text>Inicio</text></item>
+<item name='$PIRCRefreshModTime'><datetime>20150310T123932,39-03</datetime></item>
+<item name='$TemplateModTime'><datetime>20150310T123919,42-03</datetime></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current Administracion &amp; Configruación
+</text></item></note>
+

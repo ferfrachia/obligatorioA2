@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1012" sequence="14" unid="81488B1D7E7E5294832577220061A45E">
+<created><datetime>20100513T144630,70-03</datetime></created>
+<modified><datetime>20150311T130923,97-03</datetime></modified>
+<revised><datetime>20150309T094503,30-03</datetime></revised>
+<lastaccessed><datetime>20150311T130923,97-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130923,97-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>tooltip.css</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+
+<item name="$FileModDT" sign="true"><datetime>20090915T165034,00-03</datetime></item>
+
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$FileNames" sign="true"><text>tooltip.css</text></item></note>

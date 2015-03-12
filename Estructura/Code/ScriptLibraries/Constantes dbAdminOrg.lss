@@ -1,0 +1,41 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Vistas
+Public Const VISTA_NAMES_GRUPOS								= "Groups"
+
+Public Const VISTA_ORGANIZACION_UNIDADES						= "VBusqUni"
+Public Const VISTA_ORGANIZACION_BUSQUEDAUNIDAD					= "VBusqUni"
+Public Const VISTA_ORGANIZACION_BUSQUEDASUPLENCIAS				= "VBusSupAct"
+
+Public Const NOMBRE_VISTA_BUSQUEDAPADRES						= "VBusPrimUni"	
+Public Const NOMBRE_VISTA_BUSQUEDAHIJAS							= "VBusUniHijas"	
+
+'Campos
+'Form Unidad
+Public Const CAMPO_UNIDAD_UNIDAD								= "sUnidad"
+Public Const CAMPO_UNIDAD_MIEMBROS								= "nbMiembros"
+Public Const CAMPO_UNIDAD_PADRE								= "sUnidadSuperior"
+Public Const CAMPO_CODIGO_PADRE								= "sCodUnidadSup"
+Public Const CAMPO_CODIGO_UNIDAD_ACTUAL							= "sCodUnidad"
+Public Const CAMPO_NOMBREJERARQUICO_UNIDAD_ACTUAL					= "sNombreJerarquico"
+Public Const CAMPO_NOMBREJERARQUICO_UNIDAD_PADRE					= "sNombreJerarquicoPadre"
+Public Const CAMPO_NOMBRE_UNIDAD								= "sUnidad"
+Public Const CAMPO_NRO_CS_UNIDAD								= "ccNroCS"
+Public Const CAMPO_NRO_UNIDAD							="sNroUnidad"
+'Form Suplencia
+Public Const CAMPO_NOMBRE_USUARIO_SUPLENTE						= "nbUsuario"
+Public Const CAMPO_NOMBRE_USUARIO_TITULAR						= "nbTitular"
+Public Const CAMPO_ROLES_AGREGADOS_AL_SUPLENTE					= "sRolesAgregadosAlSuplente"
+Public Const CAMPO_UNIDAD_DEL_TITULAR							= "sUnidad"
+Public Const CAMPO_ORG_HOST									= "sDBHost"
+Public Const CAMPO_ORG_PATH									= "sDbPath"
+Public Const CAMPO_NOMBREVISTAORIGEN							= "vistaOrigen"
+Public Const CAMPO_FSUPLENCIA_FECHA_DESDE						= "fDesde"
+Public Const CAMPO_FSUPLENCIA_FECHA_HASTA						= "fHasta"
+
+'Clave para encontrar la base de datos en la configuracion
+Public Const CLAVE_BASE_ORGANIZACION							= "ORGAN"

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05006B3589'>
+<noteinfo noteid='12a' unid='04AD5D823A53961E0325758C007176ED' sequence='12'>
+<created><datetime>20090402T173920,13-03</datetime></created>
+<modified><datetime>20150311T163100,76-03</datetime></modified>
+<revised><datetime dst='true'>20150206T174710,59-02</datetime></revised>
+<lastaccessed><datetime>20150311T163100,76-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T163100,76-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=CTM</name><name>CN=Administrador Isa/O=CTM</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$SiteMapList' sign='true'>
+<rawitemdata type='1a'>
+AQYBAAEAAQBIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAABAEgAMAABCAAAAQAAAAAAAAAIAAAAKAAAAAAAAAAAAAAAAAAAAAAA
+AwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFVG9kb3MAAQD2/yYAAAAAAAMAAgAE
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAVkFsbA==
+</rawitemdata></item>
+<item name='$TITLE'><text>OInicio</text></item>
+<item name='$Flags'><text>m</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

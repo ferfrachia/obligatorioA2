@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1572" sequence="7" unid="52923BF0C6352EB183257D3400685F8B">
+<created><datetime>20140814T160002,03-03</datetime></created>
+<modified><datetime>20150309T094533,03-03</datetime></modified>
+<revised><datetime>20150309T094533,02-03</datetime></revised>
+<lastaccessed><datetime>20150309T094533,03-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161908,52-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Gabriel Pereyra/O=1871</name><name>CN=Enrique Uyterhoeven/O=1871</name><name>CN=Martin Gabriel Pereyra/O=1871</name><name>CN=Enrique Uyterhoeven/O=1871</name><name>CN=WebApp Manager/O=1871</name><name>CN=Enrique Uyterhoeven/O=1871</name><name>CN=WebApp Manager/O=1871</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>InterfaseADOClass</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20140814T173032,11-03</datetime></item></note>

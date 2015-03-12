@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E0500598295" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="59a" sequence="16" unid="70AB738C3C00F9DB032575A5006302E4">
+<created><datetime>20090427T150128,04-03</datetime></created>
+<modified><datetime>20150311T131747,25-03</datetime></modified>
+<revised><datetime>20150309T094347,51-03</datetime></revised>
+<lastaccessed><datetime>20150311T131747,25-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131747,25-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Maria Araujo/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090427T150128,49-03</datetime><datetime>20090719T145726,00-03</datetime><datetime>20100609T164930,66-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE"><text>baja.GIF</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime>20090427T150336,68-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>baja.GIF</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$Flags"><text>34CiQ</text></item></note>

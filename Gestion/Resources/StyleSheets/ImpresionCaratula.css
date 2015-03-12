@@ -1,0 +1,71 @@
+p.MsoNormal, li.MsoNormal, div.MsoNormal  { 
+	localeRef:mnuNorm; 	
+	margin:0in; 	
+	margin-bottom:.0001pt; 	
+	font-size:12.0pt; 	
+	font-family:"Arial";
+}
+
+.filaTitulo{
+
+	border: 1px ridge #02468D;
+	
+}
+.celdaTitulo {
+	font-size:16pt;
+	font-family:Arial;
+}
+.filaCampo{
+
+	border-bottom: 1px ridge #02468D;
+	
+}
+.celdaCampo {
+	font-size:10pt;
+	font-family:Arial;
+	border-bottom: 1px ridge #000000;
+}
+.celdaRecorrido {
+	font-size:10pt;
+	font-family:Arial;
+	border-bottom: 1px solid #000000;
+}
+
+.celdaTituloRecorrido {
+	font-size:10pt;
+	font-family:Arial;
+	background-color:black;
+	color:white;
+}
+.celdaAgregado {
+	font-size:10pt;
+	font-family:Arial;
+	border-bottom: 1px solid #000000;
+}
+.celdaTituloAgregados {
+	font-size:10pt;
+	font-family:Arial;
+	background-color:black;
+	color:white;
+}
+.tituloAsunto{
+	font-size:12pt;
+	font-family:Arial;
+}
+.tituloRecorrido{
+	font-size:12pt;
+	font-family:Arial;
+}
+.tituloAgregados{
+	font-size:12pt;
+	font-family:Arial;
+}
+.textoAsunto{
+	font-size:10pt;
+	font-family:Arial;
+}
+.celdaConstancia{
+	font-size:8pt;
+	font-family:Arial;
+}
+.textoProcesando {	font-size:8pt;	font-family:Arial;}

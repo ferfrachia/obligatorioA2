@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257E0500599B47'>
+<noteinfo noteid='11e' unid='431D32804E6169010325757C00718A3A' sequence='49'>
+<created><datetime>20090317T174009,54-03</datetime></created>
+<modified><datetime>20150311T131856,06-03</datetime></modified>
+<revised><datetime>20150311T131856,05-03</datetime></revised>
+<lastaccessed><datetime>20150311T131856,06-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131844,72-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name
+>CN=Pablo Damseaux/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Victoria Acuña/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAA///////wD///gAH//gAAf/wAAD/4AAAf8AAAD+AAAAfgAAAHwAAAA8AAAAPAAAADgAAA
+AYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAADwAAAA8AAAAPgAAAH4AAAB/AAAA/4AAAf
+/AAAP/4AAH//gAH///AP//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiIiAAAAAAAAAAAAAAI
+jPZmZm/IgAAAAAAAAAAIjGZmZmZmZsiAAAAAAAAAjGZmZmZmZmZmyAAAAAAACMZmZmZmZmZmZmyA
+AAAAAIxmZmZmZmZmZmZmyAAAAAjGZmZmZmZmZmZmZmyAAAAIZmbyL2byL2byL2ZmgAAAjGZmIiJm
+IiJmIiJmZsgAAIZmZiIiZiIiZiIiZmZoAADGZmYiImYiImYiImZmbAAI9mZmIiJmIiJmIiJmZm+A
+CGZmZiIiZiIiZiIiZmZmgAhmZmYiImYiImYiImZmZoAIZmZmIiJmIiJmIiJmZmaACGZvIiIiZiIi
+ZiIiIvZmgAhmYiIiImYiImYiIiImZoAIZm8iIi9m8i9m8iIi9maACPZmZmZmZmZmZmZmZmZvgADG
+ZmbyL2byL2byL2ZmbAAAj2ZmIiJmIiJmIiJmZvgAAIxmZiIiZiIiZiIiZmbIAAAI9mbyL2byL2by
+L2ZvgAAACMZmZmZmZmZmZmZmbIAAAACMZmZmZmZmZmZmZsgAAAAACMZmZmZmZmZmZmyAAAAAAACM
+9mZmZmZmZm/IAAAAAAAACIz2ZmZmZm/IgAAAAAAAAAAIiMZmZmyIgAAAAAAAAAAAAACIiIiIAAAA
+AAAAUEEAAAIAAgAgAEAAAQABAA==
+</rawitemdata></item>
+<item name='$DefaultFrameset' sign='true'><text>Inicial</text></item>
+<item name='$Flags'><text>JFE</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$DefaultWebLaunchPage' sign='true'><text>Inicio</text></item>
+<item name='$PIRCRefreshModTime'><datetime>20150309T163659,03-03</datetime></item>
+<item name='$TemplateModTime'><datetime>20150309T094511,57-03</datetime></item>
+<item name='$TemplateServerName'><text>CN=Ian Coates/O=ISA</text></item>
+<item name='$TemplateFileName'><text>c:\Program Files (x86)\IBM\Notes\Data\version\WebServices.ntf</text></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current WebServices</text></item></note>
+

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='1496' unid='2C75BF5EDB5965A583257DF8004C9894' sequence='9'>
+<created><datetime dst='true'>20150226T115637,96-02</datetime></created>
+<modified><datetime>20150311T131048,05-03</datetime></modified>
+<revised><datetime>20150309T094423,37-03</datetime></revised>
+<lastaccessed><datetime>20150311T131048,05-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131048,05-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE'><text>$DBIcon</text></item>
+<item name='$Flags'><text>34Ci~Q</text></item>
+<item name='$ImagesWide' sign='true'><number>1</number></item>
+<item name='$ImagesHigh' sign='true'><number>1</number></item>
+<item name='$ImagesColorize' sign='true'><number>0</number></item>
+<item name='$FileSize' sign='true'><number>1669</number></item>
+<item name='$ImageData' sign='true'>
+<rawitemdata type='1'>
+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
+of6P8h/XmdMLzv46vwAAAABJRU5ErkJgggI=
+</rawitemdata></item>
+<item name='$MimeType' sign='true'><text>image/png</text></item>
+<item name='$FileModDT' sign='true'><datetime dst='true'>20150226T115951,28-02</datetime></item>
+<item name='$ImageNames' sign='true'><text>C:\Users\Ian\Desktop\gestion.png</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item></note>
+

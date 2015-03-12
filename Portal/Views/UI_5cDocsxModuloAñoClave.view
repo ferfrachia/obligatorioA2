@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058B8FB'>
+<noteinfo noteid='a0a' unid='E0D14639C5E366B0032574A20065D5AB' sequence='109'>
+<created><datetime>20080811T153218,35-03</datetime></created>
+<modified><datetime>20150311T130916,65-03</datetime></modified>
+<revised><datetime>20150309T094458,46-03</datetime></revised>
+<lastaccessed><datetime>20150311T130916,65-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130916,65-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name
+>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name
+>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20080811T155057,80-03</datetime><datetime>20080814T072845,00-03</datetime><datetime
+>20080814T072952,16-03</datetime><datetime>20080814T073219,65-03</datetime><datetime
+>20080814T074232,67-03</datetime><datetime>20080814T074751,65-03</datetime><datetime
+>20080814T082406,20-03</datetime><datetime>20080814T082544,33-03</datetime><datetime
+>20080814T110401,73-03</datetime><datetime>20080820T120638,16-03</datetime><datetime
+>20080820T121402,77-03</datetime><datetime>20080820T132328,08-03</datetime><datetime
+>20080820T132837,44-03</datetime><datetime>20080820T133731,15-03</datetime><datetime
+>20080820T134600,46-03</datetime><datetime>20080820T135300,70-03</datetime><datetime
+>20080821T091958,22-03</datetime><datetime>20080821T101414,67-03</datetime><datetime
+>20080821T134051,37-03</datetime><datetime>20080821T141051,03-03</datetime><datetime
+>20080821T142117,57-03</datetime><datetime>20080822T092745,79-03</datetime><datetime
+>20080822T093030,96-03</datetime><datetime>20080822T094607,91-03</datetime><datetime
+>20080822T095203,77-03</datetime><datetime>20080822T100710,94-03</datetime><datetime
+>20080822T100838,03-03</datetime><datetime>20080822T140628,80-03</datetime><datetime
+>20080822T154749,39-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>UI\DocsxModuloAñoClave|UIDocsxModuloAñoClave</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+nAACABYAAgAkMAUABgBtb2R1bG9iAQMAAgAMAAIAJDWSAAMAAgAUAAIAJDEFAAMAYaRvAFYBAwAC
+ABYAAgAkMgUABQBjbGF2ZQBWAQMAAgAUAAIAJDMFAAQAYmFzZVYBAwAFAC4AKQAHAAIAAgACAAIA
+AgAJAAQAJDAkNSQxJDIkMyRDb25mbGljdCRSRUYABAAEAAAACABmAAMA
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+KgAEAABECGYHAAACAIhmBwIAAgCIZgcEAAIAiGYABgACACQwJDUkMSQy
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAFAAYACQAAAFZDAwQCAAYAJAAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMDBAIABgAOAAAAUAAB
+AAAKAAEAAAAAAAAAAgIAAABWQwMEAgADACIAAABQAAEAAAoAAQAAAAAAAAACAgAAAFZDAQQCAAUA
+JAAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMAAAIABAAiAAAAUAABAAAKAAAAAAAAAAAAAgIAAAAk
+MG1vZHVsbyQAAgAWAAIAJDAFAAYAbW9kdWxvYgEDAAcADAAFAAkwUzBFACQ1dW5pZGFkDgACAAwA
+AgAkNZIAAwAkMWGkbyIAAgAUAAIAJDEFAAMAYaRvAFYBAwAHAAwABQAJMFMwRQAkMmNsYXZlJAAC
+ABYAAgAkMgUABQBjbGF2ZQBWAQMABwAMAAUACTBTMEUAJDNiYXNlIgACABQAAgAkMwUABABiYXNl
+VgEDAAcADAAFAAkwUzBFACYAAQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEAAQABAAAAAAAAAAAAV0MB
+AQAJAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAA
+AAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAE
+AAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA//8AAAAA
+AAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABC
+ABAAAAABAP///wAFAP///wABAAAAAAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQAAAAAA
+AQAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

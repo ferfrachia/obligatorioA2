@@ -1,0 +1,183 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Declare
+ 
+
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "UnidadExp Class"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Indice
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const VISTA_DOCSxMODULO_CLAVE			= "SearchDocsxModuloClave"
+Private Const FORM_INDICE									= "Indice"
+
+Private Const CAMPO_MODULO								= "modulo"
+Private Const CAMPO_CLAVE									= "clave"
+Private Const CAMPO_AÑO										= "año"
+Private Const CAMPO_UNIDAD								= "unidad"
+Private Const CAMPO_NOMBRE_UNIDAD				= "nombreUnidad"
+Private Const CAMPO_BASE									= "base"
+Private Const CAMPO_UNID									= "unid"
+Private Const CAMPO_UNID2									= "unid2"
+
+Public Class Indice
+	Private dbIndice As NotesDatabase
+	Private modulo As String
+	
+'******************************************************************************************************************	
+	
+	Public Sub New (pModulo As String)
+		On Error Goto HANDLER
+		Dim igdocConf As New IGDocConfig
+		
+		
+		'módulo
+		modulo = Ucase(pModulo)
+		
+		
+		'base con los índices
+		Set dbIndice = New NotesDatabase("","")
+		Call dbIndice.Open(igdocconf.ServerInstalacion, igdocconf.PathPortal)
+		If dbIndice Is Nothing Then
+			Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBPORTAL
+		End If
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método New","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Function ActualizarIndice (clave As String, unidad As String, año As String, doc As NotesDocument, campos As Vector) As String
+		ActualizarIndice = ActualizarIndiceDocs (clave, unidad, año, doc, campos, Nothing, Nothing)
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Function ActualizarIndiceDocs (clave As String, unidad As String, año As String, doc As NotesDocument, campos As Vector, doc2 As NotesDocument, campos2 As Vector) As String
+		On Error Goto HANDLER
+		Dim vIndices As NotesView
+		Dim docIndice As NotesDocument
+		Dim key(1 To 2) As String
+		Dim nombre As String
+		Dim i As Long
+		Dim oUnidad As UnidadExp
+		
+		'Busco el índice
+		Set vIndices = dbIndice.GetView(VISTA_DOCSxMODULO_CLAVE)
+		key(1) = modulo
+		key(2) = clave
+		Set docIndice = vIndices.GetDocumentByKey(key,True)
+		
+		'Si no existe el índice, lo creo
+		If docIndice Is Nothing Then
+			Set docIndice = dbIndice.CreateDocument
+			Call docIndice.ReplaceItemValue("Form", FORM_INDICE)
+			Call docIndice.ReplaceItemValue(CAMPO_MODULO, modulo)
+			Call docIndice.ReplaceItemValue(CAMPO_CLAVE, clave)
+		End If
+		
+		'Actualizo siempre el año, la unidad y la base
+		If Len(año) < 4 Then
+			año = Cstr(Cint(año) + 2000)
+		End If
+		Call docIndice.ReplaceItemValue(CAMPO_UNIDAD, unidad)
+		Set oUnidad = New UnidadExp(unidad)
+		Call docIndice.ReplaceItemValue(CAMPO_NOMBRE_UNIDAD, oUnidad.NombreActual)
+		Call docIndice.ReplaceItemValue(CAMPO_AÑO, Cstr(año))
+		Call docIndice.ReplaceItemValue(CAMPO_BASE, doc.ParentDatabase.FilePath)
+		Call docIndice.ReplaceItemValue(CAMPO_UNID, doc.UniversalID)
+		If Not doc2 Is Nothing Then
+			Call docIndice.ReplaceItemValue(CAMPO_UNID2, doc2.UniversalID)
+		End If
+		
+		'Actualizo campos de tipo lectores y autores
+		Forall item In doc.Items
+			If item.Type = AUTHORS Or item.Type = READERS Then
+				Call docIndice.RemoveItem(item.Name)
+				Call item.CopyItemToDocument(docIndice, item.Name)
+			End If
+		End Forall
+%REM
+
+		If Not doc2 Is Nothing Then
+			Forall item In doc2.Items
+				If item.Type = AUTHORS Or item.Type = READERS Then
+					Call docIndice.RemoveItem(item.Name)
+					Call item.CopyItemToDocument(docIndice, item.Name)
+				End If
+			End Forall
+		End If
+		
+%END REM
+		
+		'Actualizo los otros campos indicados
+		If Not campos Is Nothing Then
+			For i=1 To campos.CantElem
+				nombre = campos.getElement(i)
+				Call docIndice.RemoveItem(nombre)
+				If doc.HasItem(nombre) Then
+					Call doc.GetFirstItem(nombre).CopyItemToDocument(docIndice, nombre)
+				End If
+			Next
+		End If
+		If Not campos2 Is Nothing And Not doc2 Is Nothing Then
+			For i=1 To campos2.CantElem
+				nombre = campos2.getElement(i)
+				Call docIndice.RemoveItem(nombre)
+				If doc2.HasItem(nombre) Then
+					Call doc2.GetFirstItem(nombre).CopyItemToDocument(docIndice, nombre)
+				End If
+			Next
+		End If
+		
+		'Grabo el documento de índice
+		Call docIndice.Save(True, False)
+		ActualizarIndiceDocs = docIndice.UniversalID
+		
+		Exit Function
+HANDLER:
+		Msgbox "ClaseIndice - ActualizarIndiceDocs: " & Erl & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método ActualizarIndiceDocs","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Sub BorrarIndice(clave As String)
+		On Error Goto handler
+		
+		Dim vIndices As NotesView
+		Dim docIndice As NotesDocument
+		Dim key(1 To 2) As String
+		
+		'Busco el índice
+		Set vIndices = dbIndice.GetView(VISTA_DOCSxMODULO_CLAVE)
+		key(1) = modulo
+		key(2) = clave
+		Set docIndice = vIndices.GetDocumentByKey(key,True)
+		'Call docIndice.Remove(True)
+		Call docIndice.ReplaceItemValue("Form", "BorrarIndice")
+		Call docIndice.Save(True, False)
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndice: " & Erl & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método BorrarIndice","")
+		Exit Sub
+	End Sub
+	
+End Class

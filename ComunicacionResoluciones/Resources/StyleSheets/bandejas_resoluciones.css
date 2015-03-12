@@ -1,0 +1,10 @@
+/* CSS Document */
+
+.tablaBandejas{font-family: Arial,  Verdana ; font-size: 10pt;background-color : white;color : #000000;bordercolor : #00649F;}
+.tituloTabla{font-family: Arial,  Verdana ; font-size: 10pt;background-color : white;color : #00649F;bordercolor : #00649F;}
+.filaVista {font-family: Arial,  Verdana ;font-size: 9pt;color : black}
+.filaOvr {font-family: Arial,  Verdana ;font-size: 9pt;color : orange;cursor:hand}
+.textoTitulo{font-family: Arial,  Verdana ; font-size: 9pt;font-weight: bold;color : #35417D}
+.textoSel{font-family: Arial,  Verdana ; font-size: 8pt;color : black}
+.tablaMenu{font-family: Arial,  Verdana ; background-color : #0075BA;color : #000080;bordercolor : white}
+.botonbordesColorAzul { BORDER-RIGHT: 2px outset #00649F; BORDER-TOP: 2px  outset #00649F;BORDER-LEFT: 2px ouset #00649F; BORDER-BOTTOM: 2px outset #00649F ; FONT-WEIGHT: NORMAL; FONT-SIZE: 8pt; FONT-FAMILY: Arial,  Verdana ; background-color : #00649F;color : #D7D8F4;text-decoration:none ;cursor: hand;}

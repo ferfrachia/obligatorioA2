@@ -1,0 +1,46 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library ClaseAvisoPorCorreo
+	Created Feb 15, 2013 by Francisco Alvarez/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ClaseAvisoPorCorreo 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+%REM
+	Class ClaseAvisoPorCorreo
+	Description: Comments for Class
+%END REM
+Public Class ClaseAvisoPorCorreo 
+	
+	%REM
+		Sub enviar
+		Description: Comments for Sub
+	%END REM
+	Public Function enviar(docSol As NotesDocument, destinatario As string, asunto As string, mensaje As string, correo As String, usuario As String, password As String, url As String,  mensajeError As string)
+		On Error GoTo handler
+		Dim session As New NotesSession
+		Dim mail As NotesDocument
+		Dim db As NotesDatabase
+		Set db = session.currentDatabase()
+		Set mail = db.createDocument
+		Call mail.replaceItemValue("Form", "Memo")
+		Call mail.replaceItemValue("Subject", asunto)
+		Call mail.replaceItemValue("Body", mensaje)
+		Call mail.replaceItemValue("Recipients", destinatario)
+		Call mail.send(False,destinatario)
+		mensajeError = "OK"
+		Exit Function 
+handler:
+		MsgBox "ERROR " & Error$ & " linea " & Erl
+		mensajeError = "Error"
+		Exit Function 
+	End Function 
+End Class

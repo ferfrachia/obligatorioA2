@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050059AC63" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="19e" sequence="25" unid="044ED9693A3AC25403257264005BEF11">
+<created><datetime>20070115T134409,77-03</datetime></created>
+<modified><datetime>20150311T131929,03-03</datetime></modified>
+<revised><datetime>20150309T094508,73-03</datetime></revised>
+<lastaccessed><datetime>20150311T131929,03-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131929,03-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20070115T134411,55-03</datetime><datetime>20070115T134549,22-03</datetime><datetime>20070115T173508,43-03</datetime><datetime>20070116T163741,56-03</datetime><datetime>20070125T141839,06-03</datetime><datetime>20070125T151712,67-03</datetime><datetime dst="true">20070202T111521,09-02</datetime><datetime dst="true">20070207T133819,77-02</datetime><datetime>20070329T172813,22-03</datetime><datetime>20070330T103313,34-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>ClaseExpBean</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20150309T094508,73-03</datetime></item></note>

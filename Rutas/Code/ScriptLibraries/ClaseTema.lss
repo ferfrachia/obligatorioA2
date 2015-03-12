@@ -1,0 +1,445 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <TEMA>
+'*
+'******************************************************************************************************************	
+%REM
+Esta clase representa un objeto TEMA de una ruta
+Es la que maneja el NotesDocument con el cual lo representamos
+
+'CONSTRUCTOR
+new(codTema As Integer)
+
+Parámetros:
+	codTema (IN)		- código del tema
+	
+'PROPIEDADES
+Get CodTema () As Integer
+Get/Set Nombre () As Integer
+Get/Set Descripcion() As String
+Get/Set Tiempo () As Integer
+Get/Set Unidades () As Vector
+Get/Set NombresCampos () As Vector
+Get/Set TiposCampos () As Vector
+Get/Set RequeridoCampos () As Vector
+Get/Set TipoRuta () As String
+Get/Set VersionRuta () As Integer
+
+Get Ruta () As Ruta 
+Setea el objeto ruta a partir del tema actual
+
+'METODOS
+SalvarTema ()		
+
+%END REM
+
+Option Declare
+Use "FuncionesGenerales"
+Use "ClaseRuta" 
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Tema
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+'ERRORES GENERADOS
+'CONSTANTES PRIVADAS
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <TEMA>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Tema
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private docTema As NotesDocument 
+	Private dbRutas As NotesDatabase
+	
+'******************************************************************************************************************			
+	
+	'PROCEDIMIENTOS Y FUNCIONES PRIVADOS
+	
+	Private Sub SetearDbRutas()
+		'Si todavía no está seteada, seteo la base de rutas
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion, srv As String, path As String
+		
+		If dbRutas Is Nothing Then
+			srv = c.ServidorDomino(CLAVE_DBRUTAS)
+			path = c.BaseDeDatos(CLAVE_DBRUTAS)
+			Set dbRutas = New NotesDataBase ("","")
+			Call dbRutas.Open (srv,path)			
+			If dbRutas.Title = "" Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBRUTAS
+		End If
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Procedimiento SetearDbRutas","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR
+	Public Sub new(codTema As Integer, versionRuta As Integer)
+	'Setea el NotesDocument que tiene el codTema y la version que recibe
+		On Error Goto HANDLER
+		
+		Dim viewVBusqTema As NotesView, clave As String
+		
+		Call SetearDbRutas()  'si todavía no está seteada, seteo la base de rutas
+		
+		'Seteo la vista donde voy a buscar el doc de tema
+		Set viewVBusqTema = dbRutas.GetView(DBRUTAS_VISTA_BUSQ_TEMA_COD)
+		If viewVBusqTema Is Nothing Then Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND+" "+DBRUTAS_VISTA_BUSQ_TEMA_COD
+		
+		'Seteo el documento de tema
+		clave=Cstr(codTema)+Cstr(versionRuta)
+		Set docTema = viewVBusqTema.GetDocumentByKey(clave)
+		If docTema Is Nothing Then Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND+" "+clave
+		
+		Exit Sub	
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Método new","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'PROPIEDADES
+	
+	Public Property Get CodTema () As Integer
+		
+		On Error Goto HANDLER
+		
+		CodTema = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_COD_TEMA)(0)		
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get CodTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Nombre () As String
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_NOMBRE, Nombre
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set Nombre","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Nombre() As String
+		
+		On Error Goto HANDLER
+		
+		Nombre = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_NOMBRE)(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get Nombre","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Descripcion() As String
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_DESCRIPCION, Descripcion
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set Descripcion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Descripcion() As String
+		
+		On Error Goto HANDLER
+		
+		Descripcion = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_DESCRIPCION)(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get Descripcion","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Tiempo () As Integer
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_TIEMPO, Tiempo
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set Tiempo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Tiempo () As Integer
+		
+		On Error Goto HANDLER
+		
+		Tiempo = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_TIEMPO)(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get Tiempo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Unidades () As Vector
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_UNIDADES, Unidades
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set Unidades","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Unidades () As Vector
+		Dim v As New Vector(0)
+		
+		On Error Goto HANDLER
+		
+		v.values = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_TIEMPO)
+		Set Unidades = v
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get Unidades","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set NombresCampos () As Vector
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_TABLA_NOMBRES, NombresCampos
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set NombresCampos","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NombresCampos () As Vector
+		Dim v As New Vector(0)
+		
+		On Error Goto HANDLER
+		
+		v.values = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_TABLA_NOMBRES)
+		Set NombresCampos = v
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get NombresCampos","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set TiposCampos () As Vector
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_TABLA_TIPOS, TiposCampos
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set TiposCampos","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get TiposCampos () As Vector
+		Dim v As New Vector(0)
+		
+		On Error Goto HANDLER
+		
+		v.values = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_TABLA_TIPOS)
+		Set TiposCampos = v
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get TiposCampos","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set RequeridoCampos () As Vector
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_TABLA_REQUERIDO, RequeridoCampos
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set RequeridoCampos","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get RequeridoCampos () As Vector
+		Dim v As New Vector(0)
+		
+		On Error Goto HANDLER
+		
+		v.values = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_TABLA_REQUERIDO)
+		Set RequeridoCampos = v
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get RequeridoCampos","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set TipoRuta () As String
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_TIPO_RUTA, TipoRuta
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set TipoRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get TipoRuta () As String
+		
+		On Error Goto HANDLER
+		
+		TipoRuta = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_TIPO_RUTA)(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get TipoRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set VersionRuta () As Integer
+		
+		On Error Goto HANDLER
+		
+		docTema.ReplaceItemValue DBRUTAS_CAMPO_FTEMA_VERSION, VersionRuta
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Set VersionRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get VersionRuta () As Integer
+		
+		On Error Goto HANDLER
+		
+		VersionRuta = docTema.GettemValue(DBRUTAS_CAMPO_FTEMA_VERSION)(0)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get VersionRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get Ruta () As Ruta
+		'Seteo el objeto ruta a partir del código de tema del objeto tema actual
+		
+		On Error Goto HANDLER
+		
+		Set Ruta = New Ruta (Me.CodTema, Me.VersionRuta)
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Propiedad Get Ruta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+'METODOS
+	
+	Public Sub SalvarTema ()
+		
+		On Error Goto HANDLER
+		
+		docTema.save False, False
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Tema - Método SalvarTema","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************			
+	
+End Class

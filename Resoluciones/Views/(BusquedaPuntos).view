@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='2be' unid='C09C29F720A5F2C003257582004AC60E' sequence='46'>
+<created><datetime>20090323T103643,66-03</datetime></created>
+<modified><datetime>20150311T132733,34-03</datetime></modified>
+<revised><datetime>20150309T094458,22-03</datetime></revised>
+<lastaccessed><datetime>20150311T132733,34-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132733,34-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQDzHWOtNs/IyMNVWACtbSUA
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(BusquedaPuntos)|VBusqPtos</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+EAECAC4AAgAkNgUACgBzTnJvU2VzaW9uVgEFAAsAY2NuTnJvUHVudG8AVgEiAgMAAgBcAAIAJDQB
+AB8AWzxBIEhSRUY9J2phdmFzY3JpcHQ6YWJyaXJEb2MoIgCQAFYBIgIBAAQAIiknPiICBQAMAHNE
+ZXNjcmlwY2lvbiICAQAFADwvQT5dACICAwAFACIAHQAEAAIAAgAJAAQAJDYkNCRDb25mbGljdCRS
+RUYABAAEAAAATAAFAAQARm9ybQEABgBGUHVudG8KAgUACABjY0VzdGFkbwEACQBQZW5kaWVudGUA
+CwIcAgUACQAkQ29uZmxpY3QAaAEeARwCAwAHABIADAAJTDFTNFM1UzhTOVM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEiGYAAAACACQ2
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAcACAAAAFZDAQQCAAAAPAAAAI4AAQAACgAhAAAAAAAAAAICAAAAVkMAAAIAAABqAAAAfgEB
+AAAKACAAAAAAAAAAAgIAAAAkNjwAAgAuAAIAJDYFAAoAc05yb1Nlc2lvblYBBQALAGNjbk5yb1B1
+bnRvAFYBIgIDAAcADAAFAAkwUzBFACQ0agACAFwAAgAkNAEAHwBbPEEgSFJFRj0namF2YXNjcmlw
+dDphYnJpckRvYygiAJAAVgEiAgEABAAiKSc+IgIFAAwAc0Rlc2NyaXBjaW9uIgIBAAUAPC9BPl0A
+IgIDAAcADAAFAAkwUzBFACYAAQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEAAQABAQAAAAAAAAAAV0MB
+AQAJAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAA
+AAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABCAAAAAAABAP///wAFAP///wABAAAAAAAA
+AAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQCAgIAAAAAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text>Vista utilizada en la clase punto para controlar la numeracion de los mismos</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAABAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAX0NhdGVnb3KhYXMF
+AQBOfL7/LAAAAAUAAACdAQAAEQAAAAAAAABfRWRpdGFyIGRvY3VtZW50bwUCAAIKvv8sAAAABQAA
+AJ0BAAARAAAAAAAAAEVuX3ZpYXIgZG9jdW1lbnRvAAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAA
+X1JlbWl0aXIEAAQKvv8yAAAABQAAAJ0BAAAXAAAAAAAAAF9Nb3ZlciBhIHVuYSBjYXJwZXRhLi4u
+ZgUAPXy+/zAAAAAFAAAAnQEAABYAAAAAAAAARV94dHJhZXIgZGUgbGEgY2FycGV0YQYAPny+/1QA
+AAABAAAAnwEAAAsAAAAAAAAAQ3JlYXIgUHVudG/bMgAAACQAAgDoAwAAAAAAAAEADQBGUHVudG9z
+VHJhdGFyAO0CAwAHAAwABQAJMFMwRQA=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABfQ2F0ZWdv
+cqFhc/8BAE58vv8sAAAABQAAAJ0BAAARAAAAAAAAAF9FZGl0YXIgZG9jdW1lbnRvAAIAAgq+/ywA
+AAAFAAAAnQEAABEAAAAAAAAARW5fdmlhciBkb2N1bWVudG8+AwADCr7/IgAAAAUAAACdAQAACAAA
+AAAAAABfUmVtaXRpcgQABAq+/zIAAAAFAAAAnQEAABcAAAAAAAAAX01vdmVyIGEgdW5hIGNhcnBl
+dGEuLi5ABQA9fL7/MAAAAAUAAACdAQAAFgAAAAAAAABFX3h0cmFlciBkZSBsYSBjYXJwZXRhBgA+
+fL7/VAAAAAEAAACfAQAACwAAAAAAAABDcmVhciBQdW50bwoyAAAAJAACAOgDAAAAAAAAAQANAEZQ
+dW50b3NUcmF0YXIA7QIDAAcADAAFAAkwUzBFAA==
+</rawitemdata></item></note>
+

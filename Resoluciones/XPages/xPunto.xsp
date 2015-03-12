@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom">
+	<xp:this.data>
+		<xp:dominoDocument var="document1" formName="FPunto"></xp:dominoDocument>
+		
+	</xp:this.data>
+
+
+	<xp:this.resources>
+		<xp:styleSheet href="/punto.css"></xp:styleSheet>
+		<xp:script src="/FuncionesPuntos.js" clientSide="true"></xp:script>
+		<xp:styleSheet href="/pruebaTabla.css"></xp:styleSheet>
+		<xp:styleSheet href="/menuXpage.css"></xp:styleSheet>
+	</xp:this.resources>
+
+
+	
+
+	
+	
+
+
+	
+
+	
+	<xp:panel style="width:1460.0px;height:535.0px">
+
+		<xp:panel
+			style="width:1444.0px;height:112.0px;background-position:top-right">
+
+			<xp:table style="width:1432.0px" styleClass="menuxPage">
+				<xp:tr>
+					<xp:td></xp:td>
+					<xp:td></xp:td>
+					<xp:td></xp:td>
+					<xp:td></xp:td>
+				</xp:tr>
+			</xp:table>
+			<xp:table style="width:1433.0px" cellpadding="0"
+				cellspacing="0">
+				<xp:tr>
+					<xp:td style="width:682.0px;height:105.0px"
+						styleClass="CeldaTituloAct">
+						<xp:table
+							style="width:667.0px;background-repeat:no-repeat">
+							<xp:tr>
+								<xp:td
+									style="background-image:url(docs.gif);background-repeat:no-repeat;width:159.0px;height:99.0px">
+								</xp:td>
+								<xp:td
+									style="width:486.0px;height:99.0px">
+									<xp:table style="width:483.0px">
+										<xp:tr>
+											<xp:td
+												style="width:124.0px">
+												<xp:label id="label6"
+													value="Asunto" styleClass="TituloAct">
+												</xp:label>
+											</xp:td>
+											<xp:td
+												style="width:237.0px">
+											</xp:td>
+											<xp:td
+												style="width:111.0px">
+											</xp:td>
+										</xp:tr>
+										<xp:tr>
+											<xp:td
+												style="width:124.0px">
+												<xp:label id="label7"
+													value="Expediente" styleClass="SubTituloAct">
+												</xp:label>
+											</xp:td>
+											<xp:td
+												style="width:237.0px">
+
+
+												<xp:inputText
+													id="inputText1" value="#{document1.ccEstado}">
+												</xp:inputText>
+											</xp:td>
+											<xp:td
+												style="width:111.0px">
+											</xp:td>
+										</xp:tr>
+										<xp:tr>
+											<xp:td
+												style="width:124.0px">
+											</xp:td>
+											<xp:td
+												style="width:237.0px">
+											</xp:td>
+											<xp:td
+												style="width:111.0px">
+											</xp:td>
+										</xp:tr>
+									</xp:table>
+
+								</xp:td>
+							</xp:tr>
+						</xp:table>
+					</xp:td>
+					<xp:td style="width:260.0px;height:105.0px"
+						styleClass="CeldaTituloAct">
+					</xp:td>
+					<xp:td style="height:105.0px;width:121.0px"
+						styleClass="CeldaTituloAct">
+					</xp:td>
+					<xp:td
+						style="height:105.0px;background-image:url(SeparadorEncAct.jpg);background-repeat:no-repeat;background-position:top right;width:86.0px">
+					</xp:td>
+					<xp:td style="height:105.0px;width:332.0px"
+						styleClass="FondoDatosEncabezadoAct">
+						<xp:table style="width:239.0px">
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:118.0px">
+									<xp:label id="label1"
+										value="Fecha Creacion:" styleClass="LeyendaEncabezadoAct">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:143.0px">
+									<xp:text escape="true"
+										id="computedField1" value="#{javascript:@Today()}"
+										styleClass="CampoEncabezadoAct">
+									</xp:text>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:118.0px">
+									<xp:label id="label2"
+										value="Nro Sesión:" styleClass="LeyendaEncabezadoAct">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:143.0px">
+									<xp:link escape="true" id="link1">
+										<xp:this.text><![CDATA[#{javascript:@Subset(document1.getItemValueString("sNroSesion"),1)}]]></xp:this.text>
+										<xp:eventHandler event="onclick"
+											submit="false">
+											<xp:this.script><![CDATA[Salir(document.getElementById("#{id:DocUnivID}").value,'ir_sesion')]]></xp:this.script>
+										</xp:eventHandler>
+									</xp:link>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:118.0px">
+									<xp:label id="label3"
+										value="Nro Asunto:" styleClass="LeyendaEncabezadoAct">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:143.0px"></xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:118.0px">
+									<xp:label id="label4"
+										value="Creador:" styleClass="LeyendaEncabezadoAct">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:143.0px"></xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:118.0px">
+									<xp:label id="label5"
+										styleClass="LeyendaEncabezadoAct" value="Estado:">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:143.0px"></xp:td>
+							</xp:tr>
+						</xp:table>
+					</xp:td>
+				</xp:tr>
+			</xp:table>
+		</xp:panel>
+
+		<xp:table style="width:1450.0px"
+			styleClass="TablaActContenido">
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiqueta"
+					style="width:201.0px">
+					<xp:label id="label8" value="Referencia:"></xp:label>
+				</xp:td>
+				<xp:td style="width:1243.0px"></xp:td>
+			</xp:tr>
+			<xp:tr>
+				<xp:td style="width:201.0px"
+					styleClass="TablaActEtiqueta">
+					<xp:label id="label9" value="Unidad:"></xp:label>
+				</xp:td>
+				<xp:td style="width:1243.0px"></xp:td>
+			</xp:tr>
+			<xp:tr>
+				<xp:td style="width:201.0px"
+					styleClass="TablaActEtiqueta">
+					<xp:label id="label10" value="Tema:"></xp:label>
+				</xp:td>
+				<xp:td style="width:1243.0px"></xp:td>
+			</xp:tr>
+		</xp:table>
+		<xp:tabbedPanel id="tabbedPanel1">
+			<xp:tabPanel id="tabPanel1"
+				label="Proyecto de resolución">
+				<xp:inputRichText id="inputRichText1"
+					style="width:1457.0px;height:248.0px">
+				</xp:inputRichText>
+				<xp:table style="width:1458.0px"
+					styleClass="TablaActContenedorGrupo">
+					<xp:tr>
+						<xp:td style="width:1454.0px">
+							<xp:label id="label12"
+								value="Anexar Archivos" styleClass="TituloSeccionAct">
+							</xp:label>
+							<xp:br></xp:br>
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+				<xp:table style="width:1464.0px">
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload1"
+								styleClass="TextoFirmaOK">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:42.0px">
+
+						</xp:td>
+
+
+						<xp:td style="width:870.0px">
+							<xp:fileUpload id="fileUpload2"
+								styleClass="TextoFirmaOK"
+								style="background-position:center right">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:301.0px">
+
+						</xp:td>
+					</xp:tr>
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload3"
+								styleClass="TextoFirmaOK">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:56.0px"></xp:td>
+
+
+						<xp:td style="width:870.0px">
+							<xp:fileUpload id="fileUpload4"
+								styleClass="TextoFirmaOK">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:301.0px">
+
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+			</xp:tabPanel>
+			<xp:tabPanel id="tabPanel2" label="Resolución">
+
+				<xp:inputRichText id="inputRichText2"
+					style="width:1453.0px;height:275.0px">
+				</xp:inputRichText>
+				<xp:table style="width:1451.0px"
+					styleClass="TablaActContenedorGrupo">
+					<xp:tr>
+						<xp:td>
+							<xp:label id="label11"
+								value="Anexar Archivos" styleClass="TituloSeccionAct">
+							</xp:label>
+							<xp:br></xp:br>
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+				<xp:table style="width:1451.0px">
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload5"
+								styleClass="TextoFirmaOK">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:42.0px"></xp:td>
+						<xp:td style="width:359.0px">
+
+							<xp:fileUpload id="fileUpload6"
+								styleClass="TextoFirmaOK"
+								style="background-position:center right">
+							</xp:fileUpload>
+						</xp:td>
+
+
+						<xp:td style="width:951.0px">
+
+						</xp:td>
+					</xp:tr>
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload7"
+								styleClass="TextoFirmaOK">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:42.0px"></xp:td>
+						<xp:td style="width:359.0px">
+							<xp:fileUpload id="fileUpload8"
+								styleClass="TextoFirmaOK">
+							</xp:fileUpload>
+						</xp:td>
+
+
+						<xp:td style="width:951.0px">
+
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+
+
+			</xp:tabPanel>
+		</xp:tabbedPanel>
+
+
+	</xp:panel>
+</xp:view>

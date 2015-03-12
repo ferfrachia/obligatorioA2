@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A84F3" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="152" sequence="40" unid="4F48BA4D275C047583257B570054547D">
+<created><datetime>20130424T122106,53-03</datetime></created>
+<modified><datetime>20150311T132843,13-03</datetime></modified>
+<revised><datetime>20150309T094435,87-03</datetime></revised>
+<lastaccessed><datetime>20150311T132843,13-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132843,13-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$TITLE" sign="true"><text>ConstantesDBWebServices</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.3</text></item>
+
+
+<item name="$POID"><datetime dst="true">20141112T111704,31-02</datetime></item></note>

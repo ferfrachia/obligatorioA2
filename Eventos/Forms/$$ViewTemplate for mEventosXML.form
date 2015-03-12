@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A40AC'>
+<noteinfo noteid='882' unid='418F5DAD6919B56083257CA1005B122D' sequence='8'>
+<created><datetime>20140320T133444,29-03</datetime></created>
+<modified><datetime>20150311T132557,63-03</datetime></modified>
+<revised><datetime>20150309T094352,17-03</datetime></revised>
+<lastaccessed><datetime>20150311T132557,63-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132557,63-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$BackgroundR5' sign='true'>
+<rawitemdata type='1'>
+mQAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA==
+</rawitemdata></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+d/8qAAAAAAABAAAAgAABAP+fcQABAAAAgAAAAAAAAAAAAAAAAAAAAAAAX/8QAAIADwAHAAAAAAAA
+AA==
+</rawitemdata></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>@SetHTTPHeader("Cache-control";"no-cache")</formula></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$MimeType' sign='true'><text>text/xml</text></item>
+<item name='$WebFlags' sign='true'><text>H</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>$$ViewTemplate for PuntosExtrasNew</text></item>
+<item name='$$ViewBody' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>$$ViewBody</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gv9GAAEABAAAAAAAAACgBVwKoAUIANACoAVwCEALEA7gELATgBYAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAACUAKYsAAAAAAEARE9fTk9UX1RBRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+gQKC/1oAAgAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAIAhf80AAEAAAg8P3htbCB2ZXJz
+aW9uPSIxLjAiIGVuY29kaW5nPSJpc28tODg1OS0xIiA/PoECgwQCAIX/DgABAAAIPGRhdGE+gQKC
+/1oAAwAAAAAAAAAAAKAFAACgBQgAjgheCy4O/hDOE54Wbhk+HAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAJAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAAC7/zwAAwAYANLVpGPkji4AAAAgAAUACQBU
+b3RhbEhpdHMAAAAAAAAAAAAAAAoCAwAHAAwABQAJMFMwRQCDBAMAhf8IAAEAAAjdBgAAiv/+/1AA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAIr/LgCKAAAFADACAAAAAAAAAgEAAAgAAAAAAAAAAAoAAAAAACQk
+Vmlld0JvZHliDgEAhAAAAAAAAAAAAN4GAACK/4X/CAABAAAIgQKC/1oABAAAAAAAAAAAAKAFAACg
+BQgAjgheCy4O/hDOE54Wbhk+HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAJSHAAAAAAAA
+AAAAAAAAAQAAAAQAAAC7/zgABAAYANLVpGPkjioAAAAcAAUABQBDb3VudAAAAAAAAAAAAAAACgID
+AAcADAAFAAkwUzBFAIMEBACF/w8AAQAACDwvZGF0YT4A
+</rawitemdata></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL0c5wAAAAEAAQAAAIEAAAAA
+AAAABQABCQgAAgB5/2wAAQADO2oAAQAAAAAAAQD///8AAQADO2oAAAAfAAAAAAAAAAAAAwAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAD8/zoAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA
+AAAAAAAAvv8mAAAABQAAAJ0BAAALAAAAAAAAAENhdGVnb3JpX3plAAEATny+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX0VkaXQgRG9jdW1lbnQCAAIKvv8oAAAABQAAAJ0BAAAOAAAAAAAAAFNlbmQgRG9j
+dV9tZW50AwADCr7/IgAAAAUAAACdAQAACAAAAAAAAABfRm9yd2FyZAQABAq+/ywAAAAFAAAAnQEA
+ABIAAAAAAAAAX01vdmUgVG8gRm9sZGVyLi4uBQA9fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVt
+b3ZlIEZyb20gRm9sZGVyAAYAPnw=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRznAAAAAQABAAAAgQAAAAAAAAAQAAEJCAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABTZW5kIERvY3VfbWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcgAGAD58
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>$$ViewTemplate for mEventosXML</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item></note>
+

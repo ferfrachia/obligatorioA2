@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF800649717" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="cd6" sequence="85" unid="EB837323B81FFBB8032575A5005C6094">
+<created><datetime>20090427T134900,36-03</datetime></created>
+<modified><datetime>20150309T094529,29-03</datetime></modified>
+<revised><datetime>20150309T094529,28-03</datetime></revised>
+<lastaccessed><datetime>20150309T094529,29-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T161857,84-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=CURSO</name><name>CN=Admin ISA/O=VISION</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=WebApp Manager/O=1871</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20090427T134900,37-03</datetime><datetime>20090429T180853,75-03</datetime><datetime>20090429T184419,91-03</datetime><datetime>20090429T184536,45-03</datetime><datetime>20090429T195140,85-03</datetime><datetime>20090429T195501,66-03</datetime><datetime>20090429T195715,88-03</datetime><datetime>20090429T200745,14-03</datetime><datetime>20090430T141402,86-03</datetime><datetime>20090430T142429,04-03</datetime><datetime>20090430T143044,01-03</datetime><datetime>20090430T143119,64-03</datetime><datetime>20090430T143203,34-03</datetime><datetime>20090430T143414,44-03</datetime><datetime>20090504T111629,32-03</datetime><datetime>20090504T215633,79-03</datetime><datetime>20090504T220049,60-03</datetime><datetime>20090504T221056,07-03</datetime><datetime>20090504T221335,13-03</datetime><datetime>20090504T221527,29-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>XMLExportador</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20140814T173028,02-03</datetime></item></note>

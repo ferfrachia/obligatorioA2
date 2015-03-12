@@ -1,0 +1,381 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "ConstantesSistema" 
+Use "Errores generales"
+Use "ErrorHandlerClass 1.3"
+
+
+%REM
+FUNCIONES DISPONIBLES
+
+Public Sub RegistrarYGenerarError(byval aplicacion as string, byval funcion as string, byval msgadic as string)
+	1) Envía mail a los administradores y realiza el log del error en la base errorlog
+	2) Agrega al texto del error el msgadic
+	3) Genera nuevamente el error hacia arriba con igual número y texto
+	Parámetros
+		aplicacion: nombre de la aplicacion donde ocurre el error
+		funcion: nombre detallado de la función exacta donde ocurre el error
+		msgadic: mensaje adicional que quiera agregarse al mensaje de error
+
+Public Sub ResgistrarYDesplegarError (byval aplicacion as string, byval funcion as string, byval msgadic as string)
+	1) Agrega al texto del error el msgadic
+	2) Despliega dicho texto de error en pantalla
+	Parámetros
+		aplicacion: nombre de la aplicacion donde ocurre el error
+		funcion: nombre detallado de la función exacta donde ocurre el error
+		msgadic: mensaje adicional que quiera agregarse al mensaje de error
+
+%ENDREM
+
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Sub Initialize
+Declare Public Sub RegistrarYGenerarError(Byval aplicacion As String,Byval funcion As String, _
+Byval msgadic As String)
+Declare Public Sub GenerarErrorLog2(Byval Err_ As Integer, Error_ As String, Byval msgAdic As String, _
+Byval Aplicacion As String, Byval Funcion As String, Byval lineaErr As Integer, _
+Byval Usuario As String)
+Declare Public Sub GenerarErrorLog(Byval Err_ As Integer, Error_ As String, Byval msgAdic As String, Byval Aplicacion As String, Byval Funcion As String, Byval lineaErr As Integer)
+Declare Public Sub RegistrarYGenerarError2(Byval errorNum As Integer, Byval errorDesc As String, _
+Byval aplicacion As String,Byval funcion As String, Byval msgadic As String, _
+Byval Usuario As String)
+Declare Public Sub DesplegarMsgErrorWeb(Byval Err_ As Integer, Error_ As String, Byval msgAdic As String, Byval Aplicacion As String, Byval Funcion As String, Byval lineaErr As Integer, urlvuelta As String)
+Declare Public Function mySplit(Byval strIn As String,sep As String,out As Variant)
+Declare Public Sub BorrarCampo(doc As NotesDocument, Byval nombre As String)
+Declare Public Sub RegistraryDesplegarError(Byval aplicacion As String,Byval funcion As String,Byval msgadic As String)
+Declare Public Function cambiarChar(temp As String, strBuscar As String, strCambiar As String)
+Declare Public Function URLDecode(inpString As String) As String
+Declare Public Function replaceSubstring(Byval x As String, Byval repfrom As String, Byval repto As String, _
+Byval caseflag As Integer) As String
+Declare Public Sub RegistraryDesplegarErrorURL(ByVal aplicacion As String,ByVal funcion As String,ByVal msgadic As String, ByVal urlRet As String)
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private loguearError As Integer
+
+'++LotusScript Development Environment:2:2:Initialize:1:10
+Sub Initialize
+	
+	'Inicializo el loguearError en true
+	loguearError = True
+	
+End Sub
+
+'++LotusScript Development Environment:2:2:RegistrarYGenerarError:2:8
+Public Sub RegistrarYGenerarError(Byval aplicacion As String,Byval funcion As String, _
+Byval msgadic As String)
+	'Función utilizada por las funciones llamadas por agentes para realizar el log del error
+	'y enviarlo hacia arriba
+	
+	'Genero log del error
+	Call GenerarErrorLog(Err,Error,msgadic,aplicacion,funcion,Erl)
+	'Seteo la variable de loguearError en false porque ya se logeó acá
+	loguearError = False
+	'Envío el error hacia arriba, indicando el nombre de la función	
+	Error Err,Error
+End Sub
+
+'++LotusScript Development Environment:2:2:GenerarErrorLog2:3:8
+Public Sub GenerarErrorLog2(Byval Err_ As Integer, Error_ As String, Byval msgAdic As String, _
+Byval Aplicacion As String, Byval Funcion As String, Byval lineaErr As Integer, _
+Byval Usuario As String)
+	'Maneja la clase ErrorHandler para enviar mail a los administradores y realizar el registro de error en la base de errorlog
+	'SYSTEM_ADMIN_X y ERROR_LOG son constantes del sistema
+	
+	Dim send() As String
+	Dim eh As ErrorHandler
+	Dim textoErr As String
+	
+	If msgAdic <> "" Then
+		textoErr = Error_+": "+msgAdic
+	Else
+		textoErr = Error_
+	End If
+	
+	Redim send(0)
+	
+	Set eh = New ErrorHandler(Err_,textoErr,Aplicacion,Funcion,lineaErr,Usuario)
+	
+	Call eh.Registrar("")
+End Sub
+
+'++LotusScript Development Environment:2:2:GenerarErrorLog:1:8
+Public Sub GenerarErrorLog(Byval Err_ As Integer, Error_ As String, Byval msgAdic As String, Byval Aplicacion As String, Byval Funcion As String, Byval lineaErr As Integer)
+	'Maneja la clase ErrorHandler para enviar mail a los administradores y realizar el registro de error en la base de errorlog
+	'SYSTEM_ADMIN_X y ERROR_LOG son constantes del sistema
+	
+	Dim send() As String
+	Dim eh As ErrorHandler
+	Dim textoErr As String
+	
+	If msgAdic <> "" Then
+		textoErr = Error_+": "+msgAdic
+	Else
+		textoErr = Error_
+	End If
+	
+	Redim send(0)
+	
+	Set eh = New ErrorHandler(Err_,textoErr,Aplicacion,Funcion,lineaErr,"")
+	
+	Call eh.Registrar("")
+	
+End Sub
+
+'++LotusScript Development Environment:2:2:RegistrarYGenerarError2:3:8
+Public Sub RegistrarYGenerarError2(Byval errorNum As Integer, Byval errorDesc As String, _
+Byval aplicacion As String,Byval funcion As String, Byval msgadic As String, _
+Byval Usuario As String)
+	'Función utilizada por las funciones llamadas por agentes para realizar el log del error
+	'y enviarlo hacia arriba
+	
+	'Genero log del error
+	Call GenerarErrorLog2(ErrorNum,ErrorDesc,msgadic,aplicacion,funcion,Erl,Usuario)
+	'Seteo la variable de loguearError en false porque ya se logeó acá
+	loguearError = False
+	'Envío el error hacia arriba, indicando el nombre de la función	
+	Error ErrorNum,Errordesc	
+End Sub
+
+'++LotusScript Development Environment:2:2:DesplegarMsgErrorWeb:1:8
+Public Sub DesplegarMsgErrorWeb(Byval Err_ As Integer, Error_ As String, Byval msgAdic As String, Byval Aplicacion As String, Byval Funcion As String, Byval lineaErr As Integer, urlvuelta As String)
+	'Se utiliza para desplegar el mensaje de error en la web
+	
+	Dim textoErr As String, texto As String, img As String
+	Dim ses As New  NotesSession
+	Dim docConfig As NotesDocument
+	Dim url As String
+	
+	Set docConfig = ses.CurrentDatabase.GetProfileDocument("IGDocConfig")
+	url = docConfig.GetItemValue("rProtocolo")(0) & "://" & docConfig.GetItemValue("sHost")(0) & ":" & docConfig.GetItemValue("sPuerto")(0) & "/" &  Replace(ses.CurrentDatabase.FilePath,|\|,|/|)
+	
+	If msgAdic <> "" Then
+		textoErr = Error_+": "+msgAdic
+	Else
+		textoErr = Error_
+	End If
+	
+	
+'	##################################################################################
+	texto=|	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">|
+	texto=texto & |<html>|
+	texto=texto & |<head>|
+	texto=texto & |<style>|
+	texto=texto & |.textoTitulo{font-family: Arial,  Verdana ; font-size: 10pt;font-weight:bold;color : red; }|
+	texto=texto & |</style>|
+	texto=texto & |</head>|
+	texto=texto & |<body text="#000000" bgcolor="#FFFFFF">|
+	texto=texto & |<table cellpadding="0" cellspacing="0" width="100%" height="100%">|
+	texto=texto & |<tr>|
+	texto=texto & |<td align="center" valign="middle">|
+	texto=texto & |<table cellpadding="0" cellspacing="0" width="633" height="202">|
+	texto=texto & |<tr>|
+	texto=texto & |		<td align="right" valign="top">|
+	texto=texto & |				<img src="| & url & |/error/izq.gif">|
+	texto=texto & |			</td>|
+	texto=texto & |			<td style="width: 100%; background-image: url(| & url & |/error/fondo.gif?OpenImageResource) ; " height="20"  align="center" valign="center">|
+	texto=texto & |				<table cellpadding="2" cellspacing="0" widht="100%" height="100%" border="0">|
+	texto=texto & |				<tr>|
+	texto=texto & |					<td colspan="4" height="5">|
+	texto=texto & |						&nbsp;|
+	texto=texto & |					</td>|
+	texto=texto & |				</tr>|
+	texto=texto & |				<tr>|
+	texto=texto & |					<td width="10" >|
+	texto=texto & |						&nbsp;|
+	texto=texto & |					</td>|
+	texto=texto & |					<td  valign="top" align="center" rowspan="3">|
+	texto=texto & |						<img src="| & url & |/error/alerta_btn.gif">|
+	texto=texto & |					</td>|
+	texto=texto & |					<td valign="top" width="100%" class="textoTitulo" colspan="2">|
+	texto=texto &textoErr
+	texto=texto & |					</td>|
+	texto=texto & |				</tr>|
+	texto=texto & |				<tr>|
+	texto=texto & |					  <td> &nbsp;</td> |
+	texto=texto & |					<td   valign="bottom">|
+	texto=texto & |						<img src="| & url & |/error/frase2.gif" >|
+	texto=texto & |					</td>|
+	texto=texto & |					<td align="center" style="cursor:pointer" valign="bottom">|
+	texto=texto & |						<a href="|& urlvuelta &|" ><img src="| & url & |/error/volver.gif" onmouseover="this.src='| & url & |/error/volver_ovr.gif'" onmouseout="this.src='| & url & |/error/volver.gif'" onclick="location.replace(| & url & |)" border="0"></a>|
+	texto=texto & |					</td>|
+	texto=texto & |				</tr>|
+	texto=texto & |				<tr>|
+	texto=texto & |					<td colspan="4" height="100%">|
+	texto=texto & |						&nbsp;|
+	texto=texto & |					</td>|
+	texto=texto & |				</tr>|
+	texto=texto & |				</table>|
+	texto=texto & |			</td>|
+	texto=texto & |			<td align="left" valign="top">|
+	texto=texto & |				<img src="| & url & |/error/der.gif">|
+	texto=texto & |			</td>|
+	texto=texto & |		</tr>|
+	texto=texto & |		</table>|
+	texto=texto & |	</td>|
+	texto=texto & |</tr>|
+	texto=texto & |</table>|
+	texto=texto & |</body>|
+	texto=texto & |</html>|
+' 	##################################################################################	
+	
+	
+	
+	
+	
+	Print texto
+	
+	
+End Sub
+
+'++LotusScript Development Environment:2:1:mySplit:1:8
+Public Function mySplit(Byval strIn As String,sep As String,out As Variant)
+	'devuelve en out un array con los items contenidos en strIn y separados por sep
+	'EN R6 existe la función Split que la sustituye!!!
+	
+	Dim indice As Integer,item As String
+	
+	Redim out(0 To 0)
+	out(0)=""
+	indice=0
+	While Instr(strIn,sep)<>0
+		item =Strleft(strIn,sep)
+		If item <> "" Then
+			Redim Preserve out(0 To indice)
+			out(indice)=item
+			indice = indice + 1	
+		End If		
+		strIn =Strright(strIn,sep)
+	Wend
+	If strIn<>"" Then
+		Redim Preserve out(0 To indice)
+		out(indice)=strIn
+	End If
+End Function
+
+
+'++LotusScript Development Environment:2:2:BorrarCampo:1:8
+Public Sub BorrarCampo(doc As NotesDocument, Byval nombre As String)
+'Si el doc tiene el un campo nombre lo borra
+	
+	On Error Goto HANDLER	
+	
+	Dim item As NotesItem
+	
+	Set item = doc.GetFirstItem(nombre)
+	If doc.HasItem(nombre) Then
+		Call item.Remove
+	End If
+	
+	Exit Sub
+HANDLER:
+	Call RegistrarYGenerarError(NOMBRE_APLICACION,"Función General - BorrarCampo","")
+	Exit Sub
+End Sub
+
+'++LotusScript Development Environment:2:2:RegistraryDesplegarError:1:8
+Public Sub RegistraryDesplegarError(Byval aplicacion As String,Byval funcion As String,Byval msgadic As String)
+	'Función utilizada por los Initialize de los agentes para realizar el log del error 
+	'(si aún no se hizo) y desplegarlo
+	
+	If loguearError Then
+	'Genero log del error
+		Call GenerarErrorLog(Err, Error,msgadic,aplicacion,funcion,Erl)
+	End If
+	'Despliego mensaje de error
+	Call DesplegarMsgErrorWeb(Err, Error,msgadic,aplicacion,funcion,Erl,"")
+	
+End Sub
+
+'++LotusScript Development Environment:2:1:cambiarChar:1:8
+Public Function cambiarChar(temp As String, strBuscar As String, strCambiar As String)
+	On Error Goto HANDLER
+	
+	While Instr(temp,strBuscar) >0
+		temp = Strleft(temp,strBuscar) + strCambiar +Strright(temp,strBuscar)
+	Wend
+	cambiarChar =temp
+	
+	Exit Function
+HANDLER:
+	Call RegistrarYGenerarError(NOMBRE_APLICACION,"Función General - cambiarChar","")
+	Exit Function
+End Function
+
+'++LotusScript Development Environment:2:1:URLDecode:1:8
+Public Function URLDecode(inpString As String) As String
+	On Error Goto HANDLER	
+	
+	Dim temp As String
+	Dim hexValue As String
+	Dim ch As String
+	Dim pos As Integer
+	Dim newPos As Integer
+	' First, replace any plus signs with spaces
+	temp = inpString
+	
+	'Acéntos minúsculas
+	
+	temp=cambiarChar(temp,"%C3%A1","á")
+	temp=cambiarChar(temp,"%C3%A9","é")
+	temp=cambiarChar(temp,"%C3%AD","í")
+	temp=cambiarChar(temp,"%C3%B3","ó")
+	temp=cambiarChar(temp,"%C3%BA","ú")
+	
+	'Acéntos MAYÚSCULAS
+	temp=cambiarChar(temp,"%C3%81","Á")
+	temp=cambiarChar(temp,"%C3%89","É")
+	temp=cambiarChar(temp,"%C3%8D","Í")
+	temp=cambiarChar(temp,"%C3%93","Ó")
+	temp=cambiarChar(temp,"%C3%9A","Ú")	
+	
+	
+	temp=cambiarChar(temp,"%C3%91","Ñ")
+	temp=cambiarChar(temp,"%C3%B1","ñ")
+	
+	urlDecode = temp
+	
+	Exit Function
+HANDLER:
+	Call RegistrarYGenerarError(NOMBRE_APLICACION,"Función General - URLDecode","")
+	Exit Function
+End Function
+
+'++LotusScript Development Environment:2:1:replaceSubstring:2:8
+Public Function replaceSubstring(Byval x As String, Byval repfrom As String, Byval repto As String, _
+Byval caseflag As Integer) As String
+'Reemplaza el string repfrom por repto en el texto x	
+	
+	Dim pos As Long, lastpos As Long
+	lastpos = 1
+	Do
+		pos = Instr(lastpos, x, repfrom, caseflag)
+		If pos = 0 Then Exit Do
+		replaceSubstring = replaceSubstring & Mid$(x, lastpos, pos-lastpos) & repto
+		lastpos = pos + Len(repfrom)
+	Loop
+	replaceSubstring = replaceSubstring & Mid$(x, lastpos)
+End Function
+
+
+'++LotusScript Development Environment:2:2:RegistraryDesplegarErrorURL:1:8
+Public Sub RegistraryDesplegarErrorURL(ByVal aplicacion As String,ByVal funcion As String,ByVal msgadic As String, ByVal urlRet As String)
+	'Función utilizada por los Initialize de los agentes para realizar el log del error 
+	'(si aún no se hizo) y desplegarlo
+	
+	If loguearError Then
+	'Genero log del error
+		Call GenerarErrorLog(Err, Error,msgadic,aplicacion,funcion,Erl)
+	End If
+	'Despliego mensaje de error
+	Call DesplegarMsgErrorWeb(Err, Error,msgadic,aplicacion,funcion,Erl,urlRet)
+	
+End Sub

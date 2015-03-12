@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+<!--QR Custom Control is created by Fredrik Norling www.xpagedeveloper.com-->
+<img src="http://api.qrserver.com/v1/create-qr-code/?data=#{javascript:escape(compositeData.URL)}&#38;size=#{javascript:compositeData.Size}x#{javascript:compositeData.Size}" alt="QR Code" title="" />
+	
+</xp:view>

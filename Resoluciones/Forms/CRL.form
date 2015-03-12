@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='99a' unid='A6DEAD8133AD74F5832577D1006D7C4C' sequence='34'>
+<created><datetime dst='true'>20101104T175552,44-02</datetime></created>
+<modified><datetime>20150311T132740,54-03</datetime></modified>
+<revised><datetime>20150309T094509,08-03</datetime></revised>
+<lastaccessed><datetime>20150311T132740,54-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132740,54-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>CRL</text></item>
+<item name='$Readers' sign='true'><textlist><text>CN=Ian Coates/O=ISA</text><text
+>CN=Desarrollo/O=DesarrolloISA</text><text>CN=Usuario Cinco/O=DesarrolloISA</text><text
+>CN=Usuario Tres/O=DesarrolloISA</text><text>CN=Rodrigo Aratti/O=ISA</text><text
+>CN=Usuario Uno/O=DesarrolloISA</text><text>[GestionResoluc]</text><text>[LeerResoluc]</text><text
+>[Admin]</text><text>[Desarrollo]</text><text>[VerActa]</text><text>[VerOrden]</text><text
+>[PublicarResol]</text><text>[ConfResol]</text><text>[VerTodo]</text><text
+>[FirmarResoluc]</text><text>[CreadorAsunto]</text><text>[Firmante]</text><text
+>[AdminTemasRutas]</text></textlist></item>
+<item name='$FormUsers' sign='true'><textlist><text>CN=Ian Coates/O=ISA</text><text
+>CN=Desarrollo/O=DesarrolloISA</text><text>CN=Usuario Cinco/O=DesarrolloISA</text><text
+>CN=Usuario Tres/O=DesarrolloISA</text><text>CN=Rodrigo Aratti/O=ISA</text><text
+>CN=Usuario Uno/O=DesarrolloISA</text><text>[GestionResoluc]</text><text>[LeerResoluc]</text><text
+>[Admin]</text><text>[Desarrollo]</text><text>[VerActa]</text><text>[VerOrden]</text><text
+>[PublicarResol]</text><text>[ConfResol]</text><text>[VerTodo]</text><text
+>[FirmarResoluc]</text><text>[CreadorAsunto]</text><text>[Firmante]</text><text
+>[AdminTemasRutas]</text></textlist></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$WindowTitle' sign='true'><formula>"Sistema de Resoluciones"</formula></item>
+<item name='$HTMLHeadTag' sign='true'><formula>claves:=@GetProfileField("(ConfiguracionRD)" ; "sClave");
+paths:=@GetProfileField("(ConfiguracionRD)" ; "sPath");
+posPath:=@Member("RESOLUCIONES"; claves);
+
+pathresol:= "/" + @ReplaceSubstring(@Subset(@Subset(paths;posPath);-1);@Char(92);"/");
+
+
+dir:= pathresol +  "/inicio?OpenFrameset";
+
+ret:=  "&lt;META  http-equiv='Expires' content='0'&gt;&lt;META HTTP-EQUIV='Cache-Control' CONTENT='no-cache'&gt;&lt;META HTTP-EQUIV='Pragma'  CONTENT='no-cache'&gt; "+ @NewLine ;
+ret := ret + "&lt;STYLE type=\"text/css\"&gt;Body {background-color: WHITE;}"+@NewLine+
+".textoTitulo{font-family: Arial,  Verdana ; font-size: 12px;font-weight: bold;color : white}"+@NewLine+
+"&lt;/STYLE&gt;";
+ret := ret + "&lt;META HTTP-EQUIV=\"REFRESH\" CONTENT=\"1;URL="+dir+"\"&gt;";
+ret</formula></item>
+<item name='$StyleSheetList' sign='true'>
+<rawitemdata type='1'>
+9v8sAAAAAAADACEACgAAAAAAAAAAAAAAAAAAAAAAAAAAAGVzdGlsby5jc3M=
+</rawitemdata></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='CRL' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>crl</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>CRL</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/yoAAQAACjx0
+YWJsZSBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIj6BAoMEAQCF/wwAAQAACjx0cj6BAoMEAQCF
+/ywAAQAACjx0ZCB2YWxpZ249ImJvdHRvbSIgYWxpZ249ImNlbnRlciIgPoECgwQBAIX/TAABAAAK
+CTxmb250ICBjbGFzcz0idGV4dG9UaXR1bG8iIHN0eWxlPSJjb2xvcjpibGFjayI+SU5HUkVTQU5E
+TyBBTDwvZm9udD6BAoMEAQCF/w0AAQAACjwvdGQ+AIECgwQBAIX/DAABAAAKPHRyPoECgwQBAIX/
+DAABAAAKPHRyPoECgwQBAIX/KAABAAAKPHRkIHZhbGlnbj0idG9wIiBhbGlnbj0iY2VudGVyIj6B
+AoMEAQCF/1gAAQAACgk8Zm9udCAgY2xhc3M9InRleHRvVGl0dWxvIiBzdHlsZT0iY29sb3I6Ymxh
+Y2siPk3gRFVMTyBERSBSRVNPTFVDSU9ORVMuLi48L2ZvbnQ+gQKDBAEAhf8NAAEAAAo8L3RkPgCB
+AoMEAQCF/wwAAQAACjx0cj6BAoMEAQCF/xAAAQAACjwvdGFibGU+zf8IAAAAAACBAoL/WgACAAAA
+AAAAAAAAoAUAAKAFCADQAqAFcAhACxAO4BCwE4AWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA
+AAAAlYSgBQoAoAUKAAAAZAABAAAABAAAAIMEAgCF/wgAAQAACt0GAACK//7/UAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAiv8oAIoAAAUAMAIAAAAAAAACAQAACgAAAAAAAAAAAwAAAAAAY3JsAN4GAACK/4X/
+CAABAAAK
+</rawitemdata></item></note>
+

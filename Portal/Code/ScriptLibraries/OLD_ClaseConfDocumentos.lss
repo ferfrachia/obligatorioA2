@@ -1,0 +1,836 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Option Declare
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "ConfEE 1.0"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfDocumentos
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'NOMBRE DOCUMENTO DE PERFIL
+Private Const NOMBRE_DOC_PERFIL				= "ConfDocumentos"
+
+' CONSTANTES CON LOS NOMBRES DE LOS CAMPOS
+'configuracion general
+Private Const CAMPO_CONFIG_PATH_DB_PDD			= "sPathDBPDD"
+Private Const CAMPO_CONFIG_PATH_DB_AUDITORIA_PDD	= "sPathDBAuditoriaPDD"
+Private Const CAMPO_CONFIG_PATH_DB_MOTOR_PDD		= "sPathDBMotorPDD"
+Private Const CAMPO_CONFIG_HOST_SERVER			= "sHost"
+Private Const CAMPO_CONFIG_TAM_MAX_ANEXOS		= "sTamMaxAnexos"
+Private Const CAMPO_CONFIG_AUDITAR				= "chAuditar"
+Private Const CAMPO_CONFIG_PATH_NUMERACION		= "sPathDBNumeracionPDD"
+
+'Numeracion
+Private Const CAMPO_CONFIG_NUM_INCISO			= "inciso"
+Private Const CAMPO_CONFIG_NUM_UNIDAD			= "uUnidad"
+Private Const CAMPO_CONFIG_NUM_UNICA			= "cNumeracionUnica"
+Private Const CAMPO_CONFIG_NUM_FORMATO			= "sFormato"
+Private Const CAMPO_CONFIG_NUM_CLAVE_NUM		= "sClaveNum"
+
+'Archivos
+Private Const CAMPO_CONFIG_PATH_ARCHIVOS		= "sPathDBArchivosPDD"
+
+'Auditoria
+Private Const CAMPO_CONFIG_AUDITORIA_CANT_DIAS 	= "nTiempoVidaAuditoria"
+Private Const CAMPO_CONFIG_AUDITORIA_CLAVE		= "sClaveCreacionAuditoria"
+Private Const CAMPO_CONFIG_AUDITORIA_FECHA_C		= "dFechaCreacionAuditoria"
+
+' valores checkbox numeracion
+Private Const NUM_CHECK_TRUE					="1"
+Private Const NUM_CHECK_FALSE					="0"
+
+' FORMATO DE LA NUMERACION
+
+'Constantes realacionadas con el formato de la numeracion
+Private Const INDICADOR_DIGITO 						= "#"
+Private Const INDICADOR_DIGITOS_PROPIO_NRO				= "*"
+
+Private Const INDICADOR_INCISO						="i"
+Private Const INDICADOR_UNIDAD						="u"
+Private Const INDICADOR_DIGITOS_PROPIO_UNIDAD			="&"
+Private Const INDICADOR_DIGITOS_PROPIO_INCISO			="$"
+
+Private Const INDICADOR_AÑO_CUATRO_DIGITOS				= "yyyy"
+Private Const INDICADOR_AÑO_DOS_DIGITOS					= "yy"
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFDOCUMENTOS>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class ConfDocumentos
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	
+'******************************************************************************************************************
+' CONSTRUCTOR	
+'******************************************************************************************************************
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		
+		'Se carga el documento de profile
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(NOMBRE_DOC_PERFIL)
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Método new","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+'******************************************************************************************************************
+	Public Property Set PathDBPDD As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_PATH_DB_PDD, Cstr(PathDBPDD)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set PathDBPDD", "")
+		Exit Property
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get PathDBPDD As String
+		On Error Goto handler
+		PathDBPDD = Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_PATH_DB_PDD)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Propiedad Get PathDBPDD","")
+		Exit Property
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Set PathDBAuditoriaPDD As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_PATH_DB_AUDITORIA_PDD, Cstr(PathDBAuditoriaPDD)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Propiedad Set PathDBAuditoriaPDD","")
+		Exit Property
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get PathDBAuditoriaPDD As String
+		On Error Goto handler
+		PathDBAuditoriaPDD = Cstr(docConfiguracion.GetItemValue (CAMPO_CONFIG_PATH_DB_AUDITORIA_PDD)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Propiedad Get PathDBAuditoriaPDD","")
+		Exit Property
+	End Property		
+	
+'*****************************************************************************************************************
+	
+	Public Property Set PathDBMotorPDD As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_PATH_DB_MOTOR_PDD, Cstr(PathDBMotorPDD)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set PathDBMotorPDD","")
+		Exit Property		
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get PathDBMotorPDD As String
+		On Error Goto handler
+		PathDBMotorPDD = Cstr(docConfiguracion.GetItemValue (CAMPO_CONFIG_PATH_DB_MOTOR_PDD)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get PathDBMotorPDD","")
+		Exit Property
+	End Property
+'*****************************************************************************************************************
+	
+	Public Property Set PathDBNumeracionPDD As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue  CAMPO_CONFIG_PATH_NUMERACION, Cstr(PathDBNumeracionPDD)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set PathDBNumeracionPDD","")
+		Exit Property		
+	End Property
+	
+'*****************************************************************************************************************
+	
+	Public Property Get PathDBNumeracionPDD As String
+		On Error Goto handler
+		PathDBNumeracionPDD = Cstr(docConfiguracion.GetItemValue ( CAMPO_CONFIG_PATH_NUMERACION)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get PathDBNumeracionPDD","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Host As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_HOST_SERVER, Cstr(Host)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set Host","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Host As String
+		On Error Goto handler
+		Host = Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_HOST_SERVER)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get Host","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set TamMaxAnexos As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_TAM_MAX_ANEXOS, Cint(TamMaxAnexos)
+		Exit Property
+handler:
+		Call  RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get TamMaxAnexos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get TamMaxAnexos As Integer
+		On Error Goto handler
+		TamMaxAnexos = Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_TAM_MAX_ANEXOS)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get TamMaxAnexos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Auditar As Boolean
+		On Error Goto handler
+		If Auditar Then
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITAR, NUM_CHECK_TRUE
+		Else
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITAR, NUM_CHECK_FALSE
+		End If
+		Exit Property
+handler:
+		Call  RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set Auditar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Auditar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_CONFIG_AUDITAR)(0) = NUM_CHECK_TRUE Then 
+			Auditar = True
+		Else
+			Auditar = False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get Auditar","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+'**************************	NUMERACION **************************************************************************
+'******************************************************************************************************************	
+	
+	Public Property Get NumUtilizarInciso As Boolean
+		On Error Goto handler
+		If Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_NUM_INCISO)(0)) = NUM_CHECK_TRUE Then
+			NumUtilizarInciso = True	
+		Else
+			NumUtilizarInciso = False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get NumUtilizarInciso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NumUtilizarInciso As Boolean
+		On Error Goto handler
+		If NumUtilizarInciso Then
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_INCISO, NUM_CHECK_TRUE
+		Else
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_INCISO, NUM_CHECK_FALSE
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set NumUtilizarInciso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get NumUtilizarCodigo As Boolean
+		On Error Goto handler
+		If Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_NUM_UNIDAD)(0)) = NUM_CHECK_TRUE Then
+			NumUtilizarCodigo = True
+		Else
+			NumUtilizarCodigo = False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get NumUtilizarCodigo","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NumUtilizarCodigo As Boolean
+		On Error Goto handler
+		If NumUtilizarCodigo Then
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_UNIDAD, NUM_CHECK_TRUE
+		Else
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_UNIDAD, NUM_CHECK_FALSE
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set NumUtilizarCodigo","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get NumeracionUnica As Boolean
+		On Error Goto handler
+		If Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_NUM_UNICA)(0) =NUM_CHECK_TRUE) Then
+			NumeracionUnica = True
+		Else
+			NumeracionUnica = False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get NumeracionUnica","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NumeracionUnica As Boolean
+		On Error Goto handler
+		If NumeracionUnica Then
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_UNICA, NUM_CHECK_TRUE
+		Else
+			docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_UNICA, NUM_CHECK_FALSE
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set NumeracionUnica","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get NumFormato As Vector
+		On Error Goto handler
+		Set NumFormato = New vector(0)
+		If docConfiguracion.HasItem(CAMPO_CONFIG_NUM_FORMATO) Then
+			NumFormato.values = docCOnfiguracion.GetItemValue(CAMPO_CONFIG_NUM_FORMATO)
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get NumFormato","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set NumFormato As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_FORMATO, NumFormato.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set NumFormato","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************
+	
+	Public Property Get NumClaveNum As Vector
+		On Error Goto handler
+		Set NumClaveNum = New Vector(0)
+		If docConfiguracion.HasItem(CAMPO_CONFIG_NUM_CLAVE_NUM) Then
+			NumClaveNum.values = docConfiguracion.GetItemValue(CAMPO_CONFIG_NUM_CLAVE_NUM)
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get NumClaveNum","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	
+	Public Property Set NumClaveNum As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_NUM_CLAVE_NUM, NumClaveNum.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set NumClaveNum","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+'***************************	ARCHIVOS ***************************************************************************	
+'******************************************************************************************************************
+	
+	Public Property Get pathArchivos As String
+		On Error Goto handler
+		pathArchivos=Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_PATH_ARCHIVOS)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get pathArchivos","")
+		Exit Property
+	End Property	
+'*************************************************************************************************************
+	Public Property Set pathArchivos As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_PATH_ARCHIVOS, pathArchivos
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set pathArchivos","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************
+	Public Sub Archivar(id As String)
+		On Error Goto handler
+		Dim baseDatos As NotesDatabase
+		Dim baseDatos2 As NotesDatabase
+		Dim doc As NotesDocument
+		Dim doc2 As NotesDocument
+		Set baseDatos = ses.GetDatabase(ses.CurrentDatabase.Server,PathDBPDD)'base de pub de doc inicial
+		Msgbox "Archivar = borro el documento de la base: " & baseDatos.FilePath
+		Set doc=baseDatos.GetDocumentByUNID(id)
+		Set baseDatos2 = ses.GetDatabase(ses.CurrentDatabase.Server,pathArchivos)'base de archivos final
+		Msgbox "Archivar = creo el documento en la base: " & baseDatos2.FilePath
+		Set doc2=baseDatos2.CreateDocument
+		Call doc.CopyAllItems(doc2,True)
+		doc2.Save True, False
+		Exit Sub
+handler:
+		Msgbox "El error en ClaseConfDocumentos es: " & Error & " " & Err & " " & Erl 
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get NumeracionUnica","")
+		Exit Sub
+	End Sub
+'******************************************************************************
+	Public Sub Desarchivar(id As String)
+		On Error Goto handler
+		Dim baseDatos As NotesDatabase
+		Dim baseDatos2 As NotesDatabase
+		Dim doc As NotesDocument
+		Dim doc2 As NotesDocument
+		Set baseDatos = ses.GetDatabase(ses.CurrentDatabase.Server,pathArchivos)'base de archivos inicial
+		Msgbox "Archivar = borro el documento de la base: " & baseDatos.FilePath
+		Set doc=baseDatos.GetDocumentByUNID(id)
+		Set baseDatos2 = ses.GetDatabase(ses.CurrentDatabase.Server,PathDBPDD)'base de publicacion de doc final
+		Msgbox "Archivar = creo el documento en la base: " & baseDatos2.FilePath
+		Set doc2=baseDatos2.CreateDocument
+		Call doc.CopyAllItems(doc2,True)
+		doc2.Save True, False
+		Exit Sub
+handler:
+		Msgbox "El error en ClaseConfDocumentos es: " & Error & " " & Err & " " & Erl 
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get NumeracionUnica","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************
+'***************************	AUDITORIA ***************************************************************************	
+'******************************************************************************************************************
+	
+	Public Property Get TiempoVidaAuditoria As String
+		On Error Goto handler
+		TiempoVidaAuditoria = Cstr(docConfiguracion.GetItemValue(CAMPO_CONFIG_AUDITORIA_CANT_DIAS)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get TiempoVidaAuditoria","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set TiempoVidaAuditoria As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITORIA_CANT_DIAS, Cstr(TiempoVidaAuditoria)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set TiempoVidaAuditoria","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get ClavesAuditoria As Vector
+		On Error Goto handler
+		Set ClavesAuditoria = New Vector(0)
+		If docConfiguracion.hasItem(CAMPO_CONFIG_AUDITORIA_CLAVE) Then
+			ClavesAuditoria.values = docConfiguracion.getItemValue(CAMPO_CONFIG_AUDITORIA_CLAVE)
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get ClavesAuditoria","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set ClavesAuditoria  As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITORIA_CLAVE, ClavesAuditoria.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set ClavesAuditoria ","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FechasAuditoria As Vector
+		On Error Goto handler
+		Set FechasAuditoria = New Vector(0)
+		If docConfiguracion.HasItem(CAMPO_CONFIG_AUDITORIA_FECHA_C) Then
+			FechasAuditoria.values = docConfiguracion.GetItemValue(CAMPO_CONFIG_AUDITORIA_FECHA_C)
+		End If
+		Exit Property
+handler:
+		'Msgbox "Erl:" & Erl
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Get FechasAuditoria","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set FechasAuditoria As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CONFIG_AUDITORIA_FECHA_C,FechasAuditoria.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Propiedad Set FechasAuditoria","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+'******************************************************************************************************************
+	Public Sub Save () 
+		On Error Goto handler		
+		docConfiguracion.Save True,False
+		
+		Dim docAux As NotesDocument
+		Dim dbAux As NotesDatabase
+		
+		'===================================================
+		'| ACTUALIZO LOS DOC DE PERFIL DE LAS OTRAS  BASES |
+		'===================================================
+		
+		' Base documentos.nsf
+		If docConfiguracion.hasItem(CAMPO_CONFIG_PATH_DB_PDD) And  Me.PathDBPDD<>"" Then
+			Set dbAux = ses.GetDatabase(ses.CurrentDatabase.Server,Me.PathDBPDD)
+			If Not dbAux.IsOpen Then
+				Call dbAUx.Open("","")
+			End If
+			Set docAux = dbAux.GetProfileDocument(NOMBRE_DOC_PERFIL)
+			Call copiarDocConfig (docConfiguracion , docAux)
+			docAux.save True,False
+		End If
+		
+		' Base auditoria.....
+		If docConfiguracion.hasItem(CAMPO_CONFIG_PATH_DB_AUDITORIA_PDD) And  Me.PathDBAuditoriaPDD <> "" Then
+			Set dbAux = ses.GetDatabase(ses.CurrentDatabase.Server,Me.PathDBAuditoriaPDD)
+			If Not dbAux.IsOpen Then
+				Call dbAUx.Open(ses.CurrentDatabase.server,Me.PathDBAuditoriaPDD)
+			End If
+			Set docAux = dbAux.GetProfileDocument(NOMBRE_DOC_PERFIL)
+			Call copiarDocConfig (docConfiguracion , docAux)
+			docAux.save True,False
+		End If
+		
+		' Base MotorPubDoc.nsf
+		If docConfiguracion.hasItem(CAMPO_CONFIG_PATH_DB_MOTOR_PDD) And  Me.PathDBMotorPDD <> "" Then
+			Set dbAux = ses.GetDatabase(ses.CurrentDatabase.Server,Me.PathDBMotorPDD)
+			If Not dbAux.IsOpen Then
+				Call dbAUx.Open(ses.CurrentDatabase.server,Me.PathDBMotorPDD)
+			End If
+			Set docAux = dbAux.GetProfileDocument(NOMBRE_DOC_PERFIL)
+			Call copiarDocConfig (docConfiguracion , docAux)
+			docAux.save True,False
+		End If
+		
+		
+		' Base ArchivosPDD
+		If docConfiguracion.hasItem(CAMPO_CONFIG_PATH_ARCHIVOS) And Me.PathArchivos<>"" Then
+			Set dbAux = ses.GetDatabase(ses.CurrentDatabase.Server,Me.PathArchivos)
+			If Not dbAux.IsOpen Then
+				Call dbAUx.Open(ses.CurrentDatabase.server,Me.PathArchivos)
+			End If
+			Set docAux = dbAux.GetProfileDocument(NOMBRE_DOC_PERFIL)
+			Call copiarDocConfig (docConfiguracion , docAux)
+			docAux.save True,False
+		End If
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Sub Save","")
+		Exit Sub
+	End Sub
+	'************************************************************************************************************************
+	Public Sub copiarDocConfig (docConfig As NotesDocument, docProfile As NotesDocument) 
+		On Error Goto handler
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PATH_DB_PDD,docConfig.GetItemValue(CAMPO_CONFIG_PATH_DB_PDD))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PATH_DB_AUDITORIA_PDD,docConfig.GetItemValue(CAMPO_CONFIG_PATH_DB_AUDITORIA_PDD))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PATH_DB_MOTOR_PDD,docConfig.GetItemValue(CAMPO_CONFIG_PATH_DB_MOTOR_PDD))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PATH_NUMERACION, docConfig.GetItemValue(CAMPO_CONFIG_PATH_NUMERACION))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_HOST_SERVER,docConfig.GetItemValue(CAMPO_CONFIG_HOST_SERVER))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_TAM_MAX_ANEXOS,docConfig.GetItemValue(CAMPO_CONFIG_TAM_MAX_ANEXOS))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_AUDITAR,docConfig.GetItemValue(CAMPO_CONFIG_AUDITAR))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_NUM_INCISO,docConfig.GetItemValue(CAMPO_CONFIG_NUM_INCISO))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_NUM_UNIDAD,docConfig.GetItemValue(CAMPO_CONFIG_NUM_UNIDAD))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_NUM_UNICA,docConfig.GetItemValue(CAMPO_CONFIG_NUM_UNICA))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_NUM_FORMATO,docConfig.GetItemValue(CAMPO_CONFIG_NUM_FORMATO))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_NUM_CLAVE_NUM,docConfig.GetItemValue(CAMPO_CONFIG_NUM_CLAVE_NUM))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PATH_ARCHIVOS,docConfig.GetItemValue(CAMPO_CONFIG_PATH_ARCHIVOS))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_PATH_ARCHIVOS,docConfig.GetItemValue(CAMPO_CONFIG_PATH_ARCHIVOS))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_AUDITORIA_CANT_DIAS,docConfig.GetItemValue(CAMPO_CONFIG_AUDITORIA_CANT_DIAS))		
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_AUDITORIA_CLAVE,docConfig.GetItemValue(CAMPO_CONFIG_AUDITORIA_CLAVE))
+		Call docProfile.ReplaceItemValue(CAMPO_CONFIG_AUDITORIA_FECHA_C,docConfig.GetItemValue(CAMPO_CONFIG_AUDITORIA_FECHA_C))			
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, "Clase ConfDocumentos - Sub Save","")
+		Exit Sub
+	End Sub
+'************************************************************************************************************************
+	' FUNCIONES PARA LA NUMERACION
+'************************************************************************************************************************
+	Public Property Get FormatoNumerador(Byval ClaveNum As String) As String
+	' Retorna el formato de numeración dada una clave
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		Dim vFormNum As New Vector(0)
+		Set vFormNum = Me.NumFormato
+		
+		
+		If Me.NumClaveNum.isMember(ClaveNum, pos, False) Then 
+			'Msgbox "Vector claves" & Me.NumClaveNum.toString("|") 
+			FormatoNumerador = vFormNum.getElement(pos)	
+		End If	
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Propiedad Get FormatoNumerador","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set FormatoNumerador(Byval ClaveNum As String) As String
+	' Dada una clave setea el Formato de la Numeración. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		Dim vFormNum As New Vector(0)
+		Set vFormNum = Me.NumClaveNum
+		If Me.NumClaveNum.isMember(ClaveNum, pos, False) Then 
+			Call vFormNum.ReplaceElement(pos,FormatoNumerador)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "FormatoNumerador: No se encuentra la clave " _ 
+			& ClaveNum & " en la tabla de Formato de numeradores."
+		End If	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Propiedad Set FormatoNumerador","")
+		Exit Property
+	End Property
+'*******************************************************************************************************
+	Private Function PedirNumero (Byval nombrenumerador As String) As Long
+	'Pide un número a la clase numeración para el numerador que recibe y lo devuelve
+	'Suposiciones:
+		' 1) Si se utiliza un numerador diferente por año, el nombre del numerador indicará que va 
+		'    el año con yy o yyyy en el lugar que corresponda. Esta función sustituye ese indicador
+		'	por el año actual
+		On Error Goto HANDLER
+		
+		'Dim c As New Configuracion()
+		Dim num As NumClient, baseNumeracion As String, servidorNumeracion As String
+		
+		'Sustituyo el indicador de año por el año actual
+		nombrenumerador = SustituirAnio(nombrenumerador)
+		
+		'Pido el número
+		'Busco srv y path de la base de numeracion
+		servidorNumeracion  = ses.CurrentDatabase.Server
+		baseNumeracion  = Me.PathDBNumeracionPDD()
+		
+		'Msgbox "El servidor es: " & servidorNumeracion & "  y la base es: " & baseNumeracion
+		If (nombrenumerador <> "") And (baseNumeracion <> "") Then
+			'Creo el objeto numerador
+			Set num = New NumClient(nombrenumerador,servidorNumeracion,baseNumeracion)		
+			PedirNumero = num.GetNumber()			
+		Else
+			Error ERROR_NUMERATION,MSG_ERROR_NUMERATION
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Funcion PedirNumero","")
+		Exit Function
+	End Function
+'******************************************************************************************************************		
+	
+	Public Function SustituirAnio (Byval formato As String)As String
+	'Busca el indicador del año (yy o yyyy) dentro del formato y lo sustituye por el año actual
+	'Si el indicador del año no está devuelve el formato como lo recibió
+		On Error Goto HANDLER
+		
+		Dim anioactual As String, pos As Integer
+		
+		'Veo si va el año con cuatro digitos
+		anioactual = Cstr(Year(Today))
+		pos = Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)
+		If pos = 0 Then  'veo si va el año con dos digitos
+			anioactual = Right(Cstr(Year(Today)),2)
+			pos = Instr(formato, INDICADOR_AÑO_DOS_DIGITOS)
+		End If
+		If pos <> 0 Then  'va el año
+			Mid$ (formato, pos,Len(anioactual)) = anioactual
+		End If  'si no va el año no modifiqué nada al texto		
+		SustituirAnio = formato
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Funcion SustituirAnio","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function SustituirCantDigitos (indicadorUnitario As String, indicadorTotal As String,Byval formato As String, Byval nro As String) As String
+	'Chequea la cantidad de veces que aparece el indicador de un digito y lo sustituye
+	'por el nro formateado con esa cantidad de digitos
+		On Error Goto HANDLER
+		
+		Dim pos As Integer, digitos As Integer, prefijo As String, resto As String, sufijo As String
+		
+		'Busco la cantidad de dígitos para el número
+		pos = Instr(formato,indicadorUnitario)	'debe haber por lo menos un indicador (digitos segun los que tenga el nro)
+		'Msgbox "El formato es: " & formato
+		'Msgbox "El indicadorUnitario es: " & indicadorUnitario
+		If pos <> 0 Then
+			digitos = 1
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			resto = Right(formato, Len(formato)-pos)
+			pos = Instr(resto,indicadorUnitario)		
+			While pos <> 0  'cuento los dígitos
+				digitos = digitos + 1
+				resto = Right(resto, Len(resto)-pos)
+				pos = Instr(resto,indicadorUnitario)
+			Wend
+			sufijo = resto
+		'Agrego 0's al nro hasta llegar a la cant de dígitos
+			While Len(nro)<digitos
+				nro = "0" + nro
+			Wend 
+		'Armo el nuevo formato
+			SustituirCantDigitos = prefijo + nro + sufijo
+		Else   'no está el #
+		'busco el *
+			'Msgbox "El formato es: " & formato
+			'Msgbox "El indicadorTotal es: " & indicadorTotal
+			pos = Instr(formato,indicadorTotal)
+			If pos = 0 Then Error ERROR_INDICADOR_DIGITO_NOT_FOUND, MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND & indicadorTotal
+			
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			If pos = Len(formato) Then  'no hay sufijo
+				sufijo = ""
+			Else
+				sufijo = Right(formato, Len(formato)-pos)
+			End If
+			
+			SustituirCantDigitos = prefijo + nro + sufijo
+		End If
+		
+		Exit Function
+HANDLER:
+		Msgbox "El error en claseConfDoc es: " & Error & " " & Err & " " & Erl
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Funcion SustituirCantDigitos","")
+		Exit Function
+	End Function
+	
+'********************************************************************************************************
+	
+	Public Function NumerarFormateado (Byval nombreNumerador As String, codigo As String,inciso As String) As String
+	'Devuelve el nro que corresponde según el nombre del numerador y con el formato indicado en el doc de perfil	
+		On Error Goto HANDLER
+		
+		Dim formato As String, nro As String, nombreNumeradorAux As String
+		nombreNumeradorAux = nombreNumerador
+		
+		If Me.NumUtilizarCodigo() Then
+			nombreNumeradorAux = nombreNumeradorAux &"_" & codigo
+		End If
+		
+		If Me.NumUtilizarInciso() Then
+			nombreNumeradorAux = nombreNumeradorAux &"_" & inciso
+		End If
+		
+		'Pido número a la clase de numeración
+		nro = Cstr(PedirNumero(nombreNumeradorAux))
+		'Obtengo el formato del nro
+		'Msgbox "ANTES -> " & nombreNumerador
+		formato = Me.FormatoNumerador(nombreNumerador)
+		'Msgbox "DESPUES -> " & formato
+		If formato = "" Then 
+			Error ERRORCONF_CLAVE_NOTFOUND, "FormatoNumerador: No se encuentra la clave " & nombreNumerador & " en la tabla de Formato de numeradores."
+		End If
+		'Sustituyo el indicador de año por el año actual
+		formato = SustituirAnio(formato)
+		'Sustituyo el indicador de digitos por el nro
+		NumerarFormateado = SustituirCantDigitos(INDICADOR_DIGITO,INDICADOR_DIGITOS_PROPIO_NRO,formato,nro)	
+		If Me.NumUtilizarCodigo() Then
+			NumerarFormateado = SustituirCantDigitos(INDICADOR_UNIDAD,INDICADOR_DIGITOS_PROPIO_UNIDAD	,NumerarFormateado,codigo)	
+		End If
+		
+		If  Me.NumUtilizarInciso() Then
+			NumerarFormateado = SustituirCantDigitos(INDICADOR_INCISO,INDICADOR_DIGITOS_PROPIO_INCISO	,NumerarFormateado,inciso)	
+		End If
+		Exit Function
+HANDLER:
+		Msgbox "El error en claseConfDoc es: " & Error & " " & Err & " " & Erl
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfDocumentos - Método NumerarFormateado","")
+		Exit Function
+	End Function
+'*************************************************************************************************
+	
+End Class

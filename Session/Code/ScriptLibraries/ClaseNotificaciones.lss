@@ -1,0 +1,1144 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+Use "Unidad Class"
+Use "ConfEE 1.0"
+Use "ClaseExpediente"
+Use "FuncionesGenerales"  
+Use "ClaseCartaServicio"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Notificacion
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Errores Clase Notificaciones: 16100 - 16199
+Public Const ERROR_NOTIFICAR_RECEPTORES				= 16100
+Public Const MSG_ERROR_NOTIFICAR_RECEPTORES			= "No hay receptores a quienes notificar."
+
+Public Const ERROR_NOTIFICAR_JEFES_NULL				= 16101
+Public Const MSG_ERROR_NOTIFICAR_JEFES_NULL			= "No se pudo acceder a los Jefes de la Unidad "
+
+
+Private Const NOTIFICACION_FROM					= "SEE"
+
+'Tags de Formato de Mensaje
+Private Const MSG_TAG_ACCION						= "%ACCION%"
+Private Const MSG_TAG_DETALLE						= "%DETALLE%"
+Private Const MSG_TAG_NUMERO_DOC					= "%NUMERO%"
+Private Const MSG_TAG_TIPO_DOC					= "%TIPODOCUMENTO%"
+Private Const MSG_TAG_LINK						= "%LINK%"
+Private Const MSG_TAG_UNIDAD_EXP					= "%UNIDAD%"
+Private Const MSG_TAG_ASUNTO						= "%ASUNTO%"
+
+'Acciones a tomar según la notificación
+Private Const MSG_ACCION_RECIBIR					= "Recibir Expediente"
+Private Const MSG_ACCION_ENVIAR_PAQUETE				= "Enviar Paquete"
+Private Const MSG_ACCION_ARCHIVADO					= "Expediente Archivado"
+Private Const MSG_ACCION_FIRMAR					= "Firmar Expediente"
+Private Const MSG_ACCION_EXP_PROX_EXPIRAR			= "Tiempo de Actuación próximo a expirar"
+Private Const MSG_ACCION_EXP_EXPIRADO				= "Tiempo de Actuación expirado"
+Private Const MSG_ACCION_EXP_INICIADO				= "Expedientes Iniciados en el día "
+Private Const MSG_ACCION_EXP_MARCAS				= "Expedientes Marcados"
+Private Const MSG_ACCION_ACCESO_OTORGADO			= "Notificación del expediente "
+Private Const MSG_ACCION_MARCA_RECORDATORIO			= "Recordatorio de Expediente "
+
+Private Const MSG_ACCION_MARCA_COMPARTIR			= "Marca Compartida "
+
+
+'Tipos de documento
+Private Const TIPO_EXP							= "Expediente"
+Private Const TIPO_CS							= "Carta de Servicio"
+
+
+'*************************************************************************************************************************
+'*************************************************************************************************************************
+
+Public Class Notificacion
+	
+	Private session As notesSession
+	Private db As notesDatabase
+	Private c As Configuracion
+'*************************************************************************************************************************
+'Constructor
+	
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		
+		Set session= New notesSession
+		
+		Set db=session.currentDatabase
+		Set c = New Configuracion()
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento New","")
+		Exit Sub		
+	End Sub
+	
+'*************************************************************************************************************************
+'Métodos privados
+	
+	Private Function ArmarURLCS(oCS As CartaServicio) As String
+		'Devuelve la url de la carta de servicio
+		On Error Goto HANDLER
+		
+		Dim path As String, host As String
+		Dim c As New Configuracion, docAux As NotesDocument
+		
+		'host = Strleftback(docAux.ParentDatabase.HttpURL,"/")
+		host = c.Host(CLAVE_DBPORTAL)
+		path = c.BaseDeDatos(CLAVE_DBPORTAL)
+		
+		If host="" Then Error ERROR_HOST_NOT_FOUND, MSG_ERROR_HOST_NOT_FOUND
+		If path="" Then Error ERROR_PATH_NOT_FOUND, MSG_ERROR_PATH_NOT_FOUND
+		
+		
+		ArmarURLCS = c.Protocolo & "://"+host+":" & c.Puerto & "/"+path+"/(openDoc)?openAgent&nro=" & oCS.NroCartaServicio &"-" & oCS.NroActCartaServicio & ",tipoDoc=CARTA"
+		
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Función ArmarURLCS","")
+		Exit Function
+	End Function
+	
+'*************************************************************************************************************************
+	
+	Private Function ArmarURLExp(oExp As Expediente) As String
+		'Devuelve la url de la carta de servicio
+		On Error Goto HANDLER
+		
+		Dim path As String, host As String
+		Dim c As New Configuracion
+		
+		host = c.Host(CLAVE_DBPORTAL)
+		path = c.BaseDeDatos(CLAVE_DBPORTAL)
+		
+		If host="" Then Error ERROR_HOST_NOT_FOUND, MSG_ERROR_HOST_NOT_FOUND
+		If path="" Then Error ERROR_PATH_NOT_FOUND, MSG_ERROR_PATH_NOT_FOUND
+		
+		
+		ArmarURLExp = c.Protocolo & "://"+host & ":" & c.Puerto+"/"+path+"/(openDoc)?openAgent&nro=" & oExp.Caratula.NroExp & ",tipoDoc=EXPEDIENTE"
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Función ArmarURLExp","")
+		Exit Function
+	End Function
+	
+'*****************************************************************************************************************	
+	
+	Private Sub SetMailMsg(rtiBody As notesRichTextItem,oExp As Expediente, _
+	tipoDocumento As String,accion As String, detalle As String, link As String)
+		On Error Goto HANDLER	
+		
+		Dim c As New Configuracion,vLines As New Vector(0),i As Integer
+		Dim linea As String
+		
+		vLines.values=c.TemplateNotificacion
+		If vLines.cantElem > 0 Then
+			For i= 1 To vLines.cantElem
+				linea=vLines.getElement(i)
+				linea=cambiarChar(linea,MSG_TAG_NUMERO_DOC,oExp.Caratula.NroExp)
+				linea=cambiarChar(linea,MSG_TAG_ASUNTO,oExp.Caratula.Asunto)
+				linea=cambiarChar(linea,MSG_TAG_TIPO_DOC,tipoDocumento)
+				linea=cambiarChar(linea,MSG_TAG_ACCION,accion)
+				linea=cambiarChar(linea,MSG_TAG_DETALLE,detalle)
+				linea=cambiarChar(linea,MSG_TAG_LINK,link)
+				linea=cambiarChar(linea,MSG_TAG_UNIDAD_EXP,oExp.Caratula.OficinaActual)
+				
+				rtiBody.Appendtext linea			
+			Next	
+		End If		
+		
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Función SetMailMsg","")
+		Exit Sub
+	End Sub
+	
+'*****************************************************************************************************************	
+	
+	Private Sub NotificarExpiroUnidad(tmpUnidad As Unidad,oExpediente As Expediente)	
+		On Error Goto HANDLER		
+		
+		
+		Dim mail As notesDocument
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject= MSG_ACCION_EXP_EXPIRADO & " : " & oExpediente.Caratula.NroExp
+		mail.from=c.EmailInstitucional
+		
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		
+		Dim lk As String
+		lk=cambiarChar(ArmarURLExp(oExpediente),"\","/")
+		SetMailMsg rtiBody,oExpediente,TIPO_EXP,MSG_ACCION_EXP_EXPIRADO,"",lk
+		
+		'Jefes
+		Dim vJefes As New Vector(0), i As Integer
+		Set vJefes=tmpUnidad.JefeUnidad
+		
+		If vJefes Is Nothing Then
+			Error ERROR_NOTIFICAR_JEFES_NULL,MSG_ERROR_NOTIFICAR_JEFES_NULL 
+		Else
+			If Not vJefes.cantElem > 0 Then
+				Error ERROR_NOTIFICAR_JEFES_NULL,MSG_ERROR_NOTIFICAR_JEFES_NULL
+			End If	
+		End If	
+		
+		
+		'Editores
+		Dim vTodos As New Vector(0),vEditores As New Vector(0)
+		vTodos.append vJefes,True
+		If Ucase(tmpUnidad.Nombre)=Ucase(oExpediente.Caratula.OficinaActual) Then
+			Set vEditores=tmpUnidad.UsuariosRolEditor
+			If vEditores.cantElem > 0 Then
+				vTodos.append vEditores,True
+			End If			
+		End If
+		
+		If vTodos.cantElem > 0 Then
+			mail.Send False,vTodos.values	
+		End If
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarExpiroUnidad","")
+		Exit Sub								
+	End Sub
+	
+'*****************************************************************************************************************	
+'*****************************************************************************************************************	
+	
+	'Métodos públicos
+'*****************************************************************************************************************	
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarRecordatorioPaquete (oExpediente As Expediente, uDestino As String)
+		'Envia recordatrio de enviar el paquete, en el momento del pase, en caso de tener paquete 
+		On Error Goto HANDLER
+		
+		Dim mail As notesDocument
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject= MSG_ACCION_ENVIAR_PAQUETE & " : " & oExpediente.Caratula.NroExp
+		mail.from=c.EmailInstitucional
+		
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		
+		Dim lk As String
+		lk=cambiarChar(ArmarURLExp(oExpediente),"\","/")
+		SetMailMsg rtiBody,oExpediente,TIPO_EXP,MSG_ACCION_ENVIAR_PAQUETE,"",lk
+		
+		mail.Send False,uDestino
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarRecordatorioPaquete","")
+		Exit Sub
+	End Sub
+'*****************************************************************************************************************		
+	
+	Public Sub NotificarPase(oExpediente As Expediente,oUnidadDestino As Unidad)
+		'Notifica a los receptores de la unidad
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion
+		If Not c.HabilitadoNotificarRecibir Then 
+			Exit Sub
+		End If
+		
+		Dim vReceptores As New Vector(0)
+		Set vReceptores=oUnidadDestino.UsuariosRolReceptor
+		If vReceptores.cantElem>0 Then
+			
+			Dim mail As notesDocument
+			Set mail=New notesDocument(db)
+			mail.form="Memo"
+			mail.subject= MSG_ACCION_RECIBIR & " : " & oExpediente.Caratula.NroExp
+			mail.from=c.EmailInstitucional
+			
+			Dim rtiBody As notesRichTextItem
+			Set rtiBody=New notesRichTextItem(mail,"Body")
+			
+			Dim lk As String
+			lk=cambiarChar(ArmarURLExp(oExpediente),"\","/")
+			SetMailMsg rtiBody,oExpediente,TIPO_EXP,MSG_ACCION_RECIBIR,"",lk
+			
+			mail.Send False,vReceptores.values
+		Else
+			Error ERROR_NOTIFICAR_RECEPTORES,MSG_ERROR_NOTIFICAR_RECEPTORES
+		End If		
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarPase","")
+		Exit Sub					
+	End Sub
+	
+'*****************************************************************************************************************		
+	
+	Public Sub NotificarParaFirmar(oExpediente As Expediente)
+		On Error Goto HANDLER	
+		
+		
+		Dim c As New Configuracion
+		If Not c.HabilitadoNotificarFirmar Then 
+			Exit Sub
+		End If
+		
+		Dim vFirmantes As New Vector(0),oUnidad As Unidad
+		Set oUnidad=New Unidad(oExpediente.Caratula.OficinaActual)
+		
+		If oExpediente.Caratula.Firmantes.cantElem > 0 Then
+			Set vFirmantes=oExpediente.Caratula.Firmantes
+		Else
+			Set vFirmantes=oUnidad.UsuariosRolFirmar	
+		End If
+		
+		If vFirmantes.cantElem>0 Then
+			
+			Dim mail As notesDocument
+			Set mail=New notesDocument(db)
+			mail.form="Memo"
+			mail.subject= MSG_ACCION_FIRMAR & " : " & oExpediente.Caratula.NroExp
+			mail.from=c.EmailInstitucional
+			
+			Dim rtiBody As notesRichTextItem
+			Set rtiBody=New notesRichTextItem(mail,"Body")
+			
+			Dim lk As String
+			lk=cambiarChar(ArmarURLExp(oExpediente),"\","/")
+			SetMailMsg rtiBody,oExpediente,TIPO_EXP,MSG_ACCION_FIRMAR,"",lk
+			
+			mail.Send False,vFirmantes.values
+		Else
+			Error ERROR_NOTIFICAR_RECEPTORES,MSG_ERROR_NOTIFICAR_RECEPTORES
+		End If		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarParaFirmar","")
+		Exit Sub					
+	End Sub
+	
+'*****************************************************************************************************************		
+	
+	Public Sub NotificarArchivado(oExpediente As Expediente)
+		On Error Goto HANDLER	
+		
+		
+		Dim c As New Configuracion
+		If Not c.HabilitadoNotificarArchivado Then 
+			Exit Sub
+		End If
+		
+		Dim vUnidades As New Vector(0)
+		Set vUnidades=oExpediente.Caratula.getRecorridoColumna(3)
+		If vUnidades.cantElem > 0 Then
+			Dim firstUnidad As Unidad
+			Set firstUnidad=New Unidad(vUnidades.getElement(1))
+			If Not firstUnidad Is Nothing Then
+				'expedientes migrados o cambio de nombres
+				If firstUnidad.JefeUnidad.cantElem > 0 Then
+					Dim mail As notesDocument
+					Set mail=New notesDocument(db)
+					mail.form="Memo"
+					mail.subject= MSG_ACCION_ARCHIVADO & " : " & oExpediente.Caratula.NroExp
+					mail.from=c.EmailInstitucional
+					
+					Dim rtiBody As notesRichTextItem
+					Set rtiBody=New notesRichTextItem(mail,"Body")
+					
+					SetMailMsg rtiBody,oExpediente,TIPO_EXP,MSG_ACCION_ARCHIVADO,"",""
+					
+					mail.Send False,firstUnidad.JefeUnidad.values	
+					
+				End If	
+			End If
+		End If
+		
+		
+		
+		Exit Sub	
+HANDLER:
+		If Err = ERROR_DOCUMENT_NOT_FOUND Then
+			Set firstUnidad=Nothing
+			Resume Next
+		Else
+			Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarArchivado","")
+			Exit Sub				
+		End If
+		
+		
+	End Sub
+	
+'*****************************************************************************************************************		
+	
+	Public Sub NotificarAccesoConcedido(oExpediente As Expediente,vUnidades As Vector)
+		On Error Goto HANDLER	
+		
+		
+		Dim i As Integer 'vUnidades As New Vector(0),
+		'Set vUnidades=oExpediente.Caratula.Notificados()
+		If vUnidades.cantElem > 0 Then
+			Dim mail As notesDocument
+			Set mail=New notesDocument(db)
+			mail.form="Memo"
+			mail.subject= MSG_ACCION_ACCESO_OTORGADO & " : " & oExpediente.Caratula.NroExp
+			mail.from=c.EmailInstitucional
+			Dim rtiBody As notesRichTextItem
+			Set rtiBody=New notesRichTextItem(mail,"Body")
+			Dim lk As String
+			lk=cambiarChar(ArmarURLExp(oExpediente),"\","/")
+			SetMailMsg rtiBody,oExpediente,TIPO_EXP,MSG_ACCION_ACCESO_OTORGADO,"",lk
+			
+			
+			Dim vFirmantes As New Vector(0)
+			For i=1 To vUnidades.cantElem
+				Dim oUnidad As Unidad
+				If vUnidades.getElement(i) <> "" Then
+					Set oUnidad=New Unidad(vUnidades.getElement(i))
+					If Not oUnidad.usuariosRolFirmar Is Nothing Then
+						'vFirmantes.append oUnidad.usuariosRolFirmar,True	
+						If oUnidad.usuariosRolFirmar.cantElem > 0 Then
+							mail.Send False,oUnidad.usuariosRolFirmar.values				
+						End If
+					End If			
+				End If				
+			Next						
+		End If
+		
+		
+		
+		Exit Sub	
+HANDLER:
+%REM
+		If Err = ERROR_DOCUMENT_NOT_FOUND Then
+			Set oUnidad=Nothing
+			Resume Next
+		Else
+			Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarAccesoConcedido","")
+			Exit Sub				
+		End If
+%END REM		
+		GenerarErrorLog Err, Error, "", "SEE - Clase Notificacion ", "NotificarAccesoConcedido", Erl
+		Exit Sub
+	End Sub
+	
+'*****************************************************************************************************************	
+	
+	
+	Public Sub NotificarPlazoExpirado(oExp As Expediente)
+		'Notifica Jerarcas superiores a esta unidad en la Organización y a la actual tambien
+		On Error Goto HANDLER		
+		
+		Dim c As New Configuracion
+		If Not c.HabilitadoAlarmaJefeExpiro Then
+			Exit Sub
+		End If
+		
+		Dim oLastAct As Actuacion
+		Set oLastAct=oExp.LastActuacion
+		If Not c.AlarmaExpiroReiterar Then
+			If oLastAct.NotificadoExpiro Then
+				Exit Sub
+			End If	
+		End If
+		
+		Dim tmpUnidad As Unidad,codUnidadSup As String
+		Set tmpUnidad=New Unidad(oExp.Caratula.OficinaActual)
+		codUnidadSup=tmpUnidad.UnidadSuperior
+		
+		NotificarExpiroUnidad tmpUnidad,oExp
+		
+		
+		Dim vModificarPlazo As New Vector(0),vJefes As New Vector(0),i As Integer
+		Dim vNotificadas As New Vector(0)
+		
+		While codUnidadSup<>"" And Not vNotificadas.isMember(codUnidadSup,0,False)
+			Set tmpUnidad=New Unidad(codUnidadSup)
+			If tmpUnidad.EscalarNotificacion Then	
+				
+				
+				NotificarExpiroUnidad tmpUnidad,oExp
+				
+				
+				vNotificadas.insertElement codUnidadSup,vNotificadas.cantElem + 1
+				codUnidadSup=tmpUnidad.UnidadSuperior	
+				
+				Set vModificarPlazo=tmpUnidad.usuariosRolModificarPlazo
+				Set vJefes=tmpUnidad.JefeUnidad
+				If vModificarPlazo.cantElem > 0 Then
+					For i=1 To vJefes.cantElem
+						If vModificarPlazo.isMember(vJefes.getElement(i),0,False) Then
+							codUnidadSup=""	
+						End If
+					Next								
+				End If				
+			Else
+				codUnidadSup=""
+			End If				
+		Wend
+		
+		oLastAct.NotificadoExpiro=True
+		oLastAct.save
+		
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarPlazoCercaExpirar","")
+		Exit Sub							
+	End Sub
+	
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarIniciados(vExpedientes As Vector)
+		
+		On Error Goto HANDLER		
+		
+		Dim dbMailBox As NotesDatabase, body As NotesMIMEEntity, header As NotesMIMEHeader
+		Dim stream As NotesStream, i As Integer, strText As String, strUrl As String
+		Dim strAsunto As String, c As New Configuracion, oExpediente As Expediente
+		Dim mail As notesDocument
+		
+		
+		session.ConvertMime=False
+		
+		Set stream = session.CreateStream
+		Set dbMailBox= New NotesDatabase("","")
+		
+		dbMailBox.Open db.Server,"Mail.box"
+		
+		If Not c.HabilitadoNotificarIniciados Then
+			Exit Sub	
+		End If
+		
+		Set mail=New notesDocument(dbMailBox)
+		
+		mail.form="Memo"
+		
+		mail.from=c.EmailInstitucional
+		Set body = mail.CreateMIMEEntity
+		
+		If vExpedientes.cantElem > 0 Then
+			Set oExpediente=vExpedientes.getElement(1)
+			
+			Dim fechaCreacion As NotesDateTime
+			Set fechaCreacion = New NotesDateTime(oExpediente.Caratula.FechaCreacion)
+			
+			Set header = body.CreateHeader("Subject")
+			Call header.SetHeaderVal("RELACION DIARIA DE ASUNTOS NUEVOS")
+			
+			strtext= |
+<HTML>
+<HEAD>
+<TITLE>RELACION DIARIA DE ASUNTOS NUEVOS</TITLE>
+</HEAD>
+<BODY>
+<center><FONT color=royalblue face=Arial><STRONG> | & c.Institucion & |</STRONG></FONT><BR>
+<FONT color=black face=Arial size=2><STRONG>Sistema de Expediente Electrónico</STRONG></FONT><BR>
+<FONT face=Arial size=2><STRONG>RELACION DIARIA DE ASUNTOS NUEVOS </STRONG></FONT><br>
+<FONT face=Arial size=1><STRONG>FECHA:| & Today & |</STRONG></FONT><br><br>
+<table border=1 width= 80% cellpadding=3 cellspacing=1 align=center >
+<tr bgcolor=#4682b4 center arial,verdana;color:FFFFFF;text-align: 9pt >
+<td width=50><FONT face=Arial size=2 color=white>Nro</FONT></td>
+<td><FONT face=Arial size=2 color=white>TÍTULO</FONT></td>
+<td width=150><FONT face=Arial size=2 color=white>OFICINA  ACTUAL</FONT> </td></tr>
+			|
+			
+			For i= 1 To vExpedientes.cantElem
+				Set oExpediente=vExpedientes.getElement(i)
+				strUrl = Me.ArmarURLExp(oExpediente)
+				strText= strText &  |<tr bgcolor=#d3d3d3 9pt arial,verdana >|
+				strAsunto =  oExpediente.Caratula.Asunto
+				strAsunto = Replace(strAsunto, Chr(13)&Chr(10),"<br>")
+				strText = strText & |<td><FONT face=Arial size=1> <a href="| & strUrl & |">| & oExpediente.Caratula.NroExp & |</a></FONT></td>|
+				strText = strText & |<td><FONT face=Arial size=1> | &  strAsunto & |</FONT></td>|
+				strText= strText &  |<td><FONT face=Arial size=1>| & oExpediente.Caratula.OficinaActual & |</FONT></td>|
+				strText = strText & |</tr>|
+				
+			Next
+			
+			strText = strText & |</table>
+</center>
+</BODY>
+</HTML>|
+			Call stream.WriteText(strText)
+			Call body.SetContentFromText _
+			(stream, "text/html;charset=UTF-8", ENC_NONE)  	
+			
+		End If
+		
+		Dim vDestinos As New Vector(0)
+		Set vDestinos=c.DestinatariosNotifDiariaNew
+		
+		If vDestinos.cantElem > 0 Then
+			mail.recipients =vDestinos.values
+			mail.BlindCopyTo=vDestinos.values
+			mail.Save True, False
+		End If
+		
+		session.ConvertMime=True
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarIniciados","")
+		Exit Sub						
+	End Sub
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarIniciadosFecha(vExpedientes As Vector, Fecha As NotesDateTime)
+		
+		On Error Goto HANDLER		
+		
+		Dim dbMailBox As NotesDatabase, body As NotesMIMEEntity, header As NotesMIMEHeader
+		Dim stream As NotesStream, i As Integer, strText As String, strUrl As String
+		Dim strAsunto As String, c As New Configuracion, oExpediente As Expediente
+		Dim mail As notesDocument
+		
+		
+		session.ConvertMime=False
+		
+		Set stream = session.CreateStream
+		Set dbMailBox= New NotesDatabase("","")
+		
+		dbMailBox.Open db.Server,"Mail.box"
+		
+		If Not c.HabilitadoNotificarIniciados Then
+			Exit Sub	
+		End If
+		
+		Set mail=New notesDocument(dbMailBox)
+		
+		mail.form="Memo"
+		
+		mail.from=c.EmailInstitucional
+		Set body = mail.CreateMIMEEntity
+		
+		If vExpedientes.cantElem > 0 Then
+			Set oExpediente=vExpedientes.getElement(1)
+			
+			Dim fechaCreacion As NotesDateTime
+			Set fechaCreacion = New NotesDateTime(oExpediente.Caratula.FechaCreacion)
+			
+			Set header = body.CreateHeader("Subject")
+			Call header.SetHeaderVal("RELACION DIARIA DE ASUNTOS NUEVOS")
+			
+			strtext= |
+<HTML>
+<HEAD>
+<TITLE>RELACION DIARIA DE ASUNTOS NUEVOS</TITLE>
+</HEAD>
+<BODY>
+<center><FONT color=royalblue face=Arial><STRONG> | & c.Institucion & | </STRONG></FONT><BR>
+<FONT color=black face=Arial size=2><STRONG>Sistema de Expediente Electrónico</STRONG></FONT><BR>
+<FONT face=Arial size=2><STRONG>RELACION DIARIA DE ASUNTOS NUEVOS </STRONG></FONT><br>
+<FONT face=Arial size=1><STRONG>FECHA:| & Fecha.dateOnly & |</STRONG></FONT><br><br>
+<table border=1 width= 80% cellpadding=3 cellspacing=1 align=center >
+<tr bgcolor=#4682b4 center arial,verdana;color:FFFFFF;text-align: 9pt >
+<td width=50><FONT face=Arial size=2 color=white>Nro</FONT></td>
+<td><FONT face=Arial size=2 color=white>TÍTULO</FONT></td>
+<td width=150><FONT face=Arial size=2 color=white>OFICINA  ACTUAL</FONT> </td></tr>
+			|
+			
+			For i= 1 To vExpedientes.cantElem
+				Set oExpediente=vExpedientes.getElement(i)
+				strUrl = Me.ArmarURLExp(oExpediente)
+				strText= strText &  |<tr bgcolor=#d3d3d3 9pt arial,verdana >|
+				strAsunto =  oExpediente.Caratula.Asunto
+				strAsunto = Replace(strAsunto, Chr(13)&Chr(10),"<br>")
+				strText = strText & |<td><FONT face=Arial size=1> <a href="| & strUrl & |">| & oExpediente.Caratula.NroExp & |</a></FONT></td>|
+				strText = strText & |<td><FONT face=Arial size=1> | &  strAsunto & |</FONT></td>|
+				strText= strText &  |<td><FONT face=Arial size=1>| & oExpediente.Caratula.OficinaActual & |</FONT></td>|
+				strText = strText & |</tr>|
+				
+			Next
+			
+			strText = strText & |</table>
+</center>
+</BODY>
+</HTML>|
+			Call stream.WriteText(strText)
+			Call body.SetContentFromText _
+			(stream, "text/html;charset=UTF-8", ENC_NONE)  	
+			
+		End If
+		
+		Dim vDestinos As New Vector(0)
+		Set vDestinos=c.DestinatariosNotifDiariaNew
+		
+		If vDestinos.cantElem > 0 Then
+			mail.recipients =vDestinos.values
+			mail.BlindCopyTo=vDestinos.values
+			mail.Save True, False
+		End If
+		
+		session.ConvertMime=True
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarIniciados","")
+		Exit Sub						
+	End Sub
+	
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarIngresadosUnidad(vExpedientes As Vector,sUnidad As String)
+		On Error Goto HANDLER
+		
+		Dim dbMailBox As NotesDatabase
+		
+		session.ConvertMime=False
+		Dim body As NotesMIMEEntity
+		Dim header As NotesMIMEHeader
+		Dim stream As NotesStream
+		Set stream = session.CreateStream
+		Set dbMailBox= New NotesDatabase("","")
+		dbMailBox.Open db.Server,"Mail.box"
+		
+		Dim c As New Configuracion
+		If Not c.HabilitadoNotificarIngresos Then
+			Exit Sub
+		End If
+		
+		
+		Dim oExpediente As Expediente
+		Dim mail As notesDocument
+		Set mail=New notesDocument(dbMailBox)
+		
+		mail.form="Memo"
+		
+		mail.from=c.EmailInstitucional
+		Msgbox "la dir es " & c.EmailInstitucional
+		Set body = mail.CreateMIMEEntity
+		
+		If vExpedientes.cantElem > 0 Then
+			Set oExpediente=vExpedientes.getElement(1)
+			
+			Dim fechaCreacion As NotesDateTime
+			Set fechaCreacion = New NotesDateTime(oExpediente.Caratula.FechaCreacion)
+		End If
+		
+		Set header = body.CreateHeader("Subject")
+		Call header.SetHeaderVal("RELACION DIARIA DE ASUNTOS INGRESADOS A " & sUnidad)
+		
+		
+		Dim i As Integer
+		Dim strText As String
+		Dim strUrl As String
+		Dim strAsunto As String
+		strtext= |
+<HTML>
+<HEAD>
+<TITLE>RELACION DIARIA DE ASUNTOS INGRESADOS A | & sUnidad & |</TITLE>
+</HEAD>
+<BODY>
+<center><FONT color=royalblue face=Arial><STRONG> | & c.Institucion & |</STRONG></FONT><BR>
+<FONT color=black face=Arial size=2><STRONG>Sistema de expediente electronico</STRONG></FONT><BR>
+<FONT face=Arial size=2><STRONG>RELACION DIARIA DE ASUNTOS INGRESADOS A | & sUnidad & |</STRONG></FONT><br>
+<FONT face=Arial size=1><STRONG>FECHA:| & Today & |</STRONG></FONT><br><br>
+<table border=1 width= 80% cellpadding=3 cellspacing=1 align=center >
+<tr bgcolor=#4682b4 center arial,verdana;color:FFFFFF;text-align: 9pt >
+<td width=50><FONT face=Arial size=2 color=white>Nro</FONT></td>
+<td><FONT face=Arial size=2 color=white>TITULO</FONT></td>
+<td width=150><FONT face=Arial size=2 color=white>OFICINA  ACTUAL</FONT> </td></tr>
+			|
+		If vExpedientes.cantElem > 0 Then	
+			For i= 1 To vExpedientes.cantElem
+				Set oExpediente=vExpedientes.getElement(i)
+				strUrl = Me.ArmarURLExp(oExpediente)
+				strText= strText &  |<tr bgcolor=#d3d3d3 9pt arial,verdana >|
+				strAsunto =  oExpediente.Caratula.Asunto
+				strAsunto = Replace(strAsunto, Chr(13)&Chr(10),"<br>")
+				strText = strText & |<td><FONT face=Arial size=1> <a href="| & strUrl & |">| & oExpediente.Caratula.NroExp & |</a></FONT></td>|
+				strText = strText & |<td><FONT face=Arial size=1> | &  strAsunto & |</FONT></td>|
+				strText= strText &  |<td><FONT face=Arial size=1>| & oExpediente.Caratula.OficinaActual & |</FONT></td>|
+				strText = strText & |</tr>|				
+			Next
+			
+		End If
+		
+		strText = strText & |</table>
+</center>
+</BODY>
+</HTML>|
+		Call stream.WriteText(strText)
+		Call body.SetContentFromText _
+		(stream, "text/html;charset=UTF-8", ENC_NONE)  	
+		
+		
+		
+		Dim vDestinos As New Vector(0),oUnidad As Unidad
+		Set oUnidad=New Unidad(sUnidad)
+		'Set vDestinos=oUnidad.usuariosRolFirmar
+		Set vDestinos=oUnidad.Miembros
+		
+		If vDestinos.cantElem > 0 Then
+			mail.recipients =vDestinos.values
+			mail.BlindCopyTo=vDestinos.values
+			mail.Save True, False
+		End If
+		
+		session.ConvertMime=True
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarIngresadosUnidad","")
+		Exit Sub	
+	End Sub
+	
+	
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarPlazoCercaExpirar(oExp As Expediente)
+		'Notifica Jefes de Unidad y a los Editores
+		On Error Goto HANDLER		
+		
+		Dim c As New Configuracion
+		If Not c.HabilitadoNotificarProxExpirar Then
+			Exit Sub
+		End If
+		
+		Dim oLastAct As Actuacion
+		Set oLastAct=oExp.LastActuacion
+		If oLastAct.NotificadoProxExpirar Then
+			Exit Sub
+		End If
+		
+		Dim oUnidad As Unidad
+		Set oUnidad=New Unidad(oExp.Caratula.OficinaActual)
+		
+		Dim vJefes As New Vector(0),vEditores As New Vector(0)
+		Set vJefes = oUnidad.JefeUnidad
+		Set vEditores=oUnidad.UsuariosRolEditor
+		
+		Dim mail As notesDocument
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject= MSG_ACCION_EXP_PROX_EXPIRAR & " : " & oExp.Caratula.NroExp
+		mail.from = c.EmailInstitucional
+		
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		
+		Dim lk As String
+		lk=cambiarChar(ArmarURLExp(oExp),"\","/")
+		SetMailMsg rtiBody,oExp,TIPO_EXP,MSG_ACCION_EXP_PROX_EXPIRAR,"",lk
+		
+		Dim vTodos As New Vector(0)
+		vTodos.append vJefes,True
+		vTodos.append vEditores,True
+		
+		If Not vTodos Is Nothing Then
+			If vTodos.cantElem > 0 Then				
+				mail.Send False,vTodos.values					
+			End If
+		End If
+		
+		
+		oLastAct.NotificadoProxExpirar=True
+		oLastAct.save
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarPlazoCercaExpirar","")
+		Exit Sub						
+	End Sub
+	
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarEnvioCS(oCS As CartaServicio)
+		'Notifica a los destinatarios de la carta de servicio
+		On Error Goto HANDLER		
+		
+		Dim mail As notesDocument, dest As String, url As String 
+		
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject="Se le ha enviado la Carta de Servicio Nº " & oCS.NroCartaServicio
+		mail.from=c.EmailInstitucional
+		
+		
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		rtiBody.Appendtext "Asunto: " & oCS.Asunto
+		rtiBody.addNewLine(2)
+		rtiBody.Appendtext "Ingrese el siguiente link en su Navegador Web: "
+		rtiBody.addNewLine(2)
+		url = ArmarURLCS(oCS)
+		rtiBody.Appendtext url
+		
+		dest = oCS.Destinatario
+		mail.Send False,dest
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarEnvioCS","")
+		Exit Sub					
+	End Sub	
+	
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarAcuseCS(oCS As CartaServicio)
+		'Notifica a los remitentes con rol
+		On Error Goto HANDLER		
+		
+		Dim mail As notesDocument, dest As String, url As String 
+		
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject="Acuse de recibo de Carta de Servicio Nº " & oCS.NroCartaServicio
+		mail.from=c.EmailInstitucional
+		
+		
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		rtiBody.Appendtext "Asunto: " & oCS.Asunto
+		rtiBody.addNewLine(2)
+		rtiBody.Appendtext "Ingrese el siguiente link en su Navegador Web: "
+		rtiBody.addNewLine(2)
+		url = ArmarURLCS(oCS)
+		rtiBody.Appendtext url
+		
+		dest = oCS.Document.sUsuarioFirma(0)
+		mail.Send False,dest
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarAcuseCS","")
+		Exit Sub					
+	End Sub	
+	
+'*****************************************************************************************************************	
+	
+	Public Sub NotificarReenvioCS(oCS As CartaServicio, subject As String, vpers As Vector, vdest As Vector)
+		'Notifica a los destinatarios agregados
+		On Error Goto HANDLER		
+		
+		Dim mail As notesDocument, dest As Variant, url As String, vDestinatarios As New Vector(0) 
+		
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject="Se le ha notificado de la Carta de Servicio Nº " & oCS.NroCartaServicio
+		mail.from=c.EmailInstitucional
+		
+		
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		rtiBody.Appendtext "Detalle: " & subject
+		rtiBody.addNewLine(2)
+		rtiBody.Appendtext "Ingrese el siguiente link en su Navegador Web: "
+		rtiBody.addNewLine(2)
+		url = ArmarURLCS(oCS)
+		rtiBody.Appendtext url
+		
+		If vpers.cantElem <> 0 Then
+			Set vDestinatarios = vpers
+			
+			If vdest.cantElem <> 0 Then
+				Call vDestinatarios.append(vdest,False)
+			End If
+		Else
+			Set vDestinatarios = vdest
+		End If		
+		
+		If vDestinatarios.cantElem <> 0 Then
+			dest = vDestinatarios.values
+			mail.Send False,dest
+		End If
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarReenvioCS","")
+		Exit Sub					
+	End Sub		
+	
+'*****************************************************************************************************************	
+	
+	Sub NotificarMarcas(usuarioActual As Variant,vNroExp As Vector,mUnidades As Vector,mFechas As Vector)
+		On Error Goto HANDLER		
+		
+		If Not (  vNroExp.cantElem > 0 And _
+		vNroExp.cantElem = mUnidades.cantElem And _
+		mUnidades.cantElem = mFechas.cantElem  And _
+		Not Isempty(usuarioActual) ) Then
+			Exit Sub
+		End If
+		
+		
+		Dim dbMailBox As NotesDatabase
+		session.ConvertMime=False
+		Dim body As NotesMIMEEntity
+		Dim header As NotesMIMEHeader
+		Dim stream As NotesStream
+		Set stream = session.CreateStream
+		Set dbMailBox= New NotesDatabase("","")
+		dbMailBox.Open db.Server,"Mail.box"
+		
+		Dim oExpediente As Expediente
+		Dim mail As notesDocument
+		Set mail=New notesDocument(dbMailBox)
+		mail.form="Memo"
+		mail.from=c.EmailInstitucional
+		Set body = mail.CreateMIMEEntity
+		
+		Set header = body.CreateHeader("Subject")
+		Call header.SetHeaderVal(MSG_ACCION_EXP_MARCAS)
+		
+		Dim i As Integer
+		Dim strText As String
+		Dim strUrl As String
+		Dim strAsunto As String
+		
+		strtext= |
+<HTML>
+<HEAD>
+<TITLE>| & MSG_ACCION_EXP_MARCAS & |</TITLE>
+</HEAD>
+<BODY>
+<center><FONT color=royalblue face=Arial><STRONG>| & c.Institucion & |</STRONG></FONT><BR>
+<FONT color=black face=Arial size=2><STRONG>Sistema de expediente electronico</STRONG></FONT><BR>
+<FONT face=Arial size=2><STRONG>| & MSG_ACCION_EXP_MARCAS & |</STRONG></FONT><br>
+<FONT face=Arial size=1><STRONG>FECHA:| & Today & |</STRONG></FONT><br><br>
+			|
+		
+		Dim huboMovimientos As Integer
+		huboMovimientos=False
+		If vNroExp.cantElem > 0 Then	
+			For i= 1 To vNroExp.cantElem
+				Dim vUnidades As Vector,vFechas As Vector,j As Integer
+				Set vUnidades=mUnidades.getElement(i)
+				Set vFechas=mFechas.getElement(i)
+				
+				If vUnidades.cantElem > 0 Then
+					huboMovimientos=True
+					Set oExpediente=New Expediente(Cstr(vNroExp.getElement(i)),Nothing)
+					strUrl = Me.ArmarURLExp(oExpediente)
+					
+					strText= strText &  |<div align="center" ><table  border=1 width="80%" cellpadding=3 cellspacing=1 align=center >
+				<tr bgcolor="#4682b4">
+				<td  colspan=2 align="center"><b><FONT face=Arial size=2 color=white><a style="color=yellow;text-decoration= underline;font-size=13px;FONT-WEIGHT=bold;" href="| & strUrl & |" >| & Cstr(vNroExp.getElement(i)) & |</A>| & _
+				| - | & oExpediente.Caratula.Asunto & _
+				|</FONT></b></td></tr>|
+					
+					Dim nInt As NotesInternational
+					Set nInt = session.International
+					For j= 1 To vUnidades.cantElem
+						strText= strText &  |<tr bgcolor="#d3d3d3"  >|
+						Dim nFecha As New notesDateTime(vFechas.getElement(j))
+						Dim strFecha As String,strHora As String
+						strHora  =Strleftback(Trim(nFecha.TimeOnly),nInt.TimeSep) & " " & Right(Trim(nFecha.TimeOnly),4)
+						strFecha =nFecha.DateOnly & " " & strHora 
+						
+						strText = strText & |<td width="20%"><FONT face=Arial size=1>| & strFecha & |</FONT></td>|
+						strText = strText & |<td><FONT face=Arial size=1>| & vUnidades.getElement(j) & |</FONT></td>|
+					Next
+					strText = strText & |</tr></table></div><br><br>|	
+				End If			
+			Next			
+		End If		
+		strText = strText & |
+</center>
+</BODY>
+</HTML>|
+		Call stream.WriteText(strText)
+		Call body.SetContentFromText _
+		(stream, "text/html;charset=UTF-8", ENC_NONE)  	
+		If Not Isempty(usuarioActual) And huboMovimientos Then
+			mail.recipients =usuarioActual	
+			mail.BlindCopyTo=usuarioActual
+			mail.Save True, False			
+		End If		
+		session.ConvertMime=True		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotificarMarcas","")
+		Exit Sub						
+	End Sub
+	
+'*****************************************************************************************************************	
+	
+	Sub NotifRecordatorioMarca(usuario As Variant,oExp As Expediente,msgRecord As Variant)
+		On Error Goto HANDLER		
+		
+		Dim c As New Configuracion
+		
+		Dim mail As notesDocument
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject= MSG_ACCION_MARCA_RECORDATORIO & " : " & oExp.Caratula.NroExp
+		mail.from=c.EmailInstitucional
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		
+		Dim lk As String
+		lk=cambiarChar(ArmarURLExp(oExp),"\","/")
+		
+		Dim lineas As String,i As Integer
+		If Not Isempty(msgRecord) Then
+			For i=Lbound(msgRecord) To Ubound(msgRecord)
+				If lineas = "" Then
+					lineas = msgRecord(i)
+				Else
+					lineas = lineas & Chr(13) & Chr(10) & msgRecord(i)
+				End If		
+			Next	
+		End If		
+		SetMailMsg rtiBody,oExp,TIPO_EXP,MSG_ACCION_MARCA_RECORDATORIO,lineas,lk
+		
+		mail.Send False,usuario
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento NotifRecordatorioMarca","")
+		Exit Sub						
+	End Sub
+	
+'*****************************************************************************************************************	
+	
+	Sub CompartirMarca(usuarios As Variant,oExp As Expediente,descrMarca As String)
+		On Error Goto HANDLER		
+		
+		Dim c As New Configuracion
+		
+		Dim mail As notesDocument
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.subject= MSG_ACCION_MARCA_COMPARTIR & " " & descrMarca & ": " & oExp.Caratula.NroExp
+		mail.from=c.EmailInstitucional
+		
+		Dim rtiBody As notesRichTextItem
+		Set rtiBody=New notesRichTextItem(mail,"Body")
+		
+		Dim lk As String
+		lk=cambiarChar(ArmarURLExp(oExp),"\","/")
+		
+		SetMailMsg rtiBody,oExp,TIPO_EXP,MSG_ACCION_MARCA_COMPARTIR,MSG_ACCION_MARCA_COMPARTIR & "(" & descrMarca & "): " & oExp.Caratula.NroExp,lk
+		
+		mail.Send False,usuarios
+		
+		
+		Exit Sub	
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Notificacion - Procedimiento CompartirMarca","")
+		Exit Sub						
+	End Sub
+	
+'*************************************************************************************************************************
+	
+End Class
+'*************************************************************************************************************************
+'*************************************************************************************************************************

@@ -1,0 +1,74 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'Tipos de seguridad
+Public Const SEGURIDAD_NORMAL						= "Normal"
+Public Const SEGURIDAD_CONFIDENCIAL				= "Confidencial"
+
+'Campos 
+Public Const DBSGD_CAMPO_FCARATULA_NRO				= "ccNroExp"
+Public Const DBSGD_CAMPO_FCARATULA_TEMA				= "sTema"
+Public Const DBSGD_CAMPO_FCARATULA_ESTADO			= "ccEstado"
+Public Const DBSGD_CAMPO_FCARATULA_FECHA_CREACION		= "fCreacion"
+Public Const DBSGD_CAMPO_FCARATULA_SOlICITANTE		= "sSolicitante"
+Public Const DBSGD_CAMPO_FCARATULA_OFICINA_INICIAL	= "ccOficinaInicial"
+Public Const DBSGD_CAMPO_FCARATULA_OFICINA_ACTUAL		= "ccOficinaActual"
+Public Const DBSGD_CAMPO_FCARATULA_CANT_ACT			= "cCantAct"
+Public Const DBSGD_CAMPO_FCARATULA_FECHA_ARCHIVO		= "fFechaArchivado"
+Public Const DBSGD_CAMPO_FCARATULA_LUGAR_ARCHIVO		= "sLugarArchivado"
+Public Const DBSGD_CAMPO_FCARATULA_ASUNTO			= "sAsunto"
+Public Const DBSGD_CAMPO_FCARATULA_SEGURIDAD			= "ccSeguridad"
+Public Const DBSGD_CAMPO_FCARATULA_DOC_FISICA		= "rDocFisica"
+Public Const DBSGD_CAMPO_FCARATULA_DOCS_RELAC		= "sDocsRelacionados"
+Public Const DBSGD_CAMPO_FCARATULA_OBS				= "sObs"
+Public Const DBSGD_CAMPO_FCARATULA_LECTORES			= "Lectores"
+Public Const DBSGD_CAMPO_FCARATULA_AUTORES			= "Autores"
+Public Const DBSGD_CAMPO_FCARATULA_CLASIFICADORES		= "lClasificadores"
+Public Const DBSGD_CAMPO_FCARATULA_HOSTDBRUTAS		= "sHostDbRutas"
+Public Const DBSGD_CAMPO_FCARATULA_PATHDBRUTAS		= "sPathDbRutas"
+Public Const DBSGD_CAMPO_FCARATULA_USUARIO_ACCION		= "sUsuario"
+Public Const DBSGD_CAMPO_FCARATULA_ACCION			= "sAccion"
+Public Const DBSGD_CAMPO_FCARATULA_CAMPO_TIPO_RUTA 	="sRuta"
+Public Const DBSGD_CAMPO_FACTUACION_NRO				= "ccnNroAct"
+Public Const DBSGD_CAMPO_FACTUACION_OFICINA			= "ccOficina"
+Public Const DBSGD_CAMPO_FACTUACION_PROCED			= "sProced"
+Public Const DBSGD_CAMPO_FACTUACION_TIEMPO			= "nDiasAct"
+Public Const DBSGD_CAMPO_FACTUACION_FECHA_ENT		= "fEntrada"
+Public Const DBSGD_CAMPO_FACTUACION_FECHA_REC		= "fRecibido"
+Public Const DBSGD_CAMPO_FACTUACION_PERS_REC			= "sPersRecibido"
+Public Const DBSGD_CAMPO_FACTUACION_FECHA_SAL		= "fSalida"
+Public Const DBSGD_CAMPO_FACTUACION_PERS_SAL			= "sPersSalida"
+Public Const DBSGD_CAMPO_FACTUACION_EXTRACTO			= "sExtracto"
+Public Const DBSGD_CAMPO_FACTUACION_TEXTO			= "sTexto"
+Public Const DBSGD_CAMPO_FACTUACION_MATERIAL			= "sMaterial"
+Public Const DBSGD_CAMPO_FACTUACION_DOCS_RELAC		= "sDocsRelacionados"
+Public Const DBSGD_CAMPO_FACTUACION_NRO_EXP			= "ccNroExp"
+Public Const DBSGD_CAMPO_FACTUACION_LECTORES			= "Lectores"
+Public Const DBSGD_CAMPO_FACTUACION_AUTORES			= "Autores"
+Public Const DBSGD_CAMPO_FACTUACION_TIEMPO_PERMANECIO	= "nDiasPermanecio"
+Public Const DBSGD_CAMPO_FACTUACION_TEMA			= "sTema"
+Public Const DBSGD_CAMPO_FACTUACION_CANT_FIRMAS		= "nCantidadFirmas"
+Public Const DBSGD_CAMPO_FACTUACION_FIRMAS			= "sFirma"
+Public Const DBSGD_CAMPO_FACTUACION_FIRMADO			= "sFirmado"
+Public Const DBSGD_CAMPO_FACTUACION_FECHAS_FIRMAS		= "fFechaFirma"
+Public Const DBSGD_CAMPO_FACTUACION_USUARIOS_FIRMAS	= "sUsuarioFirma"
+
+'Formularios 
+Public Const DBSGD_FORM_CARATULA					= "FCaratula"
+Public Const DBSGD_FORM_ACTUACION					= "FActuacion"
+
+
+'Vistas 
+Public Const DBSGD_VISTA_BUSQ_ACTUACION_NRO			= "VBusqActNroAct"
+Public Const DBSGD_VISTA_BUSQ_ACTUACIONES			= "VBusqActExp"
+Public Const DBSGD_VISTA_BUSQ_CARATULA				= "VBusqCaratula"
+Public Const DBSGD_VISTA_CAR_DESC					= "VDescendientesAgregarxExp"
+Public Const DBSGD_VISTA_CAR_DESC_DESA				= "VDescendientesDesagregarxExp"
+Public Const DBSGD_VISTA_AGREGADOS					= "VBusqExpAgregado"
+
+
+'Prefijo Documentos a Borrar
+Public Const DBSGD_CAMPO_FORM_BORRAR_PREFIJO			="A_BORRAR_"

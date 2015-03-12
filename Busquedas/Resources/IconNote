@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257E0500598295'>
+<noteinfo noteid='11a' unid='CBF8018913D5421203256D40005FD8AB' sequence='157'>
+<created><datetime>20030609T142653,87-03</datetime></created>
+<modified><datetime>20150311T131749,51-03</datetime></modified>
+<revised><datetime>20150311T131749,50-03</datetime></revised>
+<lastaccessed><datetime>20150311T131749,51-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131741,61-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Cabrera/O=ISA</name><name>CN=Desarrollo/O=ISA</name><name
+>CN=Martin Cabrera/O=ISA</name><name>CN=Desarrollo/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name
+>CN=Desarrollo/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Desarrollo/O=ISA</name><name
+>CN=Martin Cabrera/O=ISA</name><name>CN=Desarrollo/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Pablo Andrade/O=ISA</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=lnMEC01/O=MEC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030811T102252,94-03</datetime><datetime>20030811T105842,58-03</datetime><datetime
+>20030811T112432,86-03</datetime><datetime>20030902T142914,87-03</datetime><datetime
+>20030902T142931,66-03</datetime><datetime>20030912T133949,10+00</datetime><datetime
+>20030925T114531,12+00</datetime><datetime>20030925T114531,13+00</datetime><datetime
+>20030925T114537,53+00</datetime><datetime>20040625T150931,14-03</datetime><datetime
+>20060315T111728,90+00</datetime><datetime dst='true'>20061023T163454,96+02</datetime><datetime
+ dst='true'>20061023T164223,29+02</datetime><datetime dst='true'>20061023T164228,48+02</datetime><datetime
+ dst='true'>20061023T165855,72+02</datetime><datetime dst='true'>20061023T165930,08+02</datetime><datetime
+ dst='true'>20061023T170156,29+02</datetime><datetime dst='true'>20061023T170200,94+02</datetime><datetime
+>20070716T135010,74-03</datetime><datetime>20070720T154800,76-03</datetime><datetime
+>20070720T154913,98-03</datetime><datetime>20091126T194637,51-03</datetime><datetime
+>20100609T154922,22-03</datetime><datetime>20100609T154924,75-03</datetime><datetime
+>20101026T112910,84-03</datetime><datetime dst='true'>20101111T153756,29-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAA/gH///gAf//wAB//4AAP/8AAB//AAAP/gAAB/4AAAP+AAAD/gAAAf4AAAD+AAAA/gAAA
+H4AAAA/AAAAPwAAAB8AAAAfgAAAH4AAAA/AAAAPwAAAD+AAAA/gAAAP8AAAD/gAAA/8AAAP/gAAD
+/8AAA//gAAf/8AAP//wAH///AH8AAAAKoAAKoAAAAAAAAAAAAAAKpN3USgCgAAAAAAAAAAAApP1N
+3d3UoKAAAAAAAAAACk/qqkCrRESgAAAAAAAAAKR+rapKCrq0SgAAAAAAAACn7traRAuruqSgAAAA
+AAAKTf2tSkoKu7rqSgAAAAAACk/e1NpEC766rqSgAAAAAApNfU1ESgvrupqZSgAAAAAKTX1NREoL
+67qamUoAAAAABPze1ESgu765OZmUoAAAAATG9E1AC+vruZmZmkoAAAAE9mbUqr6+vrk5mZmkAAAA
+BOZjRAq7W+u5k5mZqkAAAATGadSgtb6+u9mZ4A/uAAAARmTtSgtb6+sP2U0R/gAAAEZuftoPtbuq
+UdlKER/gAABPb+dA8Wu6thOZ0PEf4AAADGb0rxYbuiYZmZrhEeAAAA72ZmZmK+uiaTma4RH+AAAA
+hmZmYb6+uhOTkPER/gAAAOj2Zmbl6+phOQ8REf4AAAAE5mFmLl6iFhYRERH0AAAABI9mZmXqIWFh
+FhER9AAAAABI9mFmFhYWFhEREfoAAAAABI9mYWFhYWFhFhHqAAAAAABIxhYWFhYWFhER6gAAAAAA
+CojxYWFhYWFhH6oAAAAAAACkCPZmFhYWEfpEAAAAAAAACkoI9mFhYW6kQAAAAAAAAACkRADu7uAK
+RAAAAAAAAAAAAEREREREREAAAA==
+</rawitemdata></item>
+<item name='$DefaultWebFrameset' sign='true'><text>Inicio</text></item>
+<item name='$DefaultFrameset' sign='true'><text>Inicio</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$Flags'><text>JF7</text></item>
+<item name='$TemplateServerName'><text>CN=Ian Coates/O=ISA</text></item>
+<item name='$TemplateFileName'><text>c:\Program Files (x86)\IBM\Notes\Data\version\Busquedas.ntf</text></item>
+<item name='$PIRCRefreshModTime'><datetime>20150310T111719,03-03</datetime></item>
+<item name='$TemplateModTime'><datetime>20150310T103911,76-03</datetime></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current Recuperacion y Busquedas</text></item></note>
+

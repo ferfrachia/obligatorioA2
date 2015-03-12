@@ -1,0 +1,153 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library Usuario Comunicacion
+	Created Oct 28, 2011 by Guillermo Segalerba/ISA
+	Description: Comments for Library
+%END REM
+Option Declare
+
+
+Use "VectorClass 2.05" 
+Use "FuncionesGenerales"
+Use "Configuracion Comunicaciones"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class UsuarioComu 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'***************************	CLASE USUARIOCOMU	************************************************
+'*	INTERFASE
+'*
+'*		New(byval nombre as string)
+'*			Constructor de la clase
+'*
+'*	PROPIEDADES
+'*	
+'*		Get Unidades () as vector
+'*			Dada una clave retorna/setea las unidades del usuario. 
+'*
+'*		Get/Set Roles(Byval unidad As String) As vector
+'*			Dada un unidad retorna/setea un vector con lo roles del usuario. 
+'*			
+'*		Get  NombreUsuario()as string
+'*			Retorna el nombre del usuario
+'*
+'*	'METODOS	
+'*		Set Retomarfunciones (Byval unidad as string, Byval as string )
+'*			Devuelve al suplente los permisos anteriores
+'*
+'****************************************************************************************************************** 
+'Constantes privadas
+
+Private Const CLAVE_BASE_ORGANIZACION							= "ORGAN"
+Private Const ROL_CREADOR									= "RolCreador"
+Private Const ROL_RECEPTOR									= "RolReceptor"
+Private Const ROL_ENVIAR									= "RolEnviar"
+Private Const ROL_VISUALTODOS								= "RolVisualizarTodos"
+Private Const ROL_ARCHIVO									= "RolArchivo"
+Private Const ROL_FIRMANTE						 			= "RolFirmante"
+%REM
+'vistas
+'Private Const VISTA_ORGANIZACION_BUSQUEDAPERSONAS					= "VBusqPers"
+'Private Const VISTA_ORGANIZACION_BUSQUEDAUNIDADES					= "VBusqUni"
+'Private Const VISTA_ORGANIZACION_BUSQUEDASUPLENCIAS				= "VBusSupAct"
+
+'campos
+Private Const CAMPO_ORGANIZACION_UNIDAD							= "sUnidad"
+Private Const CAMPO_ORGROL_CREADOR								= "RolCreador"
+Private Const CAMPO_ORGROL_RECEPTOR							= "RolReceptor"
+Private Const CAMPO_ORGROL_EDITOR								= "RolEditor"
+Private Const CAMPO_ORGROL_FIRMANTE							= "RolFirmante"
+Private Const CAMPO_ORGROL_PASE								= "RolPase"
+Private Const CAMPO_ORGROL_GESTION								= "RolGestion"
+Private Const CAMPO_ORGROL_AMPLIARPLAZO							= "RolAmpliarPlazo"
+Private Const CAMPO_ORGROL_MANEJARCONF							= "RolManejarConf"
+
+Private Const CAMPO_ORGROL_ROLES_AGREGADOS_AL_SUPLENTE				= "sRolesAgregadosAlSuplente"
+Private Const CAMPO_ORGROL_SUPLENCIA_FINALIZADA					= "sSuplenciaFinalizada"
+Private Const CAMPO_NOMBRE_USUARIO_SUPLENTE						= "nbUsuario"
+%END REM
+'******************************************************************************************************************
+Public Class UsuarioComu 
+	
+	'variables privadas
+	Private sNombre As String
+	Private c As ConfigComunicaciones
+	Private dbOrg As NotesDatabase	
+	
+	'*******************************************************************************************************************
+	
+	'Constructor 
+	Public Sub New(ByVal nombre As String)
+	On Error GoTo HANDLER
+	
+	sNombre = nombre
+	
+	If c Is Nothing Then Set c = New ConfigComunicaciones
+	Set dbOrg = c.ReferenciarBaseDeDatos(CLAVE_BASE_ORGANIZACION)
+	
+	'If dbOrg Is Nothing Then _
+	'Error "ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN  CLAVE_BASE_ORGANIZACION"
+	
+	Exit Sub
+HANDLER:
+	Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Constructor","")
+	Exit Sub
+End Sub	
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get NombreUsuario() As String
+	'Retorna el nombre del usuario
+	
+	On Error GoTo HANDLER
+	
+	NombreUsuario = sNombre
+	
+	Exit Property		
+HANDLER:
+	Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Propiedad Get NombreUsuario","")
+	Exit Property
+	
+End Property
+	
+	'******************************************************************************************************************		
+
+	'******************************************************************************************************************	
+	
+	Public Property Get Roles(ByVal unidad As String) As vector
+	'obtener el documento de unidad del usuario que representa este objeto y buscar en todos
+	'los campos roles donde esta el nombre del usuario.
+	'Guadar en los nombres de los campos donde esta el usuario y asignarlo a un vector
+	On Error GoTo HANDLER
+
+	Exit Property		
+HANDLER:
+	Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento - Get Roles","")
+	Exit Property
+End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set Roles(ByVal unidad As String) As Vector
+	On Error GoTo HANDLER
+	
+	Exit Property		
+HANDLER:
+	Call RegistraryGenerarError(NOMBRE_APLICACION,"Usuario - Procedimiento - Set Roles","")
+	Exit Property
+End Property
+	
+	'******************************************************************************************************************			
+	
+	
+	'*******************************************************************************************************************		
+End Class
+'Private Function replaceSubstring(ByVal x As String, ByVal repfrom As String, ByVal repto As String, _
+'	ByVal caseflag As Integer) As String
+'	Dim pos As Long, lastpos As Long
+'	lastpos = 1
+'	Do
+		'pos = InStr(la		replaceSubstring = replaceSubstring & Mid$(x, lastpos, pos-lastpos) & reptoe		lastpos = pos + Len(repfrom)o	Loops	replaceSubstring = replaceSubstring & Mid$(x, lastpos)	End Functionring = replaceSubstring & Mid$(x, lastpos)
+'End Function

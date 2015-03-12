@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='79a' unid='0E26544C1BDA88670325709700657523' sequence='110'>
+<created><datetime>20051011T152811,23-03</datetime></created>
+<modified><datetime>20150311T131223,04-03</datetime></modified>
+<revised><datetime>20150309T094445,29-03</datetime></revised>
+<lastaccessed><datetime>20150311T131223,04-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131223,04-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071228T100938,48-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Tipos de Marca Preferencias|VTiposMarcaPrefe</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+PgICAGQAAgAkMQEAQAA8dHI+PHRkIHdpZHRoPSIzMCI+PGlucHV0IG5hbWU9InRpcG9zIiAgdHlw
+ZT0iY2hlY2tib3giICB2YWx1ZT0ifgBWASICAQAKACIgICA+PC90ZD4iAgMAAgBaAAIAJDIBAA0A
+PHRkIGJnQ29sb3I9IgAFAAsAc0NvbG9yTWFyY2EAIgIBACYAIiB3aWR0aD0iMzAiICBoZWlndGg9
+IjEwIiA+Jm5ic3A7PC90ZD4iAgMAAQBAAAsAZGIAO+JjAOVwJQALAQABAC8AiwAAAAAAAAAAAPA/
+EAFrAiICAAAAAAAAAABXQIcBAQABAC8AhAMDAAEASgANAGhyZWYAPOJjAOVwJQAABQALAGRiADvi
+YwDlcCUAAAEAAwAvMC8AIgKQAFYBIgIBAA0AP29wZW5Eb2N1bWVudAAiAgMAAgCKAAIAJDYBABkA
+PHRkIHdpZHRoPSIyMDAiPjxBIGhyZWY9IgAFAA0AaHJlZgA84mMA5XAlAPMiAgEAIQAiIGNsYXNz
+PSJ0aXBvbGV0cmFjb25maWd1cmFjaW9uIj4AIgIFAAsAc1RleHRvTWFyY2EAIgIBAA4APC9BPjwv
+dGQ+PC90cj4iAgMABQAmACEABQACAAIAAgAJAAQAJDEkMiQ2JENvbmZsaWN0JFJFRgAEAAQAAAAy
+AAUABABmb3JtAQAKAEZUaXBvTWFyY2EKAgUACQAkQ29uZmxpY3QAaAEeARwCAwAHAA4ACAAJTDFT
+NFM1Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GAACAABEAGYAAAACAABmAAIAAgAkMiQ2
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAgACAEAAFZDAAACAAAAdgAAAAgAAQAACgAAAAAAAAAAAAICAAAAVkMBAAIABQBuAAAAHAAB
+AAAKAAAAAAAAAAAAAgIAAABWQwEAAgAFAFABAAB5AAEAAAoAIAAAAAAAAAACAgAAACQxdgACAGQA
+AgAkMQEAQAA8dHI+PHRkIHdpZHRoPSIzMCI+PGlucHV0IG5hbWU9InRpcG9zIiAgdHlwZT0iY2hl
+Y2tib3giICB2YWx1ZT0ifgBWASICAQAKACIgICA+PC90ZD4iAgMABwAQAAkACTFTMlM2UzdTACQy
+Q29sb3JuAAIAWgACACQyAQANADx0ZCBiZ0NvbG9yPSIABQALAHNDb2xvck1hcmNhACICAQAmACIg
+d2lkdGg9IjMwIiAgaGVpZ3RoPSIxMCIgPiZuYnNwOzwvdGQ+IgIDAAcAEgALAAkxUzJTMkUzUzRT
+ACQ2VGV4dG9QAQEAQAALAGRiADviYwDlcCUACwEAAQAvAIsAAAAAAAAAAADwPxABawIiAgAAAAAA
+AAAAV0CHAQEAAQAvAIQDAwAHAAoAAwAJMlMAAQBKAA0AaHJlZgA84mMA5XAlAAAFAAsAZGIAO+Jj
+AOVwJQAAAQADAC8wLwAiApAAVgEiAgEADQA/b3BlbkRvY3VtZW50ACICAwAHABQADgAJMFIzUzRT
+NVM2UzEwUwIAigACACQ2AQAZADx0ZCB3aWR0aD0iMjAwIj48QSBocmVmPSIABQANAGhyZWYAPOJj
+AOVwJQDzIgIBACEAIiBjbGFzcz0idGlwb2xldHJhY29uZmlndXJhY2lvbiI+ACICBQALAHNUZXh0
+b01hcmNhACICAQAOADwvQT48L3RkPjwvdHI+IgIDAAcAHAAVAAkwUjFTMlMzUzJFNFM1UzZTN1M4
+UwAmAAEAAAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQMAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAA
+AAAAAAABAAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAA
+AAAAAAAAAEIAAAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAAAQD///8AAQD///8AAAABAAAA
+AAABAICAgAAAAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$WebFlags' sign='true'><text>PY</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item></note>
+

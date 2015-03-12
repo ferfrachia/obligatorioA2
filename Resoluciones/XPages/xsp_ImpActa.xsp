@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+
+
+	<xp:this.data>
+		<xp:dominoDocument var="document1" formName="FSesion">
+		</xp:dominoDocument>
+	</xp:this.data>
+
+
+
+
+
+
+	
+	<xp:this.resources>
+		<xp:script src="/LibJS.js" clientSide="true"></xp:script>
+	</xp:this.resources>
+	<xp:this.afterPageLoad><![CDATA[#{javascript:var serverName=session.getCurrentDatabase().getServer();
+
+var db:NotesDatabase = session.getDatabase(session.getCurrentDatabase().getServer(), "\ProTexII.nsf");
+var db:NotesDatabase=session.getCurrentDatabase();
+
+
+var agent:NotesAgent = db.getAgent("(VerActa)");
+
+if (agent!=null){
+print("ISMA!");
+ agent.run();//WithDocumentContext(document1.getDocument());
+ print("ISMA!!");
+
+}
+
+var Firmantes:Array;
+//print("SSSS");
+
+var fechasfirmas:com.ibm.xsp.component.xp.XspInputText = getComponent("fechasfirmas");
+var firmasvalidacion:com.ibm.xsp.component.xp.XspInputText = getComponent("firmasvalidacion");
+var firmasvalidacionadmin:com.ibm.xsp.component.xp.XspInputText = getComponent("firmasvalidacionadmin");
+var sfechaadmin:com.ibm.xsp.component.xp.XspInputText = getComponent("sfechaadmin");
+var usuariofirma:com.ibm.xsp.component.xp.XspInputText = getComponent("usuariofirma");
+//stringToVector("sd;uyuh");
+//print("-+"+firmasvalidacion.toString());
+Firmantes = firmasvalidacion.getValue().toString().split(";"); //stringToVector(firmasvalidacion.getValue());
+var usuarios:Array = usuariofirma.getValue().toString().split(";");//stringToVector(usuariofirma.getValue());
+var fechas:Array = fechasfirmas.getValue().toString().split(";");//stringToVector(fechasfirmas.getValue());
+
+//validarFirmas(usuarios,Firmantes,fechas);	
+var ret="";
+print("a "+fechas);
+print("b "+usuarios);
+print("c "+Firmantes);
+for (var i =0;i<usuarios.length;i++){//vLength
+		usuario = usuarios[i]; //.vArray[i];
+		txtFecha= fechas[i];//.vArray[i];
+		print(i);
+		if (isMember(usuarios[i],Firmantes)){
+		 	// Aca tenemo que imprimir la firma
+			ret= ret +'<tr> <td class="TablaIconoChico" > valido la firma ok </td> <td class="TextoFirmaOK">Firmado electronicamente por ' +usuario+ ' el  ' + txtFecha + '. </td></tr>';
+		} else{
+			// No se pudo validar la firma del creador
+			ret = ret +'<tr> <td class="TablaActIconoChico" > no valido la firma </td> <td class="TextoFirmaSinValidar">No se pudo validar la firma del Usuario '+usuario+' . Consulte con el Administrador del sistema. </td></tr>';
+		}
+}
+print(ret);
+function isMember(obj, objvec)
+{
+	//var cArray:Array =(Array)objvec;
+	if (objvec.length == 0 )
+	{
+		return false;
+	}
+
+	for(var i=0;i<=objvec.length-1;i++)
+	{
+		if (obj == objvec[i]) 
+		{
+			return true;
+		}
+	}
+	return false;
+}}]]></xp:this.afterPageLoad>
+	<xp:panel>
+		<xp:inputRichText id="inputRichText1"
+			value="#{document1.sTextoActa}" style="width:100%">
+		</xp:inputRichText>
+		<xp:br></xp:br>
+
+		<xp:inputTextarea id="inputTextarea1" readonly="true"
+			style="width:100%">
+		</xp:inputTextarea>
+	</xp:panel>
+
+	<div>
+		<xp:inputText id="usuariofirma">
+			<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getDocument().getItemValueString("UsuarioFirma")),";");}]]></xp:this.value>
+			<xp:this.defaultValue><![CDATA[#{javascript:""}]]></xp:this.defaultValue>
+		</xp:inputText>
+		_&#160;
+		<xp:inputText id="sfechaadmin">
+			<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getDocument().getItemValueString("sFechaAdmin")),";");}]]></xp:this.value>
+			<xp:this.defaultValue><![CDATA[#{javascript:""}]]></xp:this.defaultValue>
+		</xp:inputText>
+		_ &#160;
+		<xp:inputText id="firmasvalidacionadmin">
+			<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getDocument().getItemValueString("FirmasValidacionAdmin")),";");}]]></xp:this.value>
+			<xp:this.defaultValue><![CDATA[#{javascript:""}]]></xp:this.defaultValue>
+		</xp:inputText>
+		_ &#160;
+		<xp:inputText id="fechasfirmas">
+			<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getDocument().getItemValueString("FechasFirma")),";");}]]></xp:this.value>
+			<xp:this.defaultValue><![CDATA[#{javascript:""}]]></xp:this.defaultValue>
+		</xp:inputText>
+		_ &#160;
+		<xp:inputText id="firmasvalidacion">
+			<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getDocument().getItemValueString("FirmasValidacion")),";");}]]></xp:this.value>
+			<xp:this.defaultValue><![CDATA[#{javascript:""}]]></xp:this.defaultValue>
+		</xp:inputText>
+	</div>
+
+	<xp:eventHandler event="onClientLoad" submit="true"
+		refreshMode="norefresh">
+		<xp:this.script><![CDATA[window.print();]]></xp:this.script>
+	</xp:eventHandler>
+	</xp:view>

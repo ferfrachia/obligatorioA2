@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A126E" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="142" sequence="44" unid="1A8E1DDDB8D49D0603256D6500529E4D">
+<created><datetime>20030716T120224,77-03</datetime></created>
+<modified><datetime>20150311T132350,03-03</datetime></modified>
+<revised><datetime>20150310T105733,29-03</datetime></revised>
+<lastaccessed><datetime>20150311T132350,03-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132350,03-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=DNII</name><name>CN=Juan Funez/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030716T120224,81-03</datetime><datetime>20040325T182747,20-03</datetime><datetime>20040520T075449,95+03</datetime><datetime>20051021T160215,24-03</datetime><datetime>20060905T144802,53-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>NumeradorClient</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20150310T105733,29-03</datetime></item></note>

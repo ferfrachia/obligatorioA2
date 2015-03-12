@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core">
+	<xp:this.data>
+		<xp:dominoDocument var="document1"></xp:dominoDocument>
+	</xp:this.data>
+	<xp:text escape="true" id="FirmasValidacionAdmin">
+		<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getItemValueString("ccEstado")));
+
+
+}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="FechasFirmasValidacion">
+		<xp:this.value><![CDATA[#{javascript:@Text(document1.getItemValueString("sFechaAdmin"))
+
+}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="FirmasValidacionCreador">
+		<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getItemValueString("ValidacionFirmasCreador")))}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="FirmasValidacionAutorizacion">
+		<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getItemValueString("ValidacionFirmasAutorizacion")))
+
+}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="UsuarioFirmaCreador">
+		<xp:this.value><![CDATA[#{javascript:@Implode(@Name("[CN]",@Text(document1.getItemValueString("sUsuarioFirmaCreador"))))
+
+}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="FechasFirmaCreador">
+		<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getItemValueString("fFechaFirmaCreador")))
+
+
+}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="UsuarioFirmaAutorizacion">
+		<xp:this.value><![CDATA[#{javascript:@Implode(@Name("[CN]",@Text(document1.getItemValueString("sUsuarioFirmaAutorizacion"))))}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="FechasFirmaAutorizacion">
+		<xp:this.value><![CDATA[#{javascript:@Implode(@Text(document1.getItemValueString("fFechaFirmaAutorizacion")))}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+
+	<xp:text escape="true" id="Estado">
+		<xp:this.value><![CDATA[#{javascript:document1.getItemValueString("ccEstado")}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="editMode"
+		value="#{javascript:document1.isEditable()}">
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="ErrorFirma">
+		<xp:this.value><![CDATA[#{javascript:return "";}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="PathResoluciones">
+		<xp:this.value><![CDATA[#{javascript:
+var profileDoc:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+
+var claves = profileDoc.getItemValue("sClave");
+var paths = profileDoc.getItemValue("sPath");
+var posPath = @Member("RESOLUCIONES",claves);
+return @ReplaceSubstring(@Subset(@Subset(paths,posPath),-1),@Char(92),"/")}]]></xp:this.value>
+	</xp:text>
+
+	<xp:br></xp:br>
+	<xp:text escape="true" id="HayTextoRes">
+		<xp:this.value><![CDATA[#{javascript:var valor=@Abstract("[Abbrev]",64000,"",document1.getItemValueString("sTextoRes"));
+return @ReplaceSubstring(@If(@IsError(valor),"",valor),"\"","'");}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:text escape="true" id="HayTextoPry">
+		<xp:this.value><![CDATA[#{javascript:var valor=@Abstract("[Abbrev]",64000,"",document1.getItemValueString("sTexto"));
+return @ReplaceSubstring(@If(@IsError(valor),"",valor),"\"","'")}]]></xp:this.value>
+	</xp:text>
+
+	<xp:br></xp:br>
+	<xp:text escape="true" id="baseBusqueda">
+		<xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+
+var claves = profileDoc.getItemValue("sClave");
+var paths =  profileDoc.getItemValue("sPath");
+var posPath=@Member("BUSQUEDA",claves);
+
+return @ReplaceSubstring(@Subset(@Subset(paths,posPath),-1),@Char(92),"/");}]]></xp:this.value>
+	</xp:text>
+
+	<xp:br></xp:br>
+	<xp:text escape="true" id="baseWS">
+		<xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+
+var claves = profileDoc.getItemValue("sClave");
+var paths = profileDoc.getItemValue("sPath");
+
+var posPath=@Member("WS", claves);
+
+return @ReplaceSubstring(@Subset(@Subset(paths,posPath),-1),@Char(92),"/");}]]></xp:this.value>
+	</xp:text>
+	<xp:br></xp:br>
+	<xp:br></xp:br>
+	<xp:table style="width:440.0px">
+		<xp:tr>
+			<xp:td style="width:113.0px">
+				<xp:text escape="true" id="sUsuario">
+					<xp:this.value><![CDATA[#{javascript:@Name("[Abbreviate]",@UserName)}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td style="width:321.0px"></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="baseOrg">
+					<xp:this.value><![CDATA[#{javascript:var profileDoc = database.getProfileDocument("(ConfiguracionRD)","");
+var claves = profileDoc.getItemValue("sClave");
+var paths = profileDoc.getItemValue("sPath");
+
+var posPath = @Member("ORGAN", claves);
+
+return @ReplaceSubstring(@Subset(@Subset(paths,posPath),-1),@Char(92),"/")}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="baseNotif">
+					<xp:this.value><![CDATA[#{javascript:var profileDoc = database.getProfileDocument("(ConfiguracionRD)","");
+
+var claves = profileDoc.getItemValue("sClave");
+var paths = profileDoc.getItemValue("sPath");
+var posPath = @Member("NOTIFICACIONES", claves);
+
+return @ReplaceSubstring(@Subset(@Subset(paths,posPath),-1),@Char(92),"/");}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:inputText id="SaveOptions"></xp:inputText>
+			</xp:td>
+			<xp:td>
+				Campo utilizado para controlar si se salva o no el doc
+			</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="Query_String">
+					<xp:this.value><![CDATA[#{javascript:document1.getItemValueString("query_string")}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td>Se utiliza para obtener los parámetros</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="Query_String_Decoded">
+					<xp:this.value><![CDATA[#{javascript:document1.getItemValueString("Query_String_Decoded")}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="cvRetorno">
+					<xp:this.value><![CDATA[#{javascript:@If(@Contains(document1.getItemValueString("query_string"),"esextra="),@Left(@Right(document1.getItemValueString("query_string"),"urlorigen="),"esextra="),@Right(document1.getItemValueString("query_string"),"urlorigen="))}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td>
+				Se carga la url desde donde se entro al doc para
+				regresar a ella al salir
+			</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:inputText id="Retorno">
+					<xp:this.value><![CDATA[#{javascript:var base = @Subset(@DbName, -1);
+return "[/"+base+"/(ControllerResoluciones)?OpenAgent&ID="+@Text(document1.getDocument().getUniversalID())+",Accion="+document1.getItemValueString("sAccion")+",frameorigen="+
+
+document1.getItemValueString("cvRetorno") +",vistaorigen=FBandejaPendientes]";}]]></xp:this.value>
+				</xp:inputText>
+			</xp:td>
+			<xp:td>
+				Se usa para calcular el $$Return en base a él, así se
+				modifica cuando sea necesario
+			</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="PPReturn">
+					<xp:this.value><![CDATA[#{javascript:var base = @Subset(@DbName, -1);
+@If(@IsNewDoc,"[/"+base+"/(ControllerResoluciones)?OpenAgent&ID="+@Text(document1.getDocument().getUniversalID())+",Accion="+
+document1.getItemValueString("sAccion")+",frameorigen="+
+document1.getItemValueString("cvRetorno")+",vistaorigen=FBandejaPendientes,usr="+@UserName+"]",getComponent("Retorno").getValue())}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td>
+				Ejecuta el agente Controller Cuando se salía de la otra
+				forma: (Al tomar el valor del query_string no toma los
+				parámetros para el frameset--&gt; le paso la vista en
+				forma separada)
+			</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:inputText id="sAccion"></xp:inputText>
+			</xp:td>
+			<xp:td>sAccion</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="cvDocNuevo"
+					value="#{javascript:@IsNewDoc}">
+				</xp:text>
+			</xp:td>
+			<xp:td>
+				Se usa para saber si el doc es nuevo o no al salvar
+			</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="sModo">
+					<xp:this.value><![CDATA[#{javascript:@If(document1.isEditable(),"1","0")}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td>
+				Campo utilizado para saber si el doc está en edicion al
+				salir
+			</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td id="cc">
+
+				<xp:text escape="true" id="ccEstado">
+					<xp:this.value><![CDATA[#{javascript:@If(@IsNewDoc ,"Borrador",document1.getItemValueString("ccEstado"))}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="Remote_User">
+					<xp:this.value><![CDATA[#{javascript:return "";}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="Protocolo">
+					<xp:this.value><![CDATA[#{javascript:var profileDoc = database.getProfileDocument("(ConfiguracionRD)","");
+return profileDoc.getItemValue("rProtocolo");
+
+}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="Puerto">
+					<xp:this.value><![CDATA[#{javascript:var profileDoc = database.getProfileDocument("(ConfiguracionRD)","");
+
+return profileDoc.getItemValue("sPuerto");
+
+}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="sNroSesion">
+					<xp:this.value><![CDATA[#{javascript:@If (document1.getItemValueString("sNroSesion")=="",@If (@Middle(document1.getItemValueString("Query_String_Decoded"),"nrosesion=","&")!="",@Middle(document1.getItemValueString("Query_String_Decoded"),"nrosesion=","&"),""),document1.getItemValueString("sNroSesion"))}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="sEstadoSesion">
+					<xp:this.value><![CDATA[#{javascript:var estado =@If (getComponent("sNroSesion").getValue()!="",@DbLookup(@DbName,"(BusquedaSesiones)",getComponent("sNroSesion").getValue(),"ccEstado"),"");
+@If(@IsError(estado) | estado=="","",estado)}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="UnidadesCreador">
+					<xp:this.value><![CDATA[#{javascript:var nombre = @UpperCase(@Name("[CN]",@UserName)) 
+var profileDoc = database.getProfileDocument("(ConfiguracionRD)","");
+var claves = profileDoc.getItemValue("sClave");
+var paths = profileDoc.getItemValue("sPath");
+var posPath = @Member("ORGAN", claves);
+
+var baseOrg =@ReplaceSubstring(@Subset(@Subset(paths,posPath),-1),@Char(92),"/");
+var server = @Subset(@DbName,1);
+
+var dbName= server+"!!"+baseOrg;
+result= @DbLookup(dbName,"CreadoresAsuntosUnidad",nombre,3)
+
+
+
+var unidades = @If(@IsError(@DbLookup(dbName,"CreadoresAsuntosUnidad",nombre,3)),"",@DbLookup(dbName,"CreadoresAsuntosUnidad",nombre,3));
+return unidades;
+
+}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="sCreador"
+					value="#{javascript:@UserName()}">
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="sFirmaActivada">
+					<xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+
+var firmaPaseRevision = profileDoc.getItemValue("rFirmaPaseRevision");
+
+
+@If (getComponent("ccEstado").getValue()=="Borrador",firmaPaseRevision,
+getComponent("ccEstado").getValue()=="Para Revisar",
+firmaPaseRevision,"jj")
+
+
+}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:inputText id="ccnNroRes"></xp:inputText>
+			</xp:td>
+			<xp:td>ccnNroRes</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:inputText id="ccUnidadEleva"></xp:inputText>
+			</xp:td>
+			<xp:td>ssUnidadEleva</xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				<xp:text escape="true" id="unidades">
+					<xp:this.value><![CDATA[#{javascript:var profileDoc:NotesDocument = database.getProfileDocument("(ConfiguracionRD)","");
+var claves = profileDoc.getItemValue("sClave");
+var paths = profileDoc.getItemValue("sPath");
+var posPath = @Member("ORGAN", claves);
+var baseOrg = @ReplaceSubstring(@Subset(@Subset(paths,posPath),-1),@Char(92),"/");  
+var server = @Subset(@DbName,1); 
+var key = @UpperCase(@Name("[CN]",@UserName)); 
+var columnaUnidades = 4;
+
+var dbName= server+"!!"+baseOrg;
+var result= @DbLookup(dbName,"CreadoresAsuntosUnidad",key,columnaUnidades)
+
+
+
+var unidad = @If(@IsError(@DbLookup(dbName,"CreadoresAsuntosUnidad",key,columnaUnidades)),"",@DbLookup(dbName,"CreadoresAsuntosUnidad",key,columnaUnidades));
+@If(@IsNewDoc,unidad,"")
+
+}]]></xp:this.value>
+				</xp:text>
+			</xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td>
+				
+			<xp:inputText id="oQuitarAutorizarAsunto">
+				<xp:this.value><![CDATA[#{javascript:@Name("[CN]",@UserName)!= @Name("[CN]",document1.getItemValueString("sSupervisor")) |getComponent("ccEstado").getValue()!="Pendiente"}]]></xp:this.value>
+				<xp:this.converter>
+					<xp:convertNumber type="number"></xp:convertNumber>
+				</xp:this.converter>
+			</xp:inputText></xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+
+		<xp:tr>
+			<xp:td>
+				
+			<xp:inputText id="oAutorizarAsunto">
+				<xp:this.converter>
+					<xp:convertNumber type="number"></xp:convertNumber>
+				</xp:this.converter>
+			<xp:this.value><![CDATA[#{javascript:@Name("[CN]",@UserName)!=@Name("[CN]",document1.getItemValueString("sSupervisor")) | getComponent("ccEstado").getValue()!="Para Revisar" | 
+(getComponent("sFirmaActivada").getValue()=="Obligatoria" & @IsNotMember(@Name("[Abbreviate]",@UserName),document1.getItemValueString("sUsuarioFirmaAutorizacion")))}]]></xp:this.value></xp:inputText></xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+		<xp:tr>
+			<xp:td></xp:td>
+			<xp:td></xp:td>
+		</xp:tr>
+	</xp:table>
+	<xp:br></xp:br>
+	</xp:view>

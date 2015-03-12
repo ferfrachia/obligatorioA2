@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A126E" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="61a" sequence="28" unid="632E2FBD6CA2EB34832579EA00507273">
+<created><datetime>20120424T113841,79-03</datetime></created>
+<modified><datetime>20150311T132356,21-03</datetime></modified>
+<revised><datetime>20150309T094437,78-03</datetime></revised>
+<lastaccessed><datetime>20150311T132356,21-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132356,21-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$POID"><datetime>20100929T141901,02-03</datetime></item>
+<item name="$TITLE" sign="true"><text>ErrorHandlerClass 2.0</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.2</text></item>
+
+</note>

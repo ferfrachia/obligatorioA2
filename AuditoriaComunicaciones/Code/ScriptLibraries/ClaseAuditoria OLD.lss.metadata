@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF8003FBE02" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1a2" sequence="53" unid="E4BE74B7303AF6FC43256DCF0026359C">
+<created><datetime>20031030T095720,92+03</datetime></created>
+<modified><datetime>20150309T094332,21-03</datetime></modified>
+<revised><datetime>20150309T094332,20-03</datetime></revised>
+<lastaccessed><datetime>20150309T094332,21-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T093614,86-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20031030T095721,89+03</datetime><datetime>20050928T163001,96-03</datetime><datetime>20050928T164500,03-03</datetime><datetime>20050928T165244,46-03</datetime><datetime>20050928T165656,78-03</datetime><datetime>20050928T165752,77-03</datetime><datetime>20050928T165800,40-03</datetime><datetime>20050928T165911,23-03</datetime><datetime>20050928T165949,74-03</datetime><datetime>20050928T170019,59-03</datetime><datetime>20050928T171131,18-03</datetime><datetime>20050928T171155,61-03</datetime><datetime>20050928T171251,26-03</datetime><datetime>20050928T171317,71-03</datetime><datetime>20050928T171326,76-03</datetime><datetime>20050928T171840,41-03</datetime><datetime>20050928T171943,53-03</datetime><datetime>20050928T172644,55-03</datetime><datetime>20051205T110407,97-03</datetime><datetime>20060529T174441,17-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$TITLE" sign="true"><text>ClaseAuditoria OLD</text></item>
+<item name="$DesignerVersion" sign="true"><text>8.5.3</text></item>
+<item name="$POID"><datetime dst="true">20141112T111140,62-02</datetime></item></note>

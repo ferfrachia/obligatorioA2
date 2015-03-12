@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<menu id="0">
+	<item text="Ir a Caratula" id="caratula" />
+	<item text="Ir a Actuacion" id="actuacion" />
+</menu>

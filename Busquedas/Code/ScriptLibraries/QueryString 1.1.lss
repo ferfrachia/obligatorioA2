@@ -1,0 +1,217 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*
+'*									CLASS <QUERYSTRING>
+'*
+'******************************************************************************************************************	
+
+'Clase utilizada para manejar los parámetros existentes en un query_string
+'url: http://....../XXX?openAgent&parametro1=valor1,parametro2=valor2,parametro3=valor3,parametro4=valor4
+
+%REM
+CONSTRUCTOR
+Public Sub new(qs As String,sep As String)
+	Crea un objeto QueryString.
+	Obs. Siempre debe estar el & entre la url y los parámetros
+	Parámetros
+		qs: query_string
+		sep: separador de los distintos parámetros (por ejemplo ,)
+
+Public Function hasParameter(pName As String) As Integer
+	Función que devuelve true o false según exista o no el parámetro en el querystring
+	Parámetros
+		pName: nombre del parámetro
+
+Public Function getParameter(pName As String) As String
+	Función que devuelve el valor del parámetro pName. Si no existe da error.
+	Parámetros
+		pName: nombre del parámetro
+	
+Public Function toString() As String
+	Función que elimina los espacios del query_string
+	
+%END REM
+
+
+
+
+
+Option Declare
+Use "VectorClass 2.05"
+Use "FuncionesGenerales"
+
+'Modificada 29/7/03
+'Se agregó el manejo de errores utilizando la biblioteca FuncionesGenerales
+'Se agregaron controles para que en el caso de no existir parámetros en el query_string no hayan errores
+
+
+Public Const ERROR_NOT_EXIST_PARAMETER					= 16000
+Public Const MSG_ERROR_NOT_EXIST_PARAMETER				= "El parámetro no existe"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class QueryString
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'******************************************************************************************************************	
+'*
+'*									CLASS <QUERYSTRING>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class QueryString
+'******************************************************************************************************************	
+	
+'Variables miembro	
+	Private qString As String
+	Private vNamesValues As Vector
+	Private separadorValues As String
+	
+'Constructor	
+	Public Sub new(qs As String,sep As String)
+		On Error Goto HANDLER
+		
+		If Instr(qs,"&") <> 0 Then  'si no está el & no hay parámetros
+			qString=Strright(qs,"&")
+		Else
+			qString = ""
+		End If
+		separadorValues =sep
+		Call inicializoVectores()
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"QueryString 1.1 - Método new","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+'METODOS	
+	
+	Public Function hasParameter(pName As String) As Integer
+	'Función que devuelve true o false según exista o no el parámetro en el querystring
+		
+		On Error Goto HANDLER
+		
+		Dim i As Integer, elem As String
+		
+		If vNamesValues.cantElem = 0 Then  'no hay parámetros
+			hasParameter = False
+		Else
+			For i =1 To  vNamesValues.cantElem
+				elem = vNamesValues.getElement(i)
+				If Ucase(Strleft(elem,"=")) = Ucase(pName) Then
+					hasParameter = True
+					Exit Function
+				End If			
+			Next
+			hasParameter = False
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"QueryString 1.1 - Método hasParameter","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Function getParameter(pName As String) As String
+	'Función que devuelve el valor del parámetro pName. Si no existe da error.
+		
+		On Error Goto HANDLER
+		
+		Dim i As Integer, elem As String
+		
+		If vNamesValues.cantElem = 0 Then Error ERROR_NOT_EXIST_PARAMETER, MSG_ERROR_NOT_EXIST_PARAMETER+" "+pName
+		
+		For i =1 To vNamesValues.cantElem
+			elem = vNamesValues.getElement(i)
+			If Ucase(Strleft(elem,"=")) = Ucase(pName) Then
+				getParameter = Strright(elem,"=")
+				Exit Function
+			End If			
+		Next
+		'Si llega acá no se encontró el parámetro
+		Error ERROR_NOT_EXIST_PARAMETER, MSG_ERROR_NOT_EXIST_PARAMETER+" "+pName
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"QueryString 1.1 - Método getParameter","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function toString() As String
+	'Función que elimina los espacios del query_string
+		
+		On Error Goto HANDLER
+		
+		toString = limpio(qString,"%20")
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"QueryString 1.1 - Método toString","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+'Privadas-----------------------------------------------------------
+	
+	Private Sub inicializoVectores()
+	'Crea un vector con todos los parámetros (pname=valor)
+		
+		On Error Goto HANDLER
+		
+		Dim tmp As String, pos As Integer, element As String
+		
+		Set vNamesValues = New Vector(0)
+		tmp = qString
+		pos = 0
+		While tmp <> ""  'si tmp es vacío el vector queda con 0 elementos
+			pos=pos + 1
+			If Instr(tmp,separadorValues)> 0 Then
+				element = Strleft(tmp,separadorValues)	
+			Else
+				element = tmp	
+			End If
+			If Instr(element,"=") > 0 Then
+				Call vNamesValues.insertElement(limpio(element,"%20"),1)	
+			End If
+			tmp=Strright(tmp,separadorValues)
+		Wend
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"QueryString 1.1 - Procedimiento inicializoVectores","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Private Function limpio(valor As String,elimino As String) As String
+	'Borra el string elimino del valor
+		
+		On Error Goto HANDLER
+		
+		Dim tmp As String, l As String,r As String
+		
+		tmp = valor
+		While Instr(tmp,elimino)>0
+			l=Strleft(tmp,elimino)
+			r=Strright(tmp,elimino)
+			tmp =l + " " + r
+		Wend
+		limpio = tmp
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"QueryString 1.1 - Función limpio","")
+		Exit Function
+	End Function
+	
+	
+End Class

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E0500598295" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="3ae" sequence="35" unid="F0C8555113BDB5F100256DA40050CB3F">
+<created><datetime>20030917T144229,11+00</datetime></created>
+<modified><datetime>20150311T131744,87-03</datetime></modified>
+<revised><datetime>20150309T094345,17-03</datetime></revised>
+<lastaccessed><datetime>20150311T131744,87-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131744,87-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=IMF</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20081008T152015,45-03</datetime><datetime>20090424T161539,88-03</datetime><datetime>20090424T161627,69-03</datetime><datetime>20090424T161754,08-03</datetime><datetime>20090424T161820,06-03</datetime><datetime>20090424T162544,02-03</datetime><datetime>20090424T162754,26-03</datetime><datetime>20090424T162754,57-03</datetime><datetime>20090424T162754,85-03</datetime><datetime>20090719T145720,09-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$Comment" sign="true"><text>Librería con clase para manejar tablas dinnámicas en la web</text></item>
+<item name="$TITLE" sign="true"><text>Tabla333.js</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$POID"><datetime>20150309T094345,17-03</datetime></item></note>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050058D89B" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="da2" sequence="16" unid="1E8BB638A4858FAD8325783700582C79">
+<created><datetime dst="true">20110214T140305,53-02</datetime></created>
+<modified><datetime>20150311T131042,31-03</datetime></modified>
+<revised><datetime>20150309T094422,99-03</datetime></revised>
+<lastaccessed><datetime>20150311T131042,31-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131042,31-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/jpeg</text></item>
+<item name="$FileModDT" sign="true"><datetime dst="true">20101105T102233,92-02</datetime></item>
+<item name="$ImageNames" sign="true"><text>MOVER_PAQUETE.jpg</text></item>
+<item name="$TITLE" sign="true"><text>paquete_movido.jpg</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$Flags"><text>34CiQ</text></item></note>

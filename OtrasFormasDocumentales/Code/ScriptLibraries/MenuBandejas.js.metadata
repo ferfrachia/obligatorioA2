@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="3a2" sequence="45" unid="61A07551252ADE1E0325739C006F5420">
+<created><datetime>20071123T171600,32-03</datetime></created>
+<modified><datetime>20150309T094355,68-03</datetime></modified>
+<revised><datetime>20150309T094355,67-03</datetime></revised>
+<lastaccessed><datetime>20150309T094355,68-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100908,87-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071123T171600,36-03</datetime><datetime>20071207T142809,84-03</datetime><datetime>20071207T142845,17-03</datetime><datetime>20071207T142913,90-03</datetime><datetime>20080328T143616,46-03</datetime><datetime>20081029T161704,25-03</datetime><datetime dst="true">20081117T102122,57-02</datetime><datetime dst="true">20081119T085514,60-02</datetime><datetime dst="true">20081119T162409,52-02</datetime><datetime dst="true">20081122T153310,34-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>MenuBandejas</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20130923T103124,70-03</datetime></item></note>

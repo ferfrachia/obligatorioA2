@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='1022' unid='C695DADD0B6925CE83257B410056DAA6' sequence='16'>
+<created><datetime>20130402T124840,70-03</datetime></created>
+<modified><datetime>20150311T131233,18-03</datetime></modified>
+<revised><datetime>20150309T094453,97-03</datetime></revised>
+<lastaccessed><datetime>20150311T131233,18-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131233,18-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Guillermo Zana/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Jorge Kleinman/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Miembros Comunicaciones Por UsuarioUnidad|MiembrosComxUsuUni</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+sgACAEgAAgAkMAIABQAAAAAAAAAFABYAbmJNaWVtYnJvc0NvbXVuaWNhY2lvbrQCAQACACMjIgIF
+AAoAc05yb1VuaWRhZCICAwAFACoAJQAEAAIACgAJAAQAJDBzQ29kaWdvQ29tJENvbmZsaWN0JFJF
+RgAEAAQAAAAsAAUABABGb3JtAQAUAE1pZW1icm9zQ29tdW5pY2FjaW9uCgIEAAQAAwAHAA4ACAAJ
+TDFTNFM1Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEiGYHAAACACQw
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAIACAAAAFZDAwACAAEAVgAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMAAAoAAAAAAAAAUAAB
+AAAKAAAAAAAAAAAAAgIAAAAkMCNWAAIASAACACQwAgAFAAAAAAAAAAUAFgBuYk1pZW1icm9zQ29t
+dW5pY2FjaW9utAIBAAIAIyMiAgUACgBzTnJvVW5pZGFkIgIDAAcADAAFAAkwUzBFAHNDb2RpZ29D
+b20mAAEAAAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAA
+AAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAA
+AAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wAB
+AP///wAAAAEAAAAAAAEAgICAAAEAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAOzp2AABAAAAAAAJAAAAAAABAOzp2AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/WgAAAAEAAACfAQAAEwAAAAAAAABDb25maWd1cmFjaW9uIElHZG9jADAAAAAiAAIAIicA
+AAAAAAABAAsASUdEb2NDb25maWcA7QIDAAcADAAFAAkwUzBFAL7/VgAAAAEAAACfAQAADQAAAAAA
+AABDb25maWd1cmFjaW9uADIAAAAkAAIADRgAAAAAAAABAA4AZkNvbmZpZ3VyYWNpb27tAgMABwAM
+AAUACTBTMEUAvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50BAACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAUAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQGAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgcAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcgAIAD58
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQABAE58vv9aAAAAAQAAAJ8BAAATAAAAAAAAAENvbmZpZ3VyYWNpb24gSUdkb2MAMAAAACIA
+AgAiJwAAAAAAAAEACwBJR0RvY0NvbmZpZwDtAgMABwAMAAUACTBTMEUAvv9WAAAAAQAAAJ8BAAAN
+AAAAAAAAAENvbmZpZ3VyYWNpb27pMgAAACQAAgANGAAAAAAAAAEADgBmQ29uZmlndXJhY2lvbu0C
+AwAHAAwABQAJMFMwRQC+/ygAAAAFAAAAnQEAAA4AAAAAAAAAX0VkaXQgRG9jdW1lbnQEAAIKvv8o
+AAAABQAAAJ0BAAAOAAAAAAAAAF9TZW5kIERvY3VtZW50BQADCr7/IgAAAAUAAACdAQAACAAAAAAA
+AABfRm9yd2FyZAYABAq+/ywAAAAFAAAAnQEAABIAAAAAAAAAX01vdmUgVG8gRm9sZGVyLi4uBwA9
+fL7/LgAAAAUAAACdAQAAEwAAAAAAAABfUmVtb3ZlIEZyb20gRm9sZGVyZQgAPnw=
+</rawitemdata></item>
+<item name='$Flags'><text>Y</text></item></note>
+

@@ -1,0 +1,5031 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*                                                 
+'*								CLASS <EXPEDIENTE>
+'* 
+'******************************************************************************************************************	
+%REM  
+Esta clase representa un objeto EXPEDIENTE
+   
+CONSTRUCTOR
+Sub new(Byval nroExpE As String, usuarioAccionE As Usuario)   
+		'Setea las variables miembro del objeto
+Parámetros:
+	nroExpE			(IN) = número del expediente a representar con el objeto 
+				            (en el caso que sea un expediente que se está creando será "")
+	usuarioAccionE		(IN) = nombre del usuario que realiza la acción sobre el expediente
+						  (se necesita porque porque es el motor quien ejecuta todas las 
+						  operaciones y debemos conocer los permisos del usuario para realizar 
+						  los controles)
+   
+ 
+
+  
+PROPIEDADES       
+Get Caratula() As Caratula
+		'Devuelve el objeto carátula que corresponde al expediente actual
+
+Get Actuacion (i As Integer) As Actuacion
+		'Devuelve el objeto actuación que corresponde a la actuación i del expediente actual
+Parámetros:
+	i (IN) = número de actuación que se quiere obtener
+
+Get Actuaciones() As NotesDocumentCollection
+		'Devuelve la colección de documentos de actuación correspondientes al expediente
+
+Get LastActuacion  As Actuacion
+		'Devuelve el objeto actuación que corresponde a la actuación final del expediente actual
+
+Get Unidad  As Unidad
+		'Retorna la unidad en que se encuentra el expediente
+
+
+
+
+MÉTODOS
+Function Creacion (universalID As String) As String
+		'Si el usuario está utorizado, crea el expediente asignándole el nro que le corresponde
+Parámetros:
+	universalID	(IN) = universalID del doc carátula
+				(OUT) = número de expediente generado	
+
+Sub Reservar ()
+		'Si el usuario está autorizado, reserva la actuación actual del expediente para que otro
+		'no pueda modificarla	
+
+Sub Recibir ()
+		'Si el usuario está autorizado marca el expediente como recibido	
+
+Sub Liberar ()
+		'Libera la actuación para que otro usuario autorizado de la unidad pueda reservarla
+
+Sub Pase(Byval unidadDestino As String,Byval procedimiento As String)   
+		'Si el usuario está autorizado, realiza el pase del expediente a la unidad destino
+Parámetros:
+	unidadDestino	(IN) = nombre de la unidad a la cual se quiere dar pase
+	procedimiento	(IN) = detalles sobre el trabajo que debe realizar dicha unidad
+
+Sub AnularPase()
+		'Si el usuario está autorizado, anula el último pase realizado en el expediente
+
+Sub ParaFirmar()
+		'Si el usuario está autorizado, deja la actuación en estado para firmar
+
+Sub Firmar(byval sFirma As String,byval fFechaFirma As Variant)
+		'Realiza la firma de la actuación
+Parámetros:
+	sFirma		(IN) = firma que se quiere agregar a la ultimá actuación del expediente
+	fFechaFirma	(IN)	= fecha/hora de la firma
+
+Sub EnviarPase()
+		'Deja la actuación para dar pase para que un usuario con rol [Pase] pueda realizar el mismo
+
+Sub Asignar(byval sEditor As String)
+		'Deja el expediente reservado a nombre del editor que recibe
+Parámetros:
+	sEditor		(IN) = nombre del editor para el cual se va a dejar reservado el expediente
+
+Sub Rutear ()
+		'Envía el expediente a la unidad que corresponsa según la ruta definida para el tema del mismo
+
+Sub Agregar (Byval nroExpAgregado As String)
+		'Agrega el expediente de número nroExpAgregado al actual
+Parámetros:
+	nroExpAgregado	(IN) = número de expediente que se quiere agregar al actual
+
+Sub Desagregar (Byval nroExpAgregado As String)
+		'Desagrega el expediente de número nroExpAgregado al actual
+Parámetros:
+	nroExpAgregado	(IN) = número de expediente agregado que se quiere desagregar del actual
+					  (si es "" desagrega todos los expedientes que estén agregados)
+
+Sub Devolver (Byval motivo As String)
+		'Devuelve el expediente a la unidad anterior
+Parámetros:
+	motivo		(IN) = motivo de devolución que será presentado a la unidad a la que se devuelve
+
+Sub MarcarConfidencial (lectores As Vector)
+		'Marca el exp como confidencial habilitando solo a los lectores indicados para leer 
+		'el contenido de las actuaciones generadas desde aquí en adelante
+Parámetros:
+	lectores		(IN) = vector con los nombres de las personas autorizadas a ver las actuaciones confidenciales
+			
+Sub QuitarConfidencialidad ()
+		'Quita la confidencialidad del expediente dejando nuevamente con acceso normal
+
+Sub Archivar ()
+		'Marca el expediente como archivado y lo almacena en un repositorio secundario
+
+Sub SacarDeArchivado ()
+		'Quita el expediente del repositorio secundario y lo vuelve a dejar en la unidad que lo archivó
+		'para que continúe su trámite
+		
+%END REM
+
+
+
+Option Declare
+Use "FuncionesGenerales"  
+Use "ConfEE 1.0"
+Use "ConstantesDBGestionDoc"
+Use "ConstantesDBRutas"
+Use "ClaseCaratula"
+Use "ClaseActuacion"
+Use "VectorClass 2.05"
+Use "Usuario"
+Use "UnidadExp Class"
+Use "ClaseArchivo"  'El template para la base de Archivo es el mismo que para la base de Archivo
+Use "Clase Informes"
+Use "ConstantesExpediente"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Expediente
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+Public Const ROL_GESTION_CONF					="[GestConf]"
+Public Const ROL_VER_ACTUACIONES				="[VerActuaciones]"
+Public Const ROL_DESARROLLO					="[Desarrollo]"
+Public Const ROL_MODIFICAR_CARATULA			="[ModifCaratula]"
+Public Const ROL_PAQUETE						="[Paquete]"
+
+'ERRORES GENERADOS 
+Public Const ERROR_NRO_EXP_NOTHING				= 15001
+Public Const MSG_ERROR_NRO_EXP_NOTHING			= "El número de expediente no está seteado"
+
+Public Const ERROR_ID_NOTHING					= 15002
+Public Const MSG_ERROR_ID_NOTHING				= "El id de la carátula no está seteado"
+
+Public Const ERROR_DB_GESTION_NOTHING			= 15003
+Public Const MSG_ERROR_DB_GESTION_NOTHING		= "La base de gestión documental no está seteada"
+
+Public Const ERROR_VALIDAR_PARAMETRO			= 15005
+Public Const MSG_ERROR_VALIDAR_PARAMETRO_1		= "Parámetro Unidad destino vacío."
+Public Const MSG_ERROR_VALIDAR_PARAMETRO_2		= "Parámetro Procedimiento vacío."
+
+Public Const ERROR_SEGURIDAD_ROLES				= 15006
+Public Const MSG_ERROR_SEGURIDAD_ROLES_1		= "El usuario no tiene asignado el rol necesario para ejecutar ésta operación."
+
+Public Const ERROR_SEGURIDAD_UNIDAD			= 15007
+Public Const MSG_ERROR_SEGURIDAD_UNIDAD_1		= "La unidad no está habilitada. "
+Public Const MSG_ERROR_SEGURIDAD_UNIDAD_2		= "La unidad actual no está habilitada a dar un pase en la unidad destino "
+
+Public Const ERROR_SEGURIDAD_NORESERVADO		= 15008
+Public Const MSG_ERROR_SEGURIDAD_NORESERVADO_1	= "El Expediente aún no ha sido Reservado."
+Public Const MSG_ERROR_SEGURIDAD_NORESERVADO_2	= "El Expediente está reservado por otro usuario."
+Public Const MSG_ERROR_SEGURIDAD_NORESERVADO_3	= "La lista de usuarios que Reservaron el Expediente es vacía."
+
+Public Const ERROR_REVISION					= 15009
+Public Const MSG_ERROR_REVISION_1				= "El usuario no pertenece a la Unidad Actual "
+Public Const MSG_ERROR_REVISION_2				= "El usuario no tiene permiso para Completar la Revision."
+Public Const MSG_ERROR_REVISION_3				= "El usuario que inició la operación, no pertenece a la unidad "
+
+
+Public Const ERROR_RESERVADO					= 15010
+Public Const MSG_ERROR_RESERVADO_1				= "El expediente no esta Reservado "
+Public Const MSG_ERROR_RESERVADO_2				= "El expediente no esta Reservado por el usuario "
+Public Const MSG_ERROR_RESERVADO_3				= "El expediente ya está Reservado "
+Public Const MSG_ERROR_RESERVADO_4				= "El expediente es Confidencial y el siguiente usuario no pertenece a la lista de Lectores del mismo : "
+
+Public Const ERROR_UNIDAD					= 15011
+Public Const MSG_ERROR_UNIDAD_1				= "La unidad no tiene como miembro al usuario "
+Public Const MSG_ERROR_UNIDAD_2				= "La unidad no tiene como editor al usuario "
+
+Public Const ERROR_ACTUACION					= 15012
+Public Const MSG_ERROR_ACTUACION_1				= "La última actuación no esta firmada"
+
+Public Const ERROR_FIRMA						= 15013
+Public Const MSG_ERROR_FIRMA_1				= "El usuario no tiene asignado el rol necesario para Firmar el Expediente "
+Public Const MSG_ERROR_FIRMA_2				= "El expediente es Confidencial y el siguiente usuario no pertenece a la lista de Lectores del Expediente : "
+Public Const MSG_ERROR_FIRMA_3				= "El siguiente usuario ya ha firmado ésta actuación del expediente : "
+Public Const MSG_ERROR_FIRMA_4				= "La Firma no es válida."
+
+Public Const ERROR_RECEPCION					= 15014
+Public Const MSG_ERROR_RECEPCION_1				= "El usuario no tiene asignado el rol necesario para Recibir el Expediente "
+Public Const MSG_ERROR_RECEPCION_2				= "El expediente es Confidencial y el siguiente usuario no pertenece a la lista de Lectores del mismo : "
+
+Public Const ERROR_ENVIARPASE					= 15015
+Public Const MSG_ERROR_ENVIARPASE_1			= "El estado de la actuación debe ser Para Firmar"
+Public Const MSG_ERROR_ENVIARPASE_2			= "La actuación aún no ha sido firmada por ningún [Firmante] "
+Public Const MSG_ERROR_ENVIARPASE_3			= "El expediente es Confidencial y el siguiente usuario no pertenece a la lista de lectores del mismo : "
+
+Public Const ERROR_PASE						= 15016
+Public Const MSG_ERROR_PASE_1					= "El estado de la actuación debe ser Para Firmar o Para Dar Pase "
+Public Const MSG_ERROR_PASE_2					= "El expediente es confidencial y el siguiente usuario no esta en la lista de lectores del mismo :  "
+Public Const MSG_ERROR_PASE_3					= "El expediente es confidencial y la lista de lectores no posee en la unidad destino los roles [Editor], [Receptor], [Pase] y [Firmar] para tramitar el expediente correctamente."
+Public Const MSG_ERROR_PASE_4					= "Una Unidad no se puede hacer un pase a sí misma: "
+
+Public Const ERROR_ANULAR_PASE				= 15017
+Public Const MSG_ERROR_ANULAR_PASE_1			= "El estado del Expediente debe estar En Tránsito y no haber sido Recibido por la Unidad destino para poder Anular el Pase "
+Public Const MSG_ERROR_ANULAR_PASE_2			= "El usuario no tiene asignado el Rol [Gestion] en la unidad anterior. No puede anular el Pase "
+Public Const MSG_ERROR_ANULAR_PASE_3			= "El expediente es Confidencial y el usuario no pertencece a la lista de Lectores. No puede anular el Pase "
+
+Public Const ERROR_ASIGNAR					= 15018
+Public Const MSG_ERROR_ASIGNAR_1				= "El siguiente usuario no posee los roles [Firmante] ni [Gestion] en la unidad actual: "
+Public Const MSG_ERROR_ASIGNAR_2				= "Para poder asignar la actuación el estado debe ser Reservado, Para Actuar o Para Firmar."
+Public Const MSG_ERROR_ASIGNAR_3				= "El siguiente usuario no es [Editor] de la unidad actual: "
+Public Const MSG_ERROR_ASIGNAR_4				= "El expediente es Confidencial y el siguiente usuario no pertenece a la lista de lectores del mismo : "
+Public Const MSG_ERROR_ASIGNAR_5				= "El expediente es Confidencial y el siguiente usuario a Asignar no pertenece a la lista de lectores del mismo : "
+
+
+Public Const ERROR_RECIBIR					= 15019
+Public Const MSG_ERROR_RECIBIR_1				= "Para poder recibir el expediente, el estado del mismo debe ser En Tránsito"
+
+Public Const ERROR_DEVOLVER					= 15020
+Private Const MSG_ERROR_DEVOLVER_1				= "El estado del Expediente debe ser En unidad y la actuación debe estar Para Actuar para poder Devolver el expediente a la unidad anterior."
+Private Const MSG_ERROR_DEVOLVER_2				= "El usuario no tiene asignado el Rol [Gestion] en la unidad actual. No puede Devolver el expediente a la unidad anterior: "
+Private Const MSG_ERROR_DEVOLVER_3				= "Este expediente ya fue devuelto "
+Private Const MSG_ERROR_DEVOLVER_3_1			= " veces, no puede ser devuelto nuevamente a la unidad anterior "
+Private Const MSG_ERROR_DEVOLVER_4				= "El expediente es Confidencial, para Devolverlo primero debe quitarle la Confidencialidad "
+Private Const MSG_ERROR_DEVOLVER_5				= "Se ha sobrepasado el tiempo máximo para devolver el expediente."
+Private Const MSG_ERROR_DEVOLVER_6				= "La unidad actual ya ha realizado un pase para éste expediente, por lo cual no podrá devolverlo."
+Private Const MSG_ERROR_DEVOLVER_7				= "La actuación a la que se intenta devolver es migrada del sistema anterior. No es posible realizar esta operación."
+Private Const MSG_ERROR_DEVOLVER_8				= "Se ha agregado un expediente en esta actuación, si desea devolver desagregue y repita la operación"
+
+Public Const ERROR_MARCAR_CONFIDENCIAL			= 15021
+Public Const MSG_ERROR_MARCAR_CONFIDENCIAL_1		= "El siguiente usuario no pertenece a la unidad actual: " 
+Public Const MSG_ERROR_MARCAR_CONFIDENCIAL_2		= "El siguiente usuario no posee el rol necesario para marcar un expediente como Confidencial, en la unidad actual: "
+Public Const MSG_ERROR_MARCAR_CONFIDENCIAL_3		= "El expediente ya está marcado como Confidencial, no puede volver a marcarlo. "
+Public Const MSG_ERROR_MARCAR_CONFIDENCIAL_4		= "Para marcar un expediente como Confidencial, debe seleccionar la lista de lectores que tendrá el expediente. "
+
+
+Public Const ERROR_ADD_LECT_CONFIDENCIAL		= 15024
+Public Const MSG_ERROR_ADD_LECT_CONFIDENCIAL_1	= "El expediente debe ser Confidencial para poder agregar nuevos Lectores. "
+Public Const MSG_ERROR_ADD_LECT_CONFIDENCIAL_2	= "No se puede agregar Lectores al expediente cofidencial. El siguiente usuario no pertenece a la unidad actual: "
+Public Const MSG_ERROR_ADD_LECT_CONFIDENCIAL_3	= "El siguiente usuario no posee el rol necesario de Gestión Confidencial en la Lista de Control de Acceso para agregar Lectores al expediente Confidencial: "
+Public Const MSG_ERROR_ADD_LECT_CONFIDENCIAL_4 	= "Propiedad Actuacion(i); No se pudo acceder a la Actuacion: "
+Public Const MSG_ERROR_ADD_LECT_CONFIDENCIAL_5 	= "La cantidad de Actuaciones del expediente es cero."
+Public Const MSG_ERROR_ADD_LECT_CONFIDENCIAL_6 	= "No se pudo acceder en el Vector a la Actuacion: " 
+Public Const MSG_ERROR_ADD_LECT_CONFIDENCIAL_7 	= "La cantidad de actuaciones en el vector es cero. "
+
+
+Public Const ERROR_QUITAR_CONFIDENCIAL			= 15022
+Public Const MSG_ERROR_QUITAR_CONFIDENCIAL_1		= "No se puede quitar la Confidencialidad. El Expediente no es Confidencial."
+Public Const MSG_ERROR_QUITAR_CONFIDENCIAL_2		= "EL siguiente usuario no puede Quitar la Confidencialidad del expediente pues no pertenece a la Unidad Actual: " 
+Public Const MSG_ERROR_QUITAR_CONFIDENCIAL_3		= "EL siguiente usuario no puede Quitar la Confidencialidad del expediente pues no posee el rol [Gestión Confidencial] en la Configuración: " 
+Public Const MSG_ERROR_QUITAR_CONFIDENCIAL_4		= "El Expediente es Confidencial y el siguiente usuario no pertenece a la lista de Lectores por lo que no podrá Quitar la Confidencialidad del mismo: " 
+
+
+Public Const ERROR_MODIFICAR_PLAZO				= 15023
+Public Const MSG_ERROR_MODIFICAR_PLAZO_1		= "La cantidad de días para modificar el plazo debe ser mayor que cero."
+Public Const MSG_ERROR_MODIFICAR_PLAZO_2		= "El siguiente usuario no tiene asignado el rol necesario para modifiar plazos: "
+Public Const MSG_ERROR_MODIFICAR_PLAZO_3		= "El expediente es Confidencial y el siguiente usuario no pertenece a la lista de lectores del mismo: "
+Public Const MSG_ERROR_MODIFICAR_PLAZO_4		= "El siguiente usuario no pertenece a una unidad superior a la actual : "
+
+Public Const ERROR_ARCHIVAR					= 15024
+Public Const MSG_ERROR_ARCHIVAR_1				= "La siguiente unidad no está habilitada a realizar Archivado de Expedientes: "
+Public Const MSG_ERROR_ARCHIVAR_2				= "El siguiente usuario no tiene asignado el rol necesario para Archivar Expedientes: "
+Public Const MSG_ERROR_ARCHIVAR_3				= "La actuación debe estar en estado Para Firmar para poder Archivar el expediente."
+Public Const MSG_ERROR_ARCHIVAR_4				= "La actuación debe estar firmada por al menos un Firmante para poder Archivar el expediente."
+Public Const MSG_ERROR_ARCHIVAR_5				= "No se puede Archivar un expediente Confidencial. Antes se debe eliminar la Confidencialidad."
+Public Const MSG_ERROR_ARCHIVAR_6				= "Las siguientes Unidades fueron Notificadas por éste expediente, pero aún no han Tomado Conocimiento del mismo."
+
+Public Const ERROR_SACAR_ARCHIVO				= 15025
+Public Const MSG_ERROR_SACAR_ARCHIVO_1 			= "El siguiente usuario no tiene el rol [Gestión] en la unidad que archivó el expediente. No podrá sacarlo del Archivo : "
+Public Const MSG_ERROR_SACAR_ARCHIVO_2 			= "La siguiente unidad no está habilitada a sacar expedientes del Archivo : "
+
+Public Const ERROR_DEL_LECT_CONFIDENCIAL		= 15026
+Public Const MSG_ERROR_DEL_LECT_CONFIDENCIAL_1	= "El expediente debe ser Confidencial para poder quitar Lectores. "
+Public Const MSG_ERROR_DEL_LECT_CONFIDENCIAL_2	= "El siguiente usuario no posee el rol necesario para quitar Lectores del expediente Confidencial en la Lsita de Control de Acceso : "
+Public Const MSG_ERROR_DEL_LECT_CONFIDENCIAL_3 	= "Propiedad Actuacion(i); No se pudo acceder a la Actuacion: "
+Public Const MSG_ERROR_DEL_LECT_CONFIDENCIAL_4 	= "No se pudo acceder en el Vector a la Actuacion: "
+Public Const MSG_ERROR_DEL_LECT_CONFIDENCIAL_5 	= "La cantidad de Actuaciones del expediente es cero."
+
+Public Const ERROR_AGREGAR					= 15027
+Public Const MSG_ERROR_AGREGAR_1				= "La operación Agregar no se puede llevar a cabo con un expediente Confidencial."
+Public Const MSG_ERROR_AGREGAR_2				= "El Expediente debe estar en una Unidad para poder agregarle otros expedientes."
+Public Const MSG_ERROR_AGREGAR_3				= "El siguiente usuario no posée el rol Gestión para poder agregar Expedientes : "
+Public Const MSG_ERROR_AGREGAR_4				= "El siguiente expediente a agregar esta marcado como Confidencial : "
+Public Const MSG_ERROR_AGREGAR_5				= "El siguiente expediente a agregar no pertenece a la Unidad Actual : "
+Public Const MSG_ERROR_AGREGAR_6				= "La lista de expedientes a Agregar es vacía."
+Public Const MSG_ERROR_AGREGAR_7				= "No se puede agregar un expediente a sí mismo."
+Public Const MSG_ERROR_AGREGAR_8				= "El siguiente expediente ya tiene agregados otros expedientes : "
+Public Const MSG_ERROR_AGREGAR_9				= "El siguiente expediente no esta firmado : "
+Public Const MSG_ERROR_AGREGAR_10				= "El expediente ya tiene agregado el exp n° "
+
+
+Public Const ERROR_DESAGREGAR					= 15028
+Public Const MSG_ERROR_DESAGREGAR_1			= "El siguiente usuario no posée el rol Gestión en la unidad actual para poder desagregar expedientes : "
+Public Const MSG_ERROR_DESAGREGAR_2			= "El estado del expediente debe ser En Unidad o En Generación para poder Desagregarle expedientes."
+Public Const MSG_ERROR_DESAGREGAR_3			= "La lista de expedientes a Desagregar es vacía."
+Public Const MSG_ERROR_DESAGREGAR_4			= "El siguiente expediente no pertenece a la oficina actual : "
+Public Const MSG_ERROR_DESAGREGAR_5			= "No se han agregado expedientes en ésta actuación, por lo tanto no se podrá desagregar ninguno."
+Public Const MSG_ERROR_DESAGREGAR_6			= "El siguiente expediente no fue agregado en ésta actuación, por lo tanto no podrá ser desagregado : "
+Public Const MSG_ERROR_DESAGREGAR_7			= "El siguiente expediente no tiene asociada una actuación durante la cual haya sido agregado al expediente, en la lista de expdientes agregados : "
+Public Const MSG_ERROR_DESAGREGAR_8			= "El siguiente expediente no ha sido agregado al expediente, no podrá ser desagregado : "
+
+Public Const ERROR_SET_PAQUETE				= 15029
+Public Const MSG_ERROR_SET_PAQUETE_1			= "El siguiente parámetro es nulo : "
+
+
+Public Const ERROR_PARA_FIRMAR				= 15030
+Public Const MSG_ERROR_PARA_FIRMAR_1			= "El estado de la Actuación debe ser 'Reservado' o 'Para Dar Pase'"
+Public Const MSG_ERROR_PARA_FIRMAR_2			= "El siguiente usuario necesita el rol [Pase] para poder realizar la operación 'Para Firmar' desde el estado actual: "
+
+Public Const MSG_ERROR_TOMAR_CONOC				= 15031
+Public Const MSG_ERROR_TOMAR_CONOC_1			= "El expediente está En Tránsito y es nuevo. Aún no puede tomar conocimiento pues no existen actuaciones públicas."
+Public Const MSG_ERROR_TOMAR_CONOC_2			= "El expediente es Confidencial. No puede tomar conocimiento."
+
+Public Const MSG_ERROR_NOTIF				= 15031
+Public Const MSG_ERROR_NOTIF_1			= "El expediente es Confidencial. no se puede notificar."
+
+
+Public Const ERROR_EN_TRANSITO				= 15033
+Public Const MSG_ERROR_EN_TRANSITO_1			= "No se puede editar la actuacion ya que el expediente está En Tránsito"
+
+Public Const ERROR_CICLO_EN_EXPEDIENTE			= 15034
+Public Const MSG_ERROR_CICLO_EN_EXPEDIENTE_1		= "El expediente tiene un ciclo de agregaciones"
+'CONSTANTES PRIVADAS 
+Const VISTA_ARCHIVOS_POR_ID					= "ArchivosPorId"
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <EXPEDIENTE>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Expediente
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private dbGestionDoc As notesDatabase
+	Private nroExp As String
+	Private usuarioAccion As Usuario
+	Private oCaratula As Caratula   'se instancia al usar por primera vez 
+	Private colActuaciones As NotesDocumentCollection   'se instancia al usar por primera vez 
+	Private oUnidad As Unidad 'Indica la unidad Actual en que se encuentra el exp
+	Private oLastActuacion As Actuacion
+	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR	
+	
+	Public Sub new(Byval nroExpE As String, usuarioAccionE As Usuario)   
+		'Setea las variables miembro del objeto
+		'si nroExp = "" se está creando un exp nuevo;si no, se quiere acceder a uno existente
+		'Obs: se necesita el usuario porque es el motor quien ejecuta todas las operaciones 
+		'y debemos conocer los permisos del usuario para realizar los controles	
+		On Error Goto HANDLER
+		
+		nroExp = Trim(nroExpE)
+		Set usuarioAccion = usuarioAccionE   
+	
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccionE Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método New","",usuarioAccionE.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método New","","")			
+		End  If
+		
+		Exit Sub
+		
+	End Sub	
+	
+'*****************************************************************************************************************	
+	
+'PROPIEDADES	
+	
+	Public Property Get Rol(sRol As String) As Vector
+		'Devuelve los usuarios, grupos, etc que tengas el rol sRol en la ACL de Gestion
+		On Error Goto HANDLER
+		
+		
+		Dim c As New Configuracion
+		
+		Set dbGestionDoc = c.BaseDeDatosNroDoc(Me.NroExp,NUMERADOR_EXP,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)
+		If dbGestionDoc Is Nothing Then Error ERROR_DB_GESTION_NOTHING, MSG_ERROR_DB_GESTION_NOTHING
+		
+		Dim acl As NotesACL,entry As NotesAclEntry,vRol As New Vector(0)
+		Dim vRoles As New Vector(0)
+		
+		Set rol=vRol
+		Set acl=dbGestionDoc.ACL
+		vRoles.values=acl.Roles
+		
+		
+		If vRoles.cantElem > 0 Then
+			If Not vRoles.isMember(sRol,0,False) Then
+				Exit Property	
+			End If
+		Else
+			Exit Property
+		End If
+		
+		Dim nom As NotesName
+		
+		Set entry=acl.GetFirstEntry
+		While Not entry Is Nothing 
+			If entry.IsRoleEnabled(sRol) Then
+				Set nom=New NotesName(entry.Name)
+				vRol.insertElement nom.Abbreviated,vRol.cantElem + 1
+			End If			
+			Set entry=acl.GetNextEntry(entry)
+		Wend
+		Set Rol=vRol		
+		
+		
+		
+		Exit Property		
+HANDLER:
+		
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Rol","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Rol","","")			
+		End  If
+		
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Caratula() As Caratula
+		'Devuelve el objeto carátula que corresponde al expediente actual
+		On Error Goto HANDLER
+		
+		If oCaratula Is Nothing Then
+			Set oCaratula = New Caratula(nroExp,False)  'se busca por nro de expediente
+		End If
+		Set Caratula=oCaratula			
+		
+		Exit Property		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Caratula","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Caratula","","")			
+		End  If
+		
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Actuacion (i As Integer) As Actuacion
+		'Devuelve el objeto actuación que corresponde a la actuación i del expediente actual
+		On Error Goto HANDLER
+		
+		Set Actuacion = New Actuacion(nroExp,i,False)  'se busca la actuación, no se crea
+		
+		Exit Property		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Actuacion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Actuacion","","")			
+		End  If
+		
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get LastActuacion  As Actuacion
+		'Devuelve el objeto actuación que corresponde a la actuación i del expediente actual
+		On Error Goto HANDLER
+		
+		If oLastActuacion Is Nothing Then
+			Set oLastActuacion = New Actuacion(nroExp,Me.Caratula.CantActuaciones,False)  
+		End If
+		Set LastActuacion = oLastActuacion
+		
+		Exit Property		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get LastActuacion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get LastActuacion","","")			
+		End  If
+		
+		Exit Property
+		
+	End Property
+'*****************************************************************************************************************	
+	
+	Public Property Set LastActuacion  As Actuacion
+		'Devuelve el objeto actuación que corresponde a la actuación i del expediente actual
+		On Error Goto HANDLER
+		
+		
+		Set oLastActuacion = LastActuacion
+		
+		
+		Exit Property		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Set LastActuacion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Set LastActuacion","","")			
+		End  If
+		
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Unidad  As Unidad
+		'Retorna la unidad en que se encuentra el expediente
+		On Error Goto HANDLER
+		
+		If oUnidad Is Nothing Then
+			Set oUnidad=New UnidadExp(Me.Caratula.OficinaActual)
+		End If
+		
+		Set Unidad=oUnidad
+		
+		Exit Property		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Unidad","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Unidad","","")			
+		End  If
+		
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Actuaciones As NotesDocumentCollection
+		'Devuelve la colección de documentos actuacion del expediente actual
+		On Error Goto HANDLER
+		
+		Dim viewVBusqAct As NotesView, c As New Configuracion
+		
+		If nroExp = "" Then Error ERROR_NRO_EXP_NOTHING, MSG_ERROR_NRO_EXP_NOTHING
+		If oCaratula Is Nothing Then
+			Set oCaratula = New Caratula(nroExp,False)  'se busca por nro de expediente
+		End If
+		
+		'Set dbGestionDoc = c.BaseDeDatosNroDoc(nroExp,NUMERADOR_EXP,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)
+		Set dbGestionDoc = oCaratula.BaseDeDatos
+		If dbGestionDoc Is Nothing Then Error ERROR_DB_GESTION_NOTHING, MSG_ERROR_DB_GESTION_NOTHING
+		
+		'Seteo la vista donde voy a buscar los docs de actuacion		
+		Set viewVBusqAct = dbGestionDoc.GetView(DBSGD_VISTA_BUSQ_ACTUACIONES)
+		If viewVBusqAct Is Nothing Then Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+DBSGD_VISTA_BUSQ_ACTUACIONES
+		
+		'Seteo la col de actuaciones
+		Set colActuaciones = viewVBusqAct.GetAllDocumentsByKey(nroExp)
+		Set Actuaciones=viewVBusqAct.GetAllDocumentsByKey(nroExp)
+		
+		
+		Exit Property		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Actuaciones","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Property Get Actuaciones","","")			
+		End  If
+		
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS
+	
+	Private Function getDBGestion(sNroExp) As notesDatabase
+		On Error Goto HANDLER	
+		
+		Dim c As New Configuracion,dbGestion As NotesDatabase
+		Set dbGestion = c.BaseDeDatosNroDoc(sNroExp,NUMERADOR_EXP,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)
+		If dbGestion Is Nothing Then Error ERROR_DB_GESTION_NOTHING, MSG_ERROR_DB_GESTION_NOTHING
+		
+		Set getDBGestion=dbGestion
+		
+		Exit Function
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function getDBGestion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function getDBGestion","","")			
+		End  If
+		
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Sub checkReceptor(oUnidad As Unidad,Byval sUsuario As String)
+		'Checkea si el sUsuario tiene el rol [Receptor] en la oUnidad
+		On Error Goto HANDLER
+		
+		
+		Dim vReceptores As New Vector(0)
+		Set vReceptores=oUnidad.UsuariosRolReceptor
+		If vReceptores.cantElem>0 Then
+			If 	Not vReceptores.isMember(sUsuario,0,False) Then
+				Error ERROR_RECEPCION,MSG_ERROR_RECEPCION_1				
+			End If
+		End If
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub checkReceptor","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub checkReceptor","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Private Sub checkEditorUnidad(oUnidad As Unidad,sUser As String)
+		'Chequea si el sUser tiene rol [Editor] en la unidad oUnidad
+		On Error Goto HANDLER
+		
+		Dim vMiembros As New Vector(0)
+		Set vMiembros=oUnidad.Miembros
+		If Not vMiembros.isMember(sUser,0,False) Then
+			Error ERROR_UNIDAD,MSG_ERROR_UNIDAD_1 & sUser
+		Else
+			'Soy editor en la unidad o Super usuario? TERMINARRRRRRRRRRRRRRRRRRR CONDICION
+			'Según Sandra no ejar editar a ningún super usuario
+			If Not oUnidad.UsuariosRolEditor.isMember(sUser,0,False) Then
+				Error ERROR_UNIDAD,MSG_ERROR_UNIDAD_2 & sUser	
+			End If			
+		End If		
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub checkEditorUnidad","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub checkEditorUnidad","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+	
+'******************************************************************************************************************		
+	
+	Private Sub validarPaseConfidencial(Lectores As Vector,oUnidadDestino As Unidad)
+		'Lectores: lectores del expediente confidencial
+		'oUnidadDestino: unidad a donde se va a dar el pase
+		On Error Goto HANDLER
+		
+		'En caso de que sea confidencial, verifico que está en el campo lectores
+		If Me.Caratula.Confidencial Then
+			If Me.LastActuacion.Lectores.cantElem > 0 Then
+				If Not Me.LastActuacion.Lectores.isMember(usuarioAccion.nombreUsuario,0,False) Then
+					Error ERROR_PASE,MSG_ERROR_PASE_2 & usuarioAccion.NombreUsuario
+				End If			
+			End If
+			
+			'Ademas verificar que entre los lectores exista un [Editor], [Pase], [Receptor] y [Firmar]
+			Dim vReceptores As New Vector(0), vFirmantes As New Vector(0)
+			Dim vPase As New Vector(0),vEditores As New Vector(0)
+			Set vReceptores = oUnidadDestino.usuariosRolReceptor
+			Set vFirmantes = oUnidadDestino.usuariosRolFirmar
+			Set vPase = oUnidadDestino.usuariosRolPase
+			Set vEditores = oUnidadDestino.usuariosRolEditor
+			
+			Dim i As Integer, nCantR As Integer, nCantF As Integer, nCantP As Integer, nCantE As Integer
+			Dim vLect As New Vector(0)
+			Set vLect=Me.LastActuacion.Lectores
+			If vLect.CantElem > 0 Then
+				For i=1 To vLect.CantElem
+					If vReceptores.isMember(vLect.getElement(i),0,False) Then
+						nCantR=nCantR+1
+					End If			
+					If vFirmantes.isMember(vLect.getElement(i),0,False) Then
+						nCantF=nCantF+1
+					End If			
+					If vPase.isMember(vLect.getElement(i),0,False) Then
+						nCantP=nCantP+1
+					End If			
+					If vEditores.isMember(vLect.getElement(i),0,False) Then
+						nCantE=nCantE+1
+					End If		
+				Next			
+				If (Not nCantR > 0) And (Not nCantF > 0) And (Not nCantP > 0) And (Not nCantE > 0) Then
+					Error ERROR_PASE,MSG_ERROR_PASE_3
+				End If	
+			End If			
+		End If
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarPaseConfidencial","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarPaseConfidencial","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub validarPase(Byval unidadDestino As String,Byval procedimiento As String,_
+	oUnidad As Unidad,oUnidadDestino As Unidad)
+		'Valida las condiciones necesarias para que se permita la realización del pase
+		On Error Goto HANDLER
+		
+		'Valido parámetros
+		If unidadDestino ="" Then
+			Error ERROR_VALIDAR_PARAMETRO,MSG_ERROR_VALIDAR_PARAMETRO_1
+		End If
+		If procedimiento="" Then
+			'Error ERROR_VALIDAR_PARAMETRO,MSG_ERROR_VALIDAR_PARAMETRO_2
+		End If	
+		
+		'Valido Rol [Pase]
+		Dim vUsuariosPase As New Vector(0)
+		Set oUnidad=New UnidadExp(Me.Caratula.OficinaActual)
+		Set vUsuariosPase=oUnidad.UsuariosRolPase
+		If vUsuariosPase.cantElem > 0 Then
+			If Not vUsuariosPase.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				Error ERROR_SEGURIDAD_ROLES,MSG_ERROR_SEGURIDAD_ROLES_1
+			End If	
+		Else
+			Error ERROR_SEGURIDAD_ROLES,MSG_ERROR_SEGURIDAD_ROLES_1
+		End If
+		
+		
+		Set oUnidadDestino=New UnidadExp(unidadDestino)
+		validarPaseConfidencial Me.LastActuacion.Lectores,oUnidadDestino
+		
+		
+		'Valido si la unidad destino está habilitada
+		If Not oUnidadDestino.UnidadHabilitada  Then  
+			Error ERROR_SEGURIDAD_UNIDAD,MSG_ERROR_SEGURIDAD_UNIDAD_1 & " " & unidadDestino
+		End If
+		
+		
+		If Not oUnidadDestino.UnidadHabilitadaPase(Me.Caratula.OficinaActual) Then
+			Error ERROR_SEGURIDAD_UNIDAD,MSG_ERROR_SEGURIDAD_UNIDAD_2 & " " & unidadDestino
+		End If
+		
+		
+		'Antes de dar el pase, la actuación debe estar firmada
+		If Not ( Me.LastActuacion.cantFirmas > 0 ) Then
+			Error ERROR_ACTUACION,MSG_ERROR_ACTUACION_1
+		End If
+		
+		
+		If Not ( Me.LastActuacion.SubEstado = SUBESTADO_PARA_FIRMAR ) And _
+		Not ( Me.LastActuacion.SubEstado = SUBESTADO_PARA_DAR_PASE ) Then
+			Error ERROR_PASE,MSG_ERROR_PASE_1
+		End If
+		
+		If Ucase(unidadDestino) = Ucase(Me.Caratula.OficinaActual) Then
+			'Error ERROR_PASE,MSG_ERROR_PASE_4	& unidadDestino Por requerimiento
+		End If
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarPase","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarPase","","")			
+		End  If
+		
+		Exit Sub	
+		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub addLog(fechaHora As Variant,sOperacion As String)
+		'Agrega una línea al log de la carátula con operacion, usuario y fecha/hora
+		
+		On Error Goto HANDLER
+		
+		Dim vLog As New vector(0)
+		vLog.insertElement sOperacion,1
+		vLog.insertElement Me.usuarioAccion.NombreUsuario,2
+		vLog.insertElement Cstr(fechaHora),3
+		Me.Caratula.addLog vLog
+		
+		Exit Sub
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub addLog","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub addLog","","")			
+		End  If
+		
+		Exit Sub	
+		
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Private Sub CaratulaPase(unidadDestino As String,fechaHora As Variant)
+		'Setea los campos necesarios en la carátula cuando se realiza un pase
+		On Error Goto HANDLER
+		
+		
+		Me.Caratula.FechaPase=fechaHora
+		Me.Caratula.OficinaAnterior=Me.Caratula.OficinaActual
+		Me.Caratula.OficinaActual=unidadDestino
+		
+		'Se cambia el estado a En tránsito
+		Me.Caratula.Estado=ESTADO_EN_TRANSITO
+		'Se quita a la unidad inicial del campo autores (la carátula ya no podrá modificarse)
+		
+		'Dim c As New Configuracion
+		'Set Me.Caratula.Autores=c.AutoresCaratula
+		Dim vNull As New Vector(0)
+		Set Me.Caratula.Autores=vNull
+		
+		
+		addLog fechaHora, ACCION_PASE
+		
+		
+		'Hay que actualizar las marcas de los agregados y las caratulas (en un futuro)
+'		Dim vExpedientes As New Vector(0)	, i As Integer
+'		Set vExpedientes=Me.Caratula.AgregadosNros
+'		If vExpedientes.cantElem>0 Then
+		CaratulaPaseDesc False
+'		End If
+		
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub CaratulaPase","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub CaratulaPase","","")			
+		End  If
+		
+		Exit Sub	
+		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private  Sub CaratulaPaseDesc (lectores As Boolean)
+		
+		Dim oExp As Expediente
+		Dim i As Integer, vExp As New Vector(0), vLectores As Vector
+		Dim vLectAux As New Vector(0)
+		
+		vLectAux.insertElement Me.Caratula.OficinaActual, vLectAux.cantElem+1
+		Set vLectores = LectoresDescendientes(Me.NroExp, vExp)
+		vLectores.insertElement Me.Caratula.OficinaActual, vLectores.cantElem+1
+		
+		For i= 1 To vExp.cantElem
+			Set oExp = vExp.getElement(i)
+			If i<>1 Then
+				
+				oExp.Caratula.OficinaActual = Me.Caratula.OficinaActual
+				oExp.Caratula.OficinaAnterior = Me.Caratula.OficinaAnterior
+				oExp.Caratula.save
+			End If
+			If lectores Then
+				oExp.setLectoresActuaciones vLectores
+				If i=1 Then
+					Set oExp.LastActuacion.Lectores=vLectAux
+					oExp.LastActuacion.save
+				End If
+			End If
+		Next
+%REM
+		For i = 1 To vNros.cantElem
+			Set oExpAg = New Expediente(vNros.getElement(i), usuarioAccion)
+			oExpAg.Caratula.OficinaActual = Me.Caratula.OficinaActual
+			oExpAg.Caratula.OficinaAnterior = Me.Caratula.OficinaAnterior
+			oExpAg.Caratula.save
+			Set vNrosAg = oExpAg.Caratula.AgregadosNros
+			If vNrosAg.cantelem>0 Then
+				Call CaratulaPaseDesc ( vNrosAg)
+			End If
+		Next
+%END REM
+	End Sub
+'******************************************************************************************************************		
+	
+	Private Sub ActuacionesPase(unidadDestino As String, _
+	oNewActuacion As Actuacion,ahora As Variant,sProcedimiento As String)
+		'Setea los campos necesarios en cada actuación del expediente cuando se realiza un pase
+		On Error Goto HANDLER
+		
+		Dim c As New Configuracion
+		
+		
+		Me.Actuaciones.Stampall DBSGD_CAMPO_FACTUACION_AUTORES,"" 
+		
+		
+		Me.LastActuacion.personaSalida=usuarioAccion.NombreUsuario
+		Me.LastActuacion.fechaSalida=ahora
+		
+		
+		Dim fEntrada As NotesDateTime,fSalida As NotesDateTime,dias As Integer
+		Set fSalida=New notesDateTime(Me.LastActuacion.fechaSalida)
+		Set fEntrada=New notesDateTime(Me.LastActuacion.fechaEntrada)
+		dias=fSalida.Timedifference(fEntrada) / 86400
+		Me.LastActuacion.TiempoPermanecio = dias   
+		Me.LastActuacion.SubEstado = SUBESTADO_CURSADO
+		Me.LastActuacion.Paso=True
+		
+		'Me.LastActuacion.LastEditor =""
+		
+		Dim vNulo As New Vector(0)
+		vNulo.insertElement "",1
+		Set Me.LastActuacion.Firmantes=vNulo
+		Set Me.Caratula.Firmantes=vNulo
+		
+		Me.Caratula.CantActuaciones=Me.Caratula.CantActuaciones + 1
+		
+		
+		Set oNewActuacion =New Actuacion(Me.Caratula.NroExp,Me.Caratula.CantActuaciones,True)
+		oNewActuacion.FechaEntrada=ahora
+		oNewActuacion.Oficina=unidadDestino 
+		oNewActuacion.TiempoMax=0
+		oNewActuacion.Procedimiento=sProcedimiento
+		oNewActuacion.Tema=Me.Caratula.Tema
+		
+		
+		Dim oUnidadDestino As Unidad,vMiembros As New Vector(0)
+		Set  oUnidadDestino = New UnidadExp(unidadDestino)
+		Set vMiembros=oUnidadDestino.Miembros
+		
+		
+		Dim vLectPerm As New Vector(0)
+		
+		vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+		Set oNewActuacion.LectoresPermanentes=vLectPerm
+		
+		Dim vNull As New Vector(0)
+		vNull.insertElement "",1
+		Set oNewActuacion.Lectores=vNull
+		
+		oNewActuacion.SubEstado=SUBESTADO_EN_TRANSITO	
+		
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ActuacionesPase","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ActuacionesPase","","")			
+		End  If
+		
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	
+	Private Sub validarFirmar(sFirma As String)
+		'Valida las condiciones necesarias para permitir la firma de una actuación
+		On Error Goto HANDLER
+		
+		
+		If Not Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR And _
+		Not Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO Then
+			Error ERROR_RESERVADO,MSG_ERROR_RESERVADO_1					
+		End If
+		
+		Dim oUnidad As Unidad
+		Set oUnidad=New UnidadExp(Me.Caratula.OficinaActual)
+		
+		Dim vFirmantes As New Vector(0)
+		Set vFirmantes=oUnidad.UsuariosRolFirmar
+		If Not vFirmantes.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_FIRMA,MSG_ERROR_FIRMA_1 & " " & usuarioAccion.nombreUsuario
+		End If
+		
+		If Me.Caratula.Confidencial Then
+			If Not Me.LastActuacion.Lectores.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				Error ERROR_FIRMA,MSG_ERROR_FIRMA_2 & " " & usuarioAccion.nombreUsuario
+			End If
+		End If
+		
+		If Me.LastActuacion.UsuariosFirmas.cantElem > 0 Then
+			If Me.LastActuacion.UsuariosFirmas.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				Error ERROR_FIRMA,MSG_ERROR_FIRMA_3 & " " & usuarioAccion.nombreUsuario
+			End If
+		End If
+		
+		If Len(sFirma) = 0 Then
+			Error ERROR_FIRMA,MSG_ERROR_FIRMA_4
+		Else
+			If sFirma = "No" Then
+				Error ERROR_FIRMA,MSG_ERROR_FIRMA_4
+			Else
+				If sFirma = "null" Then
+					Error ERROR_FIRMA,MSG_ERROR_FIRMA_4
+				End If
+			End If
+		End If
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarFirmar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarFirmar","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Function esFirmante(unidad As unidad,Byval sUser As String)
+		'Devuelve true si sUser tiene el rol [Firmante] en unidad. De lo contrario devuelve false.
+		On Error Goto HANDLER
+		Dim vFirmantes As New Vector(0)
+		
+		Set vFirmantes=unidad.UsuariosRolFirmar
+		esFirmante=vFirmantes.isMember(sUser,0,False)	
+		
+		Exit Function
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esFirmante","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esFirmante","","")			
+		End  If
+		
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Function esGestion(unidad As unidad,Byval sUser As String)
+		'Devuelve true si sUser tiene el rol [Gestion] en unidad. De lo contrario devuelve false.
+		On Error Goto HANDLER
+		Dim vRol As New Vector(0)
+		
+		Set vRol=unidad.UsuariosRolGestion
+		esGestion=vRol.isMember(sUser,0,False)	
+		
+		Exit Function
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esGestion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esGestion","","")			
+		End  If
+		
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Sub validarAnularPase(oUnidadAnterior As Unidad)
+		'Se realizan los controles necesarios para permitir la anulación de un pase
+		On Error Goto HANDLER
+		
+		If Not (Me.Caratula.Estado=ESTADO_EN_TRANSITO And _ 
+		Me.LastActuacion.SubEstado=SUBESTADO_EN_TRANSITO) Then
+			Error ERROR_ANULAR_PASE,MSG_ERROR_ANULAR_PASE_1
+		End If
+		If Not oUnidadAnterior.UsuariosRolGestion.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_ANULAR_PASE,MSG_ERROR_ANULAR_PASE_2 & ": " & usuarioAccion.nombreUsuario
+		End If		
+		
+		If Me.Caratula.Confidencial Then
+			Dim oAnteLastAct As Actuacion
+			If Me.Caratula.CantActuaciones > 1 Then
+				Set oAnteLastAct=Me.actuacion(Me.Caratula.CantActuaciones - 1)
+				If Not oAnteLastAct.Lectores.isMember(usuarioAccion.NombreUsuario,0,False) Then
+					Error ERROR_ANULAR_PASE,MSG_ERROR_ANULAR_PASE_3 & ": " & usuarioAccion.nombreUsuario	
+				End If
+			End If			
+		End If
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarAnularPase","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarAnularPase","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Private Sub unDoPaseCaratula()
+		'Deshace las modificaciones realizadas en la carátula al dar pase
+		On Error Goto HANDLER
+		
+		Dim vRecorridoSalida As New Vector(0),vRecorridoUnidad As New Vector(0),vRecorridoEntrada As New Vector(0)
+		Dim vExpedientes As Vector
+		Set vRecorridoEntrada=Me.Caratula.getRecorridoColumna(1)
+		Set vRecorridoSalida=Me.Caratula.getRecorridoColumna(2)
+		Set vRecorridoUnidad=Me.Caratula.getRecorridoColumna(3)
+		
+		If vRecorridoSalida.cantelem>0 Then
+			Me.Caratula.FechaPase=vRecorridoSalida.getElement(vRecorridoSalida.cantElem)			
+		End If
+		Me.Caratula.OficinaActual=Me.Caratula.OficinaAnterior
+		
+		If vRecorridoUnidad.cantElem>0 Then
+			Me.Caratula.OficinaAnterior=Cstr(vRecorridoUnidad.getElement(vRecorridoUnidad.cantElem))	
+		Else
+			Me.Caratula.OficinaAnterior=""
+		End If		
+		
+	'	Set vExpedientes= Me.Caratula.AgregadosNros
+	'	If vExpedientes.cantElem>0 Then
+		CaratulaPaseDesc False
+	'	End If
+		
+		If vRecorridoUnidad.cantElem = 0 Then
+			Me.Caratula.Estado=ESTADO_EN_GENERACION
+		Else
+			Me.Caratula.Estado=ESTADO_EN_UNIDAD
+		End If
+		
+		addLog Now, ACCION_ANULAR_PASE
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub unDoPaseCaratula","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub unDoPaseCaratula","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Private Sub unDoPaseActuacion(oAnteLastActuacion As Actuacion)
+		'Deshace las modificaciones realizadas en la última y penúltima actuación al dar pase
+		On Error Goto HANDLER
+		
+		oAnteLastActuacion.personaSalida=""
+		oAnteLastActuacion.fechaSalida=""
+		oAnteLastActuacion.TiempoPermanecio=0
+		oAnteLastActuacion.SubEstado = SUBESTADO_PARA_FIRMAR
+		'oAnteLastActuacion.delFirmas		
+		
+		Me.LastActuacion.SubEstado=SUBESTADO_ANULADO		
+		Me.LastActuacion.aBorrar=True		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub unDoPaseActuacion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub unDoPaseActuacion","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************			
+	Private Function CuentaSeguidos (vUnidadesDevolvieron As vector,unidad As String) As Integer
+		'Cuenta cuantos elementos iguales a unidad hay al final del vector de devoluciones
+		On Error Goto handler
+		
+		Dim indice As Integer		
+		CuentaSeguidos=0		
+		
+		indice = vUnidadesDevolvieron.cantElem 
+		
+		While indice>0
+			
+			If vUnidadesDevolvieron.getElement(indice)=unidad Then
+				CuentaSeguidos=CuentaSeguidos+1
+				
+			Else
+				Exit Function
+			End If
+			indice=indice-1
+		Wend
+		Exit Function
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function CuentaSeguidos","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function CuentaSeguidos","","")			
+		End  If
+		
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Sub validarDevolver(oUnidadActual As Unidad, oAnteLastActuacion As Actuacion)
+		'Realiza los controles necesarios para permitir o no la devolución de un expediente
+		On Error Goto HANDLER
+		
+		
+		Dim vUnidadesDevolvieron As New Vector(0), c As New Configuracion, intSeguidos As Integer
+		Dim tHastaHoy As Integer, fRecibido As NotesDateTime,hoy As New NotesDateTime(Cstr(Today))
+		Dim vAgregadosActuacion As New Vector(0)
+		
+		If Me.LastActuacion.Paso Then
+			Error ERROR_DEVOLVER,MSG_ERROR_DEVOLVER_6
+		End If
+		
+		'Si el estado del expediente no es en unidad o el de la actuación no es para actuar da error
+		If Not (    Me.Caratula.Estado=ESTADO_EN_UNIDAD And _ 
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_ACTUAR    ) Then _
+		Error ERROR_DEVOLVER,MSG_ERROR_DEVOLVER_1
+		
+		'Si el usuario no tiene el rol [Gestion] da error
+		If Not oUnidadActual.UsuariosRolGestion.isMember(usuarioAccion.nombreUsuario,0,False) Then _
+		Error ERROR_DEVOLVER,MSG_ERROR_DEVOLVER_2 & ": " & usuarioAccion.nombreUsuario
+		
+		'Si la actuación a la que se intenta devolver es migrada no se permite
+		If Me.Actuacion(oCaratula.CantActuaciones - 1).Migrado _
+		Then Error ERROR_DEVOLVER,MSG_ERROR_DEVOLVER_7
+		
+		If Me.Caratula.Confidencial Then
+			If Me.LastActuacion.MarcoConfidencial Then 
+				Error ERROR_DEVOLVER,MSG_ERROR_DEVOLVER_4 & ": " & usuarioAccion.nombreUsuario	
+			End If
+		End If
+		
+		vUnidadesDevolvieron.values=oAnteLastActuacion.UnidadesDevolucion
+		
+		intSeguidos = CuentaSeguidos(vUnidadesDevolvieron, Me.Caratula.OficinaActual)
+		If intSeguidos>= c.CantMaximoDevolucion Then
+			Error ERROR_DEVOLVER, MSG_ERROR_DEVOLVER_3 & Cint(c.CantMaximoDevolucion) & MSG_ERROR_DEVOLVER_3_1 & " " & Me.Caratula.OficinaAnterior
+		End If
+		
+		Set vAgregadosActuacion = Me.Caratula.AgregadosActuaciones
+		If vAgregadosActuacion.isMember (Cstr(Me.Caratula.CantActuaciones), 0, True) Then
+			Error ERROR_DEVOLVER, MSG_ERROR_DEVOLVER_8
+		End If
+		
+		'Valido si aun no se pasó del tiempo límite de la configuración
+		Set fRecibido=New NotesDateTime(Cstr(Me.LastActuacion.FechaRecibido))
+		tHastaHoy=( hoy.TimeDifference(fRecibido) ) / 86400 'Días
+		If c.TiempoMaximoDevolucion < tHastaHoy Then
+			Error ERROR_DEVOLVER, MSG_ERROR_DEVOLVER_5
+		End If
+		
+		
+		
+		Exit Sub	
+HANDLER:	
+		
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarDevolver","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarDevolver","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Private Sub devolverCaratula
+		'Realiza las modificaciones que implica la devolución del expediente en la carátula
+		On Error Goto HANDLER
+		
+		Dim vRecorridoSalida As New Vector(0),vRecorridoUnidad As New Vector(0),vRecorridoEntrada As New Vector(0)
+		Dim vExpedientes As Vector
+		Set vRecorridoEntrada=Me.Caratula.getRecorridoColumna(1)
+		Set vRecorridoSalida=Me.Caratula.getRecorridoColumna(2)
+		Set vRecorridoUnidad=Me.Caratula.getRecorridoColumna(3)
+		
+		'Setea como fecha de pase la penúltima del recorrido (pase a la oficina anterior)
+		If vRecorridoSalida.cantElem > 1 Then
+			Me.Caratula.FechaPase=vRecorridoSalida.getElement(vRecorridoSalida.cantElem - 1)	
+		Else
+			Me.Caratula.FechaPase=""
+		End If
+		
+		'Setea como oficina actual a la anterior
+		Me.Caratula.OficinaActual=Me.Caratula.OficinaAnterior
+		'Setea la oficina anterior que corresponda
+		If vRecorridoUnidad.cantElem>1 Then
+			Me.Caratula.OficinaAnterior=Cstr(vRecorridoUnidad.getElement(vRecorridoUnidad.cantElem - 1))	
+		Else
+			Me.Caratula.OficinaAnterior=""   'era el primer pase luego de la creación
+		End If		
+		'Si el recorrido quedó solo con una línea modifica el estado del expediente a en generación
+		If vRecorridoUnidad.cantElem =1 Then
+			Me.Caratula.Estado=ESTADO_EN_GENERACION
+		End If
+		
+		'Set vExpedientes = Me.Caratula.AgregadosNros
+		'If vExpedientes.cantelem>0 Then
+		
+		'End If
+		'Elimina la última línea del recorrido en la carátula
+		Dim posEliminar As Integer
+		posEliminar=vRecorridoEntrada.cantElem
+		
+		If posEliminar > 0 Then
+			vRecorridoEntrada.deleteElement posEliminar
+			vRecorridoSalida.deleteElement posEliminar
+			vRecorridoUnidad.deleteElement posEliminar
+			Me.Caratula.setRecorridoColumna 1,vRecorridoEntrada
+			Me.Caratula.setRecorridoColumna 2,vRecorridoSalida
+			Me.Caratula.setRecorridoColumna 3,vRecorridoUnidad	
+		End If
+		Me.caratula.save
+		caratulapaseDesc True
+		
+		Exit Sub	
+HANDLER:		
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub devolverCaratula","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub devolverCaratula","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************				
+	
+	Private Sub devolverActuacion(oAnteLastActuacion As Actuacion,sMotivo As String)
+		'Realiza las modificaciones que implica la devolución del expediente en la penúltima y última actuación
+		'Se ejecuta antes de Devolver Caratula
+		On Error Goto HANDLER
+		
+		Dim vLectPerm As Vector
+		Dim iPos As Long
+		Dim docAct As NotesDocument
+		Dim attachs As Variant, attach As NotesEmbeddedObject
+		
+		'Elimina los datos agregados por el pase en la penúltima actuación
+		oAnteLastActuacion.personaSalida=""
+		oAnteLastActuacion.fechaSalida=""
+		oAnteLastActuacion.TiempoPermanecio=0
+		oAnteLastActuacion.SubEstado = SUBESTADO_PARA_FIRMAR 'SUBESTADO_PARA_ACTUAR
+		'oAnteLastActuacion.delFirmas
+		oAnteLastActuacion.addUnidadDevolucion Me.Caratula.OficinaActual
+		oAnteLastActuacion.Devuelta=True
+		oAnteLastActuacion.MotivoDevolucion=sMotivo
+		Set vLectPerm= oAnteLastActuacion.LectoresPermanentes
+		'Esto es para agregar el rol de ver actuaciones al recibir el expediente
+		ipos=1
+		If vLectPerm.isMember(ROL_VER_ACTUACIONES, ipos , False) Then
+			vLectPerm.deleteElement ipos			
+		End If
+		
+		ipos=1
+		If vLectPerm.isMember(ROL_GESTION_CONF,ipos,False) Then
+			vLectPerm.deleteElement ipos
+		End If
+		
+		Set oAnteLastActuacion.LectoresPermanentes = vLectPerm
+		
+		'Pone la última actuación en estado anulado
+		Me.LastActuacion.SubEstado=SUBESTADO_ANULADO
+		'La marca para borrar (con lo cual no será tenida en cuenta de aquí en adelante)
+		Me.LastActuacion.aBorrar=True
+		
+		Set docAct = Me.LastActuacion.Document
+		If docAct.HasEmbedded Then
+			attachs=Evaluate("@AttachmentNames",docAct)
+			Forall n In attachs
+				If n <> "" Then
+					Set attach = docAct.GetAttachment(n)
+					Me.Caratula.popAnexo Me.LastActuacion.NumeroActuacion, attach.Name , Cstr(attach.FileSize)
+					
+				End If
+			End Forall
+			Me.Caratula.save
+		End If
+		Me.LastActuacion.save
+		
+		Me.Caratula.DelLogAgregados Me.Caratula.CantActuaciones
+		'Disminuye el número de actuaciones en la carátula 
+		Me.Caratula.CantActuaciones=Me.Caratula.CantActuaciones - 1
+		
+		
+		Dim vUnidadesRecorrido As New Vector(0)
+		Set vUnidadesRecorrido=Me.Caratula.getRecorridoColumna(3)
+		
+		If Not Me.Caratula.Confidencial Then
+			Dim posElement As Long
+			If vUnidadesRecorrido.cantElem > 0 Then
+				Me.Actuaciones.Stampall DBSGD_CAMPO_FACTUACION_LECTORES,vUnidadesRecorrido.values
+			End If
+			
+			Dim vOficinaActual As New Vector(0)
+			vOficinaActual.insertElement oAnteLastActuacion.Oficina,1
+			Set oAnteLastActuacion.Lectores=vOficinaActual
+			
+			
+		End If
+		oAnteLastActuacion.save		
+		Exit Sub	
+		
+HANDLER:		
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub devolverActuacion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub devolverActuacion","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub ValidarQuitarConfidencialidad
+		On Error Goto HANDLER
+		
+		
+		If Not Me.Caratula.Confidencial Then
+			Error ERROR_QUITAR_CONFIDENCIAL,MSG_ERROR_QUITAR_CONFIDENCIAL_1			
+		End If
+		
+		If Not Me.Rol(ROL_GESTION_CONF).isMember(usuarioAccion.NombreUsuario,0,False) Then
+			Error ERROR_QUITAR_CONFIDENCIAL,MSG_ERROR_QUITAR_CONFIDENCIAL_3 & usuarioAccion.NombreUsuario	
+		End If
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarQuitarConfidencialidad","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarQuitarConfidencialidad","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub ValidarMarcarConfidencial
+		On Error Goto HANDLER
+		'Se debe validar que el usuario esté en la unidad actual , y que además tenga el 
+		'rol necesario Manejar Confidencialidad
+		
+		If Me.Caratula.Confidencial Then
+			Error ERROR_MARCAR_CONFIDENCIAL,MSG_ERROR_MARCAR_CONFIDENCIAL_3 
+		End If
+		
+		If Not Me.Unidad.UsuariosRolManejarConfidencial.isMember(usuarioAccion.NombreUsuario,0,False) And _
+		Not Me.Rol(ROL_GESTION_CONF).isMember(usuarioAccion.NombreUsuario,0,False) Then
+			Error ERROR_MARCAR_CONFIDENCIAL,MSG_ERROR_MARCAR_CONFIDENCIAL_2  & usuarioAccion.NombreUsuario
+		End If		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarMarcarConfidencial","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarMarcarConfidencial","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub ValidarArchivar
+		On Error Goto HANDLER
+		
+		If Not Me.Unidad.UnidadHabilitadaArchivar Then
+			Error ERROR_ARCHIVAR,MSG_ERROR_ARCHIVAR_1 & Me.Caratula.OficinaActual
+		End If
+		If Not Me.Unidad.usuariosRolGestion.isMember(usuarioAccion.NombreUsuario,0,False) Then
+			Error ERROR_ARCHIVAR,MSG_ERROR_ARCHIVAR_2 & usuarioAccion.NombreUsuario
+		End If
+		If Not Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR Then
+			Error ERROR_ARCHIVAR,MSG_ERROR_ARCHIVAR_3
+		Else
+			If Not Me.LastActuacion.CantFirmas > 0 Then
+				Error ERROR_ARCHIVAR,MSG_ERROR_ARCHIVAR_4
+			End If
+		End If
+		
+		'Validar que hayan tomado conocimiento toda las unidades.
+		Dim i As Integer,vUniAcusar As New Vector(0)
+		Dim vNotifAcuse As New Vector(0),vNotifUni As New Vector(0)
+		Set vNotifAcuse=Me.Caratula.NotificacionesAcuse
+		Set vNotifUni=Me.Caratula.NotificacionesUnidad
+		If vNotifAcuse.cantElem > 0 Then
+			For i= 1 To vNotifAcuse.cantElem
+				If vNotifAcuse.getElement(i) <> "" Then
+					If vNotifAcuse.getElement(i) ="0" Then  'No acusó
+						If vNotifUni.cantElem >= i Then
+							vUniAcusar.insertElement vNotifUni.getELement(i),vUniAcusar.cantElem + 1
+						End If					
+					End If					
+				End If				
+			Next
+			If vUniAcusar.cantElem > 0 Then
+				Dim strMsgError As String
+				For i=1 To vUniAcusar.cantElem
+					If strMsgError = "" Then
+						strMsgError=vUniAcusar.getElement(i)
+					Else
+						strMsgError=strMsgError & " - " & vUniAcusar.getElement(i)
+					End If
+				Next		
+				Error ERROR_ARCHIVAR,MSG_ERROR_ARCHIVAR_6 & strMsgError
+			End If		
+		End If
+		
+		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarArchivar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarArchivar","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub validarGeneral
+		On Error Goto HANDLER
+		
+		Me.Lastactuacion.checkFileSize
+		Me.Lastactuacion.checkFileNumber
+		Me.Lastactuacion.checkFileExtensions
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarGeneral","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarGeneral","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+'******************************************************************************************************************	
+	
+	Private Function ExpMember (sNroExp As String, vExp As Vector) As Boolean
+		'Devuelve true si un expediente esta dentro del vector de expediente, false en caso contrario
+		On Error Goto HANDLER
+		Dim i As Integer
+		Dim oExp As Expediente
+		Dim flag As Boolean
+		flag= False
+		For i = 1 To vExp.cantElem
+			Set oExp = vExp.getElement(i)
+			If oExp.Caratula.NroExp = sNroExp Then
+				flag=True
+			End If
+		Next
+		ExpMember = flag
+		Exit Function
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function ExpMember","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function ExpMember","","")			
+		End  If
+	End Function
+'******************************************************************************************************************	
+	
+	Public Function LectoresDescendientes (sNroExp As String, vExp As Vector) As Vector
+	'Esta funcion va a recorrer recursivamente el expediente hasta encontrar todos los lectores del expediente
+	'La idea llegar hasta los expedientes "hojas" es decir los expedientes que no tengan agregados y luego ir
+	'subiendo en la jerarquia agregando los recorridos de cada expediente. Tambien se realiza un chequeo para
+	'que no existan ciclos en el arbol de agregaciones. Para eso se utilza la funcion ExpMember que lo que
+	'hace es revisar si el expediente esta en el vector o no.
+		
+	'Para ir agregando los expedientes se utiliza el metodo append, no hago un ismember de elemento porque me
+	'interesa preservar los repetidos ya que se podrian llegar a devolver un expediente y al sacarse una unidad
+	'no podrian verlo, lo que esta mal en el caso de que haya pasado antes por esa unidad...
+		
+	'En vExp va quedando los expedientes del arbol, como es un objeto se pasa por referencia por lo que en 
+	'cada llamado se esta trabajando con el mismo objeto y luego de la llamada el vector queda cargado para usar
+		
+		
+		On Error Goto HANDLER
+		
+		Dim oExp As Expediente
+		Set oExp = New Expediente (sNroExp, usuarioaccion)
+		Dim vAux As New Vector(0), vAgregado As New Vector(0)
+		Dim i As Integer
+		
+		If Not ExpMember(sNroExp, vExp) Then
+			Call vExp.insertElement(oExp, vExp.cantElem+1)
+		Else
+			'ERROR TIENE UN CICLO DE EXPEDIENTES
+			Error ERROR_CICLO_EN_EXPEDIENTE, MSG_ERROR_CICLO_EN_EXPEDIENTE_1
+		End If
+		
+		Set vAgregado = oExp.Caratula.AgregadosNros
+		For  i = 1 To vAgregado.cantElem
+			'Agrego las unidades del recorrido de los exp agregados a este exp llamando a la misma funcion
+			'LectoresDescendientes
+			Call vAux.Append (LectoresDescendientes(vAgregado.getElement(i), vExp),False)
+		Next
+		'Cuando ya terminé de agregar los recorridos de los agregados si es que tenia, agrego las unidades 
+		'del recorrido del expediente actual
+		Call vAux.Append (oExp.Caratula.getRecorridoColumna(3), False)
+		Set LectoresDescendientes = vAux
+		Exit Function
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function LectoresDescendientes","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function LectoresDescendientes","","")
+		End  If
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Sub RecibirDescendientes(sNroExp As String,vLectores As Vector)
+		'sNroExp es un hijo del exp. actual
+		On Error Goto HANDLER
+		
+%REM
+		VISTA_ARCHIVOS_POR_ID: 
+		Esta vista es solo para obtener el expediente principal del Archivo.
+		Solo selecciona los que estan en estado Archivado(Caratula y sus Actuaciones)
+		Pero restan los posibles expedientes agregados a éste principal, los cuales deben estar 
+		en la misma base de Archivo que el Principal
+
+		DBSGD_VISTA_AGREGADOS:
+		Esta vista categoriza Caratulas y Actuaciones, por Número de Expediente
+		Pero solo selecciona las Carátulas que estan en estado Agregado
+		Quizas se podría haber utilizado una vista ya definida que agrupe documentos segun 
+		el número de Expediente, pues no mimportaría el estado, lo que importa es el numero 
+		de Expediente
+
+
+		DBSGD_VISTA_CAR_DESC_DESA:
+		Esta vista se usa en las operaciones RecibirDescendientes y DesagregarDescendientes
+		Esta vista solo selecciona las Carátulas que tienen al menos dos padres de Agregación.
+		La idea es obtener cuales son los expedientes Descendientes no directos(no hijos) de un
+		expediente dato. O sea los expedientes cuyo padre actual en la agregación es el expediente
+		principal y cuyo padre anterior es el expeiente a desagregar.
+%END REM
+		If Not vLectores.cantElem > 0 Then
+			Exit Sub
+		End If
+		
+		Dim db As notesDatabase,viewCarDesc As NotesView
+		Set db=getDBGestion(sNroExp)
+		Set viewCarDesc=db.GetView(DBSGD_VISTA_CAR_DESC_DESA)
+		If Not viewCarDesc Is Nothing Then
+			
+			Dim colCar As NotesDocumentCollection,keys(1 To 2) As String
+			keys(1)=Me.NroExp
+			keys(2)=sNroExp
+			Set colCar=viewCarDesc.GetAllDocumentsByKey(keys,True)
+			
+			If colCar.Count > 0 Then
+				Dim car As NotesDocument,oCar As Caratula,i As Integer
+				Dim oExp As Expediente 
+				
+				For i= 1 To colCar.Count
+					Set car =colCar.GetNthDocument(i)
+					Set oCar=New Caratula(NRO_EX_VACIO,False)
+					oCar.Inicializar car
+					
+					Set oExp=New Expediente(oCar.NroExp,usuarioAccion)
+					Set oCar=Nothing
+					
+					oExp.setLectoresActuaciones vLectores
+				Next			
+			End If			
+		Else
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & DBSGD_VISTA_CAR_DESC_DESA
+		End If		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub RecibirDescendientes","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub RecibirDescendientes","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub RecibirAgregados()
+		On Error Goto HANDLER
+		Dim vLectores As Vector, vExp As New Vector(0)
+		Dim i As Integer, oExp As Expediente
+		
+		Set vLectores = LectoresDescendientes(Me.NroExp, vExp)
+		Call vLectores.insertElement(Me.Caratula.OficinaActual, vLectores.cantelem+1)
+		
+	'Es desde el 2 para que no toque el expediente actual que esta en la posicion 1 del vector de expedientes
+		For i= 2 To vExp.cantElem
+			Set oExp = vExp.getElement(i)
+			oExp.setLectoresActuaciones vLectores
+		Next
+%REM
+		If Not vLectores.cantElem > 0 Then
+			Exit Sub
+		End If
+		Dim vExpedientes As New Vector(0)	, i As Integer,oExp As Expediente
+		Set vExpedientes=Me.Caratula.AgregadosNros
+		For i= 1 To vExpedientes.cantElem
+			
+			Set oExp=New Expediente(vExpedientes.getElement(i),usuarioAccion)
+			oExp.setLectoresActuaciones vLectores
+			
+			RecibirDescendientes oExp.Caratula.NroExp,vLectores
+		Next				
+%END REM
+		
+		Exit Sub			
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - RecibirAgregados()","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - RecibirAgregados()","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub DelAutoresActuaciones
+		On Error Goto HANDLER
+		
+		Me.Actuaciones.Stampall DBSGD_CAMPO_FACTUACION_AUTORES,""
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DelAutoresActuaciones","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DelAutoresActuaciones","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub ValidarDelLectoresConfidencial
+		On Error Goto HANDLER
+		
+		If Not Me.Caratula.Confidencial Then
+			Error ERROR_DEL_LECT_CONFIDENCIAL,MSG_ERROR_DEL_LECT_CONFIDENCIAL_1
+		End If
+		
+		If Not Me.Rol(ROL_GESTION_CONF).isMember(usuarioAccion.NombreUsuario,0,False) Then
+			Error ERROR_DEL_LECT_CONFIDENCIAL,MSG_ERROR_DEL_LECT_CONFIDENCIAL_2  & usuarioAccion.NombreUsuario	
+		End If
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarDelLectoresConfidencial","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarDelLectoresConfidencial","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub ValidarAddLectoresConfidencial
+		On Error Goto HANDLER
+		
+		If Not Me.Caratula.Confidencial Then
+			Error ERROR_ADD_LECT_CONFIDENCIAL,MSG_ERROR_ADD_LECT_CONFIDENCIAL_1
+		End If
+		
+		If Not Me.Rol(ROL_GESTION_CONF).isMember(usuarioAccion.NombreUsuario,0,False) Then
+			Error ERROR_ADD_LECT_CONFIDENCIAL,MSG_ERROR_ADD_LECT_CONFIDENCIAL_3  & usuarioAccion.NombreUsuario
+		End If
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarAddLectoresConfidencial","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarAddLectoresConfidencial","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub AgregarExp(sNroExp As String)
+		On Error Goto HANDLER
+		
+		Dim oExpAgregar As Expediente, oAnteLastActuacion As Actuacion
+		Set oExpAgregar=New Expediente(sNroExp,usuarioAccion)
+		
+		
+		Dim vOficina As New Vector(0)
+		Set vOficina = Me.Caratula.getRecorridoColumna(3)
+		vOficina.insertElement Me.Caratula.OficinaActual,vOficina.cantElem+1
+		
+		Dim vLectPerm As New Vector(0)
+		Set vLectPerm= oExpAgregar.LastActuacion.LectoresPermanentes
+		vLectPerm.insertElement ROL_VER_ACTUACIONES,vLectPerm.cantElem + 1	
+		vLectPerm.insertElement ROL_GESTION_CONF,vLectPerm.cantElem + 1
+		Set oExpAgregar.LastActuacion.LectoresPermanentes = vLectPerm
+		
+		
+		
+		'oExpAgregar.pushActuacionesNotif Me.Caratula.NotificadosAcusaron
+		
+		oExpAgregar.LastActuacion.SubEstado=SUBESTADO_AGREGADO
+		
+		'oExpAgregar.Caratula.addPadre Me.nroExp
+		'oExpAgregar.Caratula.CodigoPadre=Me.nroExp
+		oExpAgregar.Caratula.Estado=ESTADO_AGREGADO
+		
+		If Not Isdate(oExpAgregar.LastActuacion.FechaRecibido) Then
+			If Isdate(oExpAgregar.LastActuacion.FechaEntrada) Then
+				oExpAgregar.Caratula.addRecorrido oExpAgregar.LastActuacion.FechaEntrada,oExpAgregar.LastActuacion.Oficina 	
+			Else
+				oExpAgregar.Caratula.addRecorrido Now,oExpAgregar.LastActuacion.Oficina 		
+			End If
+		Else
+			oExpAgregar.Caratula.addRecorrido oExpAgregar.LastActuacion.FechaRecibido,oExpAgregar.LastActuacion.Oficina 		
+		End If
+		
+		oExpAgregar.Caratula.save
+		
+		'Se agregan los notificados del padre a la cola preexistente de lectores notificados
+		Set oExpAgregar.LastActuacion.LectNotificados=oExpAgregar.Actuacion(1).LectNotificados
+		
+		oExpAgregar.LastActuacion.save
+		
+		'AgregarDescendientes sNroExp 
+		
+		'Agrega la línea de la recepción al log
+		addLog Now, ACCION_AGREGAR
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método AgregarExp","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método AgregarExp","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub AgregarDescendientes()
+		On Error Goto HANDLER
+		
+		Dim vExp As New Vector(0), vLectores As Vector, i As Integer
+		Dim oExp As Expediente, vNros As New Vector(0), pos As Long
+		Dim vFechas As Vector, vUnidad As Vector, strMenu As String, strMenu2 As String
+		
+		Set vLectores = LectoresDescendientes(Me.NroExp, vExp)
+		pos = 0
+		
+		strMenu= |<script language="javascript" type="text/JavaScript">var Tree = new Array;|
+		For i = 1 To vExp.CantElem
+			Set oExp = vExp.getElement(i)
+			If i <> 1 Then
+				oExp.Caratula.addPadre Me.NroExp
+				oExp.Caratula.save
+				oExp.pushActuacionesNotif Me.Caratula.NotificadosAcusaron
+			End If
+			oExp.setLectoresActuaciones vLectores
+			If Not vNros.isMember (oExp.Caratula.CodigoPadre,pos,False) Then
+				pos = 0
+			End If
+			vNros.insertelement oExp.Caratula.NroExp, vNros.cantelem+1	
+			If i>1 Then
+				
+				Set vFechas = oExp.Caratula.getRecorridoColumna(2)
+				Set vUnidad = oExp.Caratula.getRecorridoColumna(3)		
+				strMenu = strMenu & | Tree[| & Cstr(i-1) & |] ="| & Cstr(i) & "|" & Cstr(pos) & "|" & oExp.Caratula.NroExp & "&nbsp;&nbsp;&nbsp;&nbsp;" & Strleft(Cstr(vFechas.getelement(vFechas.cantElem))," ") & "&nbsp;&nbsp;&nbsp;&nbsp;" & vUnidad.getElement (vUnidad.cantElem) & "&nbsp;&nbsp;&nbsp;&nbsp;en actuación "  & Cstr(vUnidad.cantElem) & "|javascript:irCaratula('"& oExp.Caratula.NroExp &"');" & |";|   		
+			Else
+				strMenu = strMenu & | Tree[| & Cstr(i-1) & |] ="| & Cstr(i) & "|" & Cstr(pos) & "|" & oExp.Caratula.NroExp  & "|javascript:irCaratula('"& oExp.Caratula.NroExp &"');" & |";|   		
+			End If
+		Next
+		
+		For i = 1 To vExp.CantElem
+			strMenu2 = strMenu & |createTree(Tree,1,|& Cstr(i) & | ); </script>|
+			Set oExp = vExp.getElement(i)
+			oExp.Caratula.ArbolAgregacion = strMenu2
+			oExp.Caratula.save
+		Next
+%REM
+		Dim db As notesDatabase,viewCarDesc As NotesView
+		Set db=getDBGestion(sNroExp)
+		Set viewCarDesc=db.GetView(DBSGD_VISTA_CAR_DESC)
+		If Not viewCarDesc Is Nothing Then
+			
+			Dim colCar As NotesDocumentCollection
+			Set colCar=viewCarDesc.GetAllDocumentsByKey(sNroExp,True)
+			
+			If colCar.Count > 0 Then
+				Dim car As NotesDocument,oCar As Caratula,i As Integer
+				
+				Dim vOficina As New Vector(0),oExp As Expediente
+				vOficina.insertElement Me.Caratula.OficinaActual,1
+				
+				Dim vLectPerm As New Vector(0)
+				
+				For i= 1 To colCar.Count
+					Set car =colCar.GetNthDocument(i)
+					Set oCar=New Caratula(NRO_EX_VACIO,False)
+					oCar.Inicializar car
+					oCar.addPadre Me.NroExp
+					oCar.save
+					
+					Set oExp=New Expediente(oCar.NroExp,usuarioAccion)
+					Set oCar=Nothing
+					
+					'Agregado para agregar los roles de ver act y gestion a las ultimas acts
+					Set vLectPerm= oExp.LastActuacion.LectoresPermanentes
+					vLectPerm.insertElement ROL_VER_ACTUACIONES,vLectPerm.cantElem + 1
+					vLectPerm.insertElement ROL_GESTION_CONF,vLectPerm.cantElem + 1
+					Set oExp.LastActuacion.LectoresPermanentes = vLectPerm
+					oExp.LastActuacion.save
+					
+					
+					oExp.setLectoresActuaciones vOficina
+					oExp.pushActuacionesNotif Me.Caratula.NotificadosAcusaron
+				Next
+			End If
+		Else
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & DBSGD_VISTA_CAR_DESC
+		End If
+		
+%END REM
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método AgregarDescendientes","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método AgregarDescendientes","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub validarAgregar(vNrosExpAgregar As Vector)
+		On Error Goto HANDLER
+		
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		If Not oUnidad.usuariosRolGestion.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_3 & usuarioAccion.nombreUsuario
+		End If
+		
+		If Me.Caratula.Confidencial Then
+			Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_1
+		End If
+		
+		If Not (Me.Caratula.Estado=ESTADO_EN_UNIDAD Or Me.Caratula.Estado=ESTADO_EN_GENERACION) Then
+			Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_2
+		End If
+		
+		If Not vNrosExpAgregar.cantElem > 0 Then
+			Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_6
+		End If
+		If vNrosExpAgregar.isMember(Me.Caratula.NroExp,0,False) Then
+			Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_7
+		End If
+		
+		Dim vAgregados As Vector		
+		Set vAgregados = Me.Caratula.AgregadosNros
+		
+		
+		Dim i As Integer,oExpTemp As Expediente
+		For i=1 To vNrosExpAgregar.cantElem
+			
+			If vAgregados.isMember(vNrosExpAgregar.getElement(i),1, True) Then
+				Error ERROR_AGREGAR, MSG_ERROR_AGREGAR_10 & vNrosExpAgregar.getElement(i)
+			End If
+			
+			
+			Set oExpTemp=New Expediente(vNrosExpAgregar.getElement(i),usuarioAccion)
+			If oExpTemp.Caratula.Confidencial Then
+				Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_4 & vNrosExpAgregar.getElement(i)
+			Else
+				If oExpTemp.Caratula.OficinaActual <> Me.Caratula.Oficinaactual Then
+					Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_5 & vNrosExpAgregar.getElement(i)
+				Else
+					If ( oExpTemp.Caratula.AgregadosNros.cantElem > 0 ) Then
+						'Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_8 & vNrosExpAgregar.getElement(i)	
+					End If
+					If Not oExpTemp.LastActuacion.CantFirmas > 0 Then
+						Error ERROR_AGREGAR,MSG_ERROR_AGREGAR_9 & vNrosExpAgregar.getElement(i)	
+					End If
+				End If
+			End If			
+		Next		
+		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método validarAgregar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método validarAgregar","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************					
+	
+	Private Sub DevolverAgregados
+		On Error Goto HANDLER
+		
+		
+		Dim vRecorrido As New Vector(0)
+		vRecorrido.values=Me.Caratula.getRecorridoColumna(3).values
+		vRecorrido.insertElement Me.Caratula.OficinaActual,vRecorrido.cantElem + 1
+		
+		Dim vExpedientes As New Vector(0)	, i As Integer,oExp As Expediente
+		Set vExpedientes=Me.Caratula.AgregadosNros
+		For i= 1 To vExpedientes.cantElem
+			
+			Set oExp=New Expediente(vExpedientes.getElement(i),usuarioAccion)
+			oExp.setLectoresActuaciones vRecorrido 
+		Next
+		
+		Exit Sub
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método DevolverAgregados","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método DevolverAgregados","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+	
+'******************************************************************************************************************					
+'******************************************************************************************************************					
+'******************************************************************************************************************					
+	
+	
+'MÉTODOS
+	
+	Public Function Creacion(universalID As String) As String
+		'Si el usuario está autorizado, crea el expediente asignándole el nro que le corresponde
+		
+		'Controla que el usuario tenga el rol [Crear]
+		'Busca el doc carátula correspondiente al universalID que recibe y le setea
+		'los siguientes datos: Nro de expediente, estado, fecha de creación, cantidad de actuaciones y seguridad por defecto
+		'Crea la primer actuación del expediente
+		
+		On Error Goto HANDLER
+		
+		Dim oActuacion As Actuacion, c As New Configuracion
+		Dim vUsuariosCrear As New Vector(0), oUnidad As Unidad, vLectores As New Vector(0), vAutores As New Vector(0)
+		
+		'Crea el objeto carátula con el universalID que recibe y le carga los campos necesarios
+		Set oCaratula = New Caratula (universalID, True)'NO usa la propiedad caratula porque en este caso se está creando y en la propiedad se busca por nro
+		
+		'Valido que el usuario tenga el rol crear
+		Set oUnidad = New UnidadExp(oCaratula.OficinaInicial)
+		
+		Set vUsuariosCrear = oUnidad.UsuariosRolCrear
+		
+		If vUsuariosCrear.cantElem>0 Then
+			If Not vUsuariosCrear.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				If Not oCaratula Is Nothing Then
+					oCaratula.aBorrar=True
+					oCaratula.save	
+				End If
+				Error ERROR_CANT_ACCESS, MSG_ERROR_CANT_ACCESS+" - Rol [Creador]"
+			End If	
+		Else
+			If Not oCaratula Is Nothing Then
+				oCaratula.aBorrar=True
+				oCaratula.save	
+			End If			
+			Error ERROR_CANT_ACCESS, MSG_ERROR_CANT_ACCESS+" - Rol [Creador]"
+		End If		
+		
+		'Cargo los campos en la carátula
+		'Nro de expediente con formato que corresponda segun la configuracion del sistema
+		'nroExp = c.NumerarFormateado(NUMERADOR_EXP,oUnidad.CodigoVisUnidad()) 
+		nroExp=""
+		'Messagebox "DESPUES DE NUMERAR FORMATEADO "+nroExp
+		oCaratula.NroExp = nroExp
+		'Cant de actuaciones
+		oCaratula.CantActuaciones = 1
+		'Estado
+		oCaratula.Estado = ESTADO_EN_GENERACION
+		'Fecha de creación
+		oCaratula.FechaCreacion = Now
+		'Tipo de seguridad
+		oCaratula.Seguridad = SEGURIDAD_NORMAL
+		
+		'Autores
+		Dim vAutPer As New Vector(0)
+		vAutPer.insertElement ROL_MODIFICAR_CARATULA,vAutPer.cantElem + 1
+		vAutPer.insertElement ROL_DESARROLLO,vAutPer.cantElem + 1
+		vAutPer.insertElement ROL_PAQUETE,vAutPer.cantElem + 1
+		Set oCaratula.AutoresPermanentes = vAutPer
+		
+		'Versión de ruta
+		Dim vTemas As NotesView, dbRutas As NotesDatabase, docTema As NotesDocument
+		Dim version As Integer, colVersiones As NotesDocumentCollection,docTemaAux As NotesDocument
+		Set c = New Configuracion
+		Set dbRutas = c.ReferenciarBaseDeDatos(CLAVE_DBRUTAS) 
+		Set vTemas = dbRutas.GetView(DBRUTAS_VISTA_BUSQ_TEMA_DESC_SOLA)
+		
+		If oCaratula.Tema <> "" And oCaratula.TipoRuta="Predefinida" Then
+			Set colVersiones = vTemas.GetAllDocumentsByKey(oCaratula.Tema)
+			Set docTema = colVersiones.GetFirstDocument 
+			If Not docTema Is Nothing Then
+				Set docTemaAux = docTema
+			End If
+			version = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_VERSION)(0)
+			While Not docTema Is Nothing
+				Set docTema = colVersiones.GetNextDocument(docTema)
+				
+				If Not docTema Is Nothing Then
+					If version < docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_VERSION)(0) Then
+						version = docTema.GetItemValue(DBRUTAS_CAMPO_FTEMA_VERSION)(0)
+						Set docTemaAux=docTema
+					End If
+				End If
+			Wend
+			oCaratula.VersionTema = version	
+		End If
+		
+		'Cargo el log de la operación crear
+		addLog Now,ACCION_CREAR
+		'Salvo la carátula
+		Call oCaratula.save
+		
+		'Creo el objeto actuación
+		Set oActuacion = New Actuacion (nroExp, 1, True)
+		
+		oActuacion.NumeroExpediente = nroExp
+		oActuacion.NumeroActuacion = 1
+		oActuacion.SubEstado = SUBESTADO_PARA_ACTUAR
+		oActuacion.Oficina = oCaratula.OficinaInicial()
+		Messagebox "ACA ESTA DANDO PROBLEMA???????? "
+		If Not docTemaAux Is Nothing Then
+			Messagebox "ENTRE AL IF"			
+			oActuacion.PasoRuta=1
+		End If 
+		
+		'¿Para la primer actuación, se busca si el tema elegido tiene ruta y se carga procedimiento y tiempo?
+		'¿Qué pasa si la unidad inicial no es la que está en la ruta?		
+		'		oActuacion.Procedimiento = 
+		'		oActuacion.TiempoMax =
+		
+		oActuacion.FechaRecibido = Now
+		oActuacion.FechaEntrada = Now
+		oActuacion.RecibidoPor = usuarioAccion.NombreUsuario
+		
+		Set vLectores=New Vector(0) 'c.LectoresActuacion
+		vLectores.insertElement oCaratula.OficinaInicial,vLectores.cantElem+1
+		Set oActuacion.Lectores = vLectores
+		
+		'Set oActuacion.Autores = c.AutoresActuacion
+		oActuacion.Tema = oCaratula.Tema
+		
+		Dim vLectPerm As New Vector(0)
+		
+		'Comentado por Ian Coates el 22/12/03 Razon: las actuaciones se empezaran a ver por este rol a partir de ser recibidas
+		'vLectPerm.insertElement ROL_GESTION_CONF,vLectPerm.cantElem + 1
+		'vLectPerm.insertElement ROL_VER_ACTUACIONES,vLectPerm.cantElem + 1
+		vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+		Set oActuacion.LectoresPermanentes=vLectPerm
+		
+		'Salvo la actuación
+		Call oActuacion.save
+		
+		Dim infUnidad As New InformesUnidad(Cstr(Month(Today)),Cstr(Year(Today)), oCaratula.OficinaInicial)
+		infUnidad.SumaElementos INFORME_CANT_EXP,1,False
+		
+		Dim infTema As New InformesTemas(Cstr(Month(Today)),Cstr(Year(Today)),Me.caratula.tema)
+		infTema.SumaElementos INFORME_CANT_EXP,1,False
+		'Devuelvo el numero de expediente asignado
+		Creacion = nroExp		
+		Messagebox "DESPUES DE SALVAR LA ACTUACION"				
+		Exit Function
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function Creacion","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function Creacion","","")			
+		End  If
+		
+		Exit Function
+	End Function	
+	
+'******************************************************************************************************************	
+	
+	Public Sub EditarCaratula()
+		On Error Goto HANDLER
+		
+		Set Me.Caratula.Autores=Me.Unidad.UsuariosRolCrear
+		Me.Caratula.Save
+		
+		Exit Sub
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método EditarCaratula","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método EditarCaratula","","")			
+		End  If
+		
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Reservar ()
+		'Si el usuario está autorizado, reserva la actuación actual del expediente para que otro 
+		'no pueda modificarla
+		
+		'Para ello agrega al usuario al campo autores de la misma
+		
+		On Error Goto HANDLER
+		
+		'validarGeneral No es necesario pues parapoder eliminar attachmens debe poder Reservarlo
+		
+		'Se controla que el usuario tenga el rol [Editor]
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		Dim esFirmante As Integer
+		esFirmante = oUnidad.UsuariosRolFirmar.isMember(usuarioAccion.nombreUsuario,0,False)
+		If Not esFirmante Then
+			checkEditorUnidad oUnidad,usuarioAccion.nombreUsuario	
+		End If
+		
+		Dim vAutores As New Vector(0) 
+		
+		If Me.Caratula.Confidencial Then
+			If Not Me.LastActuacion.Lectores.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				Error ERROR_RESERVADO,MSG_ERROR_RESERVADO_4 & "  " & usuarioAccion.NombreUsuario
+			End If			
+		End If
+		
+		'El [Firmante] puede tomar una actuación reservada por otro usuario, previo aviso en la interfase
+		If Not esFirmante Then
+			'Si ya está reservada se despliega error
+			If Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO Then
+				Error ERROR_RESERVADO,MSG_ERROR_RESERVADO_3 & "  " & Me.LastActuacion.ReservadoPor
+			End If			
+		End If		
+		
+		If Me.lastActuacion.SubEstado = SUBESTADO_EN_TRANSITO Then
+			Error ERROR_EN_TRANSITO,MSG_ERROR_EN_TRANSITO_1
+		End If
+		
+		If Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR Then
+			Me.LastActuacion.DelFirmas	
+		End If
+		
+		'Agrega al usuario al campo autores
+		Set vAutores=Me.LastActuacion.Autores
+		vAutores.insertElement usuarioAccion.nombreUsuario ,vAutores.cantElem+1
+		Set Me.LastActuacion.Autores=vAutores
+		
+		'Setea el campo reservadopor con el nombre del usuario
+		Me.LastActuacion.ReservadoPor=usuarioAccion.nombreUsuario
+		Me.Caratula.ReservadoPor=usuarioAccion.nombreUsuario
+		'Setea el estado reservado de la actuacion
+		Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO
+		
+		'Agrega la línea de la reserva al log
+		addLog Now, ACCION_RESERVAR
+		
+		Dim vNulo As New Vector(0)
+		vNulo.insertElement "",1
+		Set Me.LastActuacion.Firmantes=vNulo
+		Set Me.Caratula.Firmantes=vNulo
+		
+		'Salva la última actuación y la carátula
+		Me.LastActuacion.save
+		Me.Caratula.save
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método Reservar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método Reservar","","")			
+		End  If
+		
+		Exit Sub	
+		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Recibir (validarPer As Integer)
+		'Si el usuario está autorizado marca el expediente como recibido
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		'Controla que el usuario tenga el rol [Receptor]
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		If validarPer Then
+			checkReceptor oUnidad,usuarioAccion.nombreUsuario	
+		End If
+		
+		'Si el estado de la actuación no es en tránsito da error
+		If Me.LastActuacion.SubEstado<>SUBESTADO_EN_TRANSITO Then
+			Error ERROR_RECIBIR,MSG_ERROR_RECIBIR_1
+		End If
+		
+		'Setea el estado de la actuación para actuar
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_ACTUAR
+		'Setea el estado de la carátula en unidad
+		Me.Caratula.Estado=ESTADO_EN_UNIDAD
+		'Setea la fecha de recibido en la actuación
+		Me.LastActuacion.FechaRecibido=Now
+		Me.LastActuacion.RecibidoPor=Me.usuarioAccion.NombreUsuario
+		
+		'Agrega la línea de la recepción al log
+		addLog Now, ACCION_RECIBIR
+		
+		'Salva la carátula
+		Me.Caratula.save
+		'Salva la última actuación
+		Me.LastActuacion.save
+		
+		Set Me.oLastActuacion=Nothing  'Para que renueve
+		
+		Dim oAnteLastActuacion As Actuacion
+		Dim vLectores As New Vector(0)
+		Set vLectores=Me.LastActuacion.Lectores
+		If Not Me.Caratula.Confidencial Then
+			If Me.LastActuacion.NumeroActuacion=2 Then
+				Set oAnteLastActuacion=Me.Actuacion(Me.LastActuacion.NumeroActuacion-1)
+			Else
+				Set oAnteLastActuacion=Me.Actuacion(Me.LastActuacion.NumeroActuacion-2)
+			End If
+			Dim vRecorrido As New Vector(0)
+			vRecorrido.values=oAnteLastActuacion.Lectores.values
+			vRecorrido.insertElement Me.Caratula.OficinaActual,vRecorrido.cantElem + 1
+			
+			Me.Actuaciones.Stampall DBSGD_CAMPO_FACTUACION_LECTORES,vRecorrido.values
+			Set oAnteLastActuacion=Nothing
+			Set oAnteLastActuacion=Me.Actuacion(Me.LastActuacion.NumeroActuacion-1)
+			'Esto es para agregar el rol de ver actuaciones al recibir el expediente
+			
+			Dim vLectPerm As New Vector(0)
+			Set vLectPerm= oAnteLastActuacion.LectoresPermanentes
+			vLectPerm.insertElement ROL_VER_ACTUACIONES,vLectPerm.cantElem + 1	
+			vLectPerm.insertElement ROL_GESTION_CONF,vLectPerm.cantElem + 1
+			Set oAnteLastActuacion.LectoresPermanentes = vLectPerm
+			
+			'Notificados  deben pasar a ver la ante última actuación también
+			Set oAnteLastActuacion.LectNotificados=Me.Caratula.NotificadosAcusaron
+			
+			
+			oAnteLastActuacion.MotivoDevolucion = ""
+			oAnteLastActuacion.Devuelta = False
+			
+			oAnteLastActuacion.save
+			
+			Dim vOficina As New vector(0)
+			vOficina.insertElement Me.Caratula.OficinaActual,1
+			Set Me.LastActuacion.Lectores=vOficina
+			Me.LastActuacion.save		
+			
+		Else			
+			If Me.LastActuacion.NumeroActuacion > 1 Then
+				Set oAnteLastActuacion=Me.Actuacion(Me.LastActuacion.NumeroActuacion - 1)											
+				Set Me.LastActuacion.Lectores=oAnteLastActuacion.Lectores
+				Me.LastActuacion.save
+			End If
+		End If
+		
+		If Not Isdate(oAnteLastActuacion.FechaRecibido) Then
+			If Isdate(oAnteLastActuacion.FechaEntrada) Then
+				Me.Caratula.addRecorrido oAnteLastActuacion.FechaEntrada,oAnteLastActuacion.Oficina 	
+			Else
+				Me.Caratula.addRecorrido Now,oAnteLastActuacion.Oficina 		
+			End If
+		Else
+			Me.Caratula.addRecorrido oAnteLastActuacion.FechaRecibido,oAnteLastActuacion.Oficina 		
+		End If
+		
+		Me.Caratula.save
+		
+		'La seguridad de los agregados de un exp Confidencial ya fue seteada 
+		'al Marcarlo Confidencial
+		If Not Me.Caratula.Confidencial Then 			
+			Call RecibirAgregados() 
+		End If
+		
+		If Me.Caratula.Notificados.isMember(Me.Caratula.OficinaActual,0,False) Then
+			'Fué notificado y aún no acusó
+			Dim vTomar As New Vector(0)
+			vTomar.insertElement Me.Caratula.OficinaActual,1
+			Me.TomarConocimiento vTomar
+		End If		
+		
+		Exit Sub		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Recibir","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Recibir","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Liberar ()
+		'Libera la actuación para que otro usuario autorizado de la unidad pueda reservarla
+		'Para ello quita al usuario del campo autores
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim c As New Configuracion
+		
+		'Controla que el usuaio tenga el rol [Editor]
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		checkEditorUnidad oUnidad,usuarioAccion.nombreUsuario
+		
+		'Si la actuación no está reservado despliega error
+		If Not Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO Then
+			Error ERROR_RESERVADO,MSG_ERROR_RESERVADO_1
+		Else
+			'Si el usuario que la tiene reservada no es el que está realizando la operación da error
+			If Me.LastActuacion.ReservadoPor <> usuarioAccion.nombreUsuario Then 
+				Error ERROR_RESERVADO,MSG_ERROR_RESERVADO_2 & usuarioAccion.nombreUsuario	
+			End If	
+		End If		
+		
+		'Reinicio campo Autores
+		Set Me.LastActuacion.Autores=New Vector(0)
+		'Set Me.LastActuacion.Autores=c.AutoresActuacion
+		
+		'Libero
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_ACTUAR
+		Me.LastActuacion.ReservadoPor=""
+		Me.Caratula.ReservadoPor=""
+		
+		'Agrega la línea de liberar al log
+		addLog Now, ACCION_LIBERAR
+		
+		'Salva la última actuación
+		Me.LastActuacion.save
+		'Salva la carátula
+		Me.Caratula.save		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Liberar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Liberar","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub FirmaryPasar(Byval unidadDestino As String,Byval procedimiento As String,_
+	Byval sFirma As String,Byval fFechaFirma As Variant,urgente As Integer)
+		
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		
+		'Realiza los controles necesarios para permitir o no la firma
+		validarFirmar sFirma
+		'Deja el estado para firmar (ya que se puede haber llamado desde reservado)
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR
+		'Agrega la firma a la actuación
+		Me.LastActuacion.AddFirma sFirma,fFechaFirma,usuarioAccion.NombreUsuario
+		
+		Dim vFirmantes As New Vector(0),posF As Long
+		Set vFirmantes=Me.LastActuacion.Firmantes
+		If vFirmantes.isMember(usuarioAccion.NombreUsuario,posF,False) Then
+			vFirmantes.deleteElement posF
+		End If
+		Set Me.LastActuacion.Firmantes=vFirmantes
+		Set Me.Caratula.Firmantes=vFirmantes
+		
+		Me.LastActuacion.ReservadoPor=""
+		Me.Caratula.ReservadoPor=""
+		
+		'Agrega la línea de la firma al log
+		addLog Now, ACCION_FIRMAR_PASAR
+		
+		'Salva la última actuación
+		Me.LastActuacion.save
+		'Salva la carátula
+		Me.Caratula.save
+		
+		DelAutoresActuaciones
+		
+		'PASE: Si aparece un error en lo siguiente, el expediente queda Para Firmar!!
+		Dim oUnidad As Unidad,oUnidadDestino As Unidad
+		'Realiza los controles necesarios para permitir o no el pase
+		validarPase unidadDestino,procedimiento, oUnidad, oUnidadDestino
+		'Setea los cambios en la carátula
+		
+'	NO SE AGREGA EL RECORRIDO HASTA RECIBIR EL EXPEDIENTE
+		
+		CaratulaPase unidadDestino,Now
+		
+		'Setea los cambios en las actuaciones
+		Dim oNewActuacion As Actuacion
+		ActuacionesPase unidadDestino, oNewActuacion, Now, procedimiento 
+		
+		'Agrega la línea del pase al log
+		addLog Now, ACCION_FIRMAR_PASAR
+		
+		Dim vActsUrg As Vector
+		Set vActsUrg=Me.Caratula.UrgenteActs
+		If urgente Then
+			If Not vActsUrg.isMember(Cstr(oNewActuacion.NumeroActuacion),0,True) Then
+				vActsUrg.insertElement Cstr(oNewActuacion.NumeroActuacion),vActsUrg.cantElem + 1
+				Set Me.Caratula.UrgenteActs=vActsUrg
+			End If	
+		Else
+			Dim pos As Long
+			If vActsUrg.isMember(Cstr(oNewActuacion.NumeroActuacion),pos,True) Then
+				vActsUrg.deleteElement pos
+				Set Me.Caratula.UrgenteActs=vActsUrg
+			End If	
+		End If
+		
+		
+		'Salva la carátula
+		Me.Caratula.save
+		'Salva la última actuación que existía antes del pase
+		Me.LastActuacion.save
+		'Salva la nueva actuación que se acaba de generar
+		oNewActuacion.save	
+		
+		Dim iUnidad As New InformesUnidad(Cstr(Month(Today)),Cstr(Year(Today)),Me.LastActuacion.Oficina)
+		iUnidad.SumaElementos INFORME_CANT_PASES,1,False
+		Dim fFechaSalidaUlt As NotesDateTime, fFechaSalidaPen As NotesDateTime, fRecibidoUlt As NotesDateTime
+		
+		Set fFechaSalidaUlt = New NotesDateTime(Me.LastActuacion.fechasalida)
+		If Me.lastactuacion.NumeroActuacion> 1 Then
+			Set fFechaSalidaPen = New NotesDateTime(Me.Actuacion(Me.lastactuacion.NumeroActuacion-1).fechaSalida)
+		Else
+			Set fFechaSalidaPen = New NotesDateTime(Me.Caratula.FechaCreacion)
+		End If
+		iUnidad.SumaElementos INFORME_TPER_EXP, fFechaSalidaUlt.TimeDifference(fFechaSalidaPen),True
+		Set fRecibidoUlt = New notesdatetime(Me.lastactuacion.fechaRecibido)
+		iUnidad.SumaElementos INFORME_TTRA_EXP ,  fFechaSalidaUlt.TimeDifference(fRecibidoUlt),True
+		
+		'Informe de Ingresados en el día a la oficina
+		Dim ss As New notesSession,db As NotesDatabase
+		Set db=ss.CurrentDatabase
+		Dim pase As New NotesDocument(db)
+		pase.form="Pase"
+		pase.Destino=Me.Caratula.OficinaActual
+		pase.NroExp=Me.Caratula.NroExp
+		pase.save True,False
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub FirmaryPasar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub FirmaryPasar","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Pase(Byval unidadDestino As String,Byval procedimiento As String,urgente As Integer)
+		'Si el usuario está autorizado, realiza el pase del expediente a la unidad destino
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim oUnidad As Unidad,oUnidadDestino As Unidad
+		'Realiza los controles necesarios para permitir o no el pase
+		validarPase unidadDestino,procedimiento, oUnidad, oUnidadDestino
+		'Setea los cambios en la carátula
+		
+		'NO SE AGREGA EL RECORRIDO HASTA RECIBIR EL EXPEDIENTE
+		
+		CaratulaPase unidadDestino,Now
+		
+		'Setea los cambios en las actuaciones
+		Dim oNewActuacion As Actuacion
+		ActuacionesPase unidadDestino, oNewActuacion, Now, procedimiento 
+		
+		'Agrega la línea del pase al log
+		addLog Now, ACCION_PASE
+		
+		Dim vActsUrg As Vector
+		Set vActsUrg=Me.Caratula.UrgenteActs
+		If urgente Then
+			If Not vActsUrg.isMember(Cstr(oNewActuacion.NumeroActuacion),0,True) Then
+				vActsUrg.insertElement Cstr(oNewActuacion.NumeroActuacion),vActsUrg.cantElem + 1
+				Set Me.Caratula.UrgenteActs=vActsUrg
+			End If	
+		Else
+			Dim pos As Long
+			If vActsUrg.isMember(Cstr(oNewActuacion.NumeroActuacion),pos,True) Then
+				vActsUrg.deleteElement pos
+				Set Me.Caratula.UrgenteActs=vActsUrg
+			End If	
+		End If	
+		
+		'Salva la carátula
+		Me.Caratula.save
+		'Salva la última actuación que existía antes del pase
+		Me.LastActuacion.save
+		'Salva la nueva actuación que se acaba de generar
+		oNewActuacion.save
+		
+		Dim iUnidad As New InformesUnidad(Cstr(Month(Today)),Cstr(Year(Today)),Me.LastActuacion.Oficina)
+		iUnidad.SumaElementos INFORME_CANT_PASES,1,False
+		Dim fFechaSalidaUlt As NotesDateTime, fFechaSalidaPen As NotesDateTime, fRecibidoUlt As NotesDateTime
+		
+		Set fFechaSalidaUlt = New NotesDateTime(Me.LastActuacion.fechasalida)
+		If Me.lastactuacion.NumeroActuacion> 1 Then
+			Set fFechaSalidaPen = New NotesDateTime(Me.Actuacion(Me.lastactuacion.NumeroActuacion-1).fechaSalida)
+		Else
+			Set fFechaSalidaPen = New NotesDateTime(Me.Caratula.FechaCreacion)
+		End If
+		iUnidad.SumaElementos INFORME_TPER_EXP, fFechaSalidaUlt.TimeDifference(fFechaSalidaPen),True
+		Set fRecibidoUlt = New notesdatetime(Me.lastactuacion.fechaRecibido)
+		iUnidad.SumaElementos INFORME_TTRA_EXP ,  fFechaSalidaUlt.TimeDifference(fRecibidoUlt),True
+		
+		'Informe de Ingresados en el día a la oficina
+		Dim ss As New notesSession,db As NotesDatabase
+		Set db=ss.CurrentDatabase
+		Dim pase As New NotesDocument(db)
+		pase.form="Pase"
+		pase.Destino=Me.Caratula.OficinaActual
+		pase.NroExp=Me.Caratula.NroExp
+		pase.save True,False
+		
+		
+		'SEUDO
+		'Verificar si tiene el rol [Pase]: Es un campo en la unidad actual
+		'Checkear Reserva --> Campo Autores de la carátula
+		'Valida campos-->validar parámetros
+		'Carátula
+		'Cargar como oficina actual la unidadDestino
+		'Si el estado es en generacion, pone el estado En Curso (ver constante)
+		'Aumentar en 1 el nro de actuaciones en caratula
+		'Setea el recorrido en la caratula (fecha entrada-Fecha Salida, unidad -  ver tablas actuales en Caratula)
+		'Setea log de operacion en caratula
+		'Se hará una tabla en el formulario Carátula con: Operacion, usuario, fecha-hora
+		'Actualiza seguridad  
+		'(lectores caratula cte con AdministradoresEE, [Desarrollo], */ISA)  Ver constante Lectores_Carátula
+		' lectores actuacion: se agrega el nombre de la unidad destino(es un grupo) (para todas las actuaciones) - tambien va adm y desarrollo- Ver constante LectoresActuacion
+		'Setea usuario y fecha-hora de salida(actual) en ultima actuacion y tiempo de actuacion en algun campo (Diferencia: Fecha Salida - Fecha de enctrada) Fecha de Entrada es un campo a definir.
+		'Crea la nueva actuacion con fecha envio(Fecha envio es Fecha de Entrada)
+		'Para esto ver el metodo creacion
+		
+		' Notifica a los receptores de la unidad destino (clase notificacion) No existe!!
+			'Esto es a los que tienen el rol ficticio [Receptor], de la unidad destino. 
+				'El rol es un campo que está en la unidad y contiene las personas receptoras. Ver clase unidad.
+				'Mail=vínculo a la carátula.				
+				'Las notificaciones se estan haciendo actualmente desde el motor
+		
+		'Pendiente: que pasa con documentacion Adjunta? ver documento diseño		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Pase","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Pase","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub AnularPase()
+		'Si el usuario está autorizado, anula el último pase realizado en el expediente
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim oAnteLastActuacion As Actuacion 
+		Dim oUnidad As Unidad,oUnidadAnterior As Unidad
+		
+		'Crea el objeto correspondiente a la penúltima actuación
+		Set oAnteLastActuacion=New Actuacion(Me.Caratula.NroExp,Me.Caratula.CantActuaciones-1,False)
+		
+		'Crea el objeto correspondiente a la unidad que realizó la actuación anterior a la actual
+'		Set oUnidadAnterior= New Unidad(Cstr(vUnidadesRecorrido.getElement(vUnidadesRecorrido.cantElem)))
+		
+		Set oUnidadAnterior= New UnidadExp(oAnteLastActuacion.Oficina)
+		'Realiza los controles necesarios para permitir o no la anulación del pase
+		validarAnularPase oUnidadAnterior
+		
+		'Deshace los cambios realizados por el pase en la carátula
+		unDoPaseCaratula
+		
+		Dim infUnidad As New InformesUnidad(Cstr(Month(oAnteLastActuacion.FechaSalida)),Cstr(Year(oAnteLastActuacion.FechaSalida)),oAnteLastActuacion.Oficina)
+		
+		infUnidad.RestaElementos INFORME_CANT_PASES,1,False
+		Dim fSalidaUlt As NotesDateTime, fSalidaPenult As NotesDateTime,fRecUlt As NotesDateTime
+		
+		Set fSalidaUlt = New NotesDateTime(oAnteLastActuacion.Fechasalida)
+		Set fRecUlt = New NotesDateTime (oAnteLastActuacion.FechaRecibido)
+		If oAnteLastActuacion.NumeroActuacion>1 Then
+			Set fSalidaPenult  = New NotesDateTime(Me.Actuacion(oAnteLastActuacion.NumeroActuacion-1).fechaSalida)
+		Else
+			Set fSalidaPenult = New NotesDateTime(Me.Caratula.FechaCreacion)
+		End If
+		
+		infUnidad.RestaElementos INFORME_TPER_EXP ,fSalidaUlt.TimeDifference(fSalidaPenult),True
+		infUnidad.RestaElementos INFORME_TTRA_EXP, fSalidaUlt.TimeDifference(fRecUlt),True
+		'Deshace los cambios realizados en la penúltima y última actuación al dar el pase
+		unDoPaseActuacion oAnteLastActuacion
+		
+		'Disminuye la cantidad de actuaciones en la carátula
+		Me.Caratula.CantActuaciones=Me.Caratula.CantActuaciones - 1
+		
+		'Agrega la línea de anulación al log
+		addLog Now, ACCION_ANULAR_PASE
+		
+		'Salva la carátula
+		Me.Caratula.save
+		'Salva la última actuación (la cual ha sido anulada)
+		Me.LastActuacion.save
+		'Salva la penúltima actuación (la que pasó a ser la última)
+		oAnteLastActuacion.save
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub AnularPase","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub AnularPase","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub ParaFirmar()
+		'Si el usuario está autorizado, deja la actuación en estado para firmar
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		'Controla que el usuario sea [Editor]
+		checkEditorUnidad oUnidad,usuarioAccion.nombreUsuario
+		
+		'Si no está 'Reservada' o en 'Para dar Pase' da error
+		If Not Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO And _
+		Not Me.LastActuacion.SubEstado=SUBESTADO_PARA_DAR_PASE And _ 
+		Not Me.lastactuacion.subestado= SUBESTADO_PARA_FIRMAR Then
+			Error ERROR_PARA_FIRMAR,MSG_ERROR_PARA_FIRMAR_1
+		Else
+			If Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO Then
+				'Si está reservada por otro usuario da error
+				If Me.LastActuacion.ReservadoPor <> usuarioAccion.nombreUsuario Then 'o es super Usuarioooooooooo
+					Error ERROR_RESERVADO,MSG_ERROR_RESERVADO_2 & usuarioAccion.nombreUsuario
+				End If	
+			Else	'Debe ser Rol Pase
+				Dim vUsuariosPase As New Vector(0)
+				Set oUnidad=New UnidadExp(Me.Caratula.OficinaActual)
+				Set vUsuariosPase=oUnidad.UsuariosRolPase
+				If vUsuariosPase.cantElem > 0 Then
+					If Not vUsuariosPase.isMember(usuarioAccion.NombreUsuario,0,False) Then
+						Error ERROR_PARA_FIRMAR,MSG_ERROR_PARA_FIRMAR_2 & usuarioAccion.NombreUsuario
+					End If	
+				Else
+					Error ERROR_PARA_FIRMAR,MSG_ERROR_PARA_FIRMAR_2 & usuarioAccion.NombreUsuario
+				End If	
+			End If		
+		End If
+		
+		'Se saca al usuario actual del campo autores porque va a dejar de tener reservado el expediente
+		Dim vAutAct As New Vector(0)
+		Set vAutAct.values=Me.LastActuacion.Autores
+		If vAutAct.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			vAutAct.deleteElement usuarioAccion.nombreUsuario
+			Set Me.LastActuacion.Autores=vAutAct
+		End If		
+		
+		'Se setea el estado de la actuacion para firmar
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR
+		
+		Me.LastActuacion.ReservadoPor=""
+		Me.Caratula.ReservadoPor=""
+		
+		'Se agrega la línea de para firmar al log
+		addLog Now, ACCION_PARA_FIRMAR
+		
+		'Se salva la última actuación
+		Me.LastActuacion.save
+		'Se salva la carátula
+		Me.Caratula.save		
+		
+		Call DelAutoresActuaciones()
+		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ParaFirmar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ParaFirmar","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub ParaFirmar2(vFirmantes As Vector)
+		'Si el usuario está autorizado, deja la actuación en estado para firmar
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		'Controla que el usuario sea [Editor]
+		checkEditorUnidad oUnidad,usuarioAccion.nombreUsuario
+		
+		'Si no está 'Reservada' o en 'Para dar Pase' da error
+		If Not Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO And _
+		Not Me.LastActuacion.SubEstado=SUBESTADO_PARA_DAR_PASE  And _ 
+		Not Me.lastactuacion.subestado= SUBESTADO_PARA_FIRMAR Then
+			Error ERROR_PARA_FIRMAR,MSG_ERROR_PARA_FIRMAR_1
+		Else
+			If Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO Then
+				'Si está reservada por otro usuario da error
+				If Me.LastActuacion.ReservadoPor <> usuarioAccion.nombreUsuario Then 'o es super Usuarioooooooooo
+					Error ERROR_RESERVADO,MSG_ERROR_RESERVADO_2 & usuarioAccion.nombreUsuario
+				End If	
+			Else	'Debe ser Rol Pase
+				Dim vUsuariosPase As New Vector(0)
+				Set oUnidad=New UnidadExp(Me.Caratula.OficinaActual)
+				Set vUsuariosPase=oUnidad.UsuariosRolPase
+				If vUsuariosPase.cantElem > 0 Then
+					If Not vUsuariosPase.isMember(usuarioAccion.NombreUsuario,0,False) Then
+						Error ERROR_PARA_FIRMAR,MSG_ERROR_PARA_FIRMAR_2 & usuarioAccion.NombreUsuario
+					End If	
+				Else
+					Error ERROR_PARA_FIRMAR,MSG_ERROR_PARA_FIRMAR_2 & usuarioAccion.NombreUsuario
+				End If	
+			End If		
+		End If
+		
+		'Se saca al usuario actual del campo autores porque va a dejar de tener reservado el expediente
+		Dim vAutAct As New Vector(0)
+		Set vAutAct.values=Me.LastActuacion.Autores
+		If vAutAct.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			vAutAct.deleteElement usuarioAccion.nombreUsuario
+			Set Me.LastActuacion.Autores=vAutAct
+		End If		
+		
+		'Se setea el estado de la actuacion para firmar
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR
+		
+		Me.LastActuacion.ReservadoPor=""
+		Me.Caratula.ReservadoPor=""
+		
+		Set Me.LastActuacion.Firmantes=vFirmantes
+		Set Me.Caratula.Firmantes=vFirmantes
+		
+		'Se agrega la línea de para firmar al log
+		addLog Now, ACCION_PARA_FIRMAR
+		
+		'Se salva la última actuación
+		Me.LastActuacion.save
+		'Se salva la carátula
+		Me.Caratula.save		
+		
+		Call DelAutoresActuaciones()
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ParaFirmar2","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ParaFirmar2","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+	
+'******************************************************************************************************************	
+	
+	Public Sub Firmar(Byval sFirma As String,Byval fFechaFirma As Variant)
+		'Realiza la firma de la actuación
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		'Realiza los controles necesarios para permitir o no la firma
+		validarFirmar sFirma
+		'Deja el estado para firmar (ya que se puede haber llamado desde reservado)
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR
+		'Agrega la firma a la actuación
+		Me.LastActuacion.AddFirma sFirma,fFechaFirma,usuarioAccion.NombreUsuario
+		
+		Dim vFirmantes As New Vector(0),posF As Long
+		Set vFirmantes=Me.LastActuacion.Firmantes
+		If vFirmantes.isMember(usuarioAccion.NombreUsuario,posF,False) Then
+			vFirmantes.deleteElement posF
+		End If
+		Set Me.LastActuacion.Firmantes=vFirmantes
+		Set Me.Caratula.Firmantes=vFirmantes
+		
+		Me.LastActuacion.ReservadoPor=""
+		Me.Caratula.ReservadoPor=""
+		
+		'Agrega la línea de la firma al log
+		addLog Now, ACCION_FIRMAR
+		
+		'Salva la última actuación
+		Me.LastActuacion.save
+		'Salva la carátula
+		Me.Caratula.save
+		
+		Call DelAutoresActuaciones()
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Firmar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Firmar","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub EnviarPase()
+		'Deja la actuación para dar pase para que un usuario con rol [Pase] pueda realizar el mismo
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim vFirmantes As New Vector(0),oUnidad As Unidad
+		
+		Set oUnidad=New UnidadExp(Me.Caratula.OficinaActual)
+		
+		If Me.Caratula.Confidencial Then
+			If Not Me.LastActuacion.Lectores.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				Error ERROR_ENVIARPASE,MSG_ERROR_ENVIARPASE_3 & usuarioAccion.NombreUsuario
+			End If
+		End If
+		'Obtiene la lista de firmantes de la unidad actual
+		Set vFirmantes=oUnidad.UsuariosRolFirmar
+		'Si el usuario actual no está en dicha lista se despliega error
+		If Not vFirmantes.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_FIRMA,MSG_ERROR_FIRMA_1 & " " & usuarioAccion.nombreUsuario
+		End If
+		
+		'Si el estado de la actuación no es para firma da error
+		If Me.LastActuacion.SubEstado  <> SUBESTADO_PARA_FIRMAR Then
+			Error ERROR_ENVIARPASE,MSG_ERROR_ENVIARPASE_1
+		End If
+		'Si la cantidad de firmas de la actuación no es mayor que 0 da error (debe haber por lo menos una)
+		If Not ( Me.LastActuacion.CantFirmas > 0 ) Then
+			Error ERROR_ENVIARPASE,MSG_ERROR_ENVIARPASE_2
+		End If
+		
+		'Setea el estado de la actuacion para dar pase
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_DAR_PASE
+		
+		'Agrega la línea de enviar a pase en el log
+		addLog Now, ACCION_ENVIAR_PASE
+		
+		'Salva la última actuación
+		Me.LastActuacion.save
+		'Salva la carátula
+		Me.Caratula.save
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub EnviarPase","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub EnviarPase","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Asignar(Byval sEditor As String)
+		'Deja el expediente reservado a nombre del editor que recibe
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim c As New Configuracion
+		
+		If Me.Caratula.Confidencial Then
+			If Not Me.LastActuacion.Lectores.isMember(usuarioAccion.NombreUsuario,0,False)  Then
+				Error ERROR_ASIGNAR,MSG_ERROR_ASIGNAR_4 & usuarioAccion.NombreUsuario
+			Else
+				If Not Me.LastActuacion.Lectores.isMember(sEditor,0,False)  Then
+					Error ERROR_ASIGNAR,MSG_ERROR_ASIGNAR_5 & sEditor	
+				End If
+			End If
+		End If
+		
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		'Si el usuario actual no es [Firmante] da error (solo los firmantes pueden utilizar esta operación)
+		If Not esFirmante(oUnidad,usuarioAccion.nombreUsuario) And _ 
+		Not esGestion(oUnidad,usuarioAccion.nombreUsuario) Then
+			Error ERROR_ASIGNAR,MSG_ERROR_ASIGNAR_1 & usuarioAccion.nombreUsuario
+		End If
+		'Si el usuario que recibe no es [Editor] da error
+		If Not oUnidad.UsuariosRolEditor.isMember(sEditor,0,False) Then
+			Error ERROR_ASIGNAR,MSG_ERROR_ASIGNAR_3 & sEditor
+		End If
+		
+		'Si la actuación no está reservada, para actuar o para firmar da error
+		If Not (Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO Or _
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_ACTUAR Or _
+		Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR)  Then
+			Error ERROR_ASIGNAR,MSG_ERROR_ASIGNAR_2
+		End If
+		
+		'Quita al usuario que tenga reservado el expediente del campo autores(observar que carga los autores por defecto)
+		'y Agrega al editor asignado
+		'Agrega al usuario al campo autores
+		Dim vAutores As New Vector(0)
+		'Set vAutores=c.AutoresActuacion
+		vAutores.insertElement sEditor ,vAutores.cantElem+1  
+		Set Me.LastActuacion.Autores=vAutores
+		
+		'Setea el nombre del editor en reservadopor
+		Me.LastActuacion.ReservadoPor=sEditor
+		Me.Caratula.ReservadoPor=sEditor
+		
+		If Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR Then
+			Me.LastActuacion.DelFirmas	
+		End If
+		'Pasa el estado de la actuación a reservado
+		Me.LastActuacion.SubEstado=SUBESTADO_RESERVADO
+		
+		'Agrega la línea de asignar al rol  
+		addLog Now, ACCION_ASIGNAR
+		
+		'Borra las firmas existentes en la actuación
+		Me.LastActuacion.delFirmas
+		
+		Dim vNulo As New Vector(0)
+		vNulo.insertElement "",1
+		Set Me.LastActuacion.Firmantes=vNulo
+		Set Me.Caratula.Firmantes=vNulo
+		
+		'Salva la actuación
+		Me.LastActuacion.save
+		'Salva la carátula
+		Me.Caratula.save
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Asignar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Asignar","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Rutear ()  'PARA EL FINAL
+		'Envía el expediente a la unidad que corresponda según la ruta definida para el tema del mismo
+		'La interfase deberá chequear la configuracion del sistema respecto a las rutas para
+		'utilizar este método el el Pase
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		'addLog Now, ACCION_
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Rutear","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Rutear","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Agregar(vNrosExpAgregar As Vector)
+		'Agrega el expediente de número nroExpAgregado al actual
+		On Error Goto HANDLER
+		
+		Call ValidarGeneral()
+		validarAgregar vNrosExpAgregar 'Expedientes Confidenciales no se agregan
+		
+		If vNrosExpAgregar.cantElem > 0 Then
+			
+			Dim i As Integer
+			For i=1 To vNrosExpAgregar.cantElem
+				
+				AgregarExp vNrosExpAgregar.getelement(i)
+				
+				Me.Caratula.addListaAgregados vNrosExpAgregar.getElement(i),_
+				Me.Caratula.OficinaActual,Me.Caratula.CantActuaciones					
+				Me.Caratula.AddLogAgregados vNrosExpAgregar.getelement(i),Me.UsuarioAccion.NombreUsuario,True,Me.Caratula.CantActuaciones
+			Next	
+			Me.Caratula.save
+			Call AgregarDescendientes()
+			Dim vAux As New Vector(0)
+			vAux.insertelement Me.Caratula.OficinaActual,1
+			Set Me.LastActuacion.Lectores= vAux
+			Me.LastActuacion.save
+		End If		
+		
+		addLog Now, ACCION_AGREGAR
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Agregar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Agregar","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub validarDesagregar(vNrosExpDesa As Vector)
+		On Error Goto HANDLER
+		
+		Dim oUnidad As New UnidadExp(Me.Caratula.OficinaActual)
+		If Not oUnidad.usuariosRolGestion.isMember(usuarioAccion.nombreUsuario,0,False) Then
+			Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_1 & usuarioAccion.nombreUsuario
+		End If
+		
+		If Not (Me.Caratula.Estado=ESTADO_EN_UNIDAD Or Me.Caratula.Estado=ESTADO_EN_GENERACION) Then
+			Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_2
+		End If
+		
+		If Not vNrosExpDesa.cantElem > 0 Then
+			Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_3
+		End If
+		
+%REM
+		Dim i As Integer ',oExpTemp As Expediente		
+		
+		For i=1 To vNrosExpDesa.cantElem
+			
+			Set oExpTemp=New Expediente(vNrosExpDesa.getElement(i),usuarioAccion)
+			
+			If oExpTemp.Caratula.OficinaActual <> Me.Caratula.Oficinaactual Then
+				Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_4 & vNrosExpDesa.getElement(i)
+			End If
+			
+		Next		
+		
+		'Validar según en que Actuación fueron agregados
+		Dim vAgregados As New Vector(0),vUnidades As New Vector(0),vActs As New Vector(0)
+		Set vAgregados=Me.Caratula.AgregadosNros
+		Set vUnidades=Me.Caratula.AgregadosUnidades
+		Set vActs=Me.Caratula.AgregadosActuaciones
+		
+		
+		If Me.Caratula.CantActuaciones <> Cint(vActs.getElement(vActs.cantElem)) Then
+			Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_5 
+		End If
+		
+		
+		
+		Dim pos As Long
+		For i=1 To vNrosExpDesa.cantElem
+			If vAgregados.isMember(vNrosExpDesa.getElement(i),pos,False) Then
+				If vActs.cantElem >=pos Then
+					If Cint(vActs.getElement(pos)) <> Me.Caratula.CantActuaciones Then
+						Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_6 & vNrosExpDesa.getElement(i)
+					End If					
+				Else
+					Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_7 & vNrosExpDesa.getElement(i)
+				End If				
+			Else
+				Error ERROR_DESAGREGAR,MSG_ERROR_DESAGREGAR_8 & vNrosExpDesa.getElement(i)
+			End If			
+		Next		
+%END REM
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarDesagregar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub validarDesagregar","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Private Function AgregadoUltima (sNroExp) As Boolean
+		'Esta funcion recibe un numero de expediente y devuelve true en caso de que ese expediente
+		'haya sido agregado al objeto en la actuacion actual.
+		
+		On Error Goto handler
+		Dim docCar As NotesDocument
+		Dim vNros As New Vector(0),vNrosAct As New Vector(0)
+		Dim i As Integer
+		Dim flag As Boolean
+		flag=False
+		
+		Set docCar = Me.Caratula.Document
+		
+		If docCar.HasItem(CAMPO_FCARATULA_AGR_NROEXP) Then
+			vNros.values=docCar.getItemValue(CAMPO_FCARATULA_AGR_NROEXP)
+		End If
+		If docCar.HasItem(CAMPO_FCARATULA_AGR_ACTUACION) Then
+			vNrosAct.values=docCar.getItemValue(CAMPO_FCARATULA_AGR_ACTUACION)
+		End If
+		If vNrosAct.cantElem > 0 Then
+			For i=1 To vNrosAct.cantElem
+				If Cstr(vNrosAct.getElement(i)) = Cstr(Me.Caratula.CantActuaciones) Then
+					If vNros.getElement(i) = sNroExp Then
+						flag=True
+					End If
+				End If
+			Next	
+		End If	
+		AgregadoUltima=flag
+		Exit Function
+handler:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function AgregadoUltima","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function AgregadoUltima","","")			
+		End  If
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Sub DesagregarExp(sNroExp As String)
+		On Error Goto HANDLER
+		
+		Dim oExpAgregar As Expediente
+		Set oExpAgregar=New Expediente(sNroExp,usuarioAccion)
+		
+		Dim vLectores As New Vector(0)
+		
+		
+		Dim vRecorridoSalida As New Vector(0),vRecorridoUnidad As New Vector(0),vRecorridoEntrada As New Vector(0)
+		Set vRecorridoEntrada=oExpAgregar.Caratula.getRecorridoColumna(1)
+		Set vRecorridoSalida=oExpAgregar.Caratula.getRecorridoColumna(2)
+		If vRecorridoEntrada.cantElem = vRecorridoSalida.cantElem + 1 Then
+			vRecorridoSalida.insertElement vRecorridoEntrada.getElement(vRecorridoEntrada.cantElem), vRecorridoSalida.cantElem
+		End If
+		'Si se desagrega en la misma actuacion que en la que se agrego, dejar la ultima actuacion
+		'con estado firmado y con los lectores solo a la unidad, en caso contrario crear una 
+		'nueva actuación y dejar la que era la ultima con estado cursado
+		'Para fijarse si esta agregado en la ultima actucion me que fijar en que actuacion se agrego
+		'el expediente y si esa actuacion es la ultima
+		Dim vLectPerm As New Vector(0)
+		If AgregadoUltima(sNroExp) Or oExpAgregar.LastActuacion.Oficina=Me.Caratula.OficinaActual  Then
+			Set oExpAgregar.LastActuacion.LectNotificados=Nothing
+			
+			vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+			Set oExpAgregar.LastActuacion.LectoresPermanentes=vLectPerm
+			oExpAgregar.LastActuacion.subEstado=SUBESTADO_PARA_FIRMAR
+			
+			
+			Set vRecorridoEntrada=oExpAgregar.Caratula.getRecorridoColumna(1)
+			Set vRecorridoSalida=oExpAgregar.Caratula.getRecorridoColumna(2)
+			Set vRecorridoUnidad=oExpAgregar.Caratula.getRecorridoColumna(3)
+			
+			'Elimina la última línea del recorrido en la carátula
+			Dim posEliminar As Integer
+			posEliminar=vRecorridoEntrada.cantElem
+			
+			If posEliminar > 0 Then
+				vRecorridoEntrada.deleteElement posEliminar
+				vRecorridoSalida.deleteElement posEliminar
+				vRecorridoUnidad.deleteElement posEliminar
+				oExpAgregar.Caratula.setRecorridoColumna 1,vRecorridoEntrada
+				oExpAgregar.Caratula.setRecorridoColumna 2,vRecorridoSalida
+				oExpAgregar.Caratula.setRecorridoColumna 3,vRecorridoUnidad	
+			End If
+			Set vLectPerm = New Vector(0)
+			vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+			Set oExpAgregar.LastActuacion.LectoresPermanentes= vLectPerm
+%REM				
+			Set vLectores=oExpAgregar.Caratula.getRecorridoColumna(3)
+		'Agregado 08/03/05 para que el expediente agregado quede en la oficina del padre actual
+			vLectores.insertElement Me.Caratula.OficinaActual,vLectores.cantElem + 1
+			
+		'vLectores.insertElement Me.Caratula.OficinaActual,vLectores.cantElem + 1 'Es Me. porque solo se pueden desagregar si estan en la misma actuación(Unidad) donde fueron agregados
+			oExpAgregar.setLectoresActuaciones vLectores
+			
+			Set vLectPerm = New Vector(0)
+			vLectPerm.insertElement oExpAgregar.Caratula.OficinaActual,vLectPerm.cantElem + 1
+			Set oExpAgregar.LastActuacion.Lectores= vLectPerm
+%END REM		
+			
+			oExpAgregar.LastActuacion.save
+		Else				
+		'Agregado 08/03/05 se crea una nueva actuacion en la oficina donde se encuentra el padre
+			'Set oExpAgregar.LastActuacion.LectNotificados=Nothing
+			oExpAgregar.LastActuacion.subEstado=SUBESTADO_CURSADO
+			oExpAgregar.LastActuacion.save
+			oExpAgregar.Caratula.OficinaActual = Me.Caratula.OficinaActual
+			oExpAgregar.Caratula.CantActuaciones=oExpAgregar.Caratula.CantActuaciones + 1
+			
+			Dim oNewActuacion As Actuacion
+			Set oNewActuacion =New Actuacion(oExpAgregar.Caratula.NroExp,oExpAgregar.Caratula.CantActuaciones,True)
+			oNewActuacion.FechaEntrada=Now
+			oNewActuacion.Oficina=Me.Caratula.OficinaActual 
+			oNewActuacion.TiempoMax=0
+			oNewActuacion.Procedimiento=""
+			oNewActuacion.Tema=oExpAgregar.Caratula.Tema
+			oNewActuacion.RecibidoPor=Me.usuarioAccion.NombreUsuario
+			oNewActuacion.PasoRuta = oExpAgregar.LastActuacion.PasoRuta
+			oNewActuacion.SubEstado=SUBESTADO_PARA_ACTUAR			
+			
+			vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+			Set oNewActuacion.LectoresPermanentes=vLectPerm
+			oNewActuacion.save
+%REM			
+			
+			Set vLectores=oExpAgregar.Caratula.getRecorridoColumna(3)
+		'Agregado 08/03/05 para que el expediente agregado quede en la oficina del padre actual
+			vLectores.insertElement Me.Caratula.OficinaActual,vLectores.cantElem + 1
+			
+		'vLectores.insertElement Me.Caratula.OficinaActual,vLectores.cantElem + 1 'Es Me. porque solo se pueden desagregar si estan en la misma actuación(Unidad) donde fueron agregados
+			oExpAgregar.setLectoresActuaciones vLectores
+			
+			
+			Set vLectores = New Vector(0)
+			vLectores.insertElement oExpAgregar.Caratula.OficinaActual,vLectores.cantElem + 1 
+			Set oNewActuacion.Lectores=vLectores
+			Set oNewActuacion.Autores =  vLectores		
+			
+%END REM
+		End If
+		
+		
+		
+		'Para mantener la lista de lectores notificados en los descendientes
+		oExpAgregar.popActuacionesNotif Me.Caratula.notificadosAcusaron
+		
+		'Comentado el 08/03/06 la ultima actuacion va a quedar en estado para actuar
+		'oExpAgregar.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR
+		
+		
+		
+		oExpAgregar.Caratula.CodigoPadre=""
+		
+		
+		'If oExpAgregar.Caratula.cantActuaciones = 1 Then
+		'	oExpAgregar.Caratula.Estado=ESTADO_EN_GENERACION
+		'Else
+		oExpAgregar.Caratula.Estado=ESTADO_EN_UNIDAD	
+		'End If
+%REM			
+		Comentado el 08/03/05
+		
+%END REM
+		
+		oExpAgregar.Caratula.save
+		
+		
+		DesagregarDescendientes sNroExp
+		
+		'Agrega la línea de la recepción al log
+		addLog Now, ACCION_DESAGREGAR
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método DesagregarExp","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método DesagregarExp","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub DesagregarDescendientes(sNroExp As String)
+		On Error Goto HANDLER	
+		Dim vExp As New Vector(0), vLectores As Vector, vLecPerm As Vector
+		Dim i As Integer, oExp As Expediente, vNros As New Vector(0), pos As Long
+		Dim vFechas As Vector, vUnidad As Vector, strMenu As String, strMenu2 As String
+		
+		Set vLectores = LectoresDescendientes (sNroExp, vExp)
+		
+		Set oExp = vExp.getElement(1)
+		vLectores.insertElement oExp.Caratula.OficinaActual, vLectores.cantElem +1
+		pos = 0
+		
+		strMenu= |<script language="javascript" type="text/JavaScript">var Tree = new Array;|
+		For i = 1 To vExp.cantElem
+			Set oExp = vExp.getElement(i)
+			oExp.setLectoresActuaciones vLectores
+			If i=1 Then
+				Set vLecPerm = New Vector(0)
+				Call vLecPerm.insertElement(oExp.caratula.OficinaActual, vLecPerm.cantelem+1)
+				Set oExp.LastActuacion.Lectores= vLecPerm
+				oExp.LastActuacion.save
+			End If
+			
+			If Not vNros.isMember (oExp.Caratula.CodigoPadre,pos,False) Then
+				pos = 0
+			End If
+			vNros.insertelement oExp.Caratula.NroExp, vNros.cantelem+1	
+			If i>1 Then
+				
+				Set vFechas = oExp.Caratula.getRecorridoColumna(2)
+				Set vUnidad = oExp.Caratula.getRecorridoColumna(3)		
+				strMenu = strMenu & | Tree[| & Cstr(i-1) & |] ="| & Cstr(i) & "|" & Cstr(pos) & "|" & oExp.Caratula.NroExp & "&nbsp;&nbsp;&nbsp;&nbsp;" & Strleft(Cstr(vFechas.getelement(vFechas.cantElem))," ") & "&nbsp;&nbsp;&nbsp;&nbsp;" & vUnidad.getElement (vUnidad.cantElem) & "&nbsp;&nbsp;&nbsp;&nbsp;en actuación "  & Cstr(vUnidad.cantElem) & "|javascript:irCaratula('"& oExp.Caratula.NroExp &"');" & |";|   		
+			Else
+				strMenu = strMenu & | Tree[| & Cstr(i-1) & |] ="| & Cstr(i) & "|" & Cstr(pos) & "|" & oExp.Caratula.NroExp  & "|javascript:irCaratula('"& oExp.Caratula.NroExp &"');" & |";|   		
+			End If
+		Next
+		
+		For i = 1 To vExp.CantElem
+			strMenu2 = strMenu & |createTree(Tree,1,|& Cstr(i) & | ); </script>|
+			Set oExp = vExp.getElement(i)
+			oExp.Caratula.ArbolAgregacion = strMenu2
+			oExp.Caratula.save
+		Next
+%REM
+	VISTA_ARCHIVOS_POR_ID: 
+	Esta vista es solo para obtener el expediente principal del Archivo.
+	Solo selecciona los que estan en estado Archivado(Caratula y sus Actuaciones)
+	Pero restan los posibles expedientes agregados a éste principal, los cuales deben estar 
+	en la misma base de Archivo que el Principal
+
+	DBSGD_VISTA_AGREGADOS:
+	Esta vista categoriza Caratulas y Actuaciones, por Número de Expediente
+	Pero solo selecciona las Carátulas que estan en estado Agregado
+	Quizas se podría haber utilizado una vista ya definida que agrupe documentos segun 
+	el número de Expediente, pues no mimportaría el estado, lo que importa es el numero 
+	de Expediente
+
+	DBSGD_VISTA_CAR_DESC_DESA:
+	Esta vista se usa en las operaciones RecibirDescendientes y DesagregarDescendientes
+	Esta vista solo selecciona las Carátulas que tienen al menos dos padres de Agregación.
+	La idea es obtener cuales son los expedientes Descendientes no directos(no hijos) de un
+	expediente dato. O sea los expedientes cuyo padre actual en la agregación es el expediente
+	principal y cuyo padre anterior es el expeiente a desagregar.
+
+		
+		Dim oExpPadre As Expediente
+		Set oExpPadre=New Expediente(sNroExp,usuarioAccion)
+		
+		Dim db As notesDatabase,viewCarDesc As NotesView
+		Set db=getDBGestion(sNroExp)
+		Set viewCarDesc=db.GetView(DBSGD_VISTA_CAR_DESC_DESA)
+		If Not viewCarDesc Is Nothing Then
+			Dim colCar As NotesDocumentCollection,keys(1 To 2) As String
+			keys(1)=Me.NroExp
+			keys(2)=sNroExp
+			Set colCar=viewCarDesc.GetAllDocumentsByKey(keys,True)
+			If colCar.Count > 0 Then
+				Dim car As NotesDocument,oCar As Caratula,i As Integer
+				Dim oExp As Expediente,vLectores As New Vector(0)
+				
+				For i= 1 To colCar.Count
+					Set car =colCar.GetNthDocument(i)
+					Set oCar=New Caratula(NRO_EX_VACIO,False)
+					oCar.Inicializar car
+					oCar.PopPadre
+					oCar.save
+					
+					Set oExp=New Expediente(oCar.NroExp,usuarioAccion)
+					Set oCar=Nothing
+					
+					'Set vLectores=oExp.Caratula.getRecorridoColumna(3)
+					Set vLectores=oExpPadre.Caratula.getRecorridoColumna(3)
+					vLectores.insertElement oExpPadre.Caratula.OficinaActual,vLectores.cantElem + 1
+					oExp.setLectoresActuaciones vLectores
+					
+					'Para mantener la lista de lectores notificados en los descendientes
+					oExp.popActuacionesNotif Me.Caratula.notificadosAcusaron
+				Next			
+			End If			
+		Else
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & DBSGD_VISTA_CAR_DESC
+		End If		
+%END REM	
+		
+		Exit Sub	
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DesagregarDescendientes","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DesagregarDescendientes","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Desagregar(vNrosExpDesa As Vector)
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		validarDesagregar vNrosExpDesa
+		If vNrosExpDesa.cantElem > 0 Then
+			Dim i As Integer
+			For i=1 To vNrosExpDesa.cantElem
+				DesagregarExp vNrosExpDesa.getelement(i)
+				Me.Caratula.delListaAgregados vNrosExpDesa.getElement(i)
+				Me.Caratula.AddLogAgregados vNrosExpDesa.getelement(i),Me.UsuarioAccion.NombreUsuario,False,Me.Caratula.CantActuaciones
+			Next
+			Me.Caratula.save
+			Call DesagregarDescendientes (Me.nroExp)
+		End If
+		addLog Now, ACCION_DESAGREGAR
+		
+		Exit Sub
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Desagregar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Desagregar","","")
+		End  If
+		
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Devolver (Byval motivo As String)
+		'Devuelve el expediente a la unidad anterior
+		
+		'Para ello anula lo hecho en las operaciones Pase y Recibir
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		
+		Dim oAnteLastActuacion As Actuacion 
+		Dim oUnidad As Unidad ',oUnidadAnterior As Unidad
+		
+		'Crea el objeto correspondiente a la penúltima actuación
+		Set oAnteLastActuacion=New Actuacion(Me.Caratula.NroExp,Me.Caratula.CantActuaciones-1,False)
+		
+		
+		Set oUnidad= New UnidadExp(Me.Caratula.OficinaActual)
+		'Realiza los controles necesarios para permitir o no la devolución
+		validarDevolver oUnidad,oAnteLastActuacion
+		
+		
+		Dim infUnidad As New InformesUnidad(Cstr(Month(oAnteLastActuacion.FechaSalida)),Cstr(Year(oAnteLastActuacion.FechaSalida)),oAnteLastActuacion.Oficina)
+		
+		infUnidad.RestaElementos INFORME_CANT_PASES,1,False
+		Dim fSalidaUlt As NotesDateTime, fSalidaPenult As NotesDateTime,fRecUlt As NotesDateTime
+		
+		Set fSalidaUlt = New NotesDateTime(oAnteLastActuacion.Fechasalida)
+		Set fRecUlt = New NotesDateTime (oAnteLastActuacion.FechaRecibido)
+		
+		If oAnteLastActuacion.NumeroActuacion > 1 Then
+			Set fSalidaPenult  = New NotesDateTime(Me.Actuacion(oAnteLastActuacion.NumeroActuacion-1).fechaSalida)
+		Else
+			Set fSalidaPenult = New NotesDateTime(Me.Caratula.FechaCreacion)
+		End If
+		
+		infUnidad.RestaElementos INFORME_TPER_EXP ,fSalidaUlt.TimeDifference(fSalidaPenult),True
+		infUnidad.RestaElementos INFORME_TTRA_EXP, fSalidaUlt.TimeDifference(fRecUlt),True
+		
+		'Para las notificaciones de Expediente
+		Set oAnteLastActuacion.LectNotificados=Nothing
+		
+		'Realiza las modificaciones que implica la devolución sobre la penúltima y última actuación
+		devolverActuacion oAnteLastActuacion,motivo
+		
+		'Realiza las modificaciones que implica la devolución sobre la carátula
+		devolverCaratula		
+		
+		addLog Now, ACCION_DEVOLVER
+		
+		'Salva la carátula
+		'Me.Caratula.save		
+		'Call DevolverAgregados()
+		
+		Exit Sub			
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Devolver","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Devolver","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub AddLectConfExp(oExp As Expediente,lectores As Vector)
+		On Error Goto HANDLER
+		
+		If lectores.cantElem <= 0 Then
+			Exit Sub
+		End If
+		
+		Dim i As Integer,oAct As Actuacion,tmpLectores As New Vector(0)
+		Dim vActuaciones As New Vector(0)
+		If oExp.Caratula.CantActuaciones > 0 Then
+			For i=1 To oExp.Caratula.CantActuaciones
+				Set oAct=oExp.Actuacion(i)
+				If Not oAct Is Nothing Then
+					Set tmpLectores=oAct.Lectores
+					tmpLectores.append lectores,True
+					Set oAct.Lectores=tmpLectores
+					vActuaciones.insertElement oAct,vActuaciones.cantElem + 1
+					Set oAct=Nothing
+				Else
+					Error ERROR_ADD_LECT_CONFIDENCIAL,MSG_ERROR_ADD_LECT_CONFIDENCIAL_4  & Cstr(i)
+				End If			
+			Next
+		Else
+			Error ERROR_ADD_LECT_CONFIDENCIAL,MSG_ERROR_ADD_LECT_CONFIDENCIAL_5 
+		End If
+		
+		If vActuaciones.cantElem > 0 Then
+			For i=1 To vActuaciones.cantElem
+				Set oAct=vActuaciones.getElement(i)
+				If Not oAct Is Nothing Then
+					oAct.save 
+					Set oAct=Nothing
+				Else
+					Error ERROR_ADD_LECT_CONFIDENCIAL,MSG_ERROR_ADD_LECT_CONFIDENCIAL_6  & Cstr(i)
+				End If			
+			Next	
+			addLog Now, ACCION_ADD_LECT_CONFIDENCIAL
+		Else
+			Error ERROR_ADD_LECT_CONFIDENCIAL,MSG_ERROR_ADD_LECT_CONFIDENCIAL_7 
+		End If
+		
+		
+		Exit Sub			
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub AddLectConfExp","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub AddLectConfExp","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub AddLectoresConfidencial(lectores As Vector)
+		'Si un Expediente es Confidencial, permite agregarle nuevos 
+		'lectores por cada unidad por la cual va pasando
+		On Error Goto HANDLER
+		
+		ValidarAddLectoresConfidencial
+		
+		AddLectConfExp Me,lectores
+		
+		'Procesar Agregados - BFS para el árbol de agregados
+		Dim vExpAgregados As New Vector(0)	, i As Integer,oExp As Expediente
+		Set vExpAgregados=Me.Caratula.AgregadosNros
+		While vExpAgregados.cantElem > 0
+			If Cstr(vExpAgregados.getElement(1)) <> "" Then
+				Set oExp=New Expediente(vExpAgregados.getElement(1),usuarioAccion)
+				If Not oExp Is Nothing Then
+					If oExp.Caratula.AgregadosNros.cantElem > 0 Then
+						vExpAgregados.append oExp.Caratula.AgregadosNros,True
+					End If
+					AddLectConfExp oExp,lectores
+				End If
+			End If
+			vExpAgregados.deleteElement 1
+		Wend
+		
+		addLog Now, ACCION_ADD_LECT_CONFIDENCIAL
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub AddLectoresConfidencial","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub AddLectoresConfidencial","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Private Sub DelLectConfidencialExp(oExp As Expediente,lectores As Vector)
+		On Error Goto HANDLER
+		
+		If lectores.cantElem > 0 Then
+			If oExp.Caratula.CantActuaciones > 0 Then
+				Dim i As Integer,oAct As Actuacion,tmpLectores As New Vector(0)
+				Dim vActuaciones As New Vector(0)	
+				Dim vLectQuedan As New Vector(0),j As Integer
+				For i=1 To oExp.Caratula.CantActuaciones
+					Set oAct=oExp.Actuacion(i)
+					If Not oAct Is Nothing Then
+						Set vLectQuedan=oAct.Lectores
+						For j=1 To lectores.cantElem
+							Dim posDel As Long
+							If vLectQuedan.isMember(lectores.getElement(j),posDel,False) Then
+								vLectQuedan.deleteElement posDel
+							End If
+						Next
+						Set oAct.Lectores=vLectQuedan
+						vActuaciones.insertElement oAct,vActuaciones.cantElem + 1
+						Set oAct=Nothing	
+					Else
+						Error ERROR_DEL_LECT_CONFIDENCIAL,MSG_ERROR_DEL_LECT_CONFIDENCIAL_3  & Cstr(i)
+					End If			
+				Next
+				'Ahora hago el "Commit"
+				For i=1 To vActuaciones.cantElem
+					Set oAct=vActuaciones.getElement(i)
+					If Not oAct Is Nothing Then
+						oAct.save 
+						Set oAct=Nothing
+					Else
+						Error ERROR_DEL_LECT_CONFIDENCIAL,MSG_ERROR_DEL_LECT_CONFIDENCIAL_4  & Cstr(i)
+					End If			
+				Next						
+			Else
+				Error ERROR_DEL_LECT_CONFIDENCIAL,MSG_ERROR_DEL_LECT_CONFIDENCIAL_5 
+			End If
+		End If
+		
+		Exit Sub			
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DelLectConfidencialExp","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DelLectConfidencialExp","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Public Sub DeleteLectoresConfidencial(lectores As Vector)
+		On Error Goto HANDLER
+		
+		ValidarDelLectoresConfidencial
+		
+		If lectores.cantElem <= 0 Then
+			Exit Sub
+		End If
+		DelLectConfidencialExp Me,lectores	
+		
+		'Procesar Agregados - BFS para el árbol de agregados
+		Dim vExpAgregados As New Vector(0)	, i As Integer,oExp As Expediente
+		Set vExpAgregados=Me.Caratula.AgregadosNros
+		While vExpAgregados.cantElem > 0
+			If Cstr(vExpAgregados.getElement(1)) <> "" Then
+				Set oExp=New Expediente(vExpAgregados.getElement(1),usuarioAccion)
+				If Not oExp Is Nothing Then
+					If oExp.Caratula.AgregadosNros.cantElem > 0 Then
+						vExpAgregados.append oExp.Caratula.AgregadosNros,True
+					End If
+					DelLectConfidencialExp oExp,lectores	
+				End If
+			End If
+			vExpAgregados.deleteElement 1
+		Wend
+		
+		
+		addLog Now, ACCION_DEL_LECT_CONFIDENCIAL	
+		
+		Exit Sub			
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DeleteLectoresConfidencial","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub DeleteLectoresConfidencial","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Public Sub MarcarConfidencial (lectores As Vector)
+		'Marca el exp como confidencial habilitando solo a los lectores indicados para leer el contenido
+		'de las actuaciones generadas desde aquí en adelante
+		'El usuario debe tener el rol [Manejar Confidencialidad]
+		On Error Goto HANDLER
+%REM
+	La carátula y el recorrido del expediente se seguirán manteniendo públicos para todos 
+	los usuarios; el contenido de las actuaciones previas al momento en que se marque el 
+	expediente como confidencial seguirá teniendo la misma seguridad que hasta ese momento 
+	(lo verán las unidades por las que pasó el expediente y el rol especial de visualización); 
+	el contenido de las actuaciones generadas de allí en adelante solo podrá ser visualizado por
+	los lectores indicados.
+
+	Para realizar esta operación se deberá contar con el rol Manejar Confidencialidad. Solo 
+	algunas personas de ANP tendrán asignado este rol y el expediente deberá pasar por su unidad
+	para que puedan realizar la operación.
+
+	Al momento de presionar el botón que implica esta operación, el sistema pedirá una confirmación 
+	de que realmente se quiere marcar el expediente como confidencial. Si la respuesta es afirmativa
+	, presentará un cuadro de diálogo que le permitirá al usuario seleccionar las únicas personas 
+	habilitadas a ver el contenido de las actuaciones siguientes. Si el usuario no confirma se 
+	cancelará la operación.
+
+	La lista de usuarios que pueden ver las actuaciones confidenciales, se podrá actualizar en cada unidad por 
+	la que pase el expediente si en ella existen personas con el rol correspondiente.  Dichas personas solo 
+	podrán agregar usuarios, no quitar.
+	Si al momento del pase a una nueva unidad, ningún usuario de ella está en la lista de confidencialidad, 
+	el sistema informará al usuario de la inconsistencia, ya que no sería posible que algún usuario de la unidad
+	destino pueda recibir el expediente. 
+
+	Para las búsquedas sobre expedientes confidenciales, el motor de búsqueda solo permite al usuario acceder al
+	contenido de los expedientes sobre los cuales tiene acceso a visualizar, siendo consistente con la 
+	confidencialidad definida en cada uno de los expedientes que corresponda.
+%END REM
+		Call validarGeneral()
+		Call ValidarMarcarConfidencial()
+		
+		MarcarConfidencialExp Me,lectores ,True
+		
+		Dim vExpAgregados As New Vector(0)	, i As Integer,oExp As Expediente
+		Set vExpAgregados=Me.Caratula.AgregadosNros
+		While vExpAgregados.cantElem > 0
+			If Cstr(vExpAgregados.getElement(1)) <> "" Then
+				Set oExp=New Expediente(vExpAgregados.getElement(1),usuarioAccion)
+				If Not oExp Is Nothing Then
+					If oExp.Caratula.AgregadosNros.cantElem > 0 Then
+						vExpAgregados.append oExp.Caratula.AgregadosNros,True
+					End If
+					MarcarConfidencialExp oExp,lectores ,False
+				End If
+			End If
+			vExpAgregados.deleteElement 1
+		Wend
+		addLog Now, ACCION_MARCAR_CONFIDENCIAL
+		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub MarcarConfidencial","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub MarcarConfidencial","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub MarcarConfidencialExp(oExp As Expediente,lectores As Vector,esPpal As Integer)
+		'esPpal indica si oExp es el expediente padre de todos o no
+		On Error Goto HANDLER
+		
+		If lectores.cantElem > 0 Then
+			'Agrega la lista de lectores a los lectores de todas las actuaciones
+			Dim actCommit As New vector(0)
+			Dim i As Integer,actTmp As Actuacion,vTmpLectores As New Vector(0)
+			For i = 1 To oExp.LastActuacion.NumeroActuacion
+				If i <> oExp.LastActuacion.NumeroActuacion Or Not esPpal Then
+					Set actTmp=oExp.Actuacion(i)
+					Set vTmpLectores=actTmp.Lectores
+					vTmpLectores.Append lectores, True
+					Set actTmp.Lectores=vTmpLectores
+					
+					actCommit.insertElement actTmp,actCommit.cantElem + 1
+					Set actTmp=Nothing 
+					Set vTmpLectores=Nothing
+					
+				End If				
+			Next			
+			If esPpal Then
+				oExp.Caratula.Confidencial=True	
+				Set oExp.LastActuacion.Lectores=lectores 
+				
+				Dim vLectPerm As New Vector(0)
+				vLectPerm.insertElement ROL_GESTION_CONF,vLectPerm.cantElem + 1
+				vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+				Set oExp.LastActuacion.LectoresPermanentes=vLectPerm
+				
+				oExp.Lastactuacion.MarcoConfidencial=True
+			End If
+			oExp.LastActuacion.save
+			oExp.Caratula.save
+			
+			If actCommit.cantElem > 0 Then
+				For i=1 To actCommit.cantElem
+					Set actTmp=actCommit.getElement(i)
+					actTmp.save
+					Set actTmp=Nothing
+				Next	
+			End If
+		Else
+			Error ERROR_MARCAR_CONFIDENCIAL,MSG_ERROR_MARCAR_CONFIDENCIAL_4
+		End If		
+		
+		
+		
+		Exit Sub		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub MarcarConfidencialExp","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub MarcarConfidencialExp","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub QuitarConfidencialidadExp(oExp As Expediente)
+		On Error Goto HANDLER
+		
+		'Hay que ver por todas las unidades que pasó el expediente,
+		'y ponerlas como lectores, junto con la configuracion
+		Dim vLect As New Vector(0),c As New Configuracion
+		Set vLect=Me.Caratula.getRecorridoColumna(3)
+		vLect.insertElement oExp.Caratula.OficinaActual,vLect.cantElem+1
+		oExp.Actuaciones.Stampall DBSGD_CAMPO_FACTUACION_LECTORES,vLect.values
+		
+		Dim vLectPerm As New Vector(0)
+		vLectPerm.insertElement ROL_GESTION_CONF,vLectPerm.cantElem + 1
+		vLectPerm.insertElement ROL_VER_ACTUACIONES,vLectPerm.cantElem + 1	
+		vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+		oExp.Actuaciones.Stampall CAMPO_FACTUACION_LECTORES_PERMANENTES,vLectPerm.values
+		
+		Exit Sub			
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub QuitarConfidencialidadExp ","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub QuitarConfidencialidadExp ","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub QuitarConfidencialidad ()
+		'Quita la confidencialidad del expediente dejando nuevamente con acceso normal
+		'(unidades por las que pasó y rol [Ver Todos Expedientes])a todas sus actuaciones)
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		Call ValidarQuitarConfidencialidad()
+		
+		Me.Caratula.Confidencial=False
+		addLog Now, ACCION_QUITAR_CONFIDENCIALIDAD
+		
+		Me.Caratula.save
+		
+		If Me.LastActuacion.MarcoConfidencial Then
+			Me.LastActuacion.MarcoConfidencial=False
+			Me.LastActuacion.Save	
+		End If
+		
+		QuitarConfidencialidadExp Me
+		
+		'Procesar Agregados - BFS para el árbol de agregados
+		Dim vExpAgregados As New Vector(0)	, i As Integer,oExp As Expediente
+		Set vExpAgregados=Me.Caratula.AgregadosNros
+		While vExpAgregados.cantElem > 0
+			If Cstr(vExpAgregados.getElement(1)) <> "" Then
+				Set oExp=New Expediente(vExpAgregados.getElement(1),usuarioAccion)
+				If Not oExp Is Nothing Then
+					If oExp.Caratula.AgregadosNros.cantElem > 0 Then
+						vExpAgregados.append oExp.Caratula.AgregadosNros,True
+					End If
+					QuitarConfidencialidadExp oExp
+				End If
+			End If
+			vExpAgregados.deleteElement 1
+		Wend
+		
+%REM
+Esto se metió en el método QuitarConfidencialidadExp para procesar los agregados
+		'Hay que ver por todas las unidades que pasó el expediente,
+		'y ponerlas como lectores, junto con la configuracion
+		Dim vLect As New Vector(0),c As New Configuracion
+		Set vLect=Me.Caratula.getRecorridoColumna(3)
+		vLect.insertElement Me.Caratula.OficinaActual,vLect.cantElem+1
+		Me.Actuaciones.Stampall DBSGD_CAMPO_FACTUACION_LECTORES,vLect.values
+		
+		
+		Dim vLectPerm As New Vector(0)
+		vLectPerm.insertElement ROL_GESTION_CONF,vLectPerm.cantElem + 1
+		vLectPerm.insertElement ROL_VER_ACTUACIONES,vLectPerm.cantElem + 1	
+		vLectPerm.insertElement ROL_DESARROLLO,vLectPerm.cantElem + 1
+		Me.Actuaciones.Stampall CAMPO_FACTUACION_LECTORES_PERMANENTES,vLectPerm.values
+%END REM
+		
+		addLog Now, ACCION_QUITAR_CONFIDENCIALIDAD
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub QuitarConfidencialidad ","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub QuitarConfidencialidad ","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub	
+	
+'******************************************************************************************************************	
+	
+	Private Sub EnviarArchivo(sNroExp As String, dbA As notesDatabase)
+		'Mueve el Expediente sNroExp(carátula y sus actuaciones) a la base de Archivo dbA
+		On Error Goto HANDLER
+		
+		Dim vEliminar As Vector
+		Set vEliminar=New Vector(0)
+		
+		Dim oExp As Expediente,newDoc As NotesDocument
+		Set oExp=New Expediente(sNroExp, usuarioAccion)
+		
+		Dim colAct As NotesDocumentCollection
+		Set 	colAct=oExp.Actuaciones
+		
+		If colAct.Count > 0 Then
+			Dim act As notesDocument,i As Integer
+			For i=1 To colAct.Count
+				Set act=colAct.GetNthDocument(i)
+				Set newDoc =New notesDocument(dbA)
+				act.CopyAllItems newDoc
+				newDoc.save True,False
+				vEliminar.insertElement act,vEliminar.cantElem + 1
+			Next
+			Set newDoc =New notesDocument(dbA)
+			oExp.Caratula.Document.CopyAllItems newDoc
+			newDoc.save True,False
+			vEliminar.insertElement oExp.Caratula.Document,vEliminar.cantElem + 1
+			
+			If vEliminar.cantElem > 0 Then
+				For i=1 To vEliminar.cantElem
+					vEliminar.getElement(i).Remove True					
+				Next	
+			End If			
+		End If
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub EnviarArchivo","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub EnviarArchivo","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub MoverExpToArchivo
+		'Uso BFS para recorrer el árbol por Niveles
+		On Error Goto HANDLER
+		
+		Dim oArchivo As Archivo
+		Set oArchivo=New Archivo(Me.NroExp)
+		
+		Dim vExpArchivar As New Vector(0),oExp As Expediente
+		Set vExpArchivar=Me.Caratula.AgregadosNros
+		
+		EnviarArchivo Me.NroExp ,oArchivo.db 
+		
+		Do While vExpArchivar.cantElem > 0
+			Set oExp=New Expediente(vExpArchivar.getElement(1),usuarioAccion)
+			If oExp.Caratula.AgregadosNros.cantElem > 0 Then
+				vExpArchivar.append oExp.Caratula.AgregadosNros,True	
+			End If			
+			
+			Set oArchivo=New Archivo(vExpArchivar.getElement(1))
+			EnviarArchivo vExpArchivar.getElement(1),oArchivo.db 
+			vExpArchivar.deleteElement 1
+		Loop		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub MoverExpToArchivo","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub MoverExpToArchivo","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub Archivar()
+		'Marca el expediente como archivado y lo almacena en un repositorio secundario
+%REM
+	'Procedimiento
+	Archivar:
+	Al archivar un expediente, se copia a la base de Archivo correspondiente según el numero de Expediente.
+	Además, se copian a la misma base de Archivo los expedientes agregados(directos e indirectos) a éste en el árbol.
+	Aún si esos agregados pertenecen a otro año distinto del expediente principal.
+
+	Para recorrer el Arbol de Expedientes agregados, se usa el algoritmo BFS(recorriendo por Niveles),
+	y se van moviendo a la base de Archivo.
+
+	ATENCIÓN: Algo bueno sería poder meter en una colección los documentos a eliminar, para realizar dicha eliminación
+	recién al final del proceso(tipo un Commit). Pero se me dificultó hacerlo  ya que los documentos
+	de esa colección podrían pertenecer a bases de distintos años.
+%END REM
+		On Error Goto HANDLER
+		
+		Call validarGeneral()
+		Call ValidarArchivar()
+		
+		Me.LastActuacion.personaSalida=usuarioAccion.NombreUsuario
+		Me.LastActuacion.fechaSalida=Now
+		Dim vLectores As Vector
+		Set vLectores=Me.lastactuacion.lectorespermanentes
+		vLectores.insertElement ROL_GESTION_CONF,vLectores.cantElem + 1
+		vLectores.insertElement ROL_VER_ACTUACIONES,vLectores.cantElem + 1
+		Set Me.lastactuacion.lectorespermanentes = vLectores
+		
+		'Notificados  deben pasar a ver la ante última actuación también
+		If Not Me.Caratula.NotificadosAcusaron Is Nothing Then
+			If Me.Caratula.NotificadosAcusaron.cantElem > 0 Then
+				Set Me.LastActuacion.LectNotificados=Me.Caratula.NotificadosAcusaron
+			End If
+		End If
+		
+		
+		Dim fEntrada As NotesDateTime,fSalida As NotesDateTime,dias As Integer
+		Set fSalida=New notesDateTime(Me.LastActuacion.fechaSalida)
+		Set fEntrada=New notesDateTime(Me.LastActuacion.fechaEntrada)
+		dias=fSalida.Timedifference(fEntrada) / 86400
+		Me.LastActuacion.TiempoPermanecio = dias   
+		Me.LastActuacion.SubEstado=SUBESTADO_ARCHIVADO
+		
+		Dim vRecorrido As New Vector(0)
+		Set vRecorrido=Me.Caratula.getRecorridoColumna(3)
+		vRecorrido.insertElement Me.Caratula.Oficinaactual,vRecorrido.cantElem + 1
+		
+		If Not Me.Caratula.Confidencial Then
+			Set Me.LastActuacion.Lectores=vRecorrido
+		End If
+		
+		If Not Isdate(Me.LastActuacion.FechaRecibido) Then
+			If Isdate(Me.LastActuacion.FechaEntrada) Then
+				Me.Caratula.addRecorrido Me.LastActuacion.FechaEntrada	, Me.Caratula.OficinaActual
+			Else
+				Me.Caratula.addRecorrido Now, Me.Caratula.OficinaActual	
+			End If
+		Else
+			Me.Caratula.addRecorrido Me.LastActuacion.FechaRecibido	, Me.Caratula.OficinaActual
+		End If
+		
+		Me.Caratula.Estado=ESTADO_ARCHIVADO
+		Me.Caratula.FechaArchivado=Now
+		
+		addLog Now, ACCION_ARCHIVAR
+		
+		Me.Caratula.save
+		Me.LastActuacion.save
+		
+		Me.Actuaciones.Stampall CAMPO_FACTUACION_SUBESTADO,SUBESTADO_ARCHIVADO
+		
+		Call MoverExpToArchivo()
+		
+		Dim infTema As New InformesTemas(Cstr(Month(Today)),Cstr(Year(Today)),Me.caratula.tema)
+		Dim tFCreacion As New NotesDateTime(Me.Caratula.FechaCreacion)
+		Dim tFArchivado As New notesdatetime(Me.Caratula.FechaArchivado)
+		infTema.SumaElementos INFORME_CANT_PACT,Me.LastActuacion.NumeroActuacion,True
+		infTema.Sumaelementos INFORME_TDUR_EXP, tFArchivado.TimeDifference(tFCreacion),True
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Archivar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub Archivar","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub ValidaUnidadSacarArchivo
+		On Error Goto handler
+		If Me.Unidad.Nombre<> "" Then
+			ValidarSAcarArchivo
+		End If
+		Exit Sub
+handler:
+		Resume Next
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub ValidarSacarArchivo
+		On Error Goto HANDLER
+		
+		If Not Me.Unidad.usuariosRolGestion.isMember(usuarioAccion.NombreUsuario,0,False) Then
+			Error ERROR_SACAR_ARCHIVO,MSG_ERROR_SACAR_ARCHIVO_1 & usuarioAccion.NombreUsuario
+		End If
+		If Not Me.Unidad.UnidadHabilitadaArchivar Then
+			Error ERROR_SACAR_ARCHIVO,MSG_ERROR_SACAR_ARCHIVO_2 & Me.Caratula.OficinaActual
+		End If
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarSacarArchivo","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarSacarArchivo","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub ExtraerExpArchivado()
+		'Basado en el Algoritmo BFS para recorrer el árbol de Agregados
+		On Error Goto HANDLER
+		
+		Dim oArchivo As Archivo
+		Set oArchivo=New Archivo(Me.NroExp)
+		
+		oArchivo.ExtraerArchivo Me.NroExp ,True
+		
+		Dim vExpExtraer As New Vector(0),oExp As Expediente
+		Set vExpExtraer=Me.Caratula.AgregadosNros
+		
+		Do While vExpExtraer.cantElem > 0
+			Set oArchivo=New Archivo(vExpExtraer.getElement(1))
+			oArchivo.ExtraerArchivo vExpExtraer.getElement(1) ,False
+			
+			Set oExp=New Expediente(vExpExtraer.getElement(1),usuarioAccion)
+			vExpExtraer.deleteElement 1
+			If oExp.Caratula.AgregadosNros.cantElem > 0 Then
+				vExpExtraer.append oExp.Caratula.AgregadosNros,True	
+			End If			
+		Loop
+		
+		Exit Sub
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ExtraerExpArchivado","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ExtraerExpArchivado","","")			
+		End  If
+		
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub SacarDeArchivado ()
+		'Saca el Expediente actual del Archivo	correspondiente
+		On Error Goto HANDLER
+%REM
+	La idea es copiar los expedientes a las bases correspondientes según el número de expediente
+	Luego se le modifica el estado solo al principal, el cual fue modificado al momento de Archivar
+%END REM
+		
+		Call ExtraerExpArchivado()
+		Call validarGeneral()
+		Call ValidaUnidadSacarArchivo()
+		
+		Dim fCreacion As notesdatetime
+		Dim fArchivado As NotesDateTime
+		If Me.Caratula.FechaCreacion <> "" Then
+			Set fCreacion = New notesdatetime (Me.Caratula.FechaCreacion)
+		End If
+		If Me.Caratula.FechaArchivado <> "" Then			
+			Set fArchivado = New NotesDateTime (Me.caratula.FechaArchivado)
+			Dim infTema As New InformesTemas (Cstr(Month(fArchivado.DateOnly)), Cstr(Year(fArchivado.DateOnly)), Me.caratula.tema)
+			infTema.RestaElementos INFORME_CANT_PACT,Me.caratula.CantActuaciones,True
+			infTema.RestaElementos INFORME_TDUR_EXP, fArchivado.TimeDifference(fCreacion),True
+		End If		
+		
+		Me.Actuaciones.Stampall CAMPO_FACTUACION_SUBESTADO,SUBESTADO_CURSADO
+		Dim unidadDestino As String		
+		
+		unidadDestino = Me.Caratula.OficinaActual
+		
+		CaratulaPase unidadDestino,Now
+		
+		'Setea los cambios en las actuaciones
+		Dim oNewActuacion As Actuacion
+		ActuacionesPase unidadDestino, oNewActuacion, Now, ""
+		
+		oNewActuacion.SubEstado=SUBESTADO_PARA_ACTUAR
+		'Setea el estado de la carátula en unidad
+		Me.Caratula.Estado=ESTADO_EN_UNIDAD
+		'Setea la fecha de recibido en la actuación
+		oNewActuacion.FechaRecibido=Now
+		oNewActuacion.RecibidoPor=Me.usuarioAccion.NombreUsuario
+		
+		Dim vLectores As New Vector(0)
+		Set vLectores=Me.LastActuacion.Lectores
+		
+		If Not Me.Caratula.Confidencial Then
+			Set vLectores= New Vector(0)
+			vLectores.insertelement Me.caratula.oficinaactual,1
+		End If
+		
+		Set oNewActuacion.Lectores  = vLectores
+		If (Me.Caratula.TipoRuta="Predefinida") Then
+			oNewActuacion.PasoRuta=LastActuacion.PasoRuta
+		End If
+		
+		Me.Caratula.save
+		'Salva la última actuación que existía antes del pase
+		Me.LastActuacion.save
+		'Salva la nueva actuación que se acaba de generar
+		oNewActuacion.save
+		
+		Me.Caratula.FechaArchivado=Null
+		
+		addLog Now, ACCION_ARCHIVAR
+		
+		Me.Caratula.save
+		Me.LastActuacion.save		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub SacarDeArchivado","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub SacarDeArchivado","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Function esSuperior(Byval sUsuario As String,vUnidadesSup As Vector) As Integer
+		'Indica si el usuario actual pertenece a una unidad superior 
+		On Error Goto HANDLER
+		
+		Dim tmpUnidad As Unidad,sUnidadSuperior As String,esta As Integer
+		Dim stopSearch As Integer  'No quiero que haya un circulo y esto quede en loop
+		
+		Set vUnidadesSup=New Vector(0)
+		
+		stopSearch=100
+		esta=False
+		Set tmpUnidad=New UnidadExp(Me.Caratula.OficinaActual)
+		sUnidadSuperior=tmpUnidad.UnidadSuperior
+		
+		While ( sUnidadSuperior <> "" ) And Not esta And ( stopSearch > 0 )
+			If Not vUnidadesSup.isMember(sUnidadSuperior,0,False) Then
+				vUnidadesSup.insertElement sUnidadSuperior,vUnidadesSup.cantElem + 1
+				stopSearch=stopSearch - 1
+				
+				Set tmpUnidad=New UnidadExp(sUnidadSuperior)
+				If Not tmpUnidad Is Nothing Then
+					If Not tmpUnidad.Miembros Is Nothing Then
+						esta=tmpUnidad.Miembros.isMember(usuarioAccion.NombreUsuario,0,False)
+					End If				
+				End If
+				sUnidadSuperior=tmpUnidad.UnidadSuperior	
+			Else
+				sUnidadSuperior=""
+			End If			
+		Wend
+		
+		esSuperior=esta
+		
+		Exit Function
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esSuperior","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esSuperior","","")			
+		End  If
+		
+		Exit Function	
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Function esRolModificarPlazo(sUsuario As String,vUnidades As Vector) As Integer
+		On Error Goto HANDLER
+		
+		esRolModificarPlazo=False
+		
+		If vUnidades.cantElem > 0 Then
+			
+			Dim i As Integer,tmpUnidad As Unidad
+			
+			For i=1 To vUnidades.cantElem
+				Set tmpUnidad=New UnidadExp(vUnidades.getElement(i))
+				If Not tmpUnidad Is Nothing Then
+					If tmpUnidad.UsuariosRolModificarPlazo.isMember(sUsuario,0,False)	Then
+						esRolModificarPlazo=True	
+						Exit Function
+					End If
+				End If
+			Next	
+		End If				
+		
+		Exit Function
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esRolModificarPlazo","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function esRolModificarPlazo","","")			
+		End  If
+		
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Sub ValidarModificarPlazo(nDias As Integer)
+		On Error Goto HANDLER
+		
+		'FALTA CHECKEO DE ESTADOS
+		
+		If Me.Caratula.Confidencial Then
+			If Not Me.lastActuacion.Lectores.isMember(usuarioAccion.NombreUsuario,0,False) Then
+				Error ERROR_MODIFICAR_PLAZO,MSG_ERROR_MODIFICAR_PLAZO_3 & usuarioAccion.nombreUsuario
+			End If
+		End If
+		
+		Dim vUnidadesSup As New Vector(0)
+		'Validar que el usuario actual pertenezca a una unidad superior a la unidad actual
+		If Not esSuperior(usuarioAccion.NombreUsuario,vUnidadesSup) Then
+			If vUnidadesSup.cantElem > 0 Then
+				Error ERROR_MODIFICAR_PLAZO,MSG_ERROR_MODIFICAR_PLAZO_4 & usuarioAccion.nombreUsuario	
+			Else
+				vUnidadesSup.insertElement Me.Caratula.OficinaActual,vUnidadesSup.cantElem + 1
+				If Not esRolModificarPlazo(usuarioAccion.NombreUsuario,vUnidadesSup) Then
+					Error ERROR_MODIFICAR_PLAZO,MSG_ERROR_MODIFICAR_PLAZO_2 & usuarioAccion.nombreUsuario	
+				End If			
+			End If
+		Else
+			If Not esRolModificarPlazo(usuarioAccion.NombreUsuario,vUnidadesSup) Then
+				Error ERROR_MODIFICAR_PLAZO,MSG_ERROR_MODIFICAR_PLAZO_2 & usuarioAccion.nombreUsuario	
+			End If			
+		End If		
+		
+		If nDias <= 0 Then
+			Error ERROR_MODIFICAR_PLAZO,MSG_ERROR_MODIFICAR_PLAZO_1	
+		End If		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarModificarPlazo","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ValidarModificarPlazo","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub ModificarPlazo(nDias As Integer)
+		'Modifica el plazo de la última actuación
+		On Error Goto HANDLER
+		
+		validarGeneral
+		
+		ValidarModificarPlazo nDias
+		
+		Me.LastActuacion.TiempoMax=nDias
+		If Me.LastActuacion.SubEstado=SUBESTADO_PARA_FIRMAR Then
+			Me.LastActuacion.DelFirmas	
+		End If		
+		
+		addLog Now, ACCION_MODIFICAR_PLAZO
+		
+		Me.LastActuacion.Expiro=False
+		Me.LastActuacion.ProxExpirar=False
+		
+		Me.LastActuacion.save		
+		Me.Caratula.Save
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ModificarPlazo","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub ModificarPlazo","","")			
+		End  If
+		
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub setLectoresActuaciones(vLectores As Vector)
+		On Error Goto HANDLER
+		
+		Me.Actuaciones.Stampall DBSGD_CAMPO_FACTUACION_LECTORES,vLectores.values
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método setLectoresActuaciones","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método setLectoresActuaciones","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub pushActuacionesNotif(vLect As Vector)
+		On Error Goto HANDLER
+		
+		Dim colAct As notesDocumentCollection,i As Integer,act As NotesDocument,vLectNotificados As Vector
+		Set colAct=Me.Actuaciones
+		If colAct.Count > 0 Then
+			For i= 1 To colAct.Count
+				Set act=colact.GetNthDocument(i)
+				Set vLectNotificados=New Vector(0)
+				If act.HasItem(CAMPO_FACTUACION_LECT_NOTIFICADOS) Then
+					vLectNotificados.values = act.GetItemValue(CAMPO_FACTUACION_LECT_NOTIFICADOS)
+					vLectNotificados.append vLect,False
+					act.ReplaceItemValue CAMPO_FACTUACION_LECT_NOTIFICADOS,vLectNotificados.values
+				Else
+					Dim itLecNotif As New notesItem(act,CAMPO_FACTUACION_LECT_NOTIFICADOS,vLect.values,READERS)
+				End If			
+				act.save True,False
+			Next	
+		End If
+		
+		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método pushActuacionesNotif","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método pushActuacionesNotif","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub popActuacionesNotif(vLect As Vector)
+		On Error Goto HANDLER
+		
+		If vLect.cantElem <= 0 Then
+			Exit Sub
+		End If
+		Dim colAct As notesDocumentCollection,i As Integer,act As NotesDocument,vLectNotificados As Vector
+		Dim j As Integer
+		Set colAct=Me.Actuaciones
+		If colAct.Count > 0 Then
+			For i= 1 To colAct.Count
+				Set act=colact.GetNthDocument(i)
+				Set vLectNotificados=New Vector(0)
+				If act.HasItem(CAMPO_FACTUACION_LECT_NOTIFICADOS) Then
+					vLectNotificados.values = act.GetItemValue(CAMPO_FACTUACION_LECT_NOTIFICADOS)
+					If vLectNotificados.cantElem > 0 Then
+						For j=vLect.cantElem To 1 Step -1
+							If Ucase(Trim(vLect.getElement(j)))=Ucase(Trim(vLectNotificados.getElement(vLectNotificados.cantElem))) Then
+								vLectNotificados.deleteElement vLectNotificados.cantElem
+								
+							Else
+								Exit For
+							End If	
+						Next
+						act.ReplaceItemValue CAMPO_FACTUACION_LECT_NOTIFICADOS,vLectNotificados.values	
+						act.save True,False
+					End If					
+				End If	
+			Next	
+		End If
+		
+		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método popActuacionesNotif","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método popActuacionesNotif","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub setPaquete(fFechaRecibido As Variant,sLugar As String,sResponsable As String)
+		On Error Goto HANDLER
+		
+		If sLugar ="" Then
+			Error ERROR_SET_PAQUETE,MSG_ERROR_SET_PAQUETE_1 & "Lugar del Paquete"
+		End If
+		If sResponsable ="" Then
+			Error ERROR_SET_PAQUETE,MSG_ERROR_SET_PAQUETE_1 & "Responsable del Paquete"
+		End If
+		
+		Me.Caratula.setPaquete fFechaRecibido,sLugar,sResponsable
+		Me.Caratula.save
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub setPaquete","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub setPaquete","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+	
+'******************************************************************************************************************	
+	
+	Public Function verificarUniNotificar(listaUnidades As Vector,listaRepetidos As Vector) As Integer
+		'Verifica si alguna de las unidades de listaUnidades ya fué notificada,
+		'y en caso afirmativo, la devuelve en listaRepetidos
+		On Error Goto HANDLER		
+		
+		verificarUniNotificar=True
+		
+		If listaUnidades.cantElem > 0 Then
+			Dim i As Integer,vNotificados As New Vector(0),vNotifAcuse As New Vector(0)
+			Set vNotificados=Me.Caratula.Notificados
+			Set vNotifAcuse=Me.Caratula.NotificadosAcusaron
+			Set listaRepetidos=New Vector(0)
+			
+			For i=1 To listaUnidades.cantElem
+				If vNotificados.isMember(listaUnidades.getElement(i),0,False) Or _
+				vNotifAcuse.isMember(listaUnidades.getElement(i),0,False) Then
+					verificarUniNotificar=False
+					listaRepetidos.insertElement listaUnidades.getElement(i),listaRepetidos.cantElem + 1
+				End If
+			Next	
+		End If
+		
+		Exit Function
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function verificarUniNotificar","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Function verificarUniNotificar","","")			
+		End  If
+		
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Sub NotificarExpediente(listaUnidades As Vector)
+		On Error Goto HANDLER		
+		
+		If Me.Caratula.Confidencial Then
+			Error MSG_ERROR_NOTIF,MSG_ERROR_NOTIF_1
+		End If
+		
+		If Not listaUnidades Is Nothing Then
+			If listaUnidades.cantElem > 0 Then
+				Dim oCar As Caratula
+				Set oCar=Me.Caratula
+				
+				'Actualizo tabla registros
+				Dim i As Integer,vUnidad As New Vector(0),vAcuse As New Vector(0)
+				Dim vNroAct As New Vector(0),vFecha As New Vector(0)
+				Set vUnidad=oCar.NotificacionesUnidad
+				Set vAcuse=oCar.NotificacionesAcuse
+				Set vFecha=oCar.NotificacionesFecha
+				Set vNroAct=oCar.NotificacionesNroAct
+				For i=1 To listaUnidades.cantElem
+					If listaUnidades.getelement(i) <> "" Then
+						vUnidad.insertElement listaUnidades.getElement(i),vUnidad.cantElem + 1
+						vAcuse.insertElement "0",vUnidad.cantElem	'Acuse pendiente
+						vFecha.insertElement Today,vUnidad.cantElem						
+						vNroAct.insertElement Me.LastActuacion.NumeroActuacion,vUnidad.cantElem
+					End If					
+				Next
+				
+				
+				'Agrego nuevos notificados a la lista de sin acuse
+				Dim totalNotificados As New Vector(0)
+				totalNotificados.append listaUnidades,True
+				If oCar.Notificados.cantElem > 0 Then
+					totalNotificados.append oCar.Notificados,True
+				End If
+				Set 	oCar.Notificados = totalNotificados
+				Set 	oCar.NotificacionesAcuse = vAcuse
+				Set 	oCar.NotificacionesNroAct = vNroAct
+				Set 	oCar.NotificacionesFecha = vFecha
+				Set 	oCar.NotificacionesUnidad = vUnidad
+				
+				oCar.save
+			End If
+		End If
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub NotificarExpediente","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Sub NotificarExpediente","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub TomarConocimiento(vUnidades As Vector)
+		On Error Goto HANDLER		
+		
+		If Me.Caratula.Confidencial Then
+			Error MSG_ERROR_TOMAR_CONOC,MSG_ERROR_TOMAR_CONOC_2 & " : " & Me.Caratula.NroExp
+		End If
+		
+		If Me.Caratula.CantActuaciones <= 2 And Me.Caratula.Estado = ESTADO_EN_TRANSITO Then
+			Error MSG_ERROR_TOMAR_CONOC,MSG_ERROR_TOMAR_CONOC_1
+		End If
+		If Not vUnidades.cantElem > 0 Then
+			Error MSG_ERROR_TOMAR_CONOC,"Parámetro vacío, no hay unidades a procesar."
+		End If
+		
+		Dim vNotif As Vector,vNotifAcusaron As Vector,pos As Long
+		Set vNotif = Me.Caratula.Notificados
+		Set vNotifAcusaron = Me.Caratula.NotificadosAcusaron
+		
+		'Marco acuse en registros de la Carátula
+		Dim i As Integer,vUnidad As New Vector(0),vAcuse As New Vector(0)
+		Set vUnidad=Me.Caratula.NotificacionesUnidad
+		Set vAcuse=Me.Caratula.NotificacionesAcuse
+		Dim vNotifAcusFecha As Vector,vNotifAcusFechaInd As Vector
+		Set vNotifAcusFecha = Me.Caratula.NotificacionesAcusaronFecha
+		Set vNotifAcusFechaInd=Me.Caratula.NotificacionesAcusaronFechaInd
+		
+		Dim j As Integer,sUnidad As String
+		For j = 1 To vUnidades.cantElem
+			sUnidad = vUnidades.getElement(j)
+			If vNotif.isMember(sUnidad,pos,False) Then
+				vNotif.deleteElement pos
+				
+				'Sacar las unidades que ya tomaron conocimiento del campo de notificadas, 
+				'al campo de las que ya acusaron
+				If Not vNotifAcusaron.isMember(sUnidad,pos,False) Then
+					vNotifAcusaron.insertElement sUnidad,vNotifAcusaron.cantElem + 1
+				End If
+				
+				Dim posFecAcuse As Long
+				If vUnidad.isMember(sUnidad,0,False) Then
+					For i=1 To vUnidad.cantElem
+						If Ucase(Trim(vUnidad.getElement(i))) = Ucase(Trim(sUnidad)) Then
+							vAcuse.deleteElement i
+							vAcuse.insertElement "1",i    'Acusó
+							
+							If Not vNotifAcusFechaInd.isMember(i,posFecAcuse,True) Then
+								vNotifAcusFechaInd.insertElement i,vNotifAcusFechaInd.cantElem + 1
+								vNotifAcusFecha.insertElement Now,vNotifAcusFechaInd.cantElem
+							End If					
+						End If
+					Next
+				End If
+				
+				OtorgarPermisoExp Me,sUnidad,True
+				Dim tmpExp As Expediente
+				If Me.Caratula.AgregadosNros.cantElem > 0 Then
+					For i=1 To Me.Caratula.AgregadosNros.cantElem
+						Set tmpExp = New Expediente(Me.Caratula.AgregadosNros.getElement(i),Me.UsuarioAccion)
+						If Not tmpExp.Caratula.Confidencial Then
+							OtorgarPermisoExp tmpExp,sUnidad,False
+							TomarConocDescendientes Me.Caratula.AgregadosNros.getElement(i),sUnidad	
+						End If			
+					Next	
+				End If					
+				
+			End If				
+		Next
+		Set Me.Caratula.NotificacionesAcuse = vAcuse	
+		Set Me.Caratula.NotificacionesAcusaronFecha = vNotifAcusFecha
+		Set Me.Caratula.NotificacionesAcusaronFechaInd = vNotifAcusFechaInd
+		
+		Set Me.Caratula.Notificados = vNotif
+		Set Me.Caratula.NotificadosAcusaron = vNotifAcusaron
+		
+		Me.Caratula.save
+		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método TomarConocimiento","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método TomarConocimiento","","")			
+		End  If
+		
+		Exit Sub			
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub TomarConocDescendientes(sNroExp As String,sUnidad As String)
+		'sNroExp es un hijo del exp. actual(Me)
+		'Se toma conocimiento para los expedientes descendientes no directos
+		On Error Goto HANDLER
+		
+%REM
+	DBSGD_VISTA_CAR_DESC_DESA:
+	Esta vista se usa en las operaciones RecibirDescendientes y DesagregarDescendientes
+	Esta vista solo selecciona las Carátulas que tienen al menos dos padres de Agregación.
+	La idea es obtener cuales son los expedientes Descendientes no directos(no hijos) de un
+	expediente dato. O sea los expedientes cuyo padre actual en la agregación es el expediente
+	principal y cuyo padre anterior es el expeiente a desagregar.
+%END REM
+		
+		Dim db As notesDatabase,viewCarDesc As NotesView
+		Set db=getDBGestion(sNroExp)
+		Set viewCarDesc=db.GetView(DBSGD_VISTA_CAR_DESC_DESA)
+		If Not viewCarDesc Is Nothing Then
+			
+			Dim colCar As NotesDocumentCollection,keys(1 To 2) As String
+			keys(1)=Me.NroExp
+			keys(2)=sNroExp
+			Set colCar=viewCarDesc.GetAllDocumentsByKey(keys,True)
+			
+			If colCar.Count > 0 Then
+				Dim car As NotesDocument,oCar As Caratula,i As Integer
+				Dim oExp As Expediente
+				
+				For i= 1 To colCar.Count
+					Set car =colCar.GetNthDocument(i)
+					Set oCar=New Caratula(NRO_EX_VACIO,False)
+					oCar.Inicializar car
+					
+					Set oExp=New Expediente(oCar.NroExp,usuarioAccion)
+					Set oCar=Nothing
+					
+					OtorgarPermisoExp oExp,sUnidad,False
+				Next			
+			End If			
+		Else
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " " & DBSGD_VISTA_CAR_DESC_DESA
+		End If		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método TomarConocDescendientes","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método TomarConocDescendientes","","")			
+		End  If
+		
+		Exit Sub		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub OtorgarPermisoExp(oExp As Expediente,sUnidad As String,esExpPpal As Integer)
+		'Agrega la unidad al final de la cola de unidades que pueden leer
+		On Error Goto HANDLER		
+		'esExpPpal=true indicaría si estamos trabajando sobre el expediente principal o no
+		
+		If oExp.Caratula.Confidencial Then
+			Exit Sub
+		End If
+		Dim colAct As NotesDocumentCollection
+		Set colAct=oExp.Actuaciones
+		If colAct.Count > 0 Then
+			Dim act As notesdocument,oAct As Actuacion,vLect As Vector
+			Set act=colAct.GetFirstDocument
+			While Not act Is Nothing 
+				If Not (act.GetItemValue(DBSGD_CAMPO_FACTUACION_NRO)(0) >= (oExp.Caratula.CantActuaciones - 1) And _
+				oExp.Caratula.Estado = ESTADO_EN_TRANSITO And esExpPpal) Then
+					If Not (act.GetItemValue(DBSGD_CAMPO_FACTUACION_NRO)(0) = oExp.Caratula.CantActuaciones And esExpPpal) Then
+						Set vLect = New Vector(0)
+						If act.HasItem(CAMPO_FACTUACION_LECT_NOTIFICADOS) Then
+							vLect.values=act.GetItemValue(CAMPO_FACTUACION_LECT_NOTIFICADOS)
+							
+							'If Not vLect.isMember(sUnidad,0,False) Then
+							vLect.insertElement sUnidad,vLect.cantElem + 1
+							'act.ReplaceItemValue CAMPO_FACTUACION_LECT_NOTIFICADOS,vLect.values	
+							act.RemoveItem CAMPO_FACTUACION_LECT_NOTIFICADOS
+							Dim itLect2 As New NotesItem(act,CAMPO_FACTUACION_LECT_NOTIFICADOS,vLect.values	,READERS)
+							act.Save True,False
+							'End If					
+						Else
+							Dim itLect As New NotesItem(act,CAMPO_FACTUACION_LECT_NOTIFICADOS,sUnidad,READERS)
+							act.Save True,False
+						End If		
+					End If					
+				End If				
+				Set vLect = Nothing
+				Set act=colact.GetNextDocument(act)
+			Wend				
+		End If		
+		
+		Exit Sub	
+		
+HANDLER:
+		If Not usuarioAccion Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método OtorgarPermisoExp","",usuarioAccion.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Expediente - Método OtorgarPermisoExp","","")			
+		End  If
+		
+		Exit Sub				
+	End Sub
+	
+'******************************************************************************************************************	
+End Class
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+'******************************************************************************************************************	

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005ABB51'>
+<noteinfo noteid='1ce' unid='E0B34F1A980A9665852566BC003B92AF' sequence='27'>
+<created><datetime dst='true'>19981114T065041,75-04</datetime></created>
+<modified><datetime>20150311T133102,69-03</datetime></modified>
+<revised><datetime>20150309T094423,63-03</datetime></revised>
+<lastaccessed><datetime>20150311T133102,69-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133102,69-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Lotus Notes Template Development/O=Lotus Notes</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Sandra Sayanes/O=ISA</name><name
+>CN=Administrador/O=IMF</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMF</name><name
+>CN=Administrador/O=MEC</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Sandra Sayanes/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060317T103044,50-03</datetime><datetime>20060630T180754,07-03</datetime><datetime
+>20060713T143603,02-03</datetime><datetime>20060802T135149,84-03</datetime><datetime
+>20060802T151926,61-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
++f8gAAAAAAANAAQAqQAAAAAAAAAAAAAAAAAAAAAAAADc/7wA+f+qACBOAAAAAAAAAAB2YXIgbG9j
+ID0gZG9jdW1lbnQubG9jYXRpb24uaHJlZjsNdmFyIHByZWZpeCA9IGxvYy5zdWJzdHIoMCwgbG9j
+Lmxhc3RJbmRleE9mKCIvIikpOw12YXIgbmV3TG9jID0gcHJlZml4ICsgIi9Db250ZW50c0ludHJv
+P09wZW5QYWdlIjsNdG9wLmZyYW1lcy5Ub3BpYy5sb2NhdGlvbiA9IG5ld0xvYzsAAPL/HgASAAEA
+AAAAABIAAAAQAAEABQBUb3BpYwADAA==
+</rawitemdata></item>
+<item name='$INFO' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>$$ViewTemplate for Books</text></item>
+<item name='$TITLE'><text>$$ViewTemplate for Books</text></item>
+<item name='$Comment' sign='true'><text>11-13</text></item>
+<item name='$BODY' sign='true' protected='true'>
+<rawitemdata type='1'>
+gQKC/1IAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJQHAAAAAAAAAAAAAAAAgwQBAIX/CAABAAAJgQKDBAEAhf8IAAEAAAndBgAA
+rf+t/xUAEwAIAAAACQBNYW51YWxlcwBY6v8+ABMAsUQAAGQAWRABAAAJAAAAAAAAAAABAAAKAQAA
+CgAABQD///8AAQAAAAAAAAAAAAAAAAAAAAAAAADt/yAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAK4C3gYAAK4Ahf8IAAEAAAk=
+</rawitemdata></item>
+<item name='$Language' sign='true'><text>es-MX</text></item>
+<item name='$LastBuildTime' sign='true'><datetime>19990412T172048,59+00</datetime></item>
+<item name='$BabelInfo' sign='true'><text>00000142</text></item></note>
+

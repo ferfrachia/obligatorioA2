@@ -1,0 +1,29 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Public
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Function FactoryClass(className As String) As Variant
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public oIgDocConf As Variant
+
+
+'++LotusScript Development Environment:2:1:FactoryClass:1:8
+Function FactoryClass(className As String) As Variant
+	Dim sUsarIgDocConf As String
+	
+	sUsarIgDocConf = | Use "| & className & |"|  & Chr(10) & Chr(13) & | set oIgDocConf = New | & classname & |() |
+	Execute sUsarIgDocConf	
+	Set FactoryClass = oIgDocConf
+	
+End Function

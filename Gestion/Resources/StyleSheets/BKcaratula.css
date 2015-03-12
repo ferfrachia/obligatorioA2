@@ -1,0 +1,107 @@
+/* CSS Document */
+div.fileinputs {
+	position: relative;
+}
+
+input.fakefile { 
+	FONT-WEIGHT: NORMAL; 
+	FONT-FAMILY: Arial, Tahoma, Verdana 
+	FONT-SIZE: 8pt; 
+	MARGIN: 1px 0px 1px 1px; 
+	BORDER-RIGHT: gray 1px solid; 
+	BORDER-TOP: gray 1px solid; 
+	BORDER-LEFT: gray 1px solid; 
+	BORDER-BOTTOM: gray 1px solid; 
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}   
+
+input.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+}
+
+
+ BODY {  font-family: Arial, Helvetica, sans-serif;  background-color: #FFFFFF; }  
+ A:visited {color: black; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none;}  
+ A:link {color: black; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none; }  
+ A:active {  color:blue; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none;}  
+ A:hover {  color: orange; font-size:10px;font-familiy:Tahoma,Arial;text-decoration: none;}  
+ .TablaItems{border:0px solid #97C1AB;}  
+ A.Expediente:visited {color: blue; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none;}  
+ A.Expediente:link {color: blue; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none; }  
+ A.Expediente:active {  color:blue; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none;}  
+ A.Expediente:hover {  color: orange; font-size:10pt;font-familiy:Tahoma,Arial;text-decoration: none;}  
+ .CeldaItems{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:44614E; background-color:F8FBF9;font-family:Tahoma,Arial;font-size:9pt;}  
+ .CeldaContenido{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:0px solid #CED4D6;color:44614E; background-color:F8FBF9;font-family:Tahoma,Arial;font-size:9pt;}  
+ .tdSeleccion{{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:0px solid #CED4D6;color:44614E; background-color:F8FBF9;font-family:Tahoma,Arial;font-size:9pt;}}
+ .CeldaItemsAvisos{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:44614E; background-color:F8FBF9;font-family:Tahoma,Arial;font-size:9pt;}  
+ .CeldaItemsAvisosOvr{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:orange; background-color:BDE4E0;font-family:Tahoma,Arial;font-size:9pt;cursor:pointer;}  
+ .CeldaItems2{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:0px solid #CED4D6;color:44614E; background-color:F8FBF9;font-family:Tahoma,Arial;font-size:9pt;}  
+ .CeldaTitulo{border-left:0px solid #97C1AB; border-right:0px solid #97C1AB; border-top:0px solid #97C1AB; border-bottom:1px solid #CED4D6;color:44614E;background-color:EDF4F0;font-family:Tahoma,Arial;font-size:9pt;}  
+ .CeldaHerramientas{color:44614E ;font-size:9pt;}  
+ .CeldaTituloGris{color:999999;font-family:Tahoma,Arial;font-size:9pt;}  
+ .CampoTransparenteVerde    { font-family: Arial, Verdana , Helvetica, sans-serif;font-size: 11px;color:#000000; border-bottom : solid 1px #CED4D6; border-left : solid 1px #CED4D6; border-right : solid 1px #CED4D6; border-top : solid 1px #CED4D6; background-color: #FFFFFF; }  
+ .EncabezadoCaratula{border-bottom-width :  0 px;border-left-width : 1px;border-right-width : 1px;border-top-width : 1px;border-top : none;}  
+ .CeldaVerdeEncabezado{background-color :#A0C1AA;}  
+ .CeldaTituloEstadoCaratula{border-bottom :  solid 1px #cccccc;border-left-width : 0px;border-right-width : 0px;border-top-width : 0px;border-top : none;font-family:Tahoma,Arial;font-size:9pt;background-color: #F9F9F9;}  
+ .CeldaValorEstadoCaratula{border-bottom :  solid 1px #cccccc;border-left-width : 0px;border-right-width : 0px;border-top-width : 0px;border-top : none;font-family:Tahoma,Arial;font-size:9pt;background-color: #F9F9F9;}  
+ .TituloCaratula{font-family:Tahoma,Arial;font-size:10pt; color:white;}  
+ .NroCaratula{font-family:Tahoma,Arial;font-size:20pt; color:white;}  
+ .TablaEstadoCaratula{background-color: #F9F9F9;}  
+ .DivContenido{overflow:scroll;}  
+ .BarraNavegacion {	 margin-top: 5px;  	margin-bottom: 5px;    	height:30px;   	font-size:1px; }  
+ .BordeNavInf {  	height:5px;  	vertical-align:top;  background-color:white;  	padding:0px;   	font-size:1px;   }   
+ .campo { BORDER-RIGHT: gray 1px solid; BORDER-TOP: gray 1px solid; FONT-WEIGHT: NORMAL; FONT-SIZE: 8pt; MARGIN: 1px 0px 1px 1px; BORDER-LEFT: gray 1px solid; BORDER-BOTTOM: gray 1px solid; FONT-FAMILY: Arial, Tahoma, Verdana }   
+ .active-controls-grid {height: 100%; font: menu;}
+ .active-column-0 {width: 200px;}
+ .active-column-1 {width: 80px; text-align: right;}
+ .active-column-2 {width: 120px;}
+  #grid1 { border: 2px inset; background: white}
+  .TituloSeccionCaratula
+{
+	padding:1px;
+	font-size:8pt;
+	font-family: Tahoma, Verdana, Arial;
+	font-weight:bold;
+	color: #44614E;
+}
+.TablaCaratulaContenedorGrupo 
+{
+	background-color:#A0C1AA;
+	padding: 4px; 2px; 2px; 4px;
+}
+
+.botonConfig{
+	background: #A0C1AA;
+	color: #000000;
+	font-size: 11px;
+	padding: 0px 5px;
+	font-weight: normal;
+	text-decoration: none;
+	border: 1px solid #000000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+/**** GENERALES ****/
+.AnchoTotal {
+	width: 100%;
+}
+
+.AnchoCasiTotal {
+	width: 99%;
+}
+
+.SinBordes {
+	border:none;
+	border-collapse: collapse;
+}
+
+.SinDecoracionTexto{
+	text-decoration: none;
+}

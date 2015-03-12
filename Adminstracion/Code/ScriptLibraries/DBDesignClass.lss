@@ -1,0 +1,966 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Declare
+
+Use "VectorClass 2.05" 
+
+
+%REM
+****************************************************************************************************************
+This library was originally created by Damien Katz of Iris Associates, Aug. 1999
+Modified by Pablo Andrade Abr 2002
+
+Interfase DBDesignClass
+
+(*) = NOT IMPLEMENTED
++   = IMPLEMENTED
+
+	+	Public Sub new( database As NotesDatabase)
+	(*)	Public Property Get formDocuments As Variant
+	(*)	Public Property Get subformDocuments As Variant
+	(*)	Public Property Get pageDocuments As Variant
+	(*)	Public Property Get imageDocuments As Variant
+	(*)	Public Property Get javaResourceDocuments As Variant
+	(*)	Public Property Get allDesignDocuments As Variant
+	(*)	Public Property Get viewDocuments As Variant
+	(*)	Public Property Get folderDocuments As Variant
+	(*)	Public Property Get navigatorDocuments As Variant
+	(*)	Public Property Get framesetDocuments As Variant
+	(*)	Public Property Get scriptLibraryDocuments As Variant
+	(*)	Public Property Get agentDocuments As Variant
+	(*)	Public Property Get databaseScriptDocuments As Variant
+	(*)	Public Property Get outlineDocuments As Variant
+	(*)	Public Property Get sharedFieldDocuments As Variant
+	(*)	Public Property Get replicationSettingsDocuments As Variant
+	(*)	Public Property Get sharedActionDocuments As Variant
+	(*)	Public Property Get iconDocuments As Variant
+	(*)	Public Property Get helpAboutDocuments As Variant
+	(*)	Public Property Get helpUsingDocuments As Variant
+	+	Public Property Get ScriptLibraries As Vector
+	(*)	Public Function getFormByName( formname As String) As NotesDocument
+	(*)	Public Function getViewByName( formname As String) As NotesDocument
+	(*)	Public Function getFramesetByName( formname As String) As NotesDocument
+	(*)	Public Function getFolderByName( formname As String) As NotesDocument
+	+	Public Function getScriptLibraryByName(ByVal formname As String) As NotesDocument
+	(*)	Public Function getImageByName( formname As String) As NotesDocument
+	(*)	Public Function getNavigatorByName( formname As String) As NotesDocument
+	(*)	Public Function getJavaResourceByName( formname As String) As NotesDocument
+	(*)	Public Function getOutlineByName( formname As String) As NotesDocument
+	(*)	Public Function getAgentByName( formname As String) As NotesDocument
+	(*)	Public Function getPageByName( formname As String) As NotesDocument
+	(*)	Public Function getSubformByName( formname As String) As NotesDocument
+	(*)	Public Function getSharedFieldByName( formname As String) As NotesDocument
+	(*)	Public Function designDocumentAliases( doc As NotesDocument) As Variant
+
+
+%END REM
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class DatabaseDesign
+Declare Private Class API_DBDesign As DatabaseDesign
+Declare Private Class Win32DatabaseDesign As API_DBDesign
+Declare Private Class PlatformIndependentDatabaseDesign As DatabaseDesign
+Declare Public Class DBDesign
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'DECLARACIONES
+'Windows only calls.
+Declare Private Function WinNSFDbOpen Lib "nnotes" Alias "NSFDbOpen" ( Byval dbname As Lmbcs String, dbhandle As Long ) As Integer
+Declare Private Function WinNSFDbGetModifiedNoteTable Lib "nnotes" Alias "NSFDbGetModifiedNoteTable"( Byval dbhandle As Long, Byval classmask As Integer, _
+Byval startdate As Double, endate As Double, returntablehandle As Long ) As Integer
+Declare Private Function WinIDEntries Lib "nnotes"Alias "IDEntries"( Byval tablehandle As Long ) As Long
+Declare Private Function WinIDScan Lib "nnotes" Alias "IDScan"( Byval tablehandle As Long, Byval firstbool As Integer, returnid As Long) As Integer
+Declare Private Function WinOSMemFree Lib "nnotes" Alias "OSMemFree" (Byval handle As Long) As Integer
+Declare Private Function WinNSFDbClose Lib "nnotes" Alias "NSFDbClose" ( Byval dbhandle As Long) As Integer
+Declare Private Sub WinTimeConstruct Lib "nnotes" Alias "TimeConstruct" ( Byval adate As Long, Byval atime As Long, datetime As Double)
+
+
+'CONSTANTES PRIVADAS
+'Set this flag to true to always use the platform independent method
+Private Const FLAG_NEVER_USE_NATIVE_API_CALLS =False
+
+Private Const DESIGN_NOTE_NAME_ITEM = "$TITLE"
+
+Private Const NOTE_CLASS_DOCUMENT = &H0001				' document note 
+Private Const NOTE_CLASS_DATA = NOTE_CLASS_DOCUMENT		' old name for document note 
+Private Const NOTE_CLASS_INFO = &H0002					' notefile info (help-about) note 
+Private Const NOTE_CLASS_FORM = &H0004					' form note 
+Private Const NOTE_CLASS_VIEW = &H0008					' view note 
+Private Const NOTE_CLASS_ICON = &H0010					' icon note 
+Private Const NOTE_CLASS_DESIGN = &H0020				' design note collection 
+Private Const NOTE_CLASS_ACL = &H0040					' acl note 
+Private Const NOTE_CLASS_HELP_INDEX = &H0080				' Notes product help index note 
+Private Const NOTE_CLASS_HELP = &H0100					' designer's help note 
+Private Const NOTE_CLASS_FILTER = &H0200				' filter note 
+Private Const NOTE_CLASS_FIELD = &H0400					' field note 
+Private Const NOTE_CLASS_REPLFORMULA = &H0800			' replication formula 
+Private Const NOTE_CLASS_PRIVATE = &H1000		
+
+Private Const NOTE_CLASS_ALLNONDATA = &H7FFE
+
+Private Const DESIGN_FLAG_ADD =	"A"
+Private Const DESIGN_FLAG_ANTIFOLDER		=	"a"		' VIEW: Indicates that a view is an antifolder view 
+Private Const DESIGN_FLAG_BACKGROUND_FILTER = "B"			' FILTER: Indicates FILTER_TYPE_BACKGROUND is asserted 
+Private Const DESIGN_FLAG_INITBYDESIGNONLY="b"			' VIEW: Indicates view can be initially built only by designer and above 
+Private Const DESIGN_FLAG_NO_COMPOSE = "C"				' FORM: Indicates a form that is used only for 
+												' 	query by form (not on compose menu). 
+Private Const DESIGN_FLAG_CALENDAR_VIEW = "c"			' VIEW: Indicates a form is a calendar style view. 
+Private Const DESIGN_FLAG_NO_QUERY  = "D"				' FORM: Indicates a form that should not be used in query by form 
+Private Const DESIGN_FLAG_DEFAULT_DESIGN = "d"			' ALL: Indicates the default design note for it"s class (used for VIEW) 
+Private Const DESIGN_FLAG_MAIL_FILTER = "E"				' FILTER: Indicates FILTER_TYPE_MAIL is asserted 
+Private Const DESIGN_FLAG_PUBLICANTIFOLDER = "e"			' VIEW: Indicates that a view is a public antifolder view 
+Private Const DESIGN_FLAG_FOLDER_VIEW = "F"				' VIEW: This is a V4 folder view. 
+Private Const DESIGN_FLAG_V4AGENT = "f"					' FILTER: This is a V4 agent 
+Private Const DESIGN_FLAG_VIEWMAP = "G"					' VIEW: This is ViewMap/GraphicView/Navigator 
+Private Const DESIGN_FLAG_OTHER_DLG = "H"				' ALL: Indicates a form that is placed in Other... dialog 
+Private Const DESIGN_FLAG_V4PASTE_AGENT = "I"			' FILTER: This is a V4 paste agent 
+Private Const DESIGN_FLAG_IMAGE_RESOURCE = "i"			' FORM: Note is a shared image resource 
+Private Const DESIGN_FLAG_JAVA_AGENT = "J" 				' FILTER: If its Java 
+Private Const DESIGN_FLAG_JAVA_AGENT_WITH_SOURCE = "j" 	' FILTER: If it is a java agent with java source code. 
+Private Const DESIGN_FLAG_LOTUSSCRIPT_AGENT = "L" 		' FILTER: If its LOTUSSCRIPT 
+Private Const DESIGN_FLAG_DELETED_DOCS = "l" 			' VIEW: Indicates that a view is a deleted documents view 
+Private Const DESIGN_FLAG_QUERY_MACRO_FILTER = "M"		' FILTER: Stored FT query AND macro 
+Private Const DESIGN_FLAG_SITEMAP = "m" 				' FILTER: This is a site(m)ap. 
+Private Const DESIGN_FLAG_NEW = "N"					' FORM: Indicates that a subform is listed when making a new form.
+Private Const DESIGN_FLAG_HIDE_FROM_NOTES = "n" 			' ALL: notes stamped with this flag 
+												'	will be hidden from Notes clients 
+												'	We need a separate value here 
+												'	because it Is possible To be
+												'	hidden from V4 AND to be hidden
+												'	from Notes, and clearing one 
+												'	should not clear the other 
+Private Const DESIGN_FLAG_QUERY_V4_OBJECT = "O"			' FILTER: Indicates V4 search bar query object - used in addition to "Q" 
+Private Const DESIGN_FLAG_PRIVATE_STOREDESK = "o" 		' VIEW: If Private_1stUse, store the private view in desktop 
+Private Const DESIGN_FLAG_PRESERVE = "P"				' ALL: related to data dictionary 
+Private Const DESIGN_FLAG_PRIVATE_1STUSE = "p"			' VIEW: This is a private copy of a private on first use view. 
+Private Const DESIGN_FLAG_QUERY_FILTER = "Q"				' FILTER: Indicates full text query ONLY, no filter macro 
+Private Const DESIGN_FLAG_AGENT_SHOWINSEARCH = "q"		' FILTER: Search part of this agent should be shown in search bar 
+Private Const DESIGN_FLAG_REPLACE_SPECIAL = "R"			' SPECIAL: this flag is the opposite of DESIGN_FLAG_PRESERVE, used
+												'	only for the "About" and "Using" notes + the icon bitmap in the icon note 
+Private Const DESIGN_FLAG_PROPAGATE_NOCHANGE = "r" 		' DESIGN: this flag is used to propagate the prohibition of design change 
+Private Const DESIGN_FLAG_V4BACKGROUND_MACRO = "S"		' FILTER: This is a V4 background agent 
+Private Const DESIGN_FLAG_SCRIPTLIB = "s"				' FILTER: A database global script library note 
+Private Const DESIGN_FLAG_VIEW_CATEGORIZED = "T"			' VIEW: Indicates a view that is categorized on the categories field 
+Private Const DESIGN_FLAG_DATABASESCRIPT = "t"			' FILTER: A database script note 
+Private Const DESIGN_FLAG_SUBFORM = "U"					' FORM: Indicates that a form is a subform.
+Private Const DESIGN_FLAG_AGENT_RUNASWEBUSER = "u"		' FILTER: Indicates agent should run as effective user on web 
+
+Private Const DESIGN_FLAG_PRIVATE_IN_DB = "V"			' ALL: This is a private element stored in the database 
+Private Const DESIGN_FLAG_WEBPAGE = "W"					' FORM: Note is a WEBPAGE	
+Private Const DESIGN_FLAG_HIDE_FROM_WEB = "w" 			' ALL: notes stamped with this flag 
+												'	will be hidden from WEB clients 
+' WARNING: A formula that build Design Collecion relies on the fact that Agent Data"s
+'	$Flags is the only Desing Collection element whose $Flags="X" 
+Private Const DESIGN_FLAG_V4AGENT_DATA = "X" 			' FILTER: This is a V4 agent data note 
+Private Const DESIGN_FLAG_SUBFORM_NORENDER = "x"			' SUBFORM: indicates whether
+												'	we should render a subform in
+												'	the parent form					
+Const DESIGN_FLAG_NO_MENU = "Y"						' ALL: Indicates that folder/view/etc. should be hidden from menu. 
+Const DESIGN_FLAG_SACTIONS = "y"						'	Shared actions note	
+Const DESIGN_FLAG_MULTILINGUAL_PRESERVE_HIDDEN = "Z" 		' ALL: Used to indicate design element was hidden 
+												'	before the "Notes Global Designer" modified it. 
+												'	(used with the "!" flag) 
+Const DESIGN_FLAG_FRAMESET = "#"						' FORM: Indicates that this is a frameset note  
+Const DESIGN_FLAG_MULTILINGUAL_ELEMENT = "!"				' ALL: Indicates this design element supports the 
+												'	"Notes Global Designer" multilingual addin 
+Const DESIGN_FLAG_JAVA_RESOURCE = "@"					' FORM: Note is a shared Java resource 
+Const DESIGN_FLAG_HIDE_FROM_V3 = "3"					' ALL: notes stamped with this flag 
+												'	will be hidden from V3 client 
+Const DESIGN_FLAG_HIDE_FROM_V4 = "4"					' ALL: notes stamped with this flag 
+												'	will be hidden from V4 client 
+Const DESIGN_FLAG_HIDE_FROM_V5 = "5"					' FILTER: "Q5"= hide from V4.5 search list 
+												' ALL OTHER: notes stamped with this flag 
+												'	will be hidden from V5 client 
+Const DESIGN_FLAG_HIDE_FROM_V6 = "6"					' ALL: notes stamped with this flag 
+												'	will be hidden from V6 client 
+Const DESIGN_FLAG_HIDE_FROM_V7 = "7"					' ALL: notes stamped with this flag 
+												'	will be hidden from V7 client 
+Const DESIGN_FLAG_HIDE_FROM_V8 = "8"					' ALL: notes stamped with this flag 
+												'	will be hidden from V8 client 
+Const DESIGN_FLAG_HIDE_FROM_V9 = "9"					' ALL: notes stamped with this flag 
+												'	will be hidden from V9 client 
+Const DESIGN_FLAG_MUTILINGUAL_HIDE = "0"				' ALL: notes stamped with this flag 
+												'	will be hidden from the client 
+												'	usage is for different language
+												'	versions of the design list to be
+												'	hidden completely				
+
+'	These are the flags that help determine the type of a design element.
+'	These flags are used to sub-class the note classes, and cannot be
+'	changed once they are created (for example, there is no way to change
+'	a form into a subform). 
+
+Const DESIGN_FLAGS_SUBCLASS = "UW#yi@GFXstm"
+
+'	These are the flags that can be used to distinguish between two
+'	design elements that have the same class, subclass (see DESIGN_FLAGS_SUBCLASS),
+'	and name. 
+
+Const DESIGN_FLAGS_DISTINGUISH = "nw3456789"
+
+Const ERR_BASE_CLASS_INSTANTIATED = 10452
+Const ERR_BASE_CLASS_INSTANTIATED_MESSAGE = "You cannot instantiate this class directly"
+
+
+'*************************************************************************************************************************************************
+Public Class DatabaseDesign
+'*************************************************************************************************************************************************	
+	
+	'PUBLIC MEMBERS
+	Public CacheDocuments As Integer
+	
+	'PRIVATE MEMBERS	
+	Private db As NotesDatabase
+	Private forms As Variant
+	Private views As Variant
+	Private filters As Variant
+	Private fields As Variant
+	
+'*************************************************************************************************************************************************
+	
+	Public Sub new( database As NotesDatabase)
+		If isAbstractClass Then
+			'this prevents the base class from being instantiated directly
+			Error ERR_BASE_CLASS_INSTANTIATED, ERR_BASE_CLASS_INSTANTIATED_MESSAGE
+		End If
+		Set db = database
+		cacheDocuments = True
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Private Function isAbstractClass As Integer
+		'this must be overridden and return false
+		'this prevents the base class from being instantiated directly
+		isAbstractClass = True
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get formDocuments As Variant
+		FormDocuments = getDesignDocuments( NOTE_CLASS_FORM,  "*[" & DESIGN_FLAGS_SUBCLASS & "]*", True)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get subformDocuments As Variant
+		subformDocuments = getDesignDocuments( NOTE_CLASS_FORM, "*[" & DESIGN_FLAG_SUBFORM & "]*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get pageDocuments As Variant
+		pageDocuments = getDesignDocuments( NOTE_CLASS_FORM, "*[" & DESIGN_FLAG_WEBPAGE & "]*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get imageDocuments As Variant
+		imageDocuments = getDesignDocuments( NOTE_CLASS_FORM, "*[" & DESIGN_FLAG_IMAGE_RESOURCE & "]*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get javaResourceDocuments As Variant
+		javaResourceDocuments = getDesignDocuments( NOTE_CLASS_FORM, 	"*[" & DESIGN_FLAG_JAVA_RESOURCE &"]*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get allDesignDocuments As Variant
+		allDesignDocuments = getDesignDocuments( _
+		NOTE_CLASS_FORM Or _
+		NOTE_CLASS_VIEW Or _
+		NOTE_CLASS_ICON Or _
+		NOTE_CLASS_HELP Or _
+		NOTE_CLASS_FILTER  Or _
+		NOTE_CLASS_FIELD Or _
+		NOTE_CLASS_REPLFORMULA Or _
+		NOTE_CLASS_INFO Or _
+		NOTE_CLASS_HELP _  
+		,"*[X]*", True )
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get viewDocuments As Variant
+		viewDocuments = getDesignDocuments( NOTE_CLASS_VIEW,  "*["&DESIGN_FLAGS_SUBCLASS & "]*", True )		
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get folderDocuments As Variant
+		folderDocuments = getDesignDocuments( NOTE_CLASS_VIEW,  "*["& DESIGN_FLAG_FOLDER_VIEW & "]*", False )
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get navigatorDocuments As Variant
+		navigatorDocuments = getDesignDocuments( NOTE_CLASS_VIEW,  "*["& DESIGN_FLAG_VIEWMAP & "]*", False )
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get framesetDocuments As Variant
+		FramesetDocuments = getDesignDocuments( NOTE_CLASS_FORM, 	"*[" & DESIGN_FLAG_FRAMESET & "]*", False )
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get scriptLibraryDocuments As Variant
+		scriptLibraryDocuments = getDesignDocuments( NOTE_CLASS_FILTER, "*[" & DESIGN_FLAG_SCRIPTLIB & "]*", False )		
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get agentDocuments As Variant
+		agentDocuments = getDesignDocuments( NOTE_CLASS_FILTER, "*[" & DESIGN_FLAGS_SUBCLASS & "]*", True)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get databaseScriptDocuments As Variant
+		databaseScriptDocuments = getDesignDocuments( NOTE_CLASS_FILTER, "*[" & DESIGN_FLAG_DATABASESCRIPT & "]*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get outlineDocuments As Variant
+		outlineDocuments = getDesignDocuments( NOTE_CLASS_FILTER, "*[" & DESIGN_FLAG_SITEMAP & "]*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get sharedFieldDocuments As Variant
+		sharedFieldDocuments = getDesignDocuments( NOTE_CLASS_FIELD, "*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get replicationSettingsDocuments As Variant
+		replicationSettingsDocuments = getDesignDocuments(NOTE_CLASS_REPLFORMULA, "*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get sharedActionDocuments As Variant
+		sharedActionDocuments = getDesignDocuments(NOTE_CLASS_FORM , "*[" & DESIGN_FLAG_SACTIONS & "]*", False)
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get iconDocuments As Variant
+		iconDocuments = getDesignDocuments(NOTE_CLASS_ICON , "*", False)		
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get helpAboutDocuments As Variant
+		helpAboutDocuments = getDesignDocuments(NOTE_CLASS_INFO , "*", False)	
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get helpUsingDocuments As Variant
+		helpUsingDocuments = getDesignDocuments(NOTE_CLASS_HELP , "*", False)	
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getFormByName( formname As String) As NotesDocument
+		Set getFormByName = findElementByTitle( formname, Me.formDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getViewByName( formname As String) As NotesDocument
+		Set getViewByName = findElementByTitle( formname, Me.viewDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getFramesetByName( formname As String) As NotesDocument
+		Set getFramesetByName = findElementByTitle( formname, Me.framesetDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getFolderByName( formname As String) As NotesDocument
+		Set getFolderByName = findElementByTitle( formname, Me.folderDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getScriptLibraryByName( formname As String) As NotesDocument
+		Set getScriptLibraryByName = findElementByTitle( formname, Me.scriptLibraryDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getImageByName( formname As String) As NotesDocument
+		Set getImageByName = findElementByTitle( formname, Me.imageDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getNavigatorByName( formname As String) As NotesDocument
+		Set getNavigatorByName = findElementByTitle( formname, Me.navigatorDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getJavaResourceByName( formname As String) As NotesDocument
+		Set getJavaResourceByName = findElementByTitle( formname, Me.javaResourceDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getOutlineByName( formname As String) As NotesDocument
+		Set getOutlineByName = findElementByTitle( formname, Me.outlineDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getAgentByName( formname As String) As NotesDocument
+		Set getAgentByName = findElementByTitle( formname, Me.agentDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getPageByName( formname As String) As NotesDocument
+		Set getPageByName = findElementByTitle( formname, Me.pageDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getSubformByName( formname As String) As NotesDocument
+		Set getSubformByName = findElementByTitle( formname, Me.subformDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getSharedFieldByName( formname As String) As NotesDocument
+		Set getSharedFieldByName = findElementByTitle( formname, Me.sharedFieldDocuments)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Public Function designDocumentAliases( doc As NotesDocument) As Variant
+		'some design element aliases are stored as a mulivalue item
+		'others are stored as a pipe delimited single value item
+		'if the item is a multi value, then don't worry about exploding it
+		'otherwise, explode the single item
+		Dim aliases As Variant
+		aliases = doc.getItemValue( DESIGN_NOTE_NAME_ITEM)
+		If Ubound( aliases) = 0 Then
+			aliases = strExplode( aliases(0), "|", False)
+		End If
+		designDocumentAliases = aliases
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function getDocuments( classtype As Integer) As Variant
+		'this must be overridden
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function getDesignDocuments( classtype As Integer, flagslike As String, invertlike As Integer ) As Variant
+		Dim unfilteredResults As Variant
+		If cacheDocuments Then
+			Select Case classtype
+			Case NOTE_CLASS_FORM:
+				If Isempty( forms) Then
+					forms = getDocuments( classtype )
+				End If
+				unfilteredResults = forms
+			Case NOTE_CLASS_VIEW:
+				If Isempty( views) Then
+					views = getDocuments( classtype )
+				End If
+				unfilteredResults = views
+			Case NOTE_CLASS_FILTER:
+				If Isempty( filters) Then
+					filters = getDocuments( classtype )
+				End If
+				unfilteredResults = filters
+			Case NOTE_CLASS_FIELD:
+				If Isempty( fields) Then
+					fields = getDocuments( classtype )
+				End If
+				unfilteredResults = fields
+			Case Else:
+				unfilteredResults = getDocuments( classtype )
+			End Select
+		Else
+			unfilteredResults = getDocuments( classtype )
+		End If
+		
+		If Not Isempty(unfilteredResults) Then
+			Dim count As Integer
+			Redim results(Ubound(unfilteredResults)) As Variant
+			Forall note In unfilteredResults
+				If Not note Is Nothing Then
+					If note.getItemValue( "$Flags")(0) Like flagslike Xor invertlike Then
+						Set results(count) = note
+						count = count + 1
+					End If
+				End If
+			End Forall
+			If Ubound(results) > count - 1And count > 0 Then
+				Redim Preserve results( count - 1) As Variant
+			End If
+			If count > 0 Then
+				getDesignDocuments = results
+			End If
+		End If
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function findElementByTitle(Byval title As String, elements As Variant) As NotesDocument
+		If Not Isempty( elements) Then
+			title= Trim(Lcase( replaceSubstring( title , "_", "")))
+			Forall elementdoc In elements
+				Dim doc As notesdocument
+				Set doc = elementdoc
+				If doesMatchTitle( title, doc) Then
+					Set findElementByTitle = elementdoc
+					Exit Function
+				End If
+			End Forall
+		End If
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function doesMatchTitle( Byval titletoMatch As String, doc As notesdocument) As Integer
+		'titletomatch must be all lowercase
+		Dim aliases As Variant
+		aliases = designDocumentAliases( doc )
+		
+		Forall analias In aliases
+			If replaceSubstring(Lcase(Trim(analias)), "_", "") = titleToMatch Then
+				doesMatchTitle = True
+				Exit Function
+			End If
+		End Forall
+		
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function replaceSubstring( Byval astring As String, substring As String, newsubstring As String) As String
+		Dim index As Integer
+		index = Instr( astring, substring)
+		Do While index > 0
+			replaceSubstring = Left$( astring, index - 1) & newsubstring
+			astring = Right$( astring, Len(astring) - index - Len( substring) + 1 )
+			index = Instr( astring, substring)			
+		Loop
+		replaceSubstring = replaceSubstring & astring
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function strExplode( Byval strValue As String, strDelimiter As String, bBlanks As Variant) As Variant
+'** This function takes a string and converts it to an array, based on a delimiter
+		
+'** Parameters:
+'**strValue- the string to explode
+'**strDelimiter- the delimiter
+'**bBlanks- a boolean value, pass true to have blanks placed in array when two delimiters have nothing between them
+'**                                          pass false to ignore the blanks
+		
+		Dim strTemp As String
+		Dim strValues() As String
+		Dim iPlace As Integer
+		Dim idelimLen As Integer
+		Dim iValueCount As Integer
+		
+		idelimLen = Len( strDelimiter)
+		
+		iPlace = Instr( strValue, strDelimiter)
+		
+		Do While iPlace <> 0
+			
+			If (iPlace <> 1 Or bBlanks) Then
+				Redim Preserve strValues(iValueCount) As String
+				strValues(iValueCount) = Left( strValue, iPlace - 1)
+				iValueCount = iValueCount + 1
+			End If
+			
+			strValue = Right( strValue, Len( strValue) - iPlace - idelimLen + 1)
+			
+			iPlace = Instr( strValue, strDelimiter)
+			
+		Loop 
+		
+		If Len( strValue ) <> 0 Or bBlanks Then
+			Redim Preserve strValues(iValueCount) As String 
+			strValues(iValueCount) = strValue
+		Elseif iValueCount = 0 Then
+			Redim Preserve strValues(iValueCount) As String
+		End If
+		
+		STRExplode = strValues
+		
+	End Function
+	
+'*************************************************************************************************************************************************
+End Class
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+
+
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+Private Class API_DBDesign As DatabaseDesign
+'*************************************************************************************************************************************************
+	
+	Private dbhandle As Long
+	
+'*************************************************************************************************************************************************
+	
+	Sub new( db As NotesDatabase)
+		Dim netpath As String
+		If Len(db.server) > 0 Then
+			netpath = db.server & "!!" & db.filepath
+		Else
+			netpath = db.filepath
+		End If
+		
+		Call checkerror(apiNSFDBOpen(netpath, dbhandle ))
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Sub delete		
+		If dbhandle <> 0 Then
+			Call apiNSFDbClose( dbhandle)
+		End If
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Private Function checkerror( returncode As Integer)  As Integer
+		'this returns zero unless returncode is non-zero
+		'in which case it throws an error
+		If returncode <> 0 Then
+			Error returncode, Hex$( returncode)
+		End If
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiNSFDbOpen ( Byval dbname As String, dbhandle As Long ) As Integer		
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiNSFDbGetModifiedNoteTable( Byval dbhandle As Long, Byval classmask As Integer, Byval startdate As Double, endate As Double, returntablehandle As Long ) As Integer
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiIDEntries ( Byval tablehandle As Long ) As Long		
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiIDScan( Byval tablehandle As Long, Byval firstbool As Integer, returnid As Long) As Integer
+	End Function
+	
+'*************************************************************************************************************************************************
+	Private Function apiOSMemFree (Byval handle As Long) As Integer
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiNSFDbClose( Byval dbhandle As Long) As Integer		
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Sub apiTimeConstruct( Byval adate As Long, Byval atime As Long, datetime As Double)
+	End Sub	
+	
+'*************************************************************************************************************************************************
+	
+	Private Function getDocuments( classtype As Integer) As Variant
+		Dim begindate As Double
+		Dim enddate As Double
+		Dim idtablehandle As Long
+		Dim noteid As Long
+		Call apiTimeConstruct( &hFFFFFFFF, &hFFFFFFFF, begindate )
+		On Error Goto errhandle
+		Call checkerror(apiNSFDbGetModifiedNoteTable( dbhandle, classtype, begindate , enddate , idtablehandle ))
+		If apiIDEntries( idtablehandle) <>0 Then
+			Redim returnval (apiIDEntries( idtablehandle)-1) As NotesDocument
+			
+			Dim count As Long
+			If apiIDScan( idtablehandle, True,  noteid ) Then
+				Set returnval( count) = db.getDocumentByID(Hex$( noteId))
+				Do While apiIDScan( idtablehandle, False,  noteid )
+					count = count + 1
+					Set returnval( count) = db.getDocumentByID(Hex$( noteId))
+				Loop
+			End If
+			getDocuments = returnval
+		End If
+done:
+		If idtablehandle <>0 Then
+			Call apiOsMemFree( idtablehandle)
+		End If
+		Exit Function
+errhandle:
+		Resume done
+	End Function
+	
+'*************************************************************************************************************************************************
+End Class
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+
+
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+Private Class Win32DatabaseDesign As API_DBDesign
+'*************************************************************************************************************************************************
+	
+'*************************************************************************************************************************************************
+	
+	Sub new( db As NotesDatabase)
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiNSFDbOpen ( Byval dbname As String, dbhandle As Long ) As Integer		
+		apiNSFDbOpen = winNSFDbOpen ( dbname, dbhandle ) 
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiNSFDbGetModifiedNoteTable( Byval dbhandle As Long, Byval classmask As Integer, Byval startdate As Double, endate As Double, returntablehandle As Long ) As Integer
+		apiNSFDbGetModifiedNoteTable = winNSFDbGetModifiedNoteTable(dbhandle, classmask,startdate , endate , returntablehandle )
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiIDEntries ( Byval tablehandle As Long ) As Long
+		apiIDEntries = winIDEntries(tablehandle)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiIDScan( Byval tablehandle As Long, Byval firstbool As Integer, returnid As Long) As Integer
+		apiIDScan = winIDScan( tablehandle , firstbool, returnid)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiOSMemFree (Byval handle As Long) As Integer
+		apiOSMemFree = winOSMemFree (handle)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function apiNSFDbClose( Byval dbhandle As Long) As Integer
+		apiNSFDbClose = winNSFDbClose(dbhandle)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Sub apiTimeConstruct( Byval adate As Long, Byval atime As Long, datetime As Double)
+		Call winTimeConstruct( adate ,atime, datetime)
+	End Sub	
+	
+'*************************************************************************************************************************************************
+	
+	Private Function isAbstractClass As Integer
+		isAbstractClass = False
+	End Function
+	
+'*************************************************************************************************************************************************
+End Class
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+
+
+Private Const DB_DESIGN_LOOKUP_VIEW = "($DBDesignLookup)"
+
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+Private Class PlatformIndependentDatabaseDesign As DatabaseDesign
+'*************************************************************************************************************************************************
+	
+	Private session As NotesSession
+	Private currentDB As NotesDatabase
+	Private designViewNote As NotesDocument
+	
+'*************************************************************************************************************************************************
+	
+	Public Sub new( db As NotesDatabase)
+		Dim designViewTemplateNote As NotesDocument
+		Dim tempView As NotesView
+		Dim designCollectionNote As NotesDocument
+		
+		'get a view any view will do
+		Set tempView = db.views(0)
+		Set designViewTemplateNote = db.getDocumentByUnid( tempView.universalID)
+		Set designViewNote = designViewTemplateNote.copyToDatabase(db)
+		Set designCollectionNote =  db.getdocumentbyid( "FFFF0020")
+		'strip off all the items
+		Forall item In designViewNote.items
+			item.remove
+		End Forall
+		designCollectionNote.copyAllItems designViewNote
+		designViewNote.replaceItemValue DESIGN_NOTE_NAME_ITEM, "(TemporaryDesignViewNote" & designViewNote.noteID & ")"
+		
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Public Sub delete
+		If Not designViewNote.isNewNote Then
+			designViewNote.remove True
+		End If
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Private Function isAbstractClass As Integer
+		isAbstractClass = False
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+	Private Function getDocuments( classtype As Integer) As Variant
+		Dim view As NotesView
+		Dim note As NotesDocument
+		Dim count As Integer
+		Dim results() As Variant
+		
+		'reset the design view note so it refreshs
+		designViewNote.removeItem "$Collection"
+		designViewNote.replaceItemValue "$Collection", ""
+		'set the classtype
+		designViewNote.replaceItemValue "$FormulaClass", Cstr(classType)
+		designViewNote.save True, True
+		Set view = db.getView( designViewNote.getItemValue( DESIGN_NOTE_NAME_ITEM)(0))
+		view.refresh
+		Set note = view.getFirstDocument
+		Do While Not note Is Nothing
+			If note.noteID  <> designViewNote.noteID Then  'Don't return the temp design view
+				Redim Preserve results(count) As Variant
+				Set results(count) = note
+				count = count + 1
+			End If
+			Set note = view.getNextDocument( note)
+		Loop
+		Delete view
+		If count > 0 Then
+			getDocuments = results
+		End If
+	End Function
+	
+'*************************************************************************************************************************************************
+End Class
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+
+
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************
+Public Class DBDesign
+'*************************************************************************************************************************************************
+	
+	Public Design As DatabaseDesign
+	
+'*************************************************************************************************************************************************
+	
+	Public Sub new(db As NotesDatabase)
+		On Error Goto DBDESIGN_HANDLER
+		
+		Call GetDatabaseDesign(db)
+		Exit Sub
+		
+DBDESIGN_HANDLER:
+		Error Err,Error
+		Exit Sub
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Public Sub delete
+	'Destructor de la clase
+		Delete Design
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Private Sub GetDatabaseDesign(db As NotesDatabase)
+	'This function should be called to instantiate
+		On Error Goto errhandle
+		Dim session As New notessession
+		If  FLAG_NEVER_USE_NATIVE_API_CALLS Then
+			Set Design = New PlatformIndependentDatabaseDesign( db)
+		Else
+			Select Case session.platform
+			Case "Windows/32":
+				Set Design = New Win32DatabaseDesign( db)
+%REM  
+	This is commented out because getting it to work on the mac was problematic
+		Case "Macintosh":
+			Set createDatabaseDesign = New MacDatabaseDesign( db)
+%END REM
+			Case Else:
+				On Error Goto 0
+				Set Design = New PlatformIndependentDatabaseDesign( db)
+			End Select	
+		End If
+done:
+		Exit Sub
+errhandle:
+		Set Design = New PlatformIndependentDatabaseDesign( db)
+		Resume done
+	End Sub
+	
+'*************************************************************************************************************************************************
+	
+	Public Property Get ScriptLibraries As Vector
+	'Retorna un Vector con los nombre de todas las bilbiotecas de la base de datos
+		Dim valores As Variant, i As Integer
+		
+		valores = Design.scriptLibraryDocuments
+		Set ScriptLibraries = New Vector(0)
+		
+		If Isarray(valores) Then
+			For i = Lbound(valores) To Ubound(valores)
+				ScriptLibraries.InsertElement valores(i).getItemValue("$TITLE")(0),1 + ScriptLibraries.CantElem	
+			Next
+		End If
+		
+	End Property
+	
+'*************************************************************************************************************************************************
+	
+	Public Function getScriptLibraryByName(Byval formname As String) As NotesDocument
+	' Retorna el documento de diseño segun el nombre de parametro
+		Set getScriptLibraryByName = Design.getScriptLibraryByName(formname)
+	End Function
+	
+'*************************************************************************************************************************************************
+	
+End Class
+'*************************************************************************************************************************************************
+'*************************************************************************************************************************************************

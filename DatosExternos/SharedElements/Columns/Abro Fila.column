@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059D1A3'>
+<noteinfo noteid='1d6' unid='881DB23733ADC3E203257583003EDF46' sequence='15'>
+<created><datetime>20090324T082643,90-03</datetime></created>
+<modified><datetime>20150311T132104,84-03</datetime></modified>
+<revised><datetime>20150309T094359,04-03</datetime></revised>
+<lastaccessed><datetime>20150311T132104,84-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132104,84-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=CURSO</name><name
+>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Victoria Acuña/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$SourceSeqTime' sign='true'><datetime>20090324T082643,77-03</datetime></item>
+<item name='$SourceSequence' sign='true'><text>00000001</text></item>
+<item name='$SourceURL' sign='true'><textlist><text>Notes:///0325758200707FED//881DB23733ADC3E203257583003EDF46</text><text
+>Notes:///0325758200707FED:0325758200707FED:C5549647//26A</text></textlist></item>
+<item name='$ClassName' sign='true'><text>View</text></item>
+<item name='$SourceDbPath' sign='true'><text>CN=Desarrollo/O=DesarrolloISA!!igDoc\DatosExternos.nsf</text></item>
+<item name='$CacheDocVersion' sign='true'><number>1</number></item>
+<item name='$TITLE' sign='true'><text>Abro Fila</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+OgECAA4BAgAkMwEACAA8VFIgaWQ9IpAAVgEiAgEAGgAiIGNsYXNzPSJGaWxhRGF0b0V4dGVybm8i
+ICICAQBLACAgICAgICAgICBvbk1vdXNlT3Zlcj0idGhpcy5jbGFzc05hbWUgPSAmcXVvdDtGaWxh
+RGF0b0V4dGVybm9PdnImcXVvdDsgOyIgIAAiAgEARwAgICAgICAgICAgb25Nb3VzZU91dD0idGhp
+cy5jbGFzc05hbWUgPSAmcXVvdDtGaWxhRGF0b0V4dGVybm8mcXVvdDsgOyIgIAAiAgEALAAgICAg
+ICAgICAgb25DbGljaz0iYWJyb0RhdG9FeHRlcm5vKHRoaXMpOyIgPiICAwAFAB4AGQADAAIACQAE
+ACQzJENvbmZsaWN0JFJFRgAEAAQAAAAIAGYAAwA=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAQAFZDAAACAAIALgEAAEcABQAACAAAAAAAAAAAAAICAAAAJDNUUi4BAgAOAQIAJDMB
+AAgAPFRSIGlkPSKQAFYBIgIBABoAIiBjbGFzcz0iRmlsYURhdG9FeHRlcm5vIiAiAgEASwAgICAg
+ICAgICAgb25Nb3VzZU92ZXI9InRoaXMuY2xhc3NOYW1lID0gJnF1b3Q7RmlsYURhdG9FeHRlcm5v
+T3ZyJnF1b3Q7IDsiICAAIgIBAEcAICAgICAgICAgIG9uTW91c2VPdXQ9InRoaXMuY2xhc3NOYW1l
+ID0gJnF1b3Q7RmlsYURhdG9FeHRlcm5vJnF1b3Q7IDsiICAAIgIBACwAICAgICAgICAgIG9uQ2xp
+Y2s9ImFicm9EYXRvRXh0ZXJubyh0aGlzKTsiID4iAgMABwAeABcACTFTMlM2UzdTOVIxMFMxMVIx
+MlMxM1IAJgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAA
+AAAAAAAAAAAAAQAAAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAA
+AAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAAAAAAAEAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>^Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

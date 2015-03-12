@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E050059030D" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="ac2" sequence="84" unid="384E82F8AA57D6A583257609007E04C1">
+<created><datetime>20090805T195627,53-03</datetime></created>
+<modified><datetime>20150311T131226,70-03</datetime></modified>
+<revised><datetime>20150309T094449,81-03</datetime></revised>
+<lastaccessed><datetime>20150311T131226,70-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131226,70-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$TITLE" sign="true"><text>estiloMenu.css</text></item>
+<item name="$FileModDT" sign="true"><datetime>20090812T180321,11-03</datetime></item>
+<item name="$Flags"><text>34C=Q</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+
+<item name="$FileNames" sign="true"><text>estiloMenu.css</text></item></note>

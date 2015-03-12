@@ -1,0 +1,318 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "ClaseConfDocumentos"
+Use "IGDocConfig"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class AuditoriaBean
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Class AuditoriaBean
+	Private url As String
+	Private accion As String 
+	Private fecha As String 
+	Private tipoDoc As String 
+	Private numero As String
+	Private usuario As String
+	Private parametros As String
+	
+	
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Sub new (doc As NotesDocument)
+		On Error Goto handler
+		Dim nInt As notesInternational
+		Dim ses As New NotesSession
+		Dim dtFecha As NotesDateTime
+		Dim nName As NotesName
+		Dim posUrl As Integer
+		Dim c As New IGDocConfig
+		Dim urlTemp As String
+		
+		Set nInt = ses.International
+		
+		Set dtFecha = New notesDateTime(doc.GetItemValue("fFecha")(0))
+		
+		If nInt.IsTime24Hour Then
+			fecha = dtFecha.DateOnly & " " & Left(dtFecha.TimeOnly,5) 
+		Else
+			fecha = dtFecha.DateOnly & " " & Left(dtFecha.TimeOnly,5) & " " & Right(dtFecha.TimeOnly,4)	
+		End If	
+		
+		accion = doc.GetItemValue("sOperacion")(0)
+		tipoDoc = doc.GetItemValue("sTipoDocumento")(0)
+		numero = Cstr(doc.GetItemValue("sNroDocumento")(0))
+		Set nName = New NotesName(doc.GetItemValue("nbUsuario")(0))
+		usuario = Strconv(nName.Common,3) ' El 3 es properCase
+		
+		urlTemp =  doc.HttpURL
+		posUrl = Instr (urlTemp, "://" )
+		If posUrl > 0 Then
+			posUrl = posUrl + 3
+		Else
+			posUrl = 1
+		End If
+		
+	'  para sacar el host q trae la url del doc busco la siguiente "/" comenzando en la posicion obtenida
+		posUrl = Instr (posUrl, urlTemp, "/")	
+		
+	'  sustituyo el host q trae la url del doc por el que esta en la configuracion
+		url = c.Protocolo+"://" & c.Host  & ":" & c.Puerto & "/" & Right(urlTemp, Len(urlTemp)-posUrl)
+		
+	'  Parametros de la operacion
+		parametros = doc.GetItemValue("SPARAMOPERACION")(0)
+		
+		Exit Sub
+handler:
+		Msgbox "ERROR " & Erl & " " & Err & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Procedimiento new","")
+		
+		Exit Sub
+	End Sub
+	
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get urlDoc As String
+		On Error Goto HANDLER
+		urlDoc = url
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get urlDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get accionDoc As String
+		On Error Goto HANDLER
+		accionDoc = getOperacion(accion)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get accion","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get fechaDoc As String
+		On Error Goto HANDLER
+		fechaDoc = fecha
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get fechaDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get tipo As String
+		On Error Goto HANDLER
+		tipo = tipoDoc
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get tipo","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get numeroDoc As String
+		On Error Goto HANDLER
+		numeroDoc = numero
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get numero","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get usuarioDoc As String
+		On Error Goto HANDLER
+		usuarioDoc = usuario
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get urlDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get parametrosDoc As String
+		On Error Goto HANDLER
+		parametrosDoc = parametros
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get urlDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Private Function getOperacion(cod As String) As String
+		Dim operacion As String
+		
+		operacion = Lcase(cod)
+		If Instr(operacion,"acc_") > 0 Then
+			operacion = Lcase(Strright(operacion,"acc_"))
+		'operacion=Strconv(operacion, SC_ProperCase)
+		End If
+		
+		Select Case(operacion)
+		Case "add_lect_confidencial":		
+			getOperacion = "Agregar Lectores Confidencialidad"	
+		Case "agregar anexo":		
+			getOperacion = "Agregar Anexo"	
+		Case "agregar":		
+			getOperacion = "Agregar"	
+		Case "agregar_asunto_exp":
+			getOperacion = "Agregar Asunto Expediente"	
+		Case "agregar_asunto_sesion":
+			getOperacion = "Agregar Asunto Sesión"	
+		Case "agregar_firma":
+			getOperacion = "Firmar"	
+		Case "agregar_rol":
+			getOperacion = "Agregar Rol"	
+		Case "agregar_usuario":
+			getOperacion = "Agregar Usuario"	
+		Case "anular_pase":
+			getOperacion = "Anular Pase"	
+		Case "anular_ree":
+			getOperacion = "Anular Responder"	
+		Case "aprobar_asunto":
+			getOperacion = "Aprobar Asunto"	
+		Case "archivar":
+			getOperacion = "Archivar"	
+		Case "archivarcc":
+			getOperacion = "Archivar CC"			
+		Case "asignar":
+			getOperacion = "Asignar"			
+		Case "borrar_punto":
+			getOperacion = "Borrar Punto"	
+		Case "cambio_en_paquete_de_caratula":
+			getOperacion = "Cambio en Paquete de Caratula"	
+		Case "carat_edit":
+			getOperacion = "Editar Carátula"	
+		Case "crear":
+			getOperacion = "Crear"	
+		Case "crear_acta_sesion":
+			getOperacion = "Finalizar Sesión"	
+		Case "crear_asunto_extra":
+			getOperacion = "Nuevo Asunto Extra"	
+		Case "crear_firmar":
+			getOperacion = "Crear y Firmar"	
+		Case "crear_resp":
+			getOperacion = "Responder"	
+		Case "crear_resp_cc":
+			getOperacion = "Responder CC"	
+		Case "crear_resp_firmar":
+			getOperacion = "Responder y Firmar"	
+		Case "crear_sesion":
+			getOperacion = "Nueva Sesión"	
+		Case "crear_unidad":
+			getOperacion = "Crear Unidad"	
+		Case "ctrl_editar_pto":
+			getOperacion = "Editar Asunto"	
+		Case "del_lect_confidencial":
+			getOperacion = "Borrar Lectores Confidencialidad"	
+		Case "devolver":
+			getOperacion = "Devolver"	
+		Case "desagregar":
+			getOperacion = "Desagregar"	
+		Case "editar":
+			getOperacion = "Editar Carta"	
+		Case "editar_actuacion":
+			getOperacion = "Editar Actuación"	
+		Case "enviar" :
+			getOperacion = "Enviar"	
+		Case "enviar_pase" :
+			getOperacion = "Enviar a Pase"	
+		Case "firmar":
+			getOperacion = "Firmar"	
+		Case "firmar_enviar":
+			getOperacion = "Firmar y Enviar"	
+		Case "firmarpasar":
+			getOperacion = "Firmar y Pasar"	
+		Case "liberar":
+			getOperacion = "Liberar"	
+		Case "marcar_exp":
+			getOperacion = "Marcar Expediente"	
+		Case "marcarconfidencial":
+			getOperacion = "Marcar Confidencial"	
+		Case "modif_plazo":
+			getOperacion = "Modificar Plazo"	
+		Case "para_firmar":
+			getOperacion = "Para Firmar"	
+		Case "pase":
+			getOperacion = "Pase"	
+		Case "publicar_sesion":
+			getOperacion = "Publicar Sesión"	
+		Case "quitar anexo":
+			getOperacion = "Quitar Anexo"	
+		Case "quitar_rol":
+			getOperacion = "Quitar Rol"	
+		Case "quitar_usuario":
+			getOperacion = "Quitar Usuario"	
+		Case "quitarconfidencialidad":
+			getOperacion = "Quitar Confidencialidad"	
+		Case "recibir", "recibircs":
+			getOperacion = "Recibir"	
+		Case "reenviar":
+			getOperacion = "Reenviar"	
+		Case "reenviar_cc":
+			getOperacion = "Reenviar CC"	
+		Case "reservar":
+			getOperacion = "Reservar"	
+		Case "ressesion":
+			getOperacion = "Restringir Sesión"	
+		Case "retirar_asunto_previo_sesion":
+			getOperacion = "Retirar Asunto Previo Sesión"	
+		Case "saco_archivar", "sacar_archivo":
+			getOperacion = "Desarchivar"	
+		Case "set_paquete":
+			getOperacion = "Paquete en Oficina"	
+		Case "tomarconocimiento", "tomar_conocimiento":
+			getOperacion = "Tomar Conocimiento"	
+		Case "modificar_notificacion_diaria":
+			getOperacion = "Administraci&oacute;n - Modificar Notificación Diaria"
+		Case "agregar_lista_destinatarios_notif_diaria"	
+			getOperacion = "Administraci&oacute;n -Agregar Destinatarios Notificacion Diaria"
+		Case "sacar_lista_destinatarios_notif_diaria"
+			getOperacion = "Administraci&oacute;n -Sacar Destinatarios Notificación Diaria"
+		Case "modificar_notificacion_diaria_unidades"		
+			getOperacion = "Administraci&oacute;n -Modificar Notificación Diaria de Unidades"
+		Case "sacar_lista_destinatarios_notif_diaria_unidades"	
+			getOperacion = "Administraci&oacute;n -Sacar Destinatarios Notificación Diaria de Unidades"
+		Case "agregar_lista_destinatarios_notif_diaria_unidades"
+			getOperacion = "Administraci&oacute;n -Agregar Destinatarios Notificación Diaria de Unidades"
+		Case "modificar_notificacion_de_archivado"
+			getOperacion = "Administraci&oacute;n -Modificar Notificación de Archivado"
+		Case "modificar_notificacion_de_resolucion"	
+			getOperacion = "Administraci&oacute;n -Modificar Notificación de Resolución"
+		Case "modificar_notificacion_de_exp_para_recibir"
+			getOperacion = "Administraci&oacute;n -Modificar Notificacion de Expediente para Recibir"
+		Case "modificar_notificacion_de_exp_para_firmar"
+			getOperacion = "Administraci&oacute;n -Modificar Notificación de Expediente para Firmar"
+		Case "modificar_notificacion_de_expiracion"		
+			getOperacion = "Administraci&oacute;n -Modificar Notificación de Expiración de Expediente"
+		Case "modificar_notificacion_de_jefe_expiracion"	
+			getOperacion = "Administraci&oacute;n -Modificar Notificación de Vencimiento de Expediente"
+		Case "modificar_cant_dias_actuacion_interna"
+			getOperacion = "Administraci&oacute;n -Modificar Cantidad de Días de Actuación de Unidad Interna"
+		Case "modificar_cant_dias_actuacion_externo"	
+			getOperacion = "Administraci&oacute;n -Modificar Cantidad de Días de Actuación de Unidad Externa"
+		Case "modificar_tamaño_anexos"
+			getOperacion = "Administraci&oacute;n -Modificar Tamaño de Anexos"
+		Case "modificar_cantidad_anexos"	
+			getOperacion = "Administraci&oacute;n -Modificar Cantidad Máxima de Anexos"
+		Case "modificar_tiempo_devolución"		
+			getOperacion = "Administraci&oacute;n -Modificar Tiempo de Devolución"
+		Case "modificar_cantidad_devoluciones"
+			getOperacion = "Administraci&oacute;n -Modificar Cantidad de Devoluciones"
+		Case "modificar_tiempo_auditoria"
+			getOperacion = "Administraci&oacute;n -Modificar Tiempo de Auditoría"
+		Case "modificar_tiempo_cambio_bandejas"		
+			getOperacion = "Administraci&oacute;n -Modificar Tiempo de Cambio de Año en las Bandejas"
+		Case "modificar_tiempo_recepcion_automatica"		
+			getOperacion = "Administraci&oacute;n -Modificar Tiempo de Recepción Automática"
+		Case "modificar_impresion_anexos"		
+			getOperacion = "Administraci&oacute;n -Modificar Impresión de Anexos"
+		Case Else
+			
+			If Instr(operacion,Lcase("Modificar_Lista_Control_de_Acceso")) > 0 Then
+				getOperacion = "Modificar Roles" & Strright(operacion,Lcase("Modificar_Lista_Control_de_Acceso"))
+			Else
+				getOperacion = operacion 	
+			End If
+			
+		End Select
+		
+	End Function
+	
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+End Class

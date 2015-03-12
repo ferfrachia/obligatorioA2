@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='bae' unid='B4E5C24D2B78749A83257617007D9CE8' sequence='49'>
+<created><datetime>20090819T195201,68-03</datetime></created>
+<modified><datetime>20150311T131227,88-03</datetime></modified>
+<revised><datetime>20150309T094450,87-03</datetime></revised>
+<lastaccessed><datetime>20150311T131227,88-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131227,88-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Oscar Nogueira/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+5AACADAAAgAkNgUACgBzTnJvVW5pZGFkAQACACMjIgIFAAoAc0NvZGlnb0NvbSICAwACACYAAgAk
+NAUACgBzQ29kaWdvQ29tAQACACMjIgKQAFYBIgIDAAIAIAAKAHNDb2RpZ29Db20FAAoAc0NvZGln
+b0NvbQMABQAuACkABQACAAIACgAJAAQAJDYkNHNDb2RpZ29Db20kQ29uZmxpY3QkUkVGAAQABAAA
+ACwABQAEAEZvcm0BABQATWllbWJyb3NDb211bmljYWNpb24KAgQABAADAAcADgAIAAlMMVM0UzVT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GAACAABEiGYHAAACAABmAAIAAgAkNiQ0
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAcACAAAAFZDAwACAAAAPgAAAFAAAQAACgABAAAAAAAAAAICAAAAVkMBAAIAAAA0AAAAqAAB
+AAAKAAAAAAAAAAAAAgIAAABWQwAACgAAACIAAABQAAEAAAoAAAAAAAAAAAACAgAAACQ2PgACADAA
+AgAkNgUACgBzTnJvVW5pZGFkAQACACMjIgIFAAoAc0NvZGlnb0NvbSICAwAHAAwABQAJMFMwRQAk
+NDQAAgAmAAIAJDQFAAoAc0NvZGlnb0NvbQEAAgAjIyICkABWASICAwAHAAwABQAJMFMwRQBzQ29k
+aWdvQ29tIgACACAACgBzQ29kaWdvQ29tBQAKAHNDb2RpZ29Db20DACYAAQAAAAEBAAkBAAAKAQEO
+CgAAAQCtKwEAAQABAgAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAA//8AAAAA
+AAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAP//AAAAAAAAAAAAAAAAAABX
+QwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD///8A
+BQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAgICAAAEAAAAAAAAACAAA
+AAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAOzp2AABAAAAAAAJAAAAAAABAOzp2AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/ZAAAAAEAAACfAQAACwAAAAAAAAByb2xyZWNlcHRvcgBCAAMAJAALAFJvbFJlY2VwdG9y
+AAUACwBSb2xGaXJtYW50ZQADAAcACgADAAkxUwAAAAgAKwADAAcACgADAAkwUgC+/1YAAAABAAAA
+nwEAAA0AAAAAAAAAQ29uZmlndXJhY2lvbgAyAAAAJAACAA0YAAAAAAAAAQAOAGZDb25maWd1cmFj
+aW9u7QIDAAcADAAFAAkwUzBFAL7/KAAAAAUAAACdAQAADgAAAAAAAABfRWRpdCBEb2N1bWVudAMA
+Agq+/ygAAAAFAAAAnQEAAA4AAAAAAAAAX1NlbmQgRG9jdW1lbnQEAAMKvv8iAAAABQAAAJ0BAAAI
+AAAAAAAAAF9Gb3J3YXJkBQAECr7/LAAAAAUAAACdAQAAEgAAAAAAAABfTW92ZSBUbyBGb2xkZXIu
+Li4GAD18vv8uAAAABQAAAJ0BAAATAAAAAAAAAF9SZW1vdmUgRnJvbSBGb2xkZXIABwA+fA==
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96Zf8BAE58vv9kAAAAAQAAAJ8BAAALAAAAAAAAAHJvbHJlY2VwdG9yAEIAAwAkAAsAUm9sUmVj
+ZXB0b3IABQALAFJvbEZpcm1hbnRlAAMABwAKAAMACTFTAAAACAArAAMABwAKAAMACTBSAL7/VgAA
+AAEAAACfAQAADQAAAAAAAABDb25maWd1cmFjaW9uuzIAAAAkAAIADRgAAAAAAAABAA4AZkNvbmZp
+Z3VyYWNpb27tAgMABwAMAAUACTBTMEUAvv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3Vt
+ZW50AwACCr7/KAAAAAUAAACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAQAAwq+/yIAAAAFAAAA
+nQEAAAgAAAAAAAAAX0ZvcndhcmQFAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZv
+bGRlci4uLgYAPXy+/y4AAAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlcgAHAD58
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>Miembros Comunicaciones por Unidad y Comunicacion|MiembrosComxUniCom</text></item></note>
+

@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='45a' unid='CF5B12D865BBBE4303256D440063D53A' sequence='97'>
+<created><datetime>20030613T151026,50-03</datetime></created>
+<modified><datetime>20150311T131219,02-03</datetime></modified>
+<revised><datetime>20150309T094441,51-03</datetime></revised>
+<lastaccessed><datetime>20150311T131219,02-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131219,02-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071228T100938,45-03</datetime><datetime>20071228T105628,77-03</datetime><datetime
+>20071228T125521,13-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>SuplenciasFinalizadas|VSupFin</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+1AACACQAAgAkMQIABQAAAAAAAAAFAAkAbmJUaXR1bGFyALQCAwACABgABgBmRGVzZGUFAAYAZkRl
+c2RlAwACABgABgBmSGFzdGEFAAYAZkhhc3RhAwAFAC4AKQAFAAIABgAGAAkABAAkMWZEZXNkZWZI
+YXN0YSRDb25mbGljdCRSRUYABAAEAAAAPAAFAAQAZm9ybQEACgBGU3VwbGVuY2lhCgIFAAgAY2NF
+c3RhZG8BAAoARmluYWxpemFkYQoCHAIDAAcAEAAKAAlMMVMyUzRTNVM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABECGYAAAACACQx
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAEAAMAiAAAAFZDAAADAAAAWAA2AAwAAQAACgAAAAAAAAAAAAICAAAAVkMBBAIAUAAyAAAAUAAF
+AAAIACEAAAAAAAAAAgIAAABWQwAABgAAABoAAABQAAYAAAgAAAAAAAAAAAACAgAAAFZDAAAGAAAA
+GgAAAFAABwAACAAAAAAAAAAAAAICAAAAJDIxWAACAEoAAwAkMjEAAQAnADxpbnB1dCB0eXBlPSJo
+aWRkZW4iIG5hbWU9Ik5ybyIgdmFsdWU9IgABAAAAkgFWASICAQACACI+IgIDAAcADAAFAAkwUzBF
+AAEFAQAwADxpbnB1dCB0eXBlPSJoaWRkZW4iIG5hbWU9Ik5ybyIgdmFsdWU9In9BMTswPf8iPiQx
+PFRBQkxFIFdJRFRIPSI2MjMiIGNsYXNzPSJ0YWJsYSIgY2VsbHNwYWNpbmc9MCBib3JkZXI9IjAi
+IGJvcmRlcmNvbG9yPSIjMDA2NDlGIj4yAAIAJAACACQxAgAFAAAAAAAAAAUACQBuYlRpdHVsYXIA
+tAIDAAcADAAFAAkwUzBFAGZEZXNkZRoAAgAYAAYAZkRlc2RlBQAGAGZEZXNkZQMAZkhhc3RhGgAC
+ABgABgBmSGFzdGEFAAYAZkhhc3RhAwAmAAEAAAABAQAJAQAACgEBDgoAAC8ArSsBAAEAAQEAAAAA
+AAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAABAAQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkA
+AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAA
+AAAAAAAABAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA
+AP//AAAAAAAAAAAAAAAAAABCAAAAAAABAP///wABAPT09AABAAAAAAAAAAAAAAAAAAEA////AAEA
+////AAAAAQAAAAAAAQCAgIAAAQAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text><text
+>6</text><text>38</text><text>Arial</text><text>7</text><text>38</text><text
+>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

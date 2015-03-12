@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='2d6' unid='744601B49BCF5D2E03257582004AC614' sequence='46'>
+<created><datetime>20090323T103643,72-03</datetime></created>
+<modified><datetime>20150311T132733,46-03</datetime></modified>
+<revised><datetime>20150309T094458,10-03</datetime></revised>
+<lastaccessed><datetime>20150311T132733,46-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132733,46-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(ElementosABorrar)|ElementosABorrar</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+ZgACAAwAAgAkMGkAAwAFACQAHwAEAAIABAAJAAQAJDBGb3JtJENvbmZsaWN0JFJFRgAEAAQAAAAe
+AAUABABGb3JtAQAJAEFfQk9SUkFSXwBHAgMABwASAAwACUwxUzNTNFM1UzZT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAGYAAAACACQw
+</rawitemdata></item>
+<item name='$Collation1' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAGYAAAACACQw
+</rawitemdata></item>
+<item name='$Collation2' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAWYAAAACACQw
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACAAIACAAAAFZDAQMCAAYADgAAAFAAAQAACgAAAAAAAAAAAAICAAAAVkMAAAQABAAAAAAAUAAB
+AAAKAAAAAAAAAAAAAgIAAAAkMENyZWFkbw4AAgAMAAIAJDBpAAMARm9ybUZvcm0mAAEAAAABAQAJ
+AQAACgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAABAAAAAAAA
+AP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAA
+AAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAA
+AAEAAAAAAAAAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text>Vista con documentos que deben borrarse por errores</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item></note>
+

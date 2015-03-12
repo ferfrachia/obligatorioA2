@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1f2" sequence="46" unid="B29D05C7997B56410325738A0047CFCE">
+<created><datetime>20071105T100422,54-03</datetime></created>
+<modified><datetime>20150309T094353,64-03</datetime></modified>
+<revised><datetime>20150309T094353,63-03</datetime></revised>
+<lastaccessed><datetime>20150309T094353,64-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100906,85-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071105T100701,99-03</datetime><datetime>20080328T143613,96-03</datetime><datetime>20081029T161700,28-03</datetime><datetime dst="true">20081117T102120,48-02</datetime><datetime dst="true">20081119T085512,87-02</datetime><datetime dst="true">20081119T162408,73-02</datetime><datetime dst="true">20081122T153309,84-02</datetime><datetime dst="true">20081124T104331,41-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>ConstantesDefComunicaciones</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime>20130923T103126,03-03</datetime></item></note>

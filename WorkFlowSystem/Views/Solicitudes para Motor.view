@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF8003FF550'>
+<noteinfo noteid='446' unid='86E85BA81280DE478325778C005FF4C3' sequence='81'>
+<created><datetime>20100827T142805,79-03</datetime></created>
+<modified><datetime>20150309T094523,71-03</datetime></modified>
+<revised><datetime>20150309T094523,70-03</datetime></revised>
+<lastaccessed><datetime>20150309T094523,71-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T093839,86-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Gonzalo Rodriguez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Fernando Moller/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Eduardo Vecino/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Solicitudes para Motor|(SolicitudesMotor)</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+rgAFABoAFQACAAkABAAkQ29uZmxpY3QkUkVGAAQABAAAAGwABQAEAEZvcm0BAA4AU29saWNpdHVk
+TW90b3IKAgUAEwBFc3RhZG9Qcm9jZXNhbWllbnRvAAEABQBFUlJPUgALAhwCBQATAEVzdGFkb1By
+b2Nlc2FtaWVudG8AAQACAE9LCwIcAgQAAwAHACIAGwAJTDFTM1M0UzVTNlM3UzhTOVMxMFMxMVMx
+MlMA
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAAACAAEACgAKAFAAAQAACgAAAAAAAAAAAAICAAAAJDAjCgAAAAgAkgADAAEF
+AQAEAH9BMP8mAAEAAAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABCAAAAAAABAP///wAFAP///wABAAAA
+AAAAAAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQAAAAAAAQAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

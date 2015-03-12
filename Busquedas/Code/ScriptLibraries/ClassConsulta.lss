@@ -1,0 +1,1294 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "ConstantesBusquedas"
+Use "ConstantesDBGestionDoc"
+Use "UnidadExp Class"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Consulta
+Declare Public Class ResultBean
+Declare Public Class PresBusqueda
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Const ERROR_CONSULTA_MAX_RESPUESTAS 			= 23001
+Public Const ERROR_CONSULTA_DATABASE_NOT_FOUND		= 23002
+Public Const ERROR_CONSULTA_VIEW_NOT_FOUND 			= 23003
+
+Public Const MSG_ERROR_CONSULTA_MAX_RESPUESTAS_1 		= "La búsqueda retornó más de "
+Public Const MSG_ERROR_CONSULTA_MAX_RESPUESTAS_2 		= "  documentos. Por favor restrinja más los parámetros de búsqueda."
+Public Const MSG_ERROR_CONSULTA_DATABASE_NOT_FOUND 	= "No se encontró la base de datos "
+Public Const MSG_ERROR_CONSULTA_VIEW_NOT_FOUND 		= "No se encontró la vista "
+
+
+Private Const QUERY_VIEW							= "Todos"
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+Public Class Consulta
+	
+	Private docParam As NotesDocument 
+	Private strConsultaDesc As String
+	Private strConsultaGeneral As String
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	
+	Public Sub new(docContext As NotesDocument)
+		On Error Goto handler
+		Set docPAram = docContext
+		strConsultaDesc = ""
+		strConsultaGeneral ="("+ArmoFechas+") AND NOT field form=A_BORRAR*"
+		Dim session As New NotesSession
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Sub New","","")
+		Exit Sub
+	End Sub
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	
+	Private Function ArmoFechas() As String
+		On Error Goto handler
+		Dim strFechaIni As String, strFechaFin As String, strArmoConsulta As String
+		Dim strAux As String
+		strArmoConsulta = Trim(ArmoConsulta())
+		strFechaIni = Trim(docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FECHA_CREACION)(0))
+		strFechaFin = Trim(docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FECHA_FIN)(0))
+		
+		'Si la fecha inicial es "" entonces no busco por fechas, hay que ver si no se cambia esto
+		If strFechaIni = "" Then
+			ArmoFechas = strArmoConsulta
+			Exit Function
+		End If
+		
+		If strArmoConsulta<> "" Then
+			strAux = " AND (" + strArmoConsulta + ")"
+		End If
+		If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_EXPEDIENTE Then
+			If strFechafin = "" Then
+				strConsultaDesc = strConsultaDesc + " con fecha de creación " + strFechaIni
+				ArmoFechas = "(Field " + DBSGD_CAMPO_FECHA_CREACION + "=" + strFechaIni+" OR Field " + DBSGD_CAMPO_FECHA_ENTRADA + "="+strFechaIni+")" + strAux
+				Exit Function
+			Else
+				strConsultaDesc = strConsultaDesc + " con fecha de creación entre el " + strFechaIni + " y " + strFechaFin
+				ArmoFechas = "(Field " + DBSGD_CAMPO_FECHA_CREACION + ">=" + strFechaIni+" OR Field " + DBSGD_CAMPO_FECHA_ENTRADA + ">="+strFechaIni+") AND (Field " + DBSGD_CAMPO_FECHA_CREACION + "<=" + strFechaFin +" OR Field " + DBSGD_CAMPO_FECHA_ENTRADA + "<="+strFechaFin+")" + strAux
+				Exit Function
+			End If
+		Elseif docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_ACTUACION Then
+			If strFechafin = "" Then
+				strConsultaDesc = strConsultaDesc + " con fecha de entrada " + strFechaIni
+				ArmoFechas = "(Field " + DBSGD_CAMPO_FECHA_ENTRADA + "="+strFechaIni+")" + strAux
+				Exit Function
+			Else
+				strConsultaDesc = strConsultaDesc + " con fecha de entrada entre el " + strFechaIni + " y " + strFechaFin
+				ArmoFechas = "(Field " + DBSGD_CAMPO_FECHA_ENTRADA + ">="+strFechaIni+") AND (Field " + DBSGD_CAMPO_FECHA_ENTRADA + "<="+strFechaFin+")" + strAux
+				Exit Function
+			End If
+ 			'tanto las cartas como la caratula tienen el mismo nombre de campo por lo que me puedo ahorrar un else
+		Else
+			If strFechafin = "" Then
+				strConsultaDesc = strConsultaDesc + " con fecha de creación " + strFechaIni
+				ArmoFechas = "(Field " + DBSGD_CAMPO_FECHA_CREACION + "=" + strFechaIni+")" + strAux
+				Exit Function
+			Else
+				strConsultaDesc = strConsultaDesc + " con fecha de creación entre el " + strFechaIni + " y " + strFechaFin
+				ArmoFechas = "(Field " + DBSGD_CAMPO_FECHA_CREACION + ">=" + strFechaIni+" ) AND (Field " + DBSGD_CAMPO_FECHA_CREACION + "<=" + strFechaFin +")" + strAux
+				Exit Function
+			End If
+		End If			
+		
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function ArmoFechas","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	
+	Private Function ArmoConsulta() As String
+		On Error Goto handler
+		
+		Dim strOperador As String, strTipo As String, strOperadorCam As String, strTipoCam As String
+		Dim strPalabras As String, strCampos As String
+		
+		strOperador = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_OPERPAL)(0)
+		strTipo = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_TIPOBUSQPAL)(0)
+		strOperadorCam = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_OPERCAM)(0)
+		strTipoCam = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_TIPOBUSQCAM)(0)
+		
+		strPalabras =ArmoConsultaPalabras(strOperador,strTipo)
+		strCampos =ArmoConsultaCampos(strOperadorCam,strTipoCam)
+		
+		If docParam.GetItemValue("rBandeja")(0)<>"" Then
+			strConsultaDesc = strConsultaDesc + " en bandejas"
+		End If
+		
+		
+		If strPalabras <> "" And strCampos<>"" Then
+			ArmoConsulta = "("+strPalabras+") AND ("+ strCampos+")"
+			Exit Function
+		Elseif strPalabras <> "" Then
+			ArmoConsulta = strPalabras
+		Else
+			ArmoConsulta = strCampos
+		End If				
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function ArmoConsulta","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	
+	Private Function ArmoConsultaPalabras(strOperador As String,strTipo As String) As String
+		On Error Goto handler
+		Dim strQuery As String, strQueryAux As String
+		Dim palabras As Variant
+		Dim i As Integer
+		
+		'Agrego palabras
+		palabras = docParam.GetItemValue(DBBUSQ_CAMPO_PALABRAS)
+		For i = 0 To Ubound (palabras)
+			If strQuery="" Then
+				If strTipo = BUSCAR_TEXTO_COMPLETO Then
+					If Trim(palabras(i))<> "" Then
+						strQuery= {"} + Palabras(i) + {"}
+					End If
+				Else
+					If Trim(palabras(i))<> "" Then
+						strQuery= {"*} + Palabras(i) + {*"}
+					End If
+				End If
+			Else
+				If strTipo = BUSCAR_TEXTO_COMPLETO Then
+					If Trim(palabras(i))<> "" Then
+						strQuery= strQuery +" " + strOperador + { "} + Palabras(i) + {"}
+					End If
+				Else
+					If Trim(palabras(i))<> "" Then
+						strQuery= strQuery + " " + strOperador + { "*} + Palabras(i) + {*"}
+					End If
+				End If				
+			End If
+		Next
+		' Descripción de palabras
+		If strQuery <> "" Then
+			strQueryAux = replaceChar(strQuery, " AND ", " y ")
+			strQueryaux = replaceChar(strQueryAux, " OR ", " o ")
+			
+			strConsultaDesc = strConsultaDesc + " con palabras: " + strQueryAux
+		End If
+		
+		'Agrego numeros
+		If Instr(docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_NRO)(0), ",")>0 Then
+			strQueryAux = ""
+			palabras = Split(docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_NRO)(0),",",-1)
+			For i=0 To Ubound(palabras)
+				If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_CARTA Then
+					strQueryAux =AgregoNroCampo(palabras(i),DBSGD_CAMPO_FCARATA_NRO,BUSCAR_TEXTO_COMPLETO,OPERADOR_OR,strQueryAux)					
+				Else
+					strQueryAux =AgregoNroCampo(palabras(i),DBSGD_CAMPO_FCARATULA_NRO,BUSCAR_TEXTO_COMPLETO,OPERADOR_OR,strQueryAux)					
+				End If
+				
+			Next
+			If strQuery = "" Then
+				strQuery= strQueryAux
+			Else
+				strQuery = strQuery + " AND ("+ strQueryAux + ")"
+			End If
+			strConsultaDesc = strConsultaDesc + " con números: "  + docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_NRO)(0)
+		Elseif docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_NRO)(0) <> "" Then
+			strConsultaDesc = strConsultaDesc + " con números "  + docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_NRO)(0)
+			If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_CARTA Then
+				strQuery =AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_NRO,DBSGD_CAMPO_FCARATA_NRO,BUSCAR_TEXTO_COMPLETO,OPERADOR_OR,strQuery)					
+			Else
+				strQuery =AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_NRO,DBSGD_CAMPO_FCARATULA_NRO,BUSCAR_TEXTO_COMPLETO,OPERADOR_AND,strQuery)					
+			End If
+		End If
+		
+		'agrego busqueda por tipo de documento
+		If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_ACTUACION Then
+			If strQuery="" Then
+				strQuery = "field Form=FActuacion"
+			Else
+				strQuery = "(" + strQuery + ") AND (field Form=FActuacion)"
+			End If
+			strConsultaDesc = "Actuaciones " + strConsultaDesc
+		Elseif docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_CARATULA Then
+			If strQuery="" Then
+				strQuery = "field Form=FCaratula"
+			Else
+				strQuery = "(" + strQuery + ") AND (field Form=FCaratula)"
+			End If
+			strConsultaDesc = "Carátulas " + strConsultaDesc
+		Elseif docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_CARTA Then	
+			If strQuery="" Then
+				strQuery = "field Form=FCarta"
+			Else
+				strQuery = "(" + strQuery + ") AND (field Form=FCarta)"
+			End If
+			strConsultaDesc = "Cartas de servicio " + strConsultaDesc
+		'En este caso no se pone form poruqe se busca tanto caratulas como actuaciones 
+		'Al buscar solo en las bases de gestion no aporta poner el query con un or de forms
+		Else
+			strConsultaDesc = "Expedientes " + strConsultaDesc
+		End If
+		ArmoConsultaPalabras = strQuery
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function ArmoConsultaPalabras","","")
+		Exit Function
+		
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	Private Function ArmoConsultaCampos(strOperador As String,strTipo As String) As String
+		On Error Goto handler
+		Dim strQuery As String
+		Dim strQuery2 As String
+		Dim strEstados As String
+		Dim c As New Configuracion()
+		
+		If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0)="" Or docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0)= FORMA_DOC_EXPEDIENTE Then
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_SOLICITANTE,DBBUSQ_CAMPO_FBUSQUEDA_SOLICITANTE,strTipo,strOperador,strQuery)
+			If docParam.GetItemValue("rBandeja")(0)<>"" Then
+				strEstados=""
+				strEstados = AgregoNroCampo("En Unidad", DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP, BUSCAR_TEXTO_COMPLETO, strOperador, strEstados)
+				strEstados = AgregoNroCampo("En Tránsito",DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP, BUSCAR_TEXTO_COMPLETO, OPERADOR_OR,strEstados)
+				strQuery = strQuery + "(" + strEstados + ")"				
+			Else
+				If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0) = "2" Then
+					docParam.ReplaceItemValue DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,"1"
+					strQuery ="(" + AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)	
+					docParam.ReplaceItemValue DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP, "En Unidad"
+					strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,BUSCAR_TEXTO_COMPLETO,"OR",strQuery)+ ")"						
+				Else
+					strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)	
+				End If
+				
+				
+			End If
+			strQuery = ArmaUnidadesDescendientes(strTipo,strOperador,strQuery)
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL, BUSCAR_TEXTO_COMPLETO, strOperador,strQuery)
+			'strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_UNIDADORIGEN,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADORIGEN,strTipo,strOperador, strQuery)
+			'strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)
+			strQuery2 = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_USUARIO,DBBUSQ_CAMPO_FBUSQUEDA_USUARIO, strTipo, strOperador, strQuery2)
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO,DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO, strTipo, strOperador, strQuery)
+			strQuery2 = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO,DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO, strTipo, strOperador, strQuery2)
+			strQuery2 = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_TEXTO,DBBUSQ_CAMPO_FBUSQUEDA_TEXTO, strTipo, strOperador, strQuery2)
+			If c.BusqTema="Si" Then
+				strQuery2 =AgregoCampo("sTema","sTema", strTipo, strOperador, strQuery2)
+			End If
+			If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0) <> "26" Then
+				strQuery2=  AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery2)
+			Else
+				strQuery2=  AgregoNroCampo("25",DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery2)
+				strQuery2= strQuery2 + " AND (Field nCantidadFirmas>0)"
+			End If
+			strQuery2 = AgregoCampo(CAMPOUNIDADACTUAL,"ccOficina",BUSCAR_TEXTO_COMPLETO,strOperador,strQuery2)
+			'strQuery2 = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,strTipo,strOperador,strQuery2)
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_PAQUETE,DBBUSQ_CAMPO_PAQUETE,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery )
+			If strQuery <> "" And strQuery2 <> "" Then
+				strQuery = "("  + strQuery + ") OR (" + strQuery2 + ")"
+			Elseif strQuery2<> "" Then
+				strQuery = strQuery2
+			End If
+		Elseif docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0) = FORMA_DOC_CARATULA Then
+			If docParam.GetItemValue("rBandeja")(0)<>"" Then
+				strEstados=""
+				strEstados = AgregoNroCampo("En Unidad", DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP, BUSCAR_TEXTO_COMPLETO, strOperador, strEstados)
+				strEstados = AgregoNroCampo("En Tránsito",DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP, BUSCAR_TEXTO_COMPLETO, OPERADOR_OR,strEstados)
+				strQuery = strQuery + "(" + strEstados + ")"
+			Else
+				
+				If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0) = "2" Then
+					docParam.ReplaceItemValue DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,"1"
+					strQuery = "(" + AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)	
+					docParam.ReplaceItemValue DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP, "En Unidad"
+					strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,BUSCAR_TEXTO_COMPLETO,"OR",strQuery) + ")"						
+				Else
+					strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)	
+				End If
+			End If
+			If c.BusqTema="Si" Then
+				strQuery =AgregoCampo("sTema","sTema", strTipo, strOperador, strQuery)
+			End If
+			strQuery = ArmaUnidadesDescendientes(strTipo,strOperador,strQuery)
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_SOLICITANTE,DBBUSQ_CAMPO_FBUSQUEDA_SOLICITANTE,strTipo,strOperador,strQuery)
+			
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL, BUSCAR_TEXTO_COMPLETO, strOperador,strQuery)
+			'strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_UNIDADORIGEN,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADORIGEN,strTipo,strOperador, strQuery)
+			'strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,strTipo,strOperador,strQuery)
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO,DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO, strTipo, strOperador, strQuery)
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_PAQUETE,DBBUSQ_CAMPO_PAQUETE,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery )
+		Elseif docParam.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0)	= FORMA_DOC_ACTUACION Then
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_USUARIO,DBBUSQ_CAMPO_FBUSQUEDA_USUARIO, strTipo, strOperador, strQuery)
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO,DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO, strTipo, strOperador, strQuery)
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_TEXTO,DBBUSQ_CAMPO_FBUSQUEDA_TEXTO, strTipo, strOperador, strQuery)
+			
+			If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0) <> "26" Then
+				strQuery=  AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT,DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)
+			Else
+				strQuery=  AgregoNroCampo("25",DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)
+				strQuery= strQuery + " AND (Field nCantidadFirmas>0)"
+			End If
+			
+			strQuery = AgregoCampo(CAMPOUNIDADACTUAL,"ccOficina",BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)
+		Elseif docParam.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0)	= FORMA_DOC_CARTA Then			
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO_CARTA,DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO,strTipo,strOperador,strQuery)
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_CAR,"ccEstado",BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADORIGEN,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)
+			strQuery = AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADDESTINO,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADDESTINO,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)
+			strQuery = AgregoCampo (DBBUSQ_CAMPO_FBUSQUEDA_TEXTO_CARTA,DBBUSQ_CAMPO_FBUSQUEDA_TEXTO, strTipo, strOperador, strQuery)
+		End If
+		ArmoConsultaCampos = strQuery
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function ArmoConsultaCampos","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Private Function ReplaceChar (Byval URLString As String,Byval CharToReplace As String, Byval CharReplacement As String) As String
+		Dim txtLeft As String
+		Dim txtRight As String
+		
+		While Instr(URLString,CharToReplace)>0
+			txtLeft=Strleft(URLString,CharToReplace)
+			txtRight=Strright(URLString,CharToReplace)
+			URLString=txtLeft & CharReplacement & txtRight
+		Wend
+		
+		ReplaceChar=URLString
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Private Function AgregoNroCampo(strTexto As String,strCampo As String,strTipo As String, strOperador As String,strQuery As String) As String
+		On Error Goto handler
+		If strQuery = "" Then
+			If strTipo = BUSCAR_TEXTO_COMPLETO Then
+				AgregoNroCampo = "(Field " + strCampo + "= " + strTexto +")"
+			Else
+				AgregoNroCampo = "(Field " + strCampo + " LIKE *" + strTexto +"*)"
+			End If
+		Else
+			If strTipo = BUSCAR_TEXTO_COMPLETO Then
+				AgregoNroCampo = strQuery + " " + strOperador + " (Field "+ strCampo +"= " + strTexto +")"
+			Else
+				AgregoNroCampo = strQuery + " " + strOperador + " (Field " +strCampo +" LIKE *" + strTexto + "*)"
+			End If
+		End If
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function AgregoNroCampo","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Private Function AgregoCampo(strParam As String,strCampo As String,strTipo As String,strOperador As String, strQuery As String) As String
+		On Error Goto handler
+		Dim strTexto As String
+		Dim excluidas As String
+		strTexto = docParam.GetItemValue(strParam)(0)
+		If strTexto = "" Then
+			AgregoCampo = strQuery			
+			Exit Function
+		End If
+		
+		If (strParam = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP Or strParam = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_CAR) _ 
+		And (strTexto= "0") Then
+			strTexto="En Generación"
+			Elseif (strParam = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP Or strParam = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_CAR) _ 
+		And (strTexto= "1") Then
+			strTexto="En Tránsito"
+		End If
+		
+		'Caso de firma
+		If strParam = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT And strTexto="25" Then
+			strConsultaDesc = strConsultaDesc + ArmaCampoValor(strCampo,strTexto)
+		Elseif strParam = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT And strTexto="26" Then
+			strConsultaDesc = strConsultaDesc + ArmaCampoValor(strCampo,strTexto)
+			strTexto="25"
+			If strQuery="" Then
+				strQuery ="(Field nCantidadFirmas>0)"
+			Else
+				strQuery = strQuery + " " + strOperador +" (Field nCantidadFirmas>0)"
+			End If
+		End If
+		
+		If strParam = CAMPOUNIDADACTUAL Then
+			strCampo = "ccOficina"
+		End If
+		
+		If strTexto="" Then
+			AgregoCampo = strQuery
+			Exit Function
+		End If
+		
+		If strQuery = "" Then
+			If strParam = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT And strTexto<>"25" Then 
+				strConsultaDesc = strConsultaDesc + ArmaCampoValor(strCampo,strTexto)
+			Elseif strParam<> DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT Then
+				strConsultaDesc = strConsultaDesc + ArmaCampoValor(strCampo,strTexto)
+			End If
+			
+			If strTipo = BUSCAR_TEXTO_COMPLETO And (strParam=CAMPOUNIDADACTUAL  Or strParam="ccOficinaActual" Or strParam="ccOficinaInicial" Or strParam="ccOficinaOrigen" Or strParam="IUnidadesDest") Then
+				'excluidas=ExcluirUnidades (strTexto,strCampo)
+				strQuery="(Field " + strCampo + |= "EXP_| + strTexto +|")| '& excluidas & |)|
+			Elseif strTipo = BUSCAR_TEXTO_COMPLETO And (strParam<>CAMPOUNIDADACTUAL   And strParam<>"ccOficinaActual" And strParam<>"ccOficinaInicial" And strParam<>"ccOficinaOrigen" And strParam<>"IUnidadesDest") Or strParam=DBBUSQ_CAMPO_FBUSQUEDA_TEMA Then
+				strQuery="(Field " + strCampo + |= "| + strTexto +|")|
+			Else
+				strQuery=|(Field | + strCampo + | LIKE "*| + strTexto +|*")|
+			End If
+		Else
+			If strOperador = OPERADOR_AND Then
+				If ArmaCampoValor(strCampo,strTexto)<> "" Then _
+				strConsultaDesc = strConsultaDesc + " y " + ArmaCampoValor(strCampo,strTexto)
+				If strTipo = BUSCAR_TEXTO_COMPLETO And (strParam=CAMPOUNIDADACTUAL  Or strParam="ccOficinaActual" Or strParam="ccOficinaInicial" Or strParam="ccOficinaOrigen" Or strParam="IUnidadesDest")   Then
+					excluidas=ExcluirUnidades (strTexto,strCampo)
+					strQuery=strQuery & " AND (Field " + strCampo + |= "EXP_| + strTexto +|")|	
+				Elseif strTipo = BUSCAR_TEXTO_COMPLETO And (strParam<>CAMPOUNIDADACTUAL  And strParam<>"ccOficinaActual" And strParam<>"ccOficinaInicial" And strParam<>"ccOficinaOrigen" And strParam<>"IUnidadesDest")   Then
+					strQuery= strQuery + | AND (Field |+ strCampo+|= "| + strTexto +|")|
+				Else
+					strQuery= strQuery + | AND (Field |+strCampo+| LIKE "*| + strTexto + |*")|
+				End If
+			Else
+				If ArmaCampoValor(strCampo,strTexto)<> "" Then _
+				strConsultaDesc = strConsultaDesc + " o " + ArmaCampoValor(strCampo,strTexto)
+				If strTipo = BUSCAR_TEXTO_COMPLETO And (strParam=CAMPOUNIDADACTUAL  Or strParam="ccOficinaActual" Or strParam="ccOficinaInicial" Or strParam="ccOficinaOrigen" Or strParam="IUnidadesDest")   Then
+					strQuery=strQuery & " OR (Field " + strCampo + |= "EXP_| + strTexto +|")|	
+				Elseif strTipo = BUSCAR_TEXTO_COMPLETO And (strParam<>CAMPOUNIDADACTUAL  And strParam<>"ccOficinaActual" And strParam<>"ccOficinaInicial" And strParam<>"ccOficinaOrigen" And strParam<>"IUnidadesDest")   Then
+					strQuery= strQuery + | OR (Field |+ strCampo+|= "| + strTexto +|")|
+				Else
+					strQuery= strQuery + | OR (Field |+strCampo+| LIKE "*| + strTexto + |*")|
+				End If
+			End If
+		End If
+		
+		AgregoCampo =strQuery
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function AgregoCampo","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	Private Function ExcluirUnidades(strUnidad As String ,strCampo As String)	As String
+		On Error Goto HANDLER
+		Dim c As  Configuracion
+		Dim path As String
+		Dim srv As String
+		Dim docunidad As NotesDocument
+		Dim unidades As New Vector(0)
+		Dim dborgan As NotesDatabase
+		Dim col As NotesDocumentCollection
+		Dim query As String
+		Set c = New Configuracion
+		query=""
+		path=c.BaseDeDatos("ORGAN")
+		srv=c.ServidorDomino("ORGAN")
+		
+		Set dborgan=New NotesDatabase(srv,path)
+		Set col=dborgan.FTSearch({Field Form="FUnidad" AND Field sUnidad="} & strUnidad & {"},False)
+		Set docunidad=col.GetFirstDocument
+		
+		While Not docunidad Is Nothing 
+			If docunidad.sUnidad(0)<> strUnidad Then
+				If query="" Then
+					query=" NOT field " & strCampo & "=" & {"} & docunidad.sUnidad(0) & {"}
+				Else
+					query=query & " AND NOT field " & strCampo & "=" & {"} & docunidad.sUnidad(0) & {"}
+				End If
+			End If 
+			Set docunidad=col.GetNextDocument(docunidad)
+		Wend
+		
+		If query<>"" Then
+			ExcluirUnidades=" AND " & query
+		Else
+			ExcluirUnidades=""
+		End If
+		
+		Exit Function 
+		
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function ExcluirUnidades","","")
+		Exit Function
+	End Function
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	Private Function ArmaCampoValor(strCampo As String,Byval strValor As String) As String
+		Dim oUnidad As UnidadExp
+		
+		If strCampo = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP Or strCampo = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_CAR Then
+			ArmaCampoValor = " estado " + strValor
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_UNIDADINICIAL Then
+			Set oUnidad = New UnidadExp(strValor)			
+			ArmaCampoValor = " oficina inicial " & oUnidad.NombreActual
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL Then
+			Set oUnidad = New UnidadExp(strValor)			
+			ArmaCampoValor = " oficina actual " & oUnidad.NombreActual
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_USUARIO Then
+			ArmaCampoValor = " firmado por " + strValor
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO Then
+			ArmaCampoValor = " asunto " + strValor 
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_TEXTO Then
+			ArmaCampoValor = " texto " + strValor 
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT Then
+			If strValor = "10" Then
+				strValor ="En Transito"
+			Elseif strValor ="15" Then
+				strValor = "Para Actuar"
+			Elseif strValor ="20" Then
+				strValor = "Reservado "
+			Elseif strValor ="25" Then
+				strValor="Para Firmar"
+			Elseif strValor ="26" Then
+				strValor="Firmado"
+			Elseif strValor = "30" Then
+				strValor = "Para dar pase"
+			Elseif strValor = "35" Then
+				strValor = "Cursado"
+			Elseif strValor = "40" Then
+				strValor = "Anulado"
+			Elseif strValor ="45" Then
+				strValor = "Archivado"
+			Elseif strValor = "50" Then
+				strValor = "Agregado"				
+			End If
+			ArmaCampoValor = " estado " + strValor
+		Elseif strCampo = CAMPOUNIDADACTUAL Then
+			Set oUnidad = New UnidadExp(strValor)			
+			ArmaCampoValor = " en oficina " & oUnidad.NombreActual
+		Elseif strCampo = DBBUSQ_CAMPO_PAQUETE Then
+			ArmaCampoValor = " con paquete"
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO_CARTA Then
+			ArmaCampoValor = " asunto " + strValor
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_CAR Then
+			ArmaCampoValor = " estado " + strValor
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_UNIDADORIGEN Then
+			Set oUnidad = New UnidadExp(strValor)			
+			ArmaCampoValor = " oficina originante " & oUnidad.NombreActual
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_UNIDADDESTINO Then
+			Set oUnidad = New UnidadExp(strValor)
+			ArmaCampoValor = " oficina destino " & oUnidad.NombreActual
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO_CARTA Then
+			ArmaCampoValor = " asunto "  + strValor
+		Elseif strCampo = DBBUSQ_CAMPO_FBUSQUEDA_TEXTO_CARTA Then
+			ArmaCampoValor = " texto "  + strValor
+		Elseif strCampo = "ccOficina" Then
+			Set oUnidad = New UnidadExp(strValor)
+			ArmaCampoValor = " oficina " & oUnidad.NombreActual
+		Else 
+			ArmaCampoValor = ""
+		End If
+		
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Public Function GetQuery() As String
+		getQuery = strConsultaGeneral
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Private Function ArmaUnidadesDescendientes (strTipo As String, strOperador As String, strQuery As String ) As String
+		On Error Goto handler
+		Dim strValor As String, strUnidad As String	
+		Dim c As New Configuracion()
+		Dim dEst As NotesDatabase
+		Dim vEst As NotesView, vNom As NotesView
+		Dim dUnidad As NotesDocument,d As NotesDocument
+		Dim dc As NotesDocumentCollection
+		Dim i As Integer
+		
+		If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL)(0)="" Then
+			ArmaUnidadesDescendientes = strQuery
+			Exit Function
+		End If
+		
+		If docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL)(0)<>""  And docPAram.GetItemValue("sHijos")(0) = "" Then
+			'solo el padre
+			ArmaUnidadesDescendientes= AgregoCampo(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL,BUSCAR_TEXTO_COMPLETO,strOperador,strQuery)        
+			Exit Function
+		End If
+		strValor = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL)(0) 
+		Set dEst = New NotesDatabase(c.ServidorDomino("ORGAN"), c.BasedeDatos("ORGAN"))
+		Set vEst = dEst.getView("VBusqUniCod")
+		Set vNom = dEst.getView("VBusqUni")
+		
+		Set dUnidad = vNom.getDocumentbykey(strValor,True)
+		Set dc = vEst.GetAllDocumentsByKey(dUnidad.GetItemValue("sCodUnidad")(0)+".",False)
+		strUnidad=""
+		For i=1 To dc.Count
+			Set d = dc.GetNthDocument(i)
+			If Instr(d.GetItemValue("sCodUnidad")(0),dUnidad.GetItemValue("sCodUnidad")(0)+".")=1 Then
+				If strUnidad="" Then
+					strUnidad = "(Field " + DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL + "=" + d.getItemValue("sUnidad")(0)
+				Else
+					strUnidad = strUnidad + " OR Field " + DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL + "=" + d.getItemValue("sUnidad")(0)
+				End If
+			End If
+		Next
+		strUnidad = strUnidad + " OR Field " + DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL + "=" + strValor+")"
+		If strQuery="" Then
+			strConsultaDesc = " unidad actual " + strValor + " y sus dependencias"
+			ArmaUnidadesDescendientes = strUnidad
+			Exit Function
+		End If
+		
+		If strOperador = "OR" Then
+			strConsultaDesc = strConsultaDesc + " o unidad actual " + strValor + " y sus dependencias"
+			ArmaUnidadesDescendientes = strQuery + " OR " + strUnidad
+		Else
+			strConsultaDesc = strConsultaDesc + " y unidad actual " + strValor + " y sus dependencias"
+			ArmaUnidadesDescendientes = strQuery + " AND " + strUnidad
+		End If	
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function ArmaUnidadesDescendientes","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Private Function BaseDeDatosTipo(strPrefijo As String) As Vector
+		On Error Goto handler
+		
+		Dim vAux As New Vector(0)
+		Dim c As New Configuracion()
+		Dim vKeyDB As New Vector(0)
+		Dim i As Integer
+		
+		Set vKeyDB = c.claves()
+		
+		For i = 1 To vKeyDB.cantElem
+			If Instr(vKeyDb.getElement(i),strPrefijo)=1 Then
+				If strPrefijo = CLAVE_DBARCHIVO And Instr(vKeyDb.getElement(i),CLAVE_DBARCHIVOCS)=0 And Instr(vKeyDb.getElement(i),CLAVE_DBARCHIVO_TEMPLATE)=0 Then
+					vAux.insertElement vKeyDb.getElement(i),vAux.cantElem+1
+				Elseif strPrefijo <> CLAVE_DBARCHIVO Then
+					vAux.insertElement vKeyDb.getElement(i),vAux.cantElem+1
+				End If
+			End If
+		Next
+		Set BaseDeDatosTipo = vAux
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function BaseDeDatosTipo","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Private Function BasesDeBusquedas() As Vector
+		On Error Goto handler
+		Dim strFechaIni As String, strFechaFin As String, strNroExp As String, strClase As String
+		Dim vDatabases As New Vector(0) , vClaves As Vector
+		Dim c As New Configuracion()
+		Dim strAnio As String, anioIni As Integer, anioFin As Integer, i As Integer
+		
+		strFechaIni = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FECHA_CREACION)(0)
+		strFechaFin = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FECHA_FIN)(0)
+		strNroExp = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_NRO)(0)
+		strClase = docParam.GetItemValue(DBBUSQ_CAMPO_FBUSQUEDA_FORMADOC)(0)		
+		
+		Set vClaves = c.claves
+		If Trim(strFechaIni)="" And Trim(strFechaFin)="" And Trim(strNroExp)="" Then
+			If strClase = FORMA_DOC_CARTA Then
+				Set vDatabases = BaseDeDatosTipo(CLAVE_DBCARTASERV)
+				vDatabases.APPEND BaseDeDatosTipo(CLAVE_DBARCHIVOCS),False
+			Else
+				Set vDatabases = BaseDeDatosTipo (CLAVE_DBGESTIONDOC)
+				vDatabases.Append BaseDeDatosTipo(CLAVE_DBARCHIVO),False
+			End If
+		Elseif Trim(strFechaIni)<>"" And Trim(strFechaFin)="" Then
+			strAnio = Right(strFechaIni,2)
+			If strClase = FORMA_DOC_CARTA Then
+				If vClaves.isMember(CLAVE_DBCARTASERV+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBCARTASERV+strAnio, vDatabases.cantElem+1
+				End If
+				If vClaves.isMember(CLAVE_DBARCHIVOCS+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBARCHIVOCS+strAnio, vDatabases.cantElem+1
+				End If
+			Else
+				If vClaves.isMember(CLAVE_DBGESTIONDOC+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBGESTIONDOC+strAnio, vDatabases.cantElem+1
+				End If
+				If vClaves.isMember(CLAVE_DBARCHIVO+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBARCHIVO+strAnio, vDatabases.cantElem+1
+				End If
+			End If
+		Elseif Trim(strFechaIni)<>"" And Trim(strFechaFin)<>"" Then
+			anioIni = Cint(Strrightback(strFechaIni,"/"))
+			anioFin = Cint(Strrightback(strFechaFin,"/"))		
+			For i = anioIni To AnioFin
+				strAnio = Right(Cstr(i),2)
+				If strClase = FORMA_DOC_CARTA Then
+					If vClaves.isMember(CLAVE_DBCARTASERV+strAnio,1,False) Then
+						vDatabases.insertElement CLAVE_DBCARTASERV+strAnio, vDatabases.cantElem+1
+					End If
+					If vClaves.isMember(CLAVE_DBARCHIVOCS+strAnio,1,False) Then
+						vDatabases.insertElement CLAVE_DBARCHIVOCS+strAnio, vDatabases.cantElem+1
+					End If
+				Else
+					If vClaves.isMember(CLAVE_DBGESTIONDOC+strAnio,1,False) Then
+						vDatabases.insertElement CLAVE_DBGESTIONDOC+strAnio, vDatabases.cantElem+1
+					End If
+					If vClaves.isMember(CLAVE_DBARCHIVO+strAnio,1,False) Then
+						vDatabases.insertElement CLAVE_DBARCHIVO+strAnio, vDatabases.cantElem+1
+					End If
+				End If
+			Next
+		Elseif strNroExp<> "" Then
+			If strClase = FORMA_DOC_CARTA Then
+				strAnio = c.AnioNroDOC(strNroExp,NUMERADOR_CS)
+				If vClaves.isMember(CLAVE_DBCARTASERV+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBCARTASERV+strAnio, vDatabases.cantElem+1
+				End If
+				If vClaves.isMember(CLAVE_DBARCHIVOCS+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBARCHIVOCS+strAnio, vDatabases.cantElem+1
+				End If
+			Else
+				strAnio = c.AnioNroDOC(strNroExp,NUMERADOR_EXP)
+				If vClaves.isMember(CLAVE_DBGESTIONDOC+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBGESTIONDOC+strAnio, vDatabases.cantElem+1
+				End If
+				If vClaves.isMember(CLAVE_DBARCHIVO+strAnio,1,False) Then
+					vDatabases.insertElement CLAVE_DBARCHIVO+strAnio, vDatabases.cantElem+1
+				End If
+			End If
+		End If
+		Set BasesDeBusquedas = vDatabases
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function BasesDeBusquedas","","")
+		Exit Function
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	
+	Public Function getDescripcion () As String
+		getDescripcion = strConsultaDesc
+	End Function
+	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	
+	Public Function ExecuteQuery() As Vector
+		On Error Goto Handler
+		Dim vDatabases As Vector, vAux As New Vector(0), vHost As New Vector(0), vQuery As New Vector(0)
+		Dim i As Integer, intCount As Integer, j As Integer, pos As Long
+		Dim db As NotesDatabase
+		Dim doc As NotesDocument
+		Dim c As New Configuracion()
+		Dim rs As ResultBean
+		Dim strHost As String
+		Dim vNro As New Vector(0)
+		Dim vistaConsulta As NotesView
+		
+		Set vDatabases = BasesDeBusquedas()
+		
+		For i = 1 To vDatabases.cantElem
+			Set db = New NotesDatabase("","")
+			If Not db.Open("", c.BaseDeDatos(vDatabases.getElement(i))) Then _
+			Error ERROR_CONSULTA_DATABASE_NOT_FOUND,MSG_ERROR_CONSULTA_DATABASE_NOT_FOUND
+			
+			Set vistaConsulta = db.GetView(QUERY_VIEW)
+			If vistaConsulta Is Nothing Then _
+			Error ERROR_CONSULTA_VIEW_NOT_FOUND,MSG_ERROR_CONSULTA_VIEW_NOT_FOUND
+			
+			intCount = intCount + vistaConsulta.FTSearch(strConsultaGeneral,0)
+			If intCount>c.NroMaxResul Then
+				Error ERROR_CONSULTA_MAX_RESPUESTAS, MSG_ERROR_CONSULTA_MAX_RESPUESTAS_1 & c.NroMaxResul & MSG_ERROR_CONSULTA_MAX_RESPUESTAS_2
+			End If
+			
+			Set doc = vistaConsulta.GetFirstDocument
+			Do While Not doc Is Nothing
+				
+				strHost = c.Protocolo +"://" + c.Host(vDatabases.getElement(i))+":"+c.Puerto + "/" + c.BasedeDatos(vDatabases.getElement(i))
+				'Msgbox "NRO:" & doc.ccNroCs(0) &Cstr(doc.ccnNroAct(0))
+				Set rs = New ResultBean(doc,strHost)
+				If Left(rs.getNumerodoc(),1) = "9" Then
+					pos = vNro.InsertPos("0" & rs.getNumeroDoc(),True)
+					vNro.insertElement "0" & rs.getNumeroDoc(), pos
+				Else
+					pos = vNro.InsertPos("9" & rs.getNumeroDoc(),True)
+					vNro.insertElement "9" & rs.getNumeroDoc(), pos
+				End If
+				vQuery.insertElement rs, pos
+				
+				Set doc = vistaConsulta.GetNextDocument(doc)
+			Loop
+		Next
+		
+		Set ExecuteQuery = vQuery
+		Exit Function
+handler:
+		If Err = ERROR_CONSULTA_MAX_RESPUESTAS Then
+			Error Err,Error	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Consulta - Function ExecuteQuery","","")
+		End If		
+		
+		Exit Function
+	End Function
+	
+End Class
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+
+
+
+
+
+'**********************************************************************************************************************************
+'**********************************************************************************************************************************
+Public Class ResultBean
+	
+	Private strHost As String
+	Private strNumeroDoc As String
+	Private strTipoDoc As String
+	Private strTituloDoc As String
+	Private strEstado As String
+	Private strOficinaActual As String
+	Private strForm As String
+	
+'**********************************************************************************************************************************
+	
+	Public Sub new (doc As NotesDocument, strHostTemp As String)
+		On Error Goto handler
+		
+		Dim strAux As String
+		Dim db As NotesDatabase
+		Dim viewBusAct As NotesView
+		Dim docAct As NotesDocument
+		Dim oUnidad As UnidadExp
+		
+		If Not doc Is Nothing Then
+			strForm = doc.GetItemValue("Form")(0)
+			If strForm = "FCaratula" Then
+				strTipoDoc="Caratula"
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0)
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)
+				If strEstado <> "Archivado" And strEStado <>"Agregado" Then
+					Set db = doc.ParentDatabase
+					Set viewBusAct = db.GetView(DBSGD_VISTA_BUSQ_ACTUACION_NRO)
+					Set docAct = viewBusAct.GetDocumentByKey(Cstr(doc.GetItemValue(DBSGD_CAMPO_FCARATULA_CANT_ACT)(0)) & doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0), True)
+					If Not docAct Is Nothing Then
+						strEstado = docAct.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0)
+						strEstado = EstadoActuacion(strEstado,docAct)		
+					Elseif strEstado="En Tránsito" Then
+						Set oUnidad = New UnidadExp(doc.getItemValue("ccOficinaActual")(0))
+						strEstado=strEstado+".- "+oUnidad.NombreActual					
+					End If
+				End If
+				If doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)="En Tránsito" Then
+					
+					Set oUnidad = New UnidadExp(doc.getItemValue("ccOficinaAnterior")(0))
+					strOficinaActual = oUnidad.NombreActual
+					Set oUnidad = New UnidadExp( doc.getItemValue("ccOficinaActual")(0))
+					strOficinaActual = strOficinaActual &  " -> " & oUnidad.NombreActual
+				Else
+					Set oUnidad = New UnidadExp(doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADACTUAL)(0))
+					strOficinaActual = oUnidad.NombreActual					
+				End If
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+			Elseif strform = "FActuacion" Then
+				strTipoDoc="Actuación"
+				strAux = "000" & doc.getItemValue("ccnNroAct")(0)
+				strAux = Right(strAux,3)
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATULA_NRO)(0) & "-" & strAux
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_EXTRACTO)(0)
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_ACT)(0)
+				strEstado = EstadoActuacion(strEstado,doc)
+				
+				Set oUnidad = New UnidadExp(doc.getItemValue("ccOficina")(0))
+				strOficinaActual = oUnidad.NombreActual
+				
+				strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+			Else
+				strTipoDoc = "Carta de servicio"			
+				strAux = "000" + doc.getItemValue("ccnNroAct")(0)
+				strNumeroDoc = doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) + "-" + Right(strAux,3)
+				strTituloDoc = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ASUNTO)(0)
+				strEstado = doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_ESTADO_EXP)(0)
+				
+				Set oUnidad = New UnidadExp(doc.getItemValue(DBBUSQ_CAMPO_FBUSQUEDA_UNIDADDESTINO)(0))
+				strOficinaActual = oUnidad.NombreActual
+				
+				
+				If doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0) ="" Then 
+					strHost = strHostTemp + "/0/" + doc.UniversalID +"?OpenDocument"
+				Else
+					strHost = strHostTemp + "/(AbrirCarta)?OpenAgent&id="+doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0)+ "-" + Right(strAux,3) '"javascript:AbrirCarta('"+doc.getItemValue(DBSGD_CAMPO_FCARATA_NRO)(0)+ "-" + Right(strAux,3)+"')"
+				End If
+			End If
+			
+			
+		End If
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase ResultBean - Sub new","","")
+		Exit Sub
+	End Sub
+	
+'**********************************************************************************************************************************
+	Private Function EstadoActuacion (strEstado As String, doc As NotesDocument) As String
+		'devuelve el estado dado su codigo
+		On Error Goto handler
+		Dim oUnidad As UnidadExp
+		If strEstado="10" Then
+			Set oUnidad = New UnidadExp(doc.getItemValue("ccOficina")(0))
+			EstadoActuacion ="En Tránsito .-" & oUnidad.NombreActual
+		Elseif strEstado="15" Then
+			EstadoActuacion = "Para Actuar"
+		Elseif strEstado = "20" Then
+			Dim nName As New NotesName(doc.getItemValue("sReservadoPor")(0))
+			EstadoActuacion = "Reservado por: " & nName.Common 
+		Elseif strEstado= "25" Then
+			If doc.hasItem("nCantidadFirmas") Then
+				If Cint(doc.getItemValue("nCantidadFirmas")(0))>0 Then
+					Dim vFirmas As New Vector(0)
+					vFirmas.values =Evaluate("@name([CN];sUsuarioFirma)",doc)	
+					EstadoActuacion="Firmado por: " & vFirmas.ToString(", ")					
+				Else
+					Dim vFirmantes As New Vector(0)
+					vFirmantes.values = Evaluate("@name([CN];sFirmantes)",doc)'doc.GetItemValue("sFirmantes")
+					EstadoActuacion="Para Firmar: "	& vFirmantes.ToString(", ")					
+				End If
+			Else
+				Dim vFirman As New Vector(0)
+				vFirman.values =  Evaluate("@name([CN];sFirmantes)",doc) 'doc.GetItemValue("sFirmantes")
+				EstadoActuacion = "Para Firmar: " & vFirman.ToString(", ")
+			End If
+		Elseif strEstado="30" Then
+			EstadoActuacion = "Para dar pase"
+		Elseif strEstado="35" Then
+			EstadoActuacion = "Cursado"
+		Elseif strEstado ="40" Then
+			EstadoActuacion = "Anulado"
+		Elseif strEstado = "45" Then
+			EstadoActuacion = "Archivado"
+		Elseif strEstado = "50" Then
+			EstadoActuacion = "Agregado"
+		End If
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase EstadoACtuacion - Sub new","","")
+		Exit Function
+	End Function
+'**********************************************************************************************************************************	
+	
+	Public Sub new2(host As String,numero As String,titulo As String,estado As String,oficina As String)
+		strHost = host
+		strNumeroDoc = numero 
+		strTituloDoc = titulo
+		strEstado=estado
+		strOficinaActual = oficina
+	End Sub
+	
+'**********************************************************************************************************************************
+	
+	Public Function getHost() As String
+		getHost = strHost
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getNumeroDoc() As String
+		getNumeroDoc=strNumeroDoc
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getTipoDoc() As String
+		getTipoDoc = strTipoDoc
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getEstado() As String
+		getEstado = strEstado		
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getTituloDoc() As String
+		getTituloDoc = strTituloDoc
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getOficinaActual() As String
+		getOficinaActual = strOficinaActual
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getForm() As String
+		getForm = strForm
+	End Function
+	
+'**********************************************************************************************************************************
+End Class
+'**********************************************************************************************************************************
+'**********************************************************************************************************************************
+
+
+
+
+
+
+'**********************************************************************************************************************************
+'**********************************************************************************************************************************
+Public Class PresBusqueda
+	
+	Private session As NotesSession
+	Private vRes As Vector
+	Private strResultado As String
+	Private strDesc As String
+	Private c As Configuracion
+	
+'**********************************************************************************************************************************
+	
+	Public Sub new (vResTemp As Vector, strDescTemp As String)
+		On Error Goto handler
+		Set session = New NotesSession
+		Set vRes = vResTemp		
+		Set c= New Configuracion()
+		strDesc = strDescTemp
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase PresBusqueda - Sub new","","")
+		Exit Sub
+	End Sub
+	
+'**********************************************************************************************************************************
+	
+	Private Function parserHeader (strHeader As String, docSession As NotesDocument) As String
+		On Error Goto handler
+		Dim intPaginas As Integer
+		Dim n As New NotesName(session.EffectiveUserName)
+		
+		strHeader = cambiarTag (strHeader,"<CSS>",c.css)
+		strHeader = cambiarTAg (strHeader,"<HOSTBUSQUEDA>",c.Protocolo+"://" & c.Host("BUSQUEDA") & ":" & c.Puerto & "/" & cambiarTAg(c.BasedeDatos("BUSQUEDA"),"\","/"))
+		strHeader = cambiarTAg (strHeader,"<HOSTPORTAL>", c.Protocolo+"://" & c.Host("PORTAL") & ":" & c.Puerto &"/" & cambiarTAg(c.BasedeDatos("PORTAL"),"\","/"))
+		strHeader = cambiarTag (strHeader,"<USUARIO>",n.Common & "/" & n.Organization)
+		strHeader = cambiarTag (strHeader, "<DESCRIPCIONBUSQ>",strDesc)
+		If vRes.cantElem>0 Then
+			strHeader = cambiarTag (strHeader, "<NROBUSQUEDA>","Se encontraron " & vRes.cantElem & " documentos")
+		Else
+			strHeader = cambiarTag (strHeader, "<NROBUSQUEDA>","")
+		End If
+		If (vRes.Cantelem Mod CAMPO_RESULTADO_BUSQUEDA) = 0 Then
+			intPaginas = vRes.cantElem \ CAMPO_RESULTADO_BUSQUEDA
+		Else
+			intPaginas = (vRes.cantElem \ CAMPO_RESULTADO_BUSQUEDA)+1
+		End If	
+		strHeader = cambiarTag (strHeader,"<PAGSIG>","1,"+Cstr(intPaginas))
+		Print strHeader
+		Print "<form>"
+		Print |<INPUT type="hidden" value='| & docSession.UniversalID & |' name="SessionId">|
+		
+		parserHeader = strHeader
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase PresBusqueda - function parserheader","","")
+		Exit Function
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Sub Orden (docSession As NotesDocument, orden As String)
+		On Error Goto handler
+		Dim vNro As New Vector(0), vOficina As New Vector(0), vTitulo As New Vector(0), vEstado As New Vector(0), vHost As New Vector(0)
+		Dim vOrden As New Vector(0), resBean As ResultBean
+		Dim i As Integer, pos As Long, valor As String
+		vNro.values = docSession.GetItemValue(SESSION_CAMPO_NUMERO)
+		vOficina.values = docSession.GetItemValue(SESSION_CAMPO_OFICINA)
+		vTitulo.values = docSession.GetItemValue(SESSION_CAMPO_TITULO)
+		vEstado.values = docSession.GetItemValue(SESSION_CAMPO_ESTADO)
+		vHost.values = docSession.GetItemValue(SESSION_CAMPO_HOST)
+		Set vRes= New Vector(0)
+		For i = 1 To vHost.cantElem
+			
+			Set resBean = New ResultBean(Nothing,"")
+			
+			Call resBean.new2(vhost.getElement(i),docSession.GetItemValue(SESSION_CAMPO_NUMERO)(i-1), _
+			docSession.GetItemValue(SESSION_CAMPO_TITULO)(i-1),docSession.GetItemValue(SESSION_CAMPO_ESTADO)(i-1) _
+			,docSession.GetItemValue(SESSION_CAMPO_OFICINA)(i-1))
+			If orden = SESSION_CAMPO_NUMERO Then
+				If Left(resBean.getNumeroDoc(),1)="9" Then
+					valor = "0" & resBean.getNumeroDoc()
+				Else
+					valor = "9" & resBean.getNumeroDoc()
+				End If
+			Elseif orden = SESSION_CAMPO_OFICINA Then
+				valor = resBean.getOficinaActual()
+			Elseif orden = SESSION_CAMPO_TITULO Then
+				valor = resBean.getTituloDoc()
+			Else
+				valor = resBean.getEstado()
+			End If
+			If valor <> "" Then
+				pos = vOrden.InsertPos(valor,True)
+			Else
+				pos=1				
+			End If
+			Call vOrden.insertElement(valor,pos)
+			Call vRes.insertElement(resBean,pos)			
+		Next
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase PresBusqueda - sub orden","","")
+		Exit Sub
+	End Sub
+	
+'**********************************************************************************************************************************
+	
+	Public Function parserBody(strBody As String, docSession As NotesDocument) As String
+		On Error Goto handler
+		
+		Dim strRepeat As String, strRepeatAnt As String, strRepeatDes As String
+		Dim strAux As String, intPaginas As Integer, i As Integer, j As Integer
+		Dim strAntAux As String, strDesAux As String, strRepeatAux As String
+		Dim strBodyAux As String, resBean As ResultBean
+		Dim strNro As String, strOficina As String,strTitulo As String, strEstado As String 
+		Dim vNro As New Vector(0), vOficina As New Vector(0), vTitulo As New Vector(0), vEstado As New Vector(0), vHost As New Vector(0)
+		Dim n As New NotesName(session.EffectiveUserName)
+		
+		strRepeatAnt = Strleft(strBody,"<ROWS>")
+		strRepeat = Strleft(Strright(strBody,"<ROWS>"),"</ROWS>")
+		strRepeatDes = Strright(strBody,"</ROWS>")
+		
+		If (vRes.Cantelem Mod CAMPO_RESULTADO_BUSQUEDA) = 0 Then
+			intPaginas = vRes.cantElem \ CAMPO_RESULTADO_BUSQUEDA
+		Else
+			intPaginas = (vRes.cantElem \ CAMPO_RESULTADO_BUSQUEDA)+1
+		End If		
+		
+		For i = 1 To intPaginas
+			strAntAux = cambiarTag(strRepeatAnt,"<IDBUSQ>",Cstr(i))
+			strDesAux = strRepeatDes
+			strAntAux = cambiarTag(strAntAux,"<PAGINA>","Página " & Cstr(i) & " de " & Cstr(intPaginas))
+			strDesAux = cambiarTag(strDesAux,"<PAGINA>","Página " & Cstr(i) & " de " & Cstr(intPaginas))
+			If i > 1 And i <> intPaginas Then
+				'2 flechas
+				strAntAux = Strleft(strAntAux,"<ANT>") & Strleft(Strright(strAntAux,"<ANT>"),"</ANT>") & Strright(strAntAux,"</ANT>")
+				strDesAux = Strleft(strDesAux,"<ANT>") & Strleft(Strright(strDesAux,"<ANT>"),"</ANT>") & Strright(strDesAux,"</ANT>")
+				strAntAux = Strleft(strAntAux,"<SIG>") & Strleft(Strright(strAntAux,"<SIG>"),"</SIG>") & Strright(strAntAux,"</SIG>")
+				strDesAux = Strleft(strDesAux,"<SIG>") & Strleft(Strright(strDesAux,"<SIG>"),"</SIG>") & Strright(strDesAux,"</SIG>")
+				strAntAux = cambiarTag(strAntAux,"<PAGANT>",Cstr(i-1) +"," + Cstr(intPaginas))
+				strDesAux = cambiarTag(strDesAux,"<PAGANT>",Cstr(i-1)+"," + Cstr(intPaginas) )					
+				strAntAux = cambiarTag(strAntAux,"<PAGSIG>",Cstr(i+1)+"," + Cstr(intPaginas) )
+				strDesAux = cambiarTag(strDesAux,"<PAGSIG>",Cstr(i+1)+"," + Cstr(intPaginas) )				
+			Elseif i>1 Then
+				'pa atrinca
+				strAntAux = Strleft(strAntAux,"<ANT>") & Strleft(Strright(strAntAux,"<ANT>"),"</ANT>") & Strright(strAntAux,"</ANT>")
+				strDesAux = Strleft(strDesAux,"<ANT>") & Strleft(Strright(strDesAux,"<ANT>"),"</ANT>") & Strright(strDesAux,"</ANT>")
+				strAntAux = Strleft(strAntAux,"<SIG>") & Strright(strAntAux,"</SIG>")
+				strDesAux = Strleft(strDesAux,"<SIG>") & Strright(strDesAux,"</SIG>")
+				strAntAux = cambiarTag(strAntAux,"<PAGANT>",Cstr(i-1) +"," + Cstr(intPaginas))
+				strDesAux = cambiarTag(strDesAux,"<PAGANT>",Cstr(i-1) +"," + Cstr(intPaginas))				
+			Elseif intPaginas>1 Then
+				'pa delante
+				
+				strAntAux = Strleft(strAntAux,"<ANT>") & Strright(strAntAux,"</ANT>")
+				strDesAux = Strleft(strDesAux,"<ANT>") & Strright(strDesAux,"</ANT>")
+				strAntAux = Strleft(strAntAux,"<SIG>") & Strleft(Strright(strAntAux,"<SIG>"),"</SIG>") & Strright(strAntAux,"</SIG>")
+				strDesAux = Strleft(strDesAux,"<SIG>") & Strleft(Strright(strDesAux,"<SIG>"),"</SIG>") & Strright(strDesAux,"</SIG>")
+				strAntAux = cambiarTag(strAntAux,"<PAGSIG>",Cstr(i+1) +"," + Cstr(intPaginas))
+				strDesAux = cambiarTag(strDesAux,"<PAGSIG>",Cstr(i+1) +"," + Cstr(intPaginas))
+			Else
+				'sacame los tags que no hay flechas
+				strAntAux = Strleft(strAntAux,"<ANT>") & Strright(strAntAux,"</ANT>")
+				strDesAux = Strleft(strDesAux,"<ANT>") & Strright(strDesAux,"</ANT>")
+				strAntAux = Strleft(strAntAux,"<SIG>") & Strright(strAntAux,"</SIG>")
+				strDesAux = Strleft(strDesAux,"<SIG>") & Strright(strDesAux,"</SIG>")
+			End If
+			strAntAux = cambiarTag(strAntAux,"<HOSTBUSQUEDA>",c.Protocolo & "://" & c.Host("BUSQUEDA") & ":" & c.Puerto & "/" & cambiarTAg(c.BasedeDatos("BUSQUEDA"),"\","/"))
+			strDesAux = cambiarTag(strDesAux,"<HOSTBUSQUEDA>",c.Protocolo & "://" & c.Host("BUSQUEDA") & ":" & c.Puerto &"/" & cambiarTAg(c.BasedeDatos("BUSQUEDA"),"\","/"))
+			strRepeatAux=""
+			
+			For j = 1 + (CAMPO_RESULTADO_BUSQUEDA*(i-1)) To  1 + ((CAMPO_RESULTADO_BUSQUEDA*i) -1)
+				If j<= vRes.cantElem Then
+					Set resBean = vRes.getElement(j)
+					strBodyAux = cambiarTag(strRepeat,"<CAMPO1>",resBean.getNumerodoc())
+					Call vNro.insertElement(resBean.getNumerodoc(),vNro.cantElem+1)
+					strBodyAux = cambiarTag(strBodyAux,"<CAMPO2>",resBean.getOficinaActual())
+					Call vOficina.insertElement(resBean.getOficinaActual(),vOficina.cantElem+1)
+					strBodyAux = cambiarTag(strBodyAux,"<CAMPO3>",resBean.getTituloDoc())
+					Call vTitulo.insertElement(resBean.getTituloDoc(),vTitulo.cantElem+1)
+					strBodyAux = cambiarTag(strBodyAux,"<CAMPO4>",resBean.getEstado())
+					Call vEstado.insertElement(resBean.getEstado(),vEstado.cantElem+1)
+					Call vHost.insertelement(resBean.getHost(),vHost.cantElem+1)
+					strNro = strNro & "~" & resBean.getNumerodoc()
+					strOficina = strOficina & "~" & resBean.getOficinaActual()
+					strTitulo = strTitulo & "~" & resBean.getTituloDoc()
+					strEstado = strEstado & "~" & resBean.getEstado()
+					strBodyAux = cambiarTag(strBodyAux,"<LINKDOC>",resBean.getHost())
+					strRepeatAux = strRepeatAux & strBodyAux
+				End If
+			Next
+			Print strAntAux & strRepeatAux & strDesAux 
+			strAux = strAux & strAntAux & strRepeatAux & strDesAux
+		Next
+		
+		docSession.ReplaceItemValue SESSION_CAMPO_HOST,vHost.values
+		docSession.ReplaceItemValue SESSION_CAMPO_NUMERO,vNro.values
+		docSession.ReplaceItemValue SESSION_CAMPO_OFICINA,vOficina.values
+		docSession.ReplaceItemValue SESSION_CAMPO_TITULO,vTitulo.values
+		docSession.ReplaceItemValue SESSION_CAMPO_ESTADO,vEstado.values
+		docSession.ReplaceItemValue SESSION_CAMPO_DESC, strDesc
+		docSession.ReplaceItemValue "UltLog",Now
+		docSession.Save True,False
+		
+		Print |<input type="hidden" value='| & cambiarTag(Trim(Strright(strNro,"~")),"'","&#39;") & |' name="Nros" >|
+		Print |<input type="hidden" value='| & cambiarTag(Trim(Strright(strOficina,"~")),"'","&#39;") & |' name="Oficinas" >|
+		Print |<input type="hidden" value='| & cambiarTag(Trim(Strright(strTitulo,"~")),"'","&#39;") & |' name="Titulos" >|
+		Print |<input type="hidden" value='| & cambiarTag(Trim(Strright(strEstado,"~")),"'","&#39;") & |' name="Estados" >|
+		Print |<INPUT type="hidden" value='| & n.Common & |' name="usuario">|
+		Print |<INPUT type="hidden" value='| & cambiarTag(strDesc,"'","&#39;") & |' name="desc">|
+		
+		ParserBody = strAux
+		Exit Function
+handler:
+		Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase presbusqueda - function parserbody","","")
+		Exit Function
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Private Function cambiarTag (Byval strTexto As String, strTag As String, strValor As String)
+		While Instr(strTexto,strTag)>0 
+			strTexto = Strleft (strTexto,strTag) & strValor & Strright(strTexto,strTag)
+		Wend
+		cambiarTag = strTexto
+	End Function
+	
+'**********************************************************************************************************************************
+	
+	Public Function getHTML(docTemplate As NotesDocument, docSession As NotesDocument) As String
+		
+		If vRes.cantelem>0 Then
+			getHtml = parserHeader(docTemplate.GetItemValue("strHeader")(0),docSession) & parserBody(docTemplate.GetItemValue("strBody")(0),docSession)
+		Else			
+			getHtml = parserHeader(docTemplate.GetItemValue("strHeader")(0),docSession) 
+			Print docTemplate.GetItemValue("strNoDocs")(0)
+			Dim n As New NotesName(session.EffectiveUserName)
+			Print |<INPUT type="hidden" value='| & n.Common & |' name="usuario">|
+			Print |<INPUT type="hidden" value='| & cambiarTag(strDesc,"'","&#39;") & |' name="desc">|
+		End If		 
+		Print "</form>"
+		Print docTemplate.GetItemValue("strFooter")(0)
+	End Function
+	
+'**********************************************************************************************************************************
+End Class
+'**********************************************************************************************************************************
+'**********************************************************************************************************************************

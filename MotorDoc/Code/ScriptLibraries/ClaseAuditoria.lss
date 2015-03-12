@@ -1,0 +1,407 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+'******************************************************************************************************************
+'* 
+'*								CLASS AUDITORIA
+'*
+'******************************************************************************************************************
+'* El formato de las bases debe ser : path/NOMBREMODULO + anio_nro.nsf   (EJ: path/Auditoria2003_2.nsf )
+'* El formato de las claves debe ser : ClaveGeneral + Anio_Numero (Ej: AUDITORIA2003_05)
+'*
+'*	Contructor
+'*
+'*		Public Sub new()
+'*
+'*
+'*	Métodos
+'*
+'*		Public Sub registrar()
+'*		'Genera un documento de registro de operacion en la base
+'*
+'*
+'*		Public Property Get usuario(Byval sUser As String) As String
+'*
+'*
+'*		Public Property Set usuario(Byval sUser As String) As String
+'*
+'*
+'*		Public Property Get operacion(Byval sOper As String) As String
+'*
+'*
+'*		Public Property Set operacion(Byval sOper As String) As String
+'*
+'*
+'*		Public Property Get numeroDoc(Byval sNro As String) As String
+'*
+'*
+'*		Public Property Set numeroDoc(Byval sNro As String) As String
+'*
+'*
+'*
+'*
+
+Use "Errores Generales" 
+Use "ConfEE 1.0"
+Use "FuncionesGenerales"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Auditoria
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+
+Const NOMBRE_MODULO				="Auditoria"
+Const FORM_OPERACION			="FDetalleRegistro"
+Const NUMERO_PRIMER_BASE			=1
+Const MAX_NUMERO_BASE_NOT_FOUND	=-1
+
+Const STR_BARRA_INV				="\"
+Private Const NOMBRE_FORM_CONF_VIS= "fVisConfiguracion"
+'Nombre del documento de perfil
+Private Const DOCUMENTO_PERFIL	= "fConfiguracion"
+Private Const DOCUMENTO_IGDOC	= "IGDocConfig"
+Private Const DOCUMENTO_CONF_EXPEDIENTE = "fConfiguracion"
+Private Const NOMBRE_FORM_CONF_IGDOC	= "igdocconfig"
+
+'Recordar de modificar la clase y formualrio configuracion cuando se agregguen los nuevos parametros para 
+'lista de operaciones a registrar, y tiempo máximo de generación=Tiempo de vida de la base de auditoria
+
+Public Class Auditoria
+	Private db As notesDatabase
+	Private sUsuario As String
+	Private sNroDocumento As String 'Expediente/Carta
+	Private sOperacion As String
+	Private sParamOperacion As String
+	Private sTipoDocumento As String
+	Private tFecha As NotesDateTime
+	Private flagCreate As Boolean
+	Private ses As NotesSession
+	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+'Privadas
+	
+	Private Function tiempoCumplido(c As Configuracion,fechaCreacion As Variant) ',sClave As String) As Integer
+		On Error Goto errorHandler
+		Dim vClaves As New vector(0),vFechas As New Vector(0), i As Integer
+		Dim dFecha As Variant
+		
+		tiempoCumplido=False
+		
+		Dim fNow As notesDateTime,fCreada As notesDateTime
+		Set fNow=New notesDateTime(Now)
+		Set fCreada= New notesDateTime(fechaCreacion)
+		If Isnumeric(c.TiempoMaximoAuditoria) Then
+			If ( Cint(fNow.Timedifference(fCreada)/86400) >= c.TiempoMaximoAuditoria ) Then
+				tiempoCumplido = True
+			Else
+				tiempoCumplido=False
+			End If	
+		Else
+			tiempoCumplido=False
+		End If	
+		
+		
+%REM
+		tiempoCumplido=False
+		vClaves.values=c.ClavesCreacionAuditoria
+		vFechas.values=c.FechasCreacionAuditoria
+		For i=1 To vClaves.cantElem
+			If vClaves.getElement(i)=sClave Then
+				dFecha=vFechas.getElement(i)	
+				Dim fNow As notesDateTime,fCreada As notesDateTime
+				Set fNow=New notesDateTime(Now)
+				Set fCreada= New notesDateTime(dFecha)
+				
+				If Isnumeric(c.TiempoMaximoAuditoria) Then
+					If Cint(fNow.Timedifference(fCreada)/86400)>=c.TiempoMaximoAuditoria Then
+						tiempoCumplido = True
+						Exit Function
+					Else
+						tiempoCumplido=False
+					End If	
+				End If				
+			End If
+		Next		
+%END REM
+		
+		
+		
+		
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Auditoria - TiempoCumplido ", "")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Private Sub notificarBaseCreada(destino As Variant)
+		On Error Goto errorHandler
+		
+		If Isempty(destino) Then
+			Exit Sub
+		End If
+		
+		Dim mail As notesDocument
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.Principal="Sistema de Expedientes Electrónico"
+		mail.subject="Atención: Nueva base de Auditoría " 
+		
+		Dim rti As NotesRichTextItem
+		Set rti=New NotesRichTextItem(mail,"Body")
+		rti.AppendText  "Se ha creado una nueva base de auditoría. " 
+		rti.AddNewline 2
+		rti.AppendText "Servidor: " & db.Server
+		rti.AddNewline 1
+		rti.AppendText "Archivo: " & db.FilePath 
+		
+		
+		mail.send False,destino
+		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Auditoria - notificarBaseCreada ", "")
+		Exit Sub
+	End Sub
+'***********************************************************************************************************************	
+	Private Sub crearBase(c As Configuracion,sNumBase As Integer) 		'Teminar busqueda de base en Conf
+		On Error Goto errorHandler
+		Dim template As New notesDatabase("","")
+		Dim sPath As String,sFile As String,server As String
+		Dim session As notesSession,ssDB As notesDatabase
+		Dim searchDb As NotesDatabase
+		Dim flagCreate As Integer
+		
+		flagCreate = True
+		sPath=""
+		If template.open(c.ServidorDomino(CLAVE_DBAUDITORIA_TEMPLATE),c.BaseDeDatos(CLAVE_DBAUDITORIA_TEMPLATE)) Then
+			If db Is Nothing Then
+				Set session = New NotesSession
+				Set ssDB=session.currentDatabase
+				server=ssDB.server
+				If Instr(ssDB.filePath,STR_BARRA_INV)>0 Then
+					sPath=Strleftback(ssDB.filePath,STR_BARRA_INV)	
+				End If
+				sPath=Strleft(ssDB.FilePath,ssDB.FileName)
+				'sFile=NOMBRE_MODULO & Cstr(Year(Today)) & "_" & Cstr(sNumBase) & ".nsf"				
+			Else				
+				
+				server=db.server
+				sPath=Strleft(db.FilePath,db.FileName)
+				
+			End If
+			sFile=NOMBRE_MODULO & Cstr(Year(Today)) & "_" & Cstr(sNumBase) & ".nsf"				
+			
+			If sPath<>"" Then
+				Set db=template.Createcopy(server,sPath  & sFile)		
+			Else
+				Set db=template.Createcopy(server,sFile)		
+			End If			
+			
+			If db.isOpen Then
+				db.Title=NOMBRE_MODULO & " " & Cstr(Year(Today)) & " " & Cstr(sNumBase)
+				'Agregar a la configuracion
+				Dim vIns As New Vector(0),nColOrd As Integer,serverName As NotesName
+				Dim sdoc As NotesDocument
+				Dim paths As String
+				Set serverName=New notesname(db.server)
+				nColOrd=1
+				vIns.insertElement CLAVE_DBAUDITORIA & Cstr(Year(Today)) & "_" & sNumBase , 1
+				Dim nom As New NotesName(db.server)
+				vIns.insertElement  nom.Abbreviated, 2
+				vIns.insertElement c.Host(CLAVE_DBAUDITORIA_TEMPLATE) , 3  
+				vIns.insertElement db.filepath , 4
+				c.insertLineaInteroperabilidad vIns,nColOrd
+				c.addAuditoriaDate CLAVE_DBAUDITORIA & Cstr(Year(Today))  & "_" & sNumBase,Now
+				c.save
+				'notificarBaseCreada c.Administradores.values
+			Else
+				Error ERROR_DB_NOT_CREATED,MSG_ERROR_DB_NOT_CREATED & " " & sPath & STR_BARRA_INV & sFile
+			End If	
+			
+			
+			'CREA REPLICA EN SERVIDOR
+			Dim servidores As New Vector(0)
+			Dim i As Integer
+			Dim docCon As NotesDocument
+			Set ses = New NotesSession
+			Set docCon = ses.CurrentDatabase.GetProfileDocument(NOMBRE_FORM_CONF_IGDOC)
+			
+			Dim nname As New NotesName(db.Server)
+			
+			If docCon.Getitemvalue(CAMPO_SERVIDOR_EN_CLUSTER)(0) = "Si" Then 	
+				servidores.values = docCon.Getitemvalue(CAMPO_NOMBRES_SERVIDORES)				
+				For i=1 To servidores.cantElem
+					If LCase(nname.Canonical) <> LCase(servidores.getElement(i)) Then
+						Call db.Createreplica(servidores.getElement(i), db.Filepath)
+					End If
+				Next 			
+			End If	
+			' copio el doc de configuracion de igdoc y de expedientes
+			Dim docConfIGdoc As NotesDocument
+			Dim docConfExpe As NotesDocument
+			Set docConfIGdoc = ses.CurrentDatabase.GetProfileDocument(DOCUMENTO_IGDOC)
+			Set docConfExpe = ses.Currentdatabase.Getprofiledocument(DOCUMENTO_CONF_EXPEDIENTE)
+			Call docConfIGdoc.Copytodatabase(db)
+			Call docConfExpe.Copytodatabase(db)
+		Else
+			Error ERROR_DB_NOT_CREATED,MSG_ERROR_DB_NOT_CREATED  & " " & NOMBRE_MODULO
+		End If
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Auditoria - CrearBase ", "")
+		Exit Sub
+	End Sub	
+	
+'******************************************************************************************************************	
+	
+	Private Function maxBase(c As Configuracion,sClave As String) As Integer
+		On Error Goto errorHandler
+		Dim vClaves As New Vector(0), nTmp As Integer,sNum As String
+		
+		Set vClaves=c.claves
+		maxBase=MAX_NUMERO_BASE_NOT_FOUND
+		Forall cl In vClaves.values
+			If Ucase(Strleft(Cstr(cl),"_"))=CLAVE_DBAUDITORIA & Cstr(Year(Today)) Then
+				sNum=Strright(Cstr(cl),"_")
+				If Isnumeric(sNum) Then
+					nTmp=Cint(sNum)
+					If nTmp>maxBase Then
+						maxBase=nTmp
+					End If
+				End If	
+			End If
+		End Forall	
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Auditoria - MaxBase ", "")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+'Públicas
+	
+	Public Sub new()
+		'Se busca la base que corresponde abrir. La que tiene el máximo índice de clave
+		'Si no se encuentra una, se la crea. Si se encuentra una, se verifica si no se 
+		'cumplió el tiempo de vida de la misma. En caso afirmativo, se crea una.
+		On Error Goto errorHandler
+		Dim c As New Configuracion, srv As String, path As String
+		Dim nMax As Integer ,sClave As String
+		flagCreate = False
+		nMax=maxBase(c,CLAVE_DBAUDITORIA)
+		If nMax=MAX_NUMERO_BASE_NOT_FOUND Then
+			crearBase c,NUMERO_PRIMER_BASE
+			nMax=NUMERO_PRIMER_BASE
+		Else
+			sClave=CLAVE_DBAUDITORIA & Cstr(Year(Today)) & "_" & Cstr(nMax)
+			srv = c.ServidorDomino(sClave)
+			path = c.BaseDeDatos(sClave)
+			Set db = New NotesDataBase ("","")		
+			If Not db.Open (srv,path) Then
+				Error ERROR_DB_NOT_OPEN,MSG_ERROR_DB_NOT_OPEN & " - " & NOMBRE_APLICACION
+			Else
+				if tiempoCumplido(c,db.Created) Then 'sClave) Then 'Sacar de Configuracion c
+					crearBase c,nMax+1
+				End If
+			End If			
+		End If		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " New ", "")
+		Exit Sub	
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Sub registrar()
+	'Genera un documento de registro de operacion en la base
+		On Error Goto errorHandler
+		Dim doc As notesdocument
+		
+		Set doc=New notesdocument(db)
+		doc.form=FORM_OPERACION
+		doc.nbUsuario=Me.usuario
+		doc.sOperacion=Me.operacion
+		doc.sNroDocumento=Me.numeroDoc
+		doc.sTipoDocumento=Me.tipoDoc
+		doc.sParamOperacion = Me.paramOperacion
+		doc.fFecha=Now
+		doc.save True,False
+		If flagCreate Then
+			db.UpdateFTIndex (True)
+			flagCreate = False
+		End If
+		Exit Sub
+errorhandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Registrar ", "")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Property Get usuario As String
+		usuario=sUsuario		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set usuario As String
+		sUsuario=usuario
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get operacion As String
+		operacion=sOperacion	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set operacion As String
+		sOperacion=operacion
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get numeroDoc As String
+		numeroDoc=sNroDocumento
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set numeroDoc As String
+		sNroDocumento=numeroDoc
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get tipoDoc As String
+		tipoDoc=sTipoDocumento
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set tipoDoc As String
+		sTipoDocumento=tipoDoc
+	End Property
+'******************************************************************************************************************	
+	
+	Public Property Get paramOperacion As String
+		paramOperacion=sParamOperacion
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set paramOperacion As String
+		sParamOperacion=paramOperacion
+	End Property
+	
+	
+End Class

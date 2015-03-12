@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='172' unid='0ED1CC83832F64FC03257582004A4CD5' sequence='47'>
+<created><datetime>20090323T103133,33-03</datetime></created>
+<modified><datetime>20150311T132731,68-03</datetime></modified>
+<revised><datetime>20150309T094456,44-03</datetime></revised>
+<lastaccessed><datetime>20150311T132731,68-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132731,68-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime dst='true'>20061222T170709,14-02</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>Resoluciones</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>"[&lt;style&gt;"+@NewLine+
+".fila {font-size:10pt; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:left; text-decoration:none;color:#000000; cursor:hand;}"+@NewLine+
+"&lt;/style&gt;]"</formula></item>
+<item name='$StyleSheetList' sign='true'>
+<rawitemdata type='1'>
+9v8sAAAAAAADACEACgAAAAAAAAAAAAAAAAAAAAAAAAAAAGVzdGlsby5jc3M=
+</rawitemdata></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>Resoluciones</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+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
+</rawitemdata></item>
+<item name='$PublicAccess'><text>1</text></item></note>
+

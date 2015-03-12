@@ -1,0 +1,131 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+%REM
+	Library ClaseAvisoPorVoz
+	Created Feb 19, 2013 by Francisco Alvarez/ISA
+	Description: Comments for Library
+%END REM
+Option Public
+Option Declare
+
+Use "Notifyme"
+Use "AvisosConfig"
+Use "NumeradorClient"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ClaseAvisoPorVoz
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Private Const CAMPO_NUMERO_NOTIFYME 				= "nNumeroUnicoNotifyme"
+Private Const NOMBRE_NUMERADOR_NOTIFYME 			= "AVSOS_NOTIFYME"
+Private Const ERROR_NUMCLIENT_NUMERATOR_NOT_FOUND 	= 16013
+
+%REM
+	Class ClaseAvisoPorVoz
+	Description: Comments for Class
+%END REM
+Public Class ClaseAvisoPorVoz
+	
+	%REM
+		Sub enviar
+		Description: Comments for Sub
+	%END REM
+	Public Function enviar(docSol As NotesDocument, destino As String, asunto As String, mensaje As String, correo As String, usuario As String, password As String, url As String, msgError As String)
+		On Error GoTo handler
+		
+		Dim notifymePort As NotifymeWSRemote_n3
+		Dim usuarioXsd As Xsd_string
+		Dim passwordXsd As Xsd_string
+		Dim exception As Notifymewsexception_n3
+		Dim notificacion As DataNotificacion_n3
+		Dim fecha As Xsd_datetime
+		Dim fechaAux As NotesDateTime
+		Dim id As Xsd_Long
+		Dim telefono As Xsd_String
+		Dim notificaciones(0 To 0) As Datanotificacion_n3
+		Dim resultado As Xsd_string
+		Dim dialogo As Xsd_string
+		Dim conf As New AvisosConfig
+		Dim dbNumeracion As NotesDatabase
+		Dim numeroUnico As Long
+		
+		Set dbNumeracion = conf.ReferenciarBaseDeDatos(CLAVE_DBNUMERACION)
+		
+		Dim cree As Boolean
+		cree = False
+numerador:
+		Dim numerador As New NumClient(NOMBRE_NUMERADOR_NOTIFYME,dbNumeracion.Server,dbNumeracion.Filepath)
+		
+		numeroUnico = numerador.GetNumber()
+		docSol.replaceItemValue CAMPO_NUMERO_NOTIFYME,numeroUnico
+		
+		Set notifymePort = New Notifymewsremote_n3(url)
+		Set usuarioXsd = New Xsd_string
+		Set passwordXsd = New Xsd_string
+		Set exception = New Notifymewsexception_n3
+		Set notificacion = New Datanotificacion_n3
+		Set fecha = New Xsd_datetime
+		Set fechaAux = New NotesDateTime(Today)
+		Set id = New Xsd_Long
+		Set telefono = New Xsd_String
+		Set dialogo = New Xsd_String
+		
+		fechaAux.Adjustminute(1)
+		id.Setvaluefromstring(CStr(numeroUnico))
+		telefono.setValueFromString(destino)
+		dialogo.setValueFromString(mensaje)
+		
+		Call fecha.Setvaluefromnotesdatetime(fechaAux)
+		
+		Set notificacion.Dialogo = dialogo
+		Set notificacion.Fecha = fecha
+		Set notificacion.Identificadorunico = id
+		Set notificacion.Telefono = telefono
+		
+		Set notificaciones(0) = notificacion
+		
+		Call usuarioXsd.Setvaluefromstring(usuario)
+		Call passwordXsd.Setvaluefromstring(password)
+
+		Set resultado = notifymePort.Crearnotificaciones(UsuarioXsd, PasswordXsd, notificaciones, exception)
+		
+		msgError = resultado.Getvalueasstring()
+		
+		Exit Function
+handler:
+		If Err = ERROR_NUMCLIENT_NUMERATOR_NOT_FOUND And Not cree Then
+			'MsgBox "creo el numerador " + NOMBRE_NUMERADOR_NOTIFYME
+			Call CrearNumerador(NOMBRE_NUMERADOR_NOTIFYME,dbNumeracion.Server, dbNumeracion.Filepath)
+			cree = True
+			GoTo numerador
+		Else
+			msgError = "Ocurrió un error al enviar el mensaje de Voz"
+			Exit Function
+		End if
+	End Function
+
+'********************************************************************************************************
+	
+	Private Function CrearNumerador(numerador As String,server As String, path As String)
+		On Error GoTo handler
+		Dim docNumerador As NotesDocument
+		Dim baseNumeracion As NotesDatabase
+		
+		Set baseNumeracion = New NotesDatabase("","")
+		Call baseNumeracion.Open(server, path)
+		
+		Set docNumerador = New NotesDocument(baseNumeracion)
+		docNumerador.Form = "Numerador"
+		docNumerador.Name = numerador
+		docNumerador.Queue = 1
+		docNumerador.StartNumber = 1
+		docNumerador.LastQueued = 1
+		docNumerador.LastAsigned = 0
+		docNumerador.QueueLen = 1
+		docNumerador.Save True, False
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ClaseAvisoPorVoz - Funcion CrearNumerador","")
+		Exit Function
+	End Function	
+End Class

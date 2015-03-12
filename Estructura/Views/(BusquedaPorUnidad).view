@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='44e' unid='B7F11E85BBE3F7B003256D440063D624' sequence='94'>
+<created><datetime>20030613T151028,84-03</datetime></created>
+<modified><datetime>20150311T131218,96-03</datetime></modified>
+<revised><datetime>20150309T094441,05-03</datetime></revised>
+<lastaccessed><datetime>20150311T131218,96-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131218,96-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Juan Funez/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(BusquedaPorUnidad)|VBusqUni</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+wgACABoAAgAkNQUACgBzTnJvVW5pZGFkVgEDAAUAQgA9AAYACgANAAcAAgAJAAQAc05yb1VuaWRh
+ZHNDb2RWaXNVbmlkYWRjY05yb0NTJDUkQ29uZmxpY3QkUkVGAAQABAAAAEgABQAEAGZvcm0BAAcA
+RlVuaWRhZAAKAgUACgBsRXN0YWRvVW5pAQABADAACgIcAgUACQAkQ29uZmxpY3QAaAEeARwCAwAH
+ABgAEgAJTDFTMlMzUzVTN1M4UzJFOVM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+FwABAABEAGYAAAAKAHNOcm9VbmlkYWQ=
+</rawitemdata></item>
+<item name='$Collation1' summary='true'>
+<rawitemdata type='2'>
+GgABAABEgGYAAAANAHNDb2RWaXNVbmlkYWQ=
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAEAAYAiAgAAFZDAQAKAAYAAAAAANYBBQAACAAAAAAAAAAAAAICAAAAVkMAAQ0ACAAAAAAAYwAG
+AAAIAQAAAAAAAAAAAgIAAABWQwAABwAEAAAAAABQAAcAAAiBAAAAAAAAAAACAgAAAFZDAAACAAAA
+KAAAAFAAAQAACgAAAAAAAAAAAAICAAAAc05yb1VuaWRhZFVuaWRhZHNDb2RWaXNVbmlkYWQjIFVu
+aWRhZGNjTnJvQ1MjIENTJDUoAAIAGgACACQ1BQAKAHNOcm9VbmlkYWRWAQMABwAMAAUACTBTMEUA
+JgABAAAAAQEACQEAAAoBAQ4KAABPAK0rAgABAAEAAAAAAAAAAABXQwEAAAgAAAAAAAAAAAAAAAAA
+AAAAAQAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAAAIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA
+//8AAAAAAAAAAAAAAAAAAFdDAQAACAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAA
+AAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAA
+AQD///8AAQDh4eEAAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAgICAAAEAAAAA
+AAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>53</text><text>Courier New</text><text
+>6</text><text>53</text><text>Courier New</text><text>7</text><text>53</text><text
+>Courier New</text></textlist></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAAJAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAQ2F0ZWdvcmlfemUA
+AQBOfL7/KAAAAAUAAACdAQAADgAAAAAAAABfRWRpdCBEb2N1bWVudAIAAgq+/ygAAAAFAAAAnQEA
+AA4AAAAAAAAAX1NlbmQgRG9jdW1lbnQDAAMKvv8iAAAABQAAAJ0BAAAIAAAAAAAAAF9Gb3J3YXJk
+BAAECr7/LAAAAAUAAACdAQAAEgAAAAAAAABfTW92ZSBUbyBGb2xkZXIuLi4FAD18vv8uAAAABQAA
+AJ0BAAATAAAAAAAAAF9SZW1vdmUgRnJvbSBGb2xkZXIABgA+fA==
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABDYXRlZ29y
+aV96ZQQBAE58vv8oAAAABQAAAJ0BAAAOAAAAAAAAAF9FZGl0IERvY3VtZW50AgACCr7/KAAAAAUA
+AACdAQAADgAAAAAAAABfU2VuZCBEb2N1bWVudAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAAX0Zv
+cndhcmQEAAQKvv8sAAAABQAAAJ0BAAASAAAAAAAAAF9Nb3ZlIFRvIEZvbGRlci4uLgUAPXy+/y4A
+AAAFAAAAnQEAABMAAAAAAAAAX1JlbW92ZSBGcm9tIEZvbGRlchgGAD58
+</rawitemdata></item></note>
+

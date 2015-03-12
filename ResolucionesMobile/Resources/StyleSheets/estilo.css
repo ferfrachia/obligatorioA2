@@ -1,0 +1,32 @@
+/* CSS Document */
+
+.titulo1 {font-family:Helvetica, Verdana, Arial, sans-serif;text-align:left; font-weight:bold; font-size:13px; line-height:15px; color:#ffffff;}
+.titulo2 {font-family:Helvetica, Verdana, Arial, sans-serif;text-align:left; font-weight:bold; font-size:12px; line-height:15px; color:#666666; padding-top:10}
+
+.indice {font-family:Verdana, Arial, Helvetica, sans-serif; text-align:left; font-size:11px; line-height:15px; color:#006600; TEXT-DECORATION: none;}
+.indice2 {font-family:Verdana, Arial, Helvetica, sans-serif; text-align:left; font-size:11px; line-height:15px; color:#00aa00; TEXT-DECORATION: none;}
+
+.indiceT {font-family:Verdana, Arial, Helvetica, sans-serif; text-align:justify; font-size:12px; line-height:15px; color:#000000; TEXT-DECORATION: none;}
+
+.servicios {padding-left:6px; font-size:13px; line-height:18px; color:#000000; TEXT-DECORATION: none;}
+a.servicios:link {font-size:13px; color:#000000;}
+a.servicios:hover {font-size:13px; color:#FFFFFF;}
+
+.direcciones {font-family:Times; font-size:13px; padding-left:6px; line-height:24px; TEXT-DECORATION: none; color:#006699}
+a.direcciones:link {font-size:13px; color:#0000ff;}
+a.direcciones:hover {font-size:13px; color:#FFFFFF;}
+
+
+.cuerpoJ {font-size:11px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:justify; padding-left:5; padding-right:5;}
+.cuerpoD {font-size:11px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:right; padding-left:5; padding-right:5;}
+.titulo {font-size:13px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; font-weight:bold; text-align:left; background-color:#e9e9e9}
+.titulo2 {font-size:13px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; font-weight:bold; text-align:right; background-color:#e9e9e9}
+.cuerpo {font-size:11px; border:0px; font-family:Tahoma, Verdana, sans-serif; text-align:left; padding-left:1; padding-right:5; color:#000000; }
+.cuerpoO {font-size:11px; border:0px; font-family:Tahoma, Verdana, sans-serif; text-align:left; padding-left:1; padding-right:5; cursor:pointer; color:orange;}
+
+
+
+.cuerpo2 {font-size:8px; border:0px; font-family:Verdana, Helvetica,Arial,sans-serif; text-align:right; padding-left:2; padding-right:2;}
+
+
+.cObras {font-family:Verdana, Arial, Helvetica, sans-serif; text-align:left; font-size:11px; line-height:15px; color:#000000;}

@@ -1,0 +1,430 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+
+
+Option Declare
+
+
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "IGDocConfig"
+Use "Configuracion Formularios"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Indice
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const VISTA_DOCSxMODULO_CLAVE						= "SearchDocsxModuloClave"
+Private Const FORM_INDICE								= "Indice"
+
+Private Const CAMPO_MODULO								= "modulo"
+Private Const CAMPO_CLAVE								= "clave"
+Private Const CAMPO_AÑO									= "año"
+Private Const CAMPO_UNIDAD								= "unidad"
+Private Const CAMPO_NOMBRE_UNIDAD							= "nombreUnidad"
+Private Const CAMPO_BASE									= "base"
+Private Const CAMPO_UNID									= "unid"
+Private Const CAMPO_UNID2								= "unid2"
+Private Const CAMPO_COL									= "sRazonesColumna"
+Private Const CAMPO_COL_E								= "sRazonesColumnaE"
+Private Const CAMPO_COL_S								= "sRazonesColumnaS"
+
+Public Class Indice
+	Private dbIndice As NotesDatabase
+	Private modulo As String
+	Private igdocConf As IGDocConfig
+'******************************************************************************************************************	
+	
+	Public Sub New (pModulo As String, nombrePerfil As String)
+		On Error Goto HANDLER
+		set igdocConf = New IGDocConfig
+		
+		
+		'módulo
+		modulo = Ucase(pModulo)
+		
+		
+		'base con los índices
+		Set dbIndice = New NotesDatabase("","")'conf.ReferenciarBaseDeDatos(CLAVE_DBPORTAL)
+		Call dbIndice.Open(igdocConf.ServerInstalacion, igdocConf.PathPortal)
+		If dbIndice Is Nothing Then
+			Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+CLAVE_DBPORTAL
+		End If
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndice - New: " & Error$ & " " & Erl
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método New","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Function ActualizarIndice (clave As String, codigounidad As String, nombreunidad As String, año As String, doc As NotesDocument, campos As Vector) As String
+		ActualizarIndice = ActualizarIndiceDocs (clave, codigounidad,nombreunidad, año, doc, campos, Nothing, Nothing)
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Function ActualizarIndiceDocs (clave As String,codigounidad As String, nombreunidad As String, año As String, doc As NotesDocument, campos As Vector, doc2 As NotesDocument, campos2 As Vector) As String
+		On Error Goto HANDLER
+		Dim vIndices As NotesView
+		Dim docIndice As NotesDocument
+		Dim key(1 To 2) As String
+		Dim nombre As String
+		Dim i As Long
+		'Dim oUnidad As UnidadExp
+		
+		'Busco el índice
+		Set vIndices = dbIndice.GetView(VISTA_DOCSxMODULO_CLAVE)
+		key(1) = modulo
+		key(2) = clave
+	'	Msgbox "LA CLAVE ES " & clave & " EL MODULO " & modulo
+		Set docIndice = vIndices.GetDocumentByKey(key,True)
+		
+		'Si no existe el índice, lo creo
+		If docIndice Is Nothing Then
+			Set docIndice = dbIndice.CreateDocument
+			Call docIndice.ReplaceItemValue("Form", FORM_INDICE)
+			Call docIndice.ReplaceItemValue(CAMPO_MODULO, modulo)
+			Call docIndice.ReplaceItemValue(CAMPO_CLAVE, clave)
+			'Msgbox "ACA ENTRAMO PORQUE ES NUEVO"
+		Else
+			'Msgbox "NO ES VACIO"
+		End If
+		
+		'Actualizo siempre el año, la unidad y la base
+		If Len(año) < 4 Then
+			año = Cstr(Cint(año) + 2000)
+		End If
+		Call docIndice.ReplaceItemValue(CAMPO_UNIDAD, codigounidad)
+		
+		'Set oUnidad = New UnidadExp(unidad)
+		Call docIndice.ReplaceItemValue(CAMPO_NOMBRE_UNIDAD, nombreunidad)
+		Call docIndice.ReplaceItemValue(CAMPO_AÑO, Cstr(año))
+		Call docIndice.ReplaceItemValue(CAMPO_BASE, doc.ParentDatabase.FilePath)
+		Call docIndice.ReplaceItemValue(CAMPO_UNID, doc.UniversalID)
+		If Not doc2 Is Nothing Then
+			Call docIndice.ReplaceItemValue(CAMPO_UNID2, doc2.UniversalID)
+		End If
+
+		'Actualizo campos de tipo lectores y autores
+		Forall item In doc.Items
+			If item.Type = AUTHORS Or item.Type = READERS Then
+				Call docIndice.RemoveItem(item.Name)
+				Call item.CopyItemToDocument(docIndice, item.Name)
+			End If
+		End Forall
+
+		'Actualizo los otros campos indicados
+		If Not campos Is Nothing Then
+			For i=1 To campos.CantElem
+				nombre = campos.getElement(i)
+				Call docIndice.RemoveItem(nombre)
+				If doc.HasItem(nombre) Then
+					Call doc.GetFirstItem(nombre).CopyItemToDocument(docIndice, nombre)
+				End If
+			Next
+		End If
+		If Not campos2 Is Nothing And Not doc2 Is Nothing Then
+			For i=1 To campos2.CantElem
+				nombre = campos2.getElement(i)
+				Call docIndice.RemoveItem(nombre)
+				If doc2.HasItem(nombre) Then
+					Call doc2.GetFirstItem(nombre).CopyItemToDocument(docIndice, nombre)
+				End If
+			Next
+		End If
+		
+		Dim datos As String
+		Dim datosE As String
+		Dim datosS As String
+		Dim vec As New Vector(0)
+		Dim vecE As New Vector(0)
+		Dim vecS As New Vector(0)
+		Dim j As Long
+		Dim nombreForm As String
+		'Dim conf As ConfigForms
+		Dim dbOrgan As NotesDatabase ',dbOrgan2 As NotesDatabase
+		Dim vUnidades As NotesView',vUnidades2 As NotesView
+		Dim docUnidad As NotesDocument ',docUnidad2 As NotesDocument
+		'Dim docForm,docForm2 As NotesDocument
+		'Dim vTodos,vTodos2 As NotesView
+		'Dim dbForms,dbForms2 As NotesDatabase
+		Dim unidadAct As String
+		Dim estado As String
+		Dim nombreEstado As NotesName
+		
+		vec.values = doc2.GetItemValue("sRazonesColumna")
+		vecE.values = doc2.GetItemValue("sRazonesColumnaE")
+		vecS.values = doc2.GetItemValue("sRazonesColumnaS")
+		nombreForm = doc2.GetItemValue("sNombre")(0)
+
+	'	Set conf = New ConfigForms
+		
+		'Set dbForms = conf.ReferenciarBaseDeDatos(CLAVE_DBFORMULARIOS)
+		'Set vTodos = dbForms.GetView("TodosXNum")
+		'If vTodos Is Nothing Then Messagebox "vTodos nada"
+		'Set docForm = vTodos.GetDocumentByKey(clave,True)
+		
+		Set dbOrgan = New NotesDatabase("","")
+		Call dbOrgan.Open(igdocConf.ServerInstalacion, igdocConf.PathOrgan)'conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+		Set vUnidades = dbOrgan.GetView("BusquedaUnixNro")
+		Set docUnidad = vUnidades.GetDocumentByKey(codigounidad,True)
+
+		'Cambiado por Francisco el 21/07/2011 para las bandejas nuevas de formularios
+		If modulo = "FORMULARIOS" Then
+			If vec.CantElem <> 0 Then
+				For j=1 To 4
+					If j <= vec.CantElem Then
+						If (vec.getElement(j) = "UnidadActual")Then
+							Set docUnidad = vUnidades.GetDocumentByKey(doc.GetItemValue("UnidadActual")(0))
+							datos = datos & "<cell><![CDATA[ <span value='"&docUnidad.GetItemValue("sUnidad")(0)&"' style='display:none'></span><span style='color:###Color;'>"&docUnidad.GetItemValue("sUnidad")(0)&"</span> ]]></cell>"
+						ElseIf (vec.getElement(j) = "UnidadAnterior")Then
+							If (doc.GetItemValue("UnidadAnterior")(0) = "")Then
+								datos = datos & "<cell><![CDATA[ <span value='-' style='display:none'></span><span style='color:###Color;'>-</span> ]]></cell>"
+							Else
+								Set docUnidad = vUnidades.GetDocumentByKey(doc.GetItemValue("UnidadAnterior")(0))
+								datos = datos & "<cell><![CDATA[ <span value='"&docUnidad.GetItemValue("sUnidad")(0)&"' style='display:none'></span><span style='color:###Color;'>"&docUnidad.GetItemValue("sUnidad")(0)&"</span> ]]></cell>"
+							End If	
+						ElseIf (vec.getElement(j) = "sEstado")Then
+							estado = doc.GetItemValue(vec.getElement(j))(0)
+							If(estado = "Reservado") Then
+								Set nombreEstado = New NotesName(doc.GetItemValue("sReservadoPor")(0))
+								estado = estado & " por " & nombreEstado.Common
+							ElseIf (estado = "Finalizado") Then
+								Set nombreEstado = New NotesName(doc.GetItemValue("sUsuarioFin")(0))
+								estado = estado & " por " & nombreEstado.Common
+							End If
+							datos = datos & "<cell><![CDATA[ <span value='"& estado &"' style='display:none'></span><span style='color:###Color;'>"& estado &"</span> ]]></cell>"
+						Else
+							If IsDate(doc.GetItemValue(vec.getElement(j))(0)) Then
+								Dim anioInt As Integer
+								anioInt% = Year(doc.GetItemValue(vec.getElement(j))(0))
+								Dim mesAux,diaAux,anioAux As String
+								mesAux = Right("0" & Month(doc.GetItemValue(vec.getElement(j))(0)),2)
+								diaAux = Right("0" & Day(doc.GetItemValue(vec.getElement(j))(0)),2)
+								anioAux = anioInt%
+								datos = datos & "<cell><![CDATA[ <span value='"& anioAux & mesAux & diaAux &"' style='display:none'></span><span style='color:###Color;'>"& diaAux &"/"& mesAux &"/"& anioAux &"</span> ]]></cell>"
+							Else
+								datos = datos & "<cell><![CDATA[ <span value='"& doc.GetItemValue(vec.getElement(j))(0) &"' style='display:none'></span><span style='color:###Color;'>"& doc.GetItemValue(vec.getElement(j))(0) &"</span> ]]></cell>"
+							End If
+						End If
+					Else
+						datos = datos & "<cell><![CDATA[ <span value='-' style='display:none'></span><span style='color:###Color;'>-</span> ]]></cell>"
+					End If			
+				Next
+				Call docIndice.ReplaceItemValue("sRazonesColumna",datos)
+			Else
+				vec.insertElement "Numero", vec.CantElem+1
+				vec.insertElement "sNombreForm", vec.CantElem+1
+				vec.insertElement "FechasEnvio", vec.CantElem+1
+				vec.insertElement "sEstado", vec.CantElem+1
+				
+				For j=1 To vec.CantElem
+					If IsDate(doc.GetItemValue(vec.getElement(j))(0)) Then
+						Dim anioInt2 As Integer
+						anioInt2% = Year(doc.GetItemValue(vec.getElement(j))(0))
+						Dim mesAux2,diaAux2,anioAux2 As String
+						mesAux2 = Right("0" & Month(doc.GetItemValue(vec.getElement(j))(0)),2)
+						diaAux2 = Right("0" & Day(doc.GetItemValue(vec.getElement(j))(0)),2)
+						anioAux2 = anioInt2%
+						datos = datos & "<cell><![CDATA[ <span value='"& anioAux2 & mesAux2 & diaAux2 &"' style='display:none'></span><span style='color:###Color;'>"& diaAux2 &"/"& mesAux2 &"/"& anioAux2 &"</span> ]]></cell>"
+					Else
+						If(doc.GetItemValue(vec.getElement(j))(0) = "") Then
+							datos = datos & "<cell></cell>"
+						Elseif vec.getElement(j) = "sNombreForm" Then
+							datos = datos & "<cell><![CDATA[ <span value='"& nombreForm &"' style='display:none'></span><span style='color:###Color;'>"& nombreForm &"</span> ]]></cell>"
+						ElseIf (vec.getElement(j) = "sEstado")Then
+							estado = doc.GetItemValue(vec.getElement(j))(0)
+							If(estado = "Reservado") Then
+								Set nombreEstado = New NotesName(doc.GetItemValue("sReservadoPor")(0))
+								estado = estado & " por " & nombreEstado.Common
+							ElseIf (estado = "Finalizado") Then
+								Set nombreEstado = New NotesName(doc.GetItemValue("sUsuarioFin")(0))
+								estado = estado & " por " & nombreEstado.Common
+							End If
+							datos = datos & "<cell><![CDATA[ <span value='"& estado &"' style='display:none'></span><span style='color:###Color;'>"& estado &"</span> ]]></cell>"
+						Else
+							datos = datos & "<cell><![CDATA[ <span value='"& doc.GetItemValue(vec.getElement(j))(0) &"' style='display:none'></span><span style='color:###Color;'>"& doc.GetItemValue(vec.getElement(j))(0) &"</span> ]]></cell>"
+						End If 
+					End If
+				Next
+				Call docIndice.ReplaceItemValue("sRazonesColumna",datos)	
+			End If
+
+			' Datos para la bandeja de Entrada
+			If vecE.CantElem <> 0 Then
+				For j=1 To 4
+					If j <= vecE.CantElem Then
+						If (vecE.getElement(j)= "sUnidad") Then
+							datosE = datosE & "<cell><![CDATA[ <span value='"& docUnidad.GetItemValue("sUnidad")(0) &"' style='display:none'></span><span style='color:###Color;'>"& docUnidad.GetItemValue("sUnidad")(0) &"</span> ]]></cell>"	  
+						ElseIf (vecE.getElement(j) = "UnidadAnterior")Then
+							If (doc.GetItemValue("UnidadAnterior")(0) = "")Then
+								datosE = datosE & "<cell><![CDATA[ <span value='-' style='display:none'></span><span style='color:###Color;'>-</span> ]]></cell>"
+							Else
+								Set docUnidad = vUnidades.GetDocumentByKey(doc.GetItemValue("UnidadAnterior")(0))
+								datosE = datosE & "<cell><![CDATA[ <span value='"& docUnidad.GetItemValue("sUnidad")(0) &"' style='display:none'></span><span style='color:###Color;'>"& docUnidad.GetItemValue("sUnidad")(0) &"</span> ]]></cell>"	 
+							End If
+						Else
+							If IsDate(doc.GetItemValue(vecE.getElement(j))(0)) Then
+								Dim anioInt3 As Integer
+								anioInt3% = Year(doc.GetItemValue(vecE.getElement(j))(0))
+								Dim mesAux3,diaAux3,anioAux3 As String
+								mesAux3 = Right("0" & Month(doc.GetItemValue(vecE.getElement(j))(0)),2)
+								diaAux3 = Right("0" & Day(doc.GetItemValue(vecE.getElement(j))(0)),2)
+								anioAux3 = anioInt3%
+								datosE = datosE & "<cell><![CDATA[ <span value='"& anioAux3 & mesAux3 & diaAux3 &"' style='display:none'></span><span style='color:###Color;'>"& diaAux3 &"/"& mesAux3 &"/"& anioAux3 &"</span> ]]></cell>"
+							Else
+								datosE = datosE & "<cell><![CDATA[ <span value='"& doc.GetItemValue(vecE.getElement(j))(0) &"' style='display:none'></span><span style='color:###Color;'>"& doc.GetItemValue(vecE.getElement(j))(0) &"</span> ]]></cell>"
+							End If
+						End If
+					Else
+						datosE = datosE & "<cell><![CDATA[ <span value='-' style='display:none'></span><span style='color:###Color;'>-</span> ]]></cell>"
+					End If			
+				Next
+				
+				Call docIndice.ReplaceItemValue("sRazonesColumnaE",datosE)
+			Else
+				vecE.insertElement "Numero", vecE.CantElem+1
+				vecE.insertElement "sNombreForm", vecE.CantElem+1
+				vecE.insertElement "sUnidad", vecE.CantElem+1
+				vecE.insertElement "FechasEnvio", vecE.CantElem+1
+				
+				For j=1 To vecE.CantElem 
+					If (vecE.getElement(j)= "sUnidad") Then
+						If (doc.GetItemValue("UnidadAnterior")(0) = "")Then
+							datosE = datosE & "<cell><![CDATA[ <span value='-' style='display:none'></span><span style='color:###Color;'>-</span> ]]></cell>"	
+						Else
+							Set docUnidad = vUnidades.GetDocumentByKey(doc.GetItemValue("UnidadAnterior")(0))
+							datosE = datosE & "<cell><![CDATA[ <span value='"& docUnidad.GetItemValue("sUnidad")(0) &"' style='display:none'></span><span style='color:###Color;'>"& docUnidad.GetItemValue("sUnidad")(0) &"</span> ]]></cell>"
+						End If
+					Else
+						If IsDate(doc.GetItemValue(vecE.getElement(j))(0)) Then
+							Dim anioInt4 As Integer
+							anioInt4% = Year(doc.GetItemValue(vecE.getElement(j))(0))
+							Dim mesAux4,diaAux4,anioAux4 As String
+							mesAux4 = Right("0" & Month(doc.GetItemValue(vecE.getElement(j))(0)),2)
+							diaAux4 = Right("0" & Day(doc.GetItemValue(vecE.getElement(j))(0)),2)
+							anioAux4 = anioInt4%
+							datosE = datosE & "<cell><![CDATA[ <span value='"& anioAux4 & mesAux4 & diaAux4 &"' style='display:none'></span><span style='color:###Color;'>"& diaAux4 &"/"& mesAux4 &"/"& anioAux4 &"</span> ]]></cell>"
+						Else
+							If(doc.GetItemValue(vecE.getElement(j))(0) = "") Then
+								datosE = datosE & "<cell></cell>"
+							ElseIf vecE.getElement(j) = "sNombreForm" Then
+								datosE = datosE & "<cell><![CDATA[ <span value='"& nombreForm &"' style='display:none'></span><span style='color:###Color;'>"& nombreForm &"</span> ]]></cell>"
+							Else
+								datosE = datosE & "<cell><![CDATA[ <span value='"& doc.GetItemValue(vecE.getElement(j))(0) &"' style='display:none'></span><span style='color:###Color;'>"& doc.GetItemValue(vecE.getElement(j))(0) &"</span> ]]></cell>"
+							End If 
+						End If 
+					End If
+				Next
+				
+				Call docIndice.ReplaceItemValue("sRazonesColumnaE",datosE)
+				
+			End If
+
+			' Datos para la bandeja de Salida
+			If vecS.CantElem <> 0 Then
+				For j=1 To 4
+					If j <= vecS.CantElem Then
+						If (vecS.getElement(j) = "sUnidad") Then
+							datosS = datosS & "<cell><![CDATA[ <span value='"& docUnidad.GetItemValue("sUnidad")(0) &"' style='display:none'></span><span style='color:###Color;'>"& docUnidad.GetItemValue("sUnidad")(0) &"</span> ]]></cell>"
+						Else
+							If IsDate(doc.GetItemValue(vecS.getElement(j))(0)) Then
+								Dim anioInt5 As Integer
+								anioInt5% = Year(doc.GetItemValue(vecS.getElement(j))(0))
+								Dim mesAux5,diaAux5,anioAux5 As String
+								mesAux5 = Right("0" & Month(doc.GetItemValue(vecS.getElement(j))(0)),2)
+								diaAux5 = Right("0" & Day(doc.GetItemValue(vecS.getElement(j))(0)),2)
+								anioAux5 = anioInt5%
+								datosS = datosS & "<cell><![CDATA[ <span value='"& anioAux5 & mesAux5 & diaAux5 &"' style='display:none'></span><span style='color:###Color;'>"& diaAux5 &"/"& mesAux5 &"/"& anioAux5 &"</span> ]]></cell>"
+							Else
+								datosS = datosS & "<cell><![CDATA[ <span value='"& doc.GetItemValue(vecS.getElement(j))(0) &"' style='display:none'></span><span style='color:###Color;'>"& doc.GetItemValue(vecS.getElement(j))(0) &"</span> ]]></cell>"
+							End If 
+						End If
+					Else
+						datosS = datosS & "<cell><![CDATA[ <span value='-' style='display:none'></span><span style='color:###Color;'>-</span> ]]></cell>"
+					End If 
+				Next
+				
+				Call docIndice.ReplaceItemValue("sRazonesColumnaS",datosS)
+			Else
+				vecS.insertElement "Numero", vecS.CantElem+1
+				vecS.insertElement "sNombreForm", vecS.CantElem+1
+				vecS.insertElement "sUnidad", vecS.CantElem+1
+				vecS.insertElement "FechasEnvio", vecS.CantElem+1
+				
+				For j=1 To vecS.CantElem 
+					If (vecS.getElement(j) = "sUnidad") Then
+						datosS = datosS & "<cell><![CDATA[ <span value='"& docUnidad.GetItemValue("sUnidad")(0) &"' style='display:none'></span><span style='color:###Color;'>"& docUnidad.GetItemValue("sUnidad")(0) &"</span> ]]></cell>"
+					Else
+						If IsDate(doc.GetItemValue(vecS.getElement(j))(0)) Then
+							Dim anioInt6 As Integer
+							anioInt6% = Year(doc.GetItemValue(vecS.getElement(j))(0))
+							Dim mesAux6,diaAux6,anioAux6 As String
+							mesAux6 = Right("0" & Month(doc.GetItemValue(vecS.getElement(j))(0)),2)
+							diaAux6 = Right("0" & Day(doc.GetItemValue(vecS.getElement(j))(0)),2)
+							anioAux6 = anioInt6%
+							datosS = datosS & "<cell><![CDATA[ <span value='"& anioAux6 & mesAux6 & diaAux6 &"' style='display:none'></span><span style='color:###Color;'>"& diaAux6 &"/"& mesAux6 &"/"& anioAux6 &"</span> ]]></cell>"
+						Else
+							If(doc.GetItemValue(vecS.getElement(j))(0) = "") Then
+								datosS = datosS & "<cell></cell>"
+							ElseIf vecS.getElement(j) = "sNombreForm" Then
+								datosS = datosS & "<cell><![CDATA[ <span value='"& nombreForm &"' style='display:none'></span><span style='color:###Color;'>"& nombreForm &"</span> ]]></cell>"
+							Else
+								datosS = datosS & "<cell><![CDATA[ <span value='"& doc.GetItemValue(vecS.getElement(j))(0) &"' style='display:none'></span><span style='color:###Color;'>"& doc.GetItemValue(vecS.getElement(j))(0) &"</span> ]]></cell>"
+							End If 
+						End If
+					End If
+				Next
+				Call docIndice.ReplaceItemValue("sRazonesColumnaS",datosS)	
+			End If
+		End If
+
+		'Grabo el documento de índice
+		Call docIndice.Save(True, False)
+		ActualizarIndiceDocs = docIndice.UniversalID
+		
+		Exit Function
+HANDLER:
+		Msgbox "ClaseIndice: " & Erl & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método ActualizarIndice","")
+		Exit Function
+	End Function
+	
+	'******************************************************************************************************************	
+	
+	Public Sub BorrarIndice(clave As String)
+		On Error Goto handler
+		
+		Dim vIndices As NotesView
+		Dim docIndice As NotesDocument
+		Dim key(1 To 2) As String
+		
+		'Busco el índice
+		Set vIndices = dbIndice.GetView(VISTA_DOCSxMODULO_CLAVE)
+		key(1) = modulo
+		key(2) = clave
+		Set docIndice = vIndices.GetDocumentByKey(key,True)
+		'Call docIndice.Remove(True)
+		'MsgBox "clave: " & key(1) & " " & key(2)
+		If Not docIndice Is Nothing Then
+			'MsgBox "Borre"
+			Call docIndice.ReplaceItemValue("Form", "BorrarIndice")
+			Call docIndice.Save(True, False)
+		'Else
+			'MsgBox "No borre"
+		End If
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndice: " & Erl & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método BorrarIndice","")
+		Exit Sub
+	End Sub
+	
+End Class

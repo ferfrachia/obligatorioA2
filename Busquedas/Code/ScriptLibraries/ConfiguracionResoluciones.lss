@@ -1,0 +1,55 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+	2.0 24/08/2009		Modificado por: Ian coates
+		Se modifció la "no modificacion" anterior para que se use realmente esta configuracion
+
+%END REM
+
+Option Declare
+Use "Configuracion RD"
+Use "DynamicLoading"     
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfResoluciones As ConfigRD 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Public Class ConfResoluciones As ConfigRD 
+	
+	Private 	dbAdmin As NotesDatabase
+	
+	Public Sub new (), ConfigRD()
+		On Error Goto HANDLER
+		If vKeyDB.cantElem=0 Then    
+			Dim igDoc As Variant		
+			
+			Set igDoc = FactoryClass("IGDocConfig")
+			Set dbADmin = New NotesDatabase (session.CurrentDatabase.server, igDoc.PathAdministracion())
+			Set docConfiguracion= dbadmin.getProfileDocument("(ConfiguracionRD)")
+			
+			vKeyDB.values = docConfiguracion.getItemValue(CAMPO_RESOL_CLAVE_DB)
+			vServer.values = docConfiguracion.getItemValue(CAMPO_RESOL_SERVIDOR_DB)
+			vHost.values = docConfiguracion.getItemValue(CAMPO_RESOL_HOST_DB)
+			vFilePath.values = docConfiguracion.getItemValue(CAMPO_RESOL_RUTA_DB)
+		'	vFormNum.values = docConfiguracion.getItemValue(CAMPO_RESOL_FORMATO_NUMERACION)
+		'	vKeyNum.values = docConfiguracion.getItemValue(CAMPO_RESOL_CLAVE_NUMERACION)
+			If Not docConfiguracion.HasItem("Form") Then
+		'En caso de que nunca haya sido editado se setea el campo form para mNum.values = docConfiguracion.getItemValue(CAMPO_FORMATO_NUMERACION)
+				docConfiguracion.ReplaceItemValue "Form", "(ConfiguracionRD)"
+			End If
+			
+		End If
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionResoluciones - Método new","")
+		Exit Sub
+	End Sub	
+	
+	
+End Class
+Dim sUsarIgDocConf As String

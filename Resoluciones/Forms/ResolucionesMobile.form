@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A68FF'>
+<noteinfo noteid='cfe' unid='E4322AB8543C1DC8832579CD005D600C' sequence='59'>
+<created><datetime>20120326T135954,36-03</datetime></created>
+<modified><datetime>20150311T132744,48-03</datetime></modified>
+<revised><datetime>20150309T094505,40-03</datetime></revised>
+<lastaccessed><datetime>20150311T132744,48-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132744,48-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>ResolucionesMobile</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>@SetHTTPHeader("Cache-control";"no-cache");
+"&lt;meta charset=\"utf-8\"&gt;"+
+"&lt;meta name=\"viewport\" content=\"width=device-width\"&gt;"+
+"&lt;meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /&gt;"+
+"&lt;meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\" /&gt;"+
+"&lt;link rel=\"stylesheet\"  href=\"/jQueryMobile/jquery.mobile-1.1.0.min.css\" /&gt;" +
+"&lt;link rel=\"stylesheet\" href=\"/jQueryMobile/demos/docs/_assets/css/jqm-docs.css\" /&gt;"+
+"&lt;link rel=\"stylesheet\"  href=\"/jQueryMobile/demos/experiments/scrollview/jquery.mobile.scrollview.css\" /&gt;"+
+"&lt;script src=\"/jQueryMobile/demos/jquery.js\"&gt;&lt;/script&gt;"+
+"&lt;script src=\"/jQueryMobile/demos/experiments/themeswitcher/jquery.mobile.themeswitcher.js\"&gt;&lt;/script&gt;"+
+"&lt;script src=\"/jQueryMobile/demos/docs/_assets/js/jqm-docs.js\"&gt;&lt;/script&gt;"+
+"&lt;script src=\"/jQueryMobile/jquery.mobile-1.1.0.min.js\"&gt;&lt;/script&gt;"</formula></item>
+<item name='$Flags'><text/></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>ResolucionesMobile</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/zEAAQAACjxk
+aXYgZGF0YS1yb2xlPSJwYWdlIiBjbGFzcz0idHlwZS1pbmRleCI+AIECgwQBAIX/UQABAAAKCTxk
+aXYgZGF0YS1yb2xlPSJoZWFkZXIiIGRhdGEtYWRkLWJhY2stYnRuPSJ0cnVlIiBkYXRhLXBvc2l0
+aW9uPSJpbmxpbmUiPgCBAoMEAQCF/xMAAQAACgkJPGEgaHJlZj0iAN0GAACt/6n/cgABABgABABm
+AGYAAQAqAAQAYmFzZYsAAAAAAAAAAADwPxABawIBAAEAXAABAAEALwCEAwMABwAMAAUACTFTMlMA
+AAAkAAEAAQAvAAUABABiYXNlIgIBAAcAP2xvZ291dAAiAgMABwAKAAMACTBSAIX/CAABAAAKqgLe
+BgAArgCF/3EAAQAACiIgZGF0YS1yb2xlPSJidXR0b24iIGRhdGEtdGhlbWU9ImEiIGRhdGEtdHJh
+bnNpdGlvbj0ibm9uZSIgZGF0YS1pY29uPSJiYWNrIiBjbGFzcz0idWktYnRuLWxlZnQiPlNhbGly
+PC9hPgCF/wsAAQAACgAJCQCF/yQAAQAACiA8aDEgc3R5bGU9Im1hcmdpbjo1IDAgNyAwIj6F/yYA
+BQAACDxpbWcgc3R5bGU9ImhlaWdodDozMHB4IiBzcmM9It0GAACt/6n/TAABABgABABAAEAAAAA0
+AAEAAQAvAIsAAAAAAAAAAADwPxABawIBAAEAXAABAAEALwCEAyICAQABAC8AIgIDAAcACgAEAAkx
+NlOF/wgABQAACKoC3gYAAK4Ahf8tAAUAAAhpc29sb2dvLWlHZG9jLnBuZz9PcGVuSW1hZ2VSZXNv
+dXJjZSI+AIX/DQABAAAKPC9oMT4AgQKDBAEAhf8TAAEAAAoJCTxhIGhyZWY9IgDdBgAArf+p/9YB
+AQAYAAQAygHKAQEAMAAGAGNsYXZlcwEAEQAoQ29uZmlndXJhY2lvblJEKQABAAYAc0NsYXZl9wID
+AAcADAAFAAk1UzZTAAEAMAAFAHBhdGhzAAEAEQAoQ29uZmlndXJhY2lvblJEKQABAAUAc1BhdGgA
+9wIDAAcADgAHAAkwUjVTNlMAAQAyAAcAcG9zUGF0aAABABIAUkVTT0xVQ0lPTkVTTU9CSUxFBQAG
+AGNsYXZlc3YCAwAHAAwABQAJMFI2UwABAFQACQBwYXRocmVzb2wAAQABAC8ABQAFAHBhdGhzAAUA
+BwBwb3NQYXRoAGsCAAAAAAAAAADwPxABawIAAAAAAAAAAFdAhwEBAAEALwCEAyICAwAHABAACQAJ
+MFIyUzNTNFMAAQCCAAMAZGlyAAUACQBwYXRocmVzb2wAAQATAD9sb2dvdXQmUmVkaXJlY3RUbz0A
+IgIFAAUAcGF0aHMABQAHAHBvc1BhdGgAawIAAAAAAAAAAPA/EAFrAgAAAAAAAAAAV0CHAQEAAQAv
+AIQDIgIBAAwAL0xvZ2luTW9iaWxlIgIDAAcAEgALAAkwUjJTM1M0UzJFAAAADgAFAAMAZGlyAAMA
+BwAKAAMACTBSAIX/CAABAAAKqgLeBgAArgCF/3UAAQAACiIgZGF0YS1yb2xlPSJidXR0b24iIGRh
+dGEtdGhlbWU9ImEiIGRhdGEtdHJhbnNpdGlvbj0ibm9uZSIgZGF0YS1pY29uPSJzZWFyY2giIGNs
+YXNzPSJ1aS1idG4tcmlnaHQiPkJ1c2NhcjwvYT4AgQKDBAEAhf8iAAEAAAoJCTxkaXYgZGF0YS1y
+b2xlPSJuYXZiYXIiPoECgwQBAIX/DwABAAAKCQkJPHVsPgCBAoMEAQCF/xkAAQAACgkJCQk8bGk+
+PGEgaHJlZj0iAN0GAACt/6n/iAABABgABAB8AHwAAQAqAAQAYmFzZYsAAAAAAAAAAADwPxABawIB
+AAEAXAABAAEALwCEAwMABwAMAAUACTFTMlMAAAA6AAEAAQAvAAUABABiYXNlIgIBAB0AL09yZGVu
+ZXNEZWxEaWFNb2JpbGU/UmVhZEZvcm0AIgIDAAcACgADAAkwUgCF/wgAAQAACqoC3gYAAK4Ahf8g
+AAEAAAoiIGRhdGEtdHJhbnNpdGlvbj0ibm9uZSKF/yEAAQAACj7gcmRlbmVzIGRlbCBEoWE8L2E+
+PC9saT4AgQKDBAEAhf8ZAAEAAAoJCQkJPGxpPjxhIGhyZWY9IgCF/yIAAQAACiMiIGRhdGEtdHJh
+bnNpdGlvbj0ibm9uZSIghf8uAAIAAApjbGFzcz0idWktYnRuLWFjdGl2ZSB1aS1zdGF0ZS1wZXJz
+aXN0IoX/HgABAAAKPlJlc29sdWNpb25lczwvYT48L2xpPoECgwQBAIX/GQABAAAKCQkJCTxsaT48
+YSBocmVmPSIA3QYAAK3/qf+AAAEAGAAEAHQAdAABACoABABiYXNliwAAAAAAAAAAAPA/EAFrAgEA
+AQBcAAEAAQAvAIQDAwAHAAwABQAJMVMyUwAAADIAAQABAC8ABQAEAGJhc2UiAgEAFQAvQWN0YXNN
+b2JpbGU/UmVhZEZvcm0AIgIDAAcACgADAAkwUgCF/wgAAQAACqoC3gYAAK4Ahf8vAAEAAAoiIGRh
+dGEtdHJhbnNpdGlvbj0ibm9uZSI+QWN0YXM8L2E+PC9saT4AgQKDBAEAhf8QAAEAAAoJCQk8L3Vs
+PoECgwQBAIX/GAABAAAKCQk8L2Rpdj4ACTwvZGl2PoECgwQBAIX/IQABAAAKCTxkaXYgZGF0YS1y
+b2xlPSJjb250ZW50IgCF/xwAAQAACiBzdHlsZT0iaGVpZ2h0OjEwMCUihf8JAAEAAAo+AIECgwQB
+AIX/EAABAAAKCQkJPG5hdj6BAoMEAQCF/zcAAQAACgkJCQk8dWwgZGF0YS1yb2xlPSJsaXN0dmll
+dyIgZGF0YS1pbnNldD0idHJ1ZSIgAIX/UQABAAAKZGF0YS1maWx0ZXI9InRydWUiIGRhdGEtZmls
+dGVyLXBsYWNlaG9sZGVyPSJCdXNjYXIiIGRhdGEtZmlsdGVyLXRoZW1lPSJkIgCF/wkAAQAACj4A
+gQKDBAEAhf87AAEAAAoJCQkJCTxsaSBkYXRhLXJvbGU9Imxpc3QtZGl2aWRlciI+UmVzb2x1Y2lv
+bmVzPC9saT4Azf8IAAAAAACBAoMEAQCF/w0AAQAACgkJCQkJAN0GAACt/3H/NgAAAAAAAwACABQA
+AAAAAAAAAAAAAAAAAAAAAAAAAABWUmVzb2x1Y2lvbmVzTW9iaWxlAK3/IAATAAgAAAAUAFZSZXNv
+bHVjaW9uZXNNb2JpbGUA6v8+ABMACEQAALATQAsBAAAKAAAAAAAAAAABAAAKAQAACgAABQD///8A
+AQAAAAAAAAAAAAAAAAAAAAAAAADt/yAACAAAAAAAAAAAALgLAAAAAAAAAAAAAAAAAAAAAK4C3gYA
+AK4Ahf8IAAEAAAqBAoMEAQDM/wgAAAAAAIX/EQABAAAKCQkJCTwvdWw+AIECgwQBAIX/EQABAAAK
+CQkJPC9uYXY+AIECgwQBAIX/DwABAAAKCTwvZGl2PgCBAoMEAQCF/0QAAQAACgk8ZGl2IGRhdGEt
+cm9sZT0iZm9vdGVyIiBjbGFzcz0iZm9vdGVyLWRvY3MiIGRhdGEtdGhlbWU9ImMiPoECgwQBAIX/
+HgABAAAKCQk8cD4mY29weTtJU0EgLSBJR0RvY4X/DAABAAAKPC9wPoECgwQBAIX/DwABAAAKCTwv
+ZGl2PgCBAoMEAQCF/w4AAQAACjwvZGl2Ps3/CAAAAAAA
+</rawitemdata></item></note>
+

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
+ replicaid='83257DF80042C028'>
+<noteinfo noteid='122' unid='46F01465DA3C666A0325733F005F4400' sequence='88'>
+<created><datetime>20070822T142033,28-03</datetime></created>
+<modified><datetime>20150309T094352,69-03</datetime></modified>
+<revised><datetime>20150309T094352,68-03</datetime></revised>
+<lastaccessed><datetime>20150309T094352,69-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T100905,83-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name
+>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071129T093836,45-03</datetime><datetime>20071129T093843,81-03</datetime><datetime
+>20071214T132924,45-03</datetime><datetime>20071214T132926,18-03</datetime><datetime
+>20080331T120411,30-03</datetime><datetime>20080331T120415,37-03</datetime><datetime
+>20081029T154742,15-03</datetime><datetime>20081029T154745,21-03</datetime><datetime
+>20081118T174817,89-03</datetime><datetime>20081118T174825,11-03</datetime><datetime
+>20081119T073728,65-03</datetime><datetime>20081119T073735,79-03</datetime><datetime
+>20081119T075541,77-03</datetime><datetime>20081119T075548,79-03</datetime><datetime
+>20081122T143929,92-03</datetime><datetime>20081122T143944,21-03</datetime><datetime
+>20081122T161424,92-03</datetime><datetime>20081122T161431,80-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='IconBitmap' summary='true' sign='true'>
+<rawitemdata type='6'>
+AiAgAQAA///////wD///gAH//gAAf/wAAD/4AAAf8AAAD+AAAAfgAAAHwAAAA8AAAAPAAAADgAAA
+AYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAHAAAADwAAAA8AAAAPgAAAH4AAAB/AAAA/4AAAf
+/AAAP/4AAH//gAH///AP//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiIiAAAAAAAAAAAAAAI
+jPZmZm/IgAAAAAAAAAAIjGZmZmZmZsiAAAAAAAAAjGZmZmZmZmZmyAAAAAAACMZmZmZmZmZmZmyA
+AAAAAIxmZmZmZmZmZmZmyAAAAAjGZmZmZmZmZmZmZmyAAAAIZmbyL2byL2byL2ZmgAAAjGZmIiJm
+IiJmIiJmZsgAAIZmZiIiZiIiZiIiZmZoAADGZmYiImYiImYiImZmbAAI9mZmIiJmIiJmIiJmZm+A
+CGZmZiIiZiIiZiIiZmZmgAhmZmYiImYiImYiImZmZoAIZmZmIiJmIiJmIiJmZmaACGZvIiIiZiIi
+ZiIiIvZmgAhmYiIiImYiImYiIiImZoAIZm8iIi9m8i9m8iIi9maACPZmZmZmZmZmZmZmZmZvgADG
+ZmbyL2byL2byL2ZmbAAAj2ZmIiJmIiJmIiJmZvgAAIxmZiIiZiIiZiIiZmbIAAAI9mbyL2byL2by
+L2ZvgAAACMZmZmZmZmZmZmZmbIAAAACMZmZmZmZmZmZmZsgAAAAACMZmZmZmZmZmZmyAAAAAAACM
+9mZmZmZmZm/IAAAAAAAACIz2ZmZmZm/IgAAAAAAAAAAIiMZmZmyIgAAAAAAAAAAAAACIiIiIAAAA
+AAAAAAAAAAIAAgAgAEAAAQABAA==
+</rawitemdata></item>
+<item name='$DefaultWebLaunchPage' sign='true'><text>Inicio</text></item>
+<item name='$FlagsNoRefresh' sign='true'><text/></item>
+<item name='$Flags'><text>JE</text></item>
+<item name='$PIRCRefreshModTime' sign='true'><datetime>20140403T155215,15-03</datetime></item>
+<item name='$TemplateModTime' sign='true'><datetime>20140403T111231,48-03</datetime></item>
+<item name='$TemplateServerName' sign='true'><text>CN=Martin Duran/O=ISA</text></item>
+<item name='$TemplateFileName' sign='true'><text>C:\IBM\Lotus\Notes\Data\03042014Legales\03042014_Comunicaciones.ntf</text></item>
+<item name='$Daos'><text>0</text></item>
+<item name='$TITLE'><text>Current Otras Formas Documentales</text></item></note>
+

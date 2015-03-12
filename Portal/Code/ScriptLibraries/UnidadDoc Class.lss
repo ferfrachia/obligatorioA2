@@ -1,0 +1,88 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "Unidad Class"
+Use "VectorClass 2.05"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class UnidadDoc As Unidad
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const CAMPO_UNIDAD_NOMBREACTUAL						= "sUnidad"
+Private Const PREFIJO_UNIDAD_DOC							="DOC_" 
+
+'******************************************************************************************************************	
+'* 
+'*									CLASS <UNIDADExp>
+'* 
+'******************************************************************************************************************
+'* Clase que utiliza como base la clase unidad y sobre escribe los metodos que son particulares de expediente
+'* El constructor es por prefijo de exp + codigo de unidad o por codigo, tener en cuenta que el codigo se llama 
+'* número
+'******************************************************************************************************************
+Public Class UnidadDoc As Unidad
+	'No tiene miembros propios estan todos en la clase base
+	Public Sub new (Byval unidad As String), Unidad()
+		On Error Goto handler
+		
+		sUnidad = unidad
+		'En Caso de que venga con el prefijo de expediente lo quita
+		If Instr(unidad,PREFIJO_UNIDAD_DOC)>0 Then _
+		unidad = Strrightback(unidad,PREFIJO_UNIDAD_DOC)
+		
+		Set docUnidad = ViewUnidades.GetDocumentbyKey(Unidad, True)
+		If docUnidad Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Unidad"
+		Exit Sub
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadPdd - Constructor","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	Public Property Get NombreActual As String
+		On Error Goto handler
+		NombreActual = docUnidad.getItemValue(CAMPO_UNIDAD_NOMBREACTUAL)(0)
+		Exit Property
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadPdd - NombreActual","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Get UnidadesSuperiores(lectores As Boolean) As Vector
+		On Error Goto handler 
+		'llamada a la funcion recursiva para armar el vector de unidades superiores
+		If (Me.UnidadSuperior()<>"") Then
+			Set UnidadesSuperiores = UnidadesRec(Me.UnidadSuperior,lectores)
+		Else
+			Set UnidadesSuperiores=New Vector(0)
+		End If
+		Exit Property
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadPdd - NombreActual","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Function UnidadesRec( unid As String,lectores As Boolean) As Vector
+		On Error Goto handler
+		Dim res As New Vector(1)
+		Dim aux As New Vector(0)
+		Dim unidad As UnidadDoc
+		Dim i As Long
+		Set unidad = New UnidadDoc(unid)
+		If lectores Then
+			Call res.insertElement(PREFIJO_UNIDAD_DOC+unid,1)
+		Else
+			Call res.insertElement(unid,1)			
+		End If
+		If (unidad.UnidadSuperior()<>"") Then
+			Set aux=UnidadesRec(unidad.UnidadSuperior,lectores)
+			For i=1 To aux.CantElem
+				Call res.insertElement(aux.getElement(i),i+1)
+			Next
+		End If
+		Set UnidadesRec = res
+		Exit Function
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadPdd - NombreActual","")
+		Exit Function
+	End Function
+End Class

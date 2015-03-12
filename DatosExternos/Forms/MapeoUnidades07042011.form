@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059D1A3'>
+<noteinfo noteid='2b2' unid='0428958F537BEF59832577EA0043C40D' sequence='34'>
+<created><datetime dst='true'>20101129T102011,01-02</datetime></created>
+<modified><datetime>20150311T132105,68-03</datetime></modified>
+<revised><datetime>20150309T094359,84-03</datetime></revised>
+<lastaccessed><datetime>20150311T132105,68-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132105,68-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Fernando Moller/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='DescripcionCAC' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$WindowTitle' sign='true'><formula>"Mapeo de unidades"</formula></item>
+<item name='$Flags'><text/></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>MapeoUnidades</text></item>
+<item name='DescripcionUnidad' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='CodigoMapeo' summary='false' sign='true'><number>0</number></item>
+<item name='Organizacion' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>Organizacion</text><text>CodigoMapeo</text><text
+>DescripcionUnidad</text></textlist></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAAqBAoL/WgACAAAA
+AAAAAAAAoAUAAKAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIEA
+AAAAlYcAAAAAAAAAAAAAAAABAAAABAAAAIMEAgCF/wgAAQEACt0GAACK//7/UAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAiv/gAIoAAAUAMAIAAAAAAAACAQEACrAAAAAAAAAADAAAAAAAsAABADgAAwBwb3MA
+AQAFAE9SR0FOAAEADwBDb25mRm9ybXVsYXJpb3MAAQAGAHNDbGF2ZfcCdgIDAAcADAAFAAkwUzBF
+AAEARgAFAHZhbG9yAAEADwBDb25mRm9ybXVsYXJpb3MAAQAFAHNQYXRoAPcCBQADAHBvcwBrAgAA
+AAAAAAAA8D8QAWsCAwAHAAoAAwAJMFIAAAAQAAUABQB2YWxvcgADAAcACgADAAkwUgBPcmdhbml6
+YWNpb25iDgEAhAAAAAAAAAAAAN4GAACK/4X/CAABAQAKgQKDBAEAhf8IAAEBAAqBAoMEAQCF/yUA
+AQEACkVsaWphIGVsIENBQyBxdWUgZGVzZWEgbWFwZWFyAIECgwQBAIX/CAABAQAKgQKDBAEAhf8I
+AAEAAArdBgAA9//3/yQAAQAAgAAAzRBoAQAAAAAAAAAAZAAAAAAAAAAAAAAAAAD+/1AAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAALD/FAAAAARAgAAAAAAAAAAAAAAAiv+qAIoCAAUAIAIAAAAAAAACAQAACgAA
+AAAAAAAAEQAAAHQARGVzY3JpcGNpb25VbmlkYWQAAHIAAABkAAEABQBOb3RlcwABAAcATm9DYWNo
+ZQAfAosAAAAAAAAAAADwP2sCBQAMAE9yZ2FuaXphY2lvbh8CAQAVAFVuaWRhZFBvckNvZGlnb05v
+bWJyZQAAAAAAAAAAAAhAqgQDAAcADAAFAAkwUzBFAADSCAEAAAAAANIICQD///8A3gYAAPf/hf8I
+AAEAAAqBAoMEAQCF/wgAAQAACoECgwQBAIX/CAABAAAKgQKDBAEAhf8ZAAEBAApJbmdyZXNlIGVs
+IGOiZGlnbwCBAoMEAQCF/wgAAQAACoECgwQBAIX/CAABAAAK3QYAAIr//v9QAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAACK/zAAigAAAwAwAgAAAAAAAAIBAAAKAAAAAAAAAAALAAAAAABDb2RpZ29NYXBlbwDe
+BgAAiv+F/wgAAQAACg==
+</rawitemdata></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwRAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABAOzp2AABAAAAAAAJAAAAAAABAOzp2AAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/2IAAAABAAAAnwEAAA8AAAAAAAAAR3VhcmRhciB5IFNh
+bGlyBzwACAASAAIAxgsAAAAAAADtAQMABwAMAAUACTBTMEUAAAASAAIA/BEAAAAAAADtAQMABwAK
+AAMACTBTAL7/RgAAAAEAAAAfAQAABgAKAAAAAABFZGl0YXIgAAAAEgACAOgHAAAAAAAA7QEDAAcA
+DAAFAAkwUzBFAAoAAAAIAIkAAwC+/zwAAAABAAAAnwEAAAUAAAAAAAAAU2FsaXJvIAAAABIAAgD8
+EQAAAAAAAO0BAwAHAAwABQAJMFMwRQA=
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>MapeoUnidades07042011</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5</text></item></note>
+

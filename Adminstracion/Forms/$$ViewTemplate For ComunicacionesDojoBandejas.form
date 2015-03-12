@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E9F2'>
+<noteinfo noteid='e02' unid='18CF850DA9493BC783257C4A0045B02D' sequence='17'>
+<created><datetime dst='true'>20131223T104110,85-02</datetime></created>
+<modified><datetime>20150311T131126,35-03</datetime></modified>
+<revised><datetime>20150309T094333,38-03</datetime></revised>
+<lastaccessed><datetime>20150311T131126,35-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131126,35-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070517T175708,38-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$WebFlags' sign='true'><text>H</text></item>
+<item name='$$ViewBody' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>$$ViewBody</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>$$ViewTemplate For ComunicacionesDojoBandejas</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8ZAAEAAAp7Y29tdW5pY2Fj
+aW9uZXM6WwCBAoMEAQCF/wgAAQAACt0GAACK//7/UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiv8uAIoA
+AAUAMAIAAAAAAAACAQAACgAAAAAAAAAACgAAAAAAJCRWaWV3Qm9ked4GAACK/4X/CAABAAAKgQKD
+BAEAhf8nAAEAAAp7Ik5vbWJyZSI6Ik5vcCIsIkNvZGlnbyI6IjAifV19AA==
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>$$ViewTemplate For ComunicacionesDojoBandejas</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item></note>
+

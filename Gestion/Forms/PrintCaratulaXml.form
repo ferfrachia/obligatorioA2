@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='8be' unid='4DCDF0863EA605FD832576C40012CE55' sequence='15'>
+<created><datetime dst='true'>20100208T012524,69-02</datetime></created>
+<modified><datetime>20150311T131036,05-03</datetime></modified>
+<revised><datetime>20150309T094419,27-03</datetime></revised>
+<lastaccessed><datetime>20150311T131036,05-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131036,05-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='nCodTema' summary='false' sign='true'><number>0</number></item>
+<item name='nVersionRuta' summary='false' sign='true'><number>0</number></item>
+<item name='nDiasExp' summary='false' sign='true'><number>0</number></item>
+<item name='fEnviadoUnidadActual' summary='false' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='fFechaArchivado' summary='false' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='ccfCreacion' summary='false' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='OriginalModTime' sign='true'><datetime>20070516T165657,75-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
++f8gAAAAAAANAAQAEAAAAAAAAAAAAAAAAAAAAAAAAADc/yIA+f8QACBOAAAAAAAAAAB3aW5kb3cu
+cHJpbnQoKTsA3QYAAPn/+f8gAAEAAAAPAAQAKQYAAAAAAAAAAAAAAAAAAAAAAADc/zwG+f8qBiBO
+AAAAAAAAAAANZnVuY3Rpb24gRGlyQUJTKCl7ICANCXZhciBwYXRobmFtZT1sb2NhdGlvbi5wYXRo
+bmFtZTsgDQl2YXIgcHJvdG9jb2xvID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoIlByb3RvY29s
+byIpLnZhbHVlDQl2YXIgcHVlcnRvID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoIlB1ZXJ0byIp
+LnZhbHVlDQ0JcmV0dXJuKHByb3RvY29sbysnOi8vJytsb2NhdGlvbi5ob3N0bmFtZSsiOiIrcHVl
+cnRvK3BhdGhuYW1lLnN1YnN0cmluZygwLChwYXRobmFtZS50b1VwcGVyQ2FzZSgpLmluZGV4T2Yo
+Jy5OU0YnKSs1KSkpICANfQ0NZnVuY3Rpb24gbG9hZFhNTERvYyhmbmFtZSkNew12YXIgeG1sRG9j
+Ow0vLyBjb2RlIGZvciBJRQ1pZiAod2luZG93LkFjdGl2ZVhPYmplY3QpDSAgew0gIHhtbERvYz1u
+ZXcgQWN0aXZlWE9iamVjdCgiTWljcm9zb2Z0LlhNTERPTSIpOw0gIH0NLy8gY29kZSBmb3IgTW96
+aWxsYSwgRmlyZWZveCwgT3BlcmEsIGV0Yy4NZWxzZSBpZiAoZG9jdW1lbnQuaW1wbGVtZW50YXRp
+b24gDSYmIGRvY3VtZW50LmltcGxlbWVudGF0aW9uLmNyZWF0ZURvY3VtZW50KQ0gIHsNICB4bWxE
+b2M9ZG9jdW1lbnQuaW1wbGVtZW50YXRpb24uY3JlYXRlRG9jdW1lbnQoIiIsIiIsbnVsbCk7DSAg
+fQ1lbHNlDSAgew0gIGFsZXJ0KCdZb3VyIGJyb3dzZXIgY2Fubm90IGhhbmRsZSB0aGlzIHNjcmlw
+dCcpOw0gIH0NeG1sRG9jLmFzeW5jPWZhbHNlOw14bWxEb2MubG9hZChmbmFtZSk7DXJldHVybih4
+bWxEb2MpOw19DQ1mdW5jdGlvbiBjYXJnb0NhcmF0dWxhKHN0clhtbCxzdHJYc2wsZGl2TmFtZSl7
+DQl4bWw9bG9hZFhNTERvYyhzdHJYbWwpOw0JeHNsPWxvYWRYTUxEb2Moc3RyWHNsKTsNCQ0JaWYg
+KHdpbmRvdy5BY3RpdmVYT2JqZWN0KSB7DQkJLy8gY29kZSBmb3IgSUUNCQlleD14bWwudHJhbnNm
+b3JtTm9kZSh4c2wpOw0JCWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGRpdk5hbWUpLmlubmVySFRN
+TD1leDsNCX0gZWxzZSBpZiAoZG9jdW1lbnQuaW1wbGVtZW50YXRpb24gJiYgZG9jdW1lbnQuaW1w
+bGVtZW50YXRpb24uY3JlYXRlRG9jdW1lbnQpIHsNCQkvLyBjb2RlIGZvciBNb3ppbGxhLCBGaXJl
+Zm94LCBPcGVyYSwgZXRjLg0JCXhzbHRQcm9jZXNzb3I9bmV3IFhTTFRQcm9jZXNzb3IoKTsNCQl4
+c2x0UHJvY2Vzc29yLmltcG9ydFN0eWxlc2hlZXQoeHNsKTsNCQlyZXN1bHREb2N1bWVudCA9IHhz
+bHRQcm9jZXNzb3IudHJhbnNmb3JtVG9GcmFnbWVudCh4bWwsZG9jdW1lbnQpOw0JCXZhciBkaXYg
+PSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChkaXZOYW1lKTsNCQlkaXYuc3R5bGUub3ZlcmZsb3cg
+PSAiaGlkZGVuIjsNCQlpZiAoZGl2LmNoaWxkTm9kZXMgJiYgZGl2LmNoaWxkTm9kZXMubGVuZ3Ro
+ID4gMCkgew0JCQlmb3IgKHZhciBpID0gZGl2LmNoaWxkTm9kZXMubGVuZ3RoLTE7IGkgPj0gMDsg
+aS0tKSB7DQkJCQlkaXYucmVtb3ZlQ2hpbGQoZGl2LmNoaWxkTm9kZXNbaV0pOw0JCQl9IA0JCX0N
+CQlkaXYuYXBwZW5kQ2hpbGQocmVzdWx0RG9jdW1lbnQpOw0JfQ0NCWRvY3VtZW50LmdldEVsZW1l
+bnRCeUlkKCJQcm9jZXNhbmRvIikuc3R5bGUuZGlzcGxheT0ibm9uZSI7DX0NAD32/ycAAAAAAAMA
+GgAFAAAAAAAAAAAAAAAAAAAAAAAAAAAATGliSlM/3gYAAPn/X/8QAAIADwAHAAAAAAAAAF//EAAC
+AA0ABwAAAAAAAAA=
+</rawitemdata></item>
+<item name='$TITLE'><text>PrintCaratulaXml</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
+</rawitemdata></item>
+<item name='$WindowTitle' sign='true'><formula>"Imprimir Caratula " +@Middle(query_string;"&amp;ID=";"&amp;")</formula></item>
+<item name='$StyleSheetList' sign='true'>
+<rawitemdata type='1'>
+9v83AAAAAAADACEAFQAAAAAAAAAAAAAAAAAAAAAAAAAAAEltcHJlc2lvbkNhcmF0dWxhLmNzcz8=
+</rawitemdata></item>
+<item name='$HTMLBodyTag' sign='true'><formula>"ID=\"Bdy\" leftmargin=\"0\"  topmargin=\"0\" "</formula></item>
+<item name='$WEBQueryOpen' sign='true'><formula>@Command([ToolsRunMacro]; "IMPRIMIRCARATULA")</formula></item>
+<item name='$Flags'><text>CD</text></item>
+<item name='$WebFlags'><text>F</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='Query_String' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><text>query_string</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>PrintCaratulaXml</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+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
+gQKDBAMAhf8SAAUAAAgJCQkJCTwvdGQ+gQKDBAMAhf8RAAUAAAgJCQkJPC90cj4AgQKDBAMAhf8U
+AAUAAAgJCQkJPC90YWJsZT6BAoMEAwCF/xEABQAACAkJCTwvZGl2PgCBAoMEAwCF/yMABQAACDxk
+aXYgaWQ9ImRpb3RpbWVvdXQiPjwvZGl2PgCBAoMEAwCF/wgABQAACIECgwQDAIX/JwAFAAAIPHNj
+cmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiPgCBAoMEAwCF/xgAAQAACXVybCA9IERpckFCUygp
+KyKF/x0AAQAACShJbXByaW1pckNhcmF0dWxhWG1sKQCF/xMAAQAACT9PcGVuQWdlbnQmAIX/DwAB
+AAAJbnJvRXhwPQDdBgAArf+p/0AAAQAYAAQANAA0AAAAJgAFAAwAUXVlcnlfU3RyaW5nAQADAElE
+PQABAAEAJgBlAwMABwAMAAUACTBTMEUAhf8IAAEAAAqqAt4GAACuAIX/CgABAAAJIjuBAoMEAwCF
+/zEAAQAACXVybFhzbCA9IERpckFCUygpKyJDYXJhdHVsYS54c2w/T3BlblBhZ2UiAIECgwQDAIX/
+DQABAAAJY2FyZ28Ahf8mAAEAAApDYXJhdHVsYSh1cmwsdXJsWHNsLCJDYXJhdHVsYSKF/wkAAQAA
+CikAgQKDBAMAhf8RAAUAAAg8L3NjcmlwdD4Azf8IAAAAAAA=
+</rawitemdata></item></note>
+

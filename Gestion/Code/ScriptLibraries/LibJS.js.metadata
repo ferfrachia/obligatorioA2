@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058D89B" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="12f6" sequence="16" unid="37864DAC2DC8836B83257DC8004F7C8A">
+<created><datetime dst="true">20150109T122812,26-02</datetime></created>
+<modified><datetime>20150311T131046,35-03</datetime></modified>
+<revised><datetime>20150309T094424,91-03</datetime></revised>
+<lastaccessed><datetime>20150311T131046,35-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131046,35-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030828T134510,54-03</datetime><datetime>20031123T122839,10+03</datetime><datetime>20031209T124805,96+03</datetime><datetime>20040127T134031,12+03</datetime><datetime>20040302T181122,24-03</datetime><datetime>20040304T142500,24-03</datetime><datetime>20040531T082508,65+03</datetime><datetime>20040531T082614,06+03</datetime><datetime>20060328T103807,90-03</datetime><datetime dst="true">20061101T113022,52-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>LibJS</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+<item name="$Comment"><text>Libraría de funciones varias en JavaScript</text></item>
+<item name="$POID"><datetime>20150309T094424,91-03</datetime></item></note>

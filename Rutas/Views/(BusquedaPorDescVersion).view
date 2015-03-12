@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500590CD0'>
+<noteinfo noteid='35e' unid='B7822B0CCC68C5CA03256D6E005FE519' sequence='52'>
+<created><datetime>20030725T142725,69-03</datetime></created>
+<modified><datetime>20150311T131242,84-03</datetime></modified>
+<revised><datetime>20150309T094508,25-03</datetime></revised>
+<lastaccessed><datetime>20150311T131242,84-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131242,84-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(BusquedaPorDescVersion)|VBusqTemaDescVersion</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+bAACACoAAgAkMQUABQBzVGVtYQAFAA0AY2NWZXJzaW9uUnV0YQBWASICAwAFABgAEwACAAIACQAk
+MSRDb25mbGljdAAEAAQAAAAaAAUABABGb3JtAQAFAEZUZW1hAAoCAwAHAAoABAAJTDFT
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEiGYAAAACACQx
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAIACgAAAFZDAQQCABMAOAAAABgBAQAACgABAAAAAAAAAAICAAAAJDFUZW1hICsgVmVyc2lv
+biBSdXRhOAACACoAAgAkMQUABQBzVGVtYQAFAA0AY2NWZXJzaW9uUnV0YQBWASICAwAHAAwABQAJ
+MFMwRQAmAAEAAAABAQAJAQAACgEBDgoAAAEArSsBAAEAAQAAAAAAAAAAAFdDAQEACQAAAAAAAAAA
+AAAAAAAAAAABAAQAAAAAAP//AAAAAAAAAAAAAAAAAABCAAAAAAABAP///wAFAP///wABAAAAAAAA
+AAAAAAAAAAEA////AAEA////AAAAAQAAAAAAAQCAgIAAAQAAAAAAAAAIAAAAAAABAA==
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text>Vista utilizada para encontrar documentos de tema en a su nombre y version</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

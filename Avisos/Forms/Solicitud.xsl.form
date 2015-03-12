@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF800416654'>
+<noteinfo noteid='18a' unid='E0F4F5B5C33FE009832575D0004D16EB' sequence='203'>
+<created><datetime>20090609T110201,39-03</datetime></created>
+<modified><datetime>20150309T094339,82-03</datetime></modified>
+<revised><datetime>20150309T094339,81-03</datetime></revised>
+<lastaccessed><datetime>20150309T094339,82-03</datetime></lastaccessed>
+<addedtofile><datetime dst='true'>20150226T095421,03-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Eduardo Verde/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Sofia Caggiani/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=IMA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime dst='true'>20100202T215336,16-02</datetime><datetime
+ dst='true'>20100208T192045,89-02</datetime><datetime dst='true'>20100209T151321,23-02</datetime><datetime
+>20100413T160829,87-03</datetime><datetime>20100413T160917,00-03</datetime><datetime
+>20100413T160940,38-03</datetime><datetime>20100413T163941,35-03</datetime><datetime
+>20100413T163946,80-03</datetime><datetime>20100413T164338,64-03</datetime><datetime
+>20100413T164544,53-03</datetime><datetime>20100413T165101,03-03</datetime><datetime
+>20100413T165541,84-03</datetime><datetime>20100413T165550,96-03</datetime><datetime
+>20100413T165653,44-03</datetime><datetime>20100413T165712,41-03</datetime><datetime
+>20100413T165742,30-03</datetime><datetime>20100413T165746,79-03</datetime><datetime
+>20100413T165755,07-03</datetime><datetime>20100413T173126,24-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>Solicitud.xsl</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text/></item>
+<item name='$MimeType'><text>text/xml</text></item>
+<item name='$WebFlags'><text>H</text></item>
+<item name='$DesignerVersion'><text>7</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>Solicitud.xsl</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAhf80AAEAAAo8P3htbCB2ZXJz
+aW9uPSIxLjAiIGVuY29kaW5nPSJJU08tODg1OS0xIiA/PoECgwQBAIX/VwABAAAKPHhzbDpzdHls
+ZXNoZWV0IHZlcnNpb249IjEuMCIgeG1sbnM6eHNsPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L1hT
+TC9UcmFuc2Zvcm0iPgCBAoMEAQCF/wgAAQAACoECgwQBAIX/IAABAAAKPHhzbDp0ZW1wbGF0ZSBt
+YXRjaD0iLyI+gQKDBAEAhf8IAAEAAAqBAoMEAQCF/w4AAQAACjxodG1sPoECgwQBAIX/DgABAAAK
+PGhlYWQ+gQKC/1oAAgAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAIAhf8IAAEAAAqBAoME
+AgCF/0wAAQAACjxsaW5rIHJlbD0ic3R5bGVzaGVldCIgdHlwZT0idGV4dC9jc3MiIGhyZWY9IkVz
+dGlsb0JhbmRlamFzLmNzcyIgLz4ggQKDBAEAhf8IAAEAAAqBAoMEAQCF/yEAAQAACjx4c2w6ZWxl
+bWVudCBuYW1lPSJNRVRBIj4AgQKDBAEAhf9BAAEAAAoJPHhzbDphdHRyaWJ1dGUgbmFtZT0iaHR0
+cC1lcXVpdiI+RXhwaXJlczwveHNsOmF0dHJpYnV0ZT4AgQKDBAEAhf84AAEAAAoJPHhzbDphdHRy
+aWJ1dGUgbmFtZT0iY29udGVudCI+MDwveHNsOmF0dHJpYnV0ZT6BAoMEAQCF/xYAAQAACjwveHNs
+OmVsZW1lbnQ+gQKDBAEAhf8hAAEAAAo8eHNsOmVsZW1lbnQgbmFtZT0iTUVUQSI+AIECgwQBAIX/
+RwABAAAKCTx4c2w6YXR0cmlidXRlIG5hbWU9IkhUVFAtRVFVSVYiPkNhY2hlLUNvbnRyb2w8L3hz
+bDphdHRyaWJ1dGU+AIECgwQBAIX/PwABAAAKCTx4c2w6YXR0cmlidXRlIG5hbWU9IkNPTlRFTlQi
+Pm5vLWNhY2hlPC94c2w6YXR0cmlidXRlPgCBAoMEAQCF/xYAAQAACjwveHNsOmVsZW1lbnQ+gQKD
+BAEAhf8hAAEAAAo8eHNsOmVsZW1lbnQgbmFtZT0iTUVUQSI+AIECgwQBAIX/QAABAAAKCTx4c2w6
+YXR0cmlidXRlIG5hbWU9IkhUVFAtRVFVSVYiPlByYWdtYTwveHNsOmF0dHJpYnV0ZT6BAoMEAQCF
+/z8AAQAACgk8eHNsOmF0dHJpYnV0ZSBuYW1lPSJDT05URU5UIj5uby1jYWNoZTwveHNsOmF0dHJp
+YnV0ZT4AgQKDBAEAhf8WAAEAAAo8L3hzbDplbGVtZW50PoECgwQCAIX/CAABAAAKgQKDBAEAhf8P
+AAEAAAo8L2hlYWQ+AIECgwQBAIX/FQABAAAKPGJvZHkgdG9wbWFyZwCF/ywAAQAACmluPSIxMCIg
+bGVmdG1hcmdpbj0iMTAiIHNjcm9sbD0iMTAiPoECgwQBAIX/ZwABAAAKPHRhYmxlIHdpZHRoPSIx
+MDAlIiBoZWlnaHQ9IjEwMCUiIGNlbGxwYWRkaW5nPSIwIiBjZWxsc3BhY2luZz0iMCIgYm9yZGVy
+PSIwIiBpZD0iVGFibGFCYW5kZWphIj4AgQKDBAEAhf8PAAEAAAo8dGhlYWQ+AIECgwQBAIX/VAAB
+AAAKPHRyIGNsYXNzPSJGb3JtRmlsYVRpdHVsb0JhbmRlamEiIHN0eWxlPSJib3JkZXI6IDFweCBz
+b2xpZCByZWQ7ICFpbXBvcnRhbnQiPoECgwQBAIX/TAABAAAKCTx0aCAgY2xhc3M9IkZvcm1DZWxk
+YVRpdHVsb0JhbmRlamEiIHdpZHRoPSI1JSIgYWxpZ249InJpZ2h0Ij4gPC90aD6BAoMEAQCF/1oA
+AQAACgk8dGggIGNsYXNzPSJGb3JtQ2VsZGFUaXR1bG9CYW5kZWphIiB3aWR0aD0iMjUlIiBhbGln
+bj0iY2VudGVyIj48Yj5Oo21lcm88L2I+PC90aD6BAoMEAQCF/2AAAQAACgk8dGggIGNsYXNzPSJG
+b3JtQ2VsZGFUaXR1bG9CYW5kZWphIiB3aWR0aD0iMjUlIiBhbGlnbj0iY2VudGVyIj48Yj5EZXN0
+aW5hdGFyaW88L2I+PC90aD6BAoMEAQCF/1oAAQAACgk8dGggIGNsYXNzPSJGb3JtQ2VsZGFUaXR1
+bG9CYW5kZWphIiB3aWR0aD0iMjUlIiBhbGlnbj0iY2VudGVyIj48Yj5Fc3RhZG88L2I+PC90aD6B
+AoMEAQCF/1gAAQAACgk8dGggIGNsYXNzPSJGb3JtQ2VsZGFUaXR1bG9CYW5kZWphIiB3aWR0aD0i
+MjAlIiBhbGlnbj0iY2VudGVyIj48Yj5UaXBvPC9iPjwvdGg+gQKDBAEAhf9xAAEAAAoJPHRoICBz
+dHlsZT0idmlzaWJpbGl0eTpoaWRkZW4iIGNsYXNzPSJGb3JtQ2VsZGFUaXR1bG9CYW5kZWphIiB3
+aWR0aD0iMjUlIiBhbGlnbj0iY2VudGVyIj48Yj5VaWQ8L2I+PC90aD4AgQKDBAEAhf8NAAEAAAo8
+L3RyPgCBAoMEAQCF/xAAAQAACjwvdGhlYWQ+gQKDBAEAhf8PAAEAAAo8dGJvZHk+AIECgwQBAIX/
+HgABAAAKPHhzbDphcHBseS10ZW1wbGF0ZXMvPoECgwQBAIX/QAABAAAKPHRyPjx0ZCBjb2xzcGFu
+PSI1IiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxcHgiPjwvdGQ+PC90cj6BAoMEAQCF/xAAAQAACjwv
+dGJvZHk+gQKDBAEAhf8QAAEAAAo8L3RhYmxlPoECgwQBAIX/DwABAAAKPC9ib2R5PgCBAoMEAQCF
+/w8AAQAACjwvaHRtbD4AgQKDBAEAhf8XAAEAAAo8L3hzbDp0ZW1wbGF0ZT4AgQKDBAEAhf8IAAEA
+AAqBAoMEAQCF/zQAAQAACjx4c2w6dGVtcGxhdGUgbWF0Y2g9IlNvbGljaXR1ZGVzL1NvbGljaXR1
+ZCI+gQKDBAEAhf99AAEAAAo8dHIgY2xhc3M9IkZvcm1GaWxhRm9ybSIgIG9ubW91c2VvdmVyPSJ0
+aGlzLmNsYXNzTmFtZT0nRm9ybUZpbGFGb3JtT3ZyJyIgb25tb3VzZW91dD0idGhpcy5jbGFzc05h
+bWU9J0Zvcm1GaWxhRm9ybSc7Ij4AgQKDBAEAhf8IAAEAAAqBAoMEAQCF/40AAQAACgk8eHNsOmF0
+dHJpYnV0ZSBuYW1lPSJvbmNsaWNrIj48eHNsOnRleHQ+aXJBU29saWNpdHVkKCc8L3hzbDp0ZXh0
+Pjx4c2w6dmFsdWUtb2Ygc2VsZWN0PSJpZCIgLz48eHNsOnRleHQ+Jyk8L3hzbDp0ZXh0PjwveHNs
+OmF0dHJpYnV0ZT4AgQKDBAEAhf8IAAEAAAqBAoMEAQCF/y0AAQAACgk8dGQgYWxpZ249InJpZ2h0
+IiB3aWR0aD0iNSUiPiA8L3RkPgkAgQKDBAEAhf9XAAEAAAoJPHRkIGFsaWduPSJjZW50ZXIiIHdp
+ZHRoPSIyNSUiPjx4c2w6dmFsdWUtb2Ygc2VsZWN0PSJOdW1lcm9Eb2N1bWVudG8iIC8+PC90ZD4J
+AIECgwQBAIX/UwABAAAKCTx0ZCBhbGlnbj0iY2VudGVyIiB3aWR0aD0iMjUlIj48eHNsOnZhbHVl
+LW9mIHNlbGVjdD0iRGVzdGluYXRhcmlvIiAvPjwvdGQ+AIECgwQBAIX/VgABAAAKCTx0ZCBhbGln
+bj0iY2VudGVyIiB3aWR0aD0iMjUlIj48eHNsOnZhbHVlLW9mIHNlbGVjdD0iRXN0YWRvRG9jdW1l
+bnRvIiAvPjwvdGQ+gQKDBAEAhf9VAAEAAAoJPHRkIGFsaWduPSJjZW50ZXIiIHdpZHRoPSIyMCUi
+Pjx4c2w6dmFsdWUtb2Ygc2VsZWN0PSJUaXBvRG9jdW1lbnRvICIgLz48L3RkPgCBAoMEAQCF/2MA
+AQAACgk8dGQgc3R5bGU9InZpc2liaWxpdHk6aGlkZGVuIiBhbGlnbj0iY2VudGVyIiB3aWR0aD0i
+MjUlIj48eHNsOnZhbHVlLW9mIHNlbGVjdD0iaWQiIC8+PC90ZD4AgQKDBAEAhf8NAAEAAAo8L3Ry
+PgCBAoMEAQCF/xcAAQAACjwveHNsOnRlbXBsYXRlPgCBAoMEAQCF/wgAAQAACoECgwQBAIX/GQAB
+AAAKPC94c2w6c3R5bGVzaGVldD4A
+</rawitemdata></item></note>
+

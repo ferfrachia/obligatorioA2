@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='13e6' unid='50C07B3581FC184383257DC8004FD231' sequence='15'>
+<created><datetime dst='true'>20150109T123151,53-02</datetime></created>
+<modified><datetime>20150311T131047,19-03</datetime></modified>
+<revised><datetime>20150309T094423,63-03</datetime></revised>
+<lastaccessed><datetime>20150311T131047,19-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131047,19-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060328T103806,39-03</datetime><datetime>20060410T165850,84-03</datetime><datetime
+>20060410T171411,37-03</datetime><datetime>20060410T171630,45-03</datetime><datetime
+>20060410T172001,67-03</datetime><datetime>20060410T180125,54-03</datetime><datetime
+>20060411T104902,46-03</datetime><datetime>20060412T134104,22-03</datetime><datetime
+>20060412T134643,82-03</datetime><datetime>20060412T134757,37-03</datetime><datetime
+>20060412T140631,62-03</datetime><datetime>20060412T140807,77-03</datetime><datetime
+>20060530T120220,93-03</datetime><datetime>20060623T174941,40-03</datetime><datetime
+>20060623T175135,32-03</datetime><datetime>20060623T180326,10-03</datetime><datetime
+>20061013T104015,33-03</datetime><datetime dst='true'>20061101T113023,21-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(BusquedaResoluciones)|VBusqRD</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+IAICAJQAAgAkMwEASwBbPElOUFVUIG9uS2V5UHJlc3M9InJldHVybiBmYWxzZTsiIFRZUEU9Y2hl
+Y2tib3ggTkFNRT0iQWN0dWFjaW9uZXMiIFZBTFVFPSIABQAIAGNjTnJvRXhwIgIBAAIAIyMiAgUA
+CQBjY25Ocm9BY3QAVgEiAgEAAQAkACICAQAEACIgPl0iAgMAAgAkAAIAJDUBAAgATqcgRXhwOiAF
+AAgAY2NOcm9FeHAiAgMAAgAsAAIAJDYBAAwAIC0gTqcgQWN0LiA6BQAJAGNjbk5yb0FjdABWASIC
+AwACABwABwBzQXN1bnRvAAUABwBzQXN1bnRvAAMABQA+ADkABwAJAAgAAgACAAIABwAJAGNjT2Zp
+Y2luYWNjTnJvRXhwJDMkNSQ2c0FzdW50byRDb25mbGljdAAEAAQABwBwAGkAbm8gc2UgcHVlZGVu
+IGFncmVnYXIgcHRvcyBzaSBsYSBhY3R1YWNpb24gZGUgU2VjcmV0YXJpYSBHZW5lcmFsIGVzIGxh
+IHByaW1lcmEgeSB0aWVuZW4gcXVlIGVzdGFyIHJlY2JpZGFzAAcACgADAAkxUwAAAE4ABQAEAEZv
+cm0BAAoARkFjdHVhY2lvbgoCBQAKAHNTdWJFc3RhZG8BAAIAMTALAhwCBQAKAHNTdWJFc3RhZG8B
+AAIAMzULAhwCAwAHABQADgAJMFJMMVM0UzVTOFM5Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+JQACAABEiGYHAAAJAIBmAAkACABjY09maWNpbmFjY05yb0V4cA==
+</rawitemdata></item>
+<item name='$ViewFormat' sign='true'>
+<rawitemdata type='5'>
+AQAHAAoACgAAAFZDAAACAAAAXgA9AAgAAQAACgAAAAAIAAAAAAICAAAAVkMDBAkABwAAAAAALQAB
+AAAKAAEAAAAAAAAAAgIAAABWQwkACAAAAAAAAAAIAAEAAAoAAAAAAAAAAAACAgAAAFZDgAACAEAA
+ogAAALoCBQAACQAAAAAAAAAAAAICAAAAVkMAAAIADgAyAAAAUAABAAAIAAAAAAAAAAAAAgIAAABW
+QwgAAgANADoAAABQAAEAAAoAAAAAAAAAAAACAgAAAFZDAAAHAAYAHgAAANgABgAACQAAAAAAAAAA
+AAICAAAAJDheAAIAUAACACQ4AQAtAFs8aW5wdXQgdHlwZT0iaGlkZGVuIiBuYW1lPSJQb3NpY2lv
+biIgdmFsdWU9IgABAAAAkgFWASICAQADACI+XQAiAgMABwAMAAUACTBTMEUAAQUBADcAWzxpbnB1
+dCB0eXBlPSJoaWRkZW4iIG5hbWU9IlBvc2ljaW9uIiB2YWx1ZT0if0ExOzA9/yI+XWNjT2ZpY2lu
+YU9maWNpbmFjY05yb0V4cCQzWzx0YWJsZSBib3JkZXI9IjAiIGNlbGxzcGFjaW5nPSIwIiBjZWxs
+cGFkZGluZz0iMSIgd2lkdGg9IjIwMCI+XaIAAgCUAAIAJDMBAEsAWzxJTlBVVCBvbktleVByZXNz
+PSJyZXR1cm4gZmFsc2U7IiBUWVBFPWNoZWNrYm94IE5BTUU9IkFjdHVhY2lvbmVzIiBWQUxVRT0i
+AAUACABjY05yb0V4cCICAQACACMjIgIFAAkAY2NuTnJvQWN0AFYBIgIBAAEAJAAiAgEABAAiID5d
+IgIDAAcADAAGAAkyUzEzUyQ1TnJvIEV4cGVkaWVudGUyAAIAJAACACQ1AQAIAE6nIEV4cDogBQAI
+AGNjTnJvRXhwIgIDAAcADAAFAAkwUzBFACQ2TnJvIEFjdHVhY2mibjoAAgAsAAIAJDYBAAwAIC0g
+TqcgQWN0LiA6BQAJAGNjbk5yb0FjdABWASICAwAHAAwABQAJMFMwRQBzQXN1bnRvQXN1bnRvHgAC
+ABwABwBzQXN1bnRvAAUABwBzQXN1bnRvAAMAJgABAAAAAQEACQEAAAoBAQ4KAAABAK0rAQABAAEA
+AAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQDEAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MB
+AQAJAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAA
+AAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAE
+AAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA//8AAAAA
+AAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABX
+QwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD///8A
+BQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAgICAAAAAAAAAAAAACAAA
+AAAAAQBYQwAMgAMAAAAAAAECAgIBAQEBBwQDAAAAAAAAAAAgLy86WUMAAAgAAAABAAAAAQAAAAAA
+AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAACwuJFU=
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text><text
+>6</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text>Vista utilizada para encontrar las actuaciones de la unidad que corresponda para agregar asuntos al modulo de resoluciones</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item></note>
+

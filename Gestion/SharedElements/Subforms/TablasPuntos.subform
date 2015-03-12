@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='e62' unid='428407B5D09053AF83257B7B0060FF60' sequence='15'>
+<created><datetime>20130530T143928,32-03</datetime></created>
+<modified><datetime>20150311T131043,27-03</datetime></modified>
+<revised><datetime>20150309T094427,67-03</datetime></revised>
+<lastaccessed><datetime>20150311T131043,27-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131043,27-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='sRecorridoFechaEntrada' summary='false' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='sRecorridoFechaSalida' summary='false' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='sFechaRecibido' summary='false' sign='true'>
+<rawitemdata type='400'>
+AAAAAAAAAAA=
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>sFechaRecibido</text><text>sRecorridoFechaSalida</text><text
+>sRecorridoFechaEntrada</text><text>sRecorridoUnidad</text></textlist></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>TablasPuntos</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>TablasPuntos</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+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
+AwCF/yIABQAACAkJZnVuY3Rpb24gY2FyZ2FyUHVudG9zKCl7gQKDBAMAhf8nAAUAAAgJCQl2YXIg
+ZG9jID0gZG9jdW1lbnQuZm9ybXNbMF07AIECgwQDAIX/SQAFAAAICQkJdk5yb3NTZXNpb25QdG9z
+PXN0cmluZ1RvVmVjdG9yTnVsbChkb2Muc05yb3NTZXNpb25QdG9zLnZhbHVlKTsAgQKDBAMAhf9L
+AAUAAAgJCQl2TnJvc1B0b3NFblNlc2lvbiA9IHN0cmluZ1RvVmVjdG9yKGRvYy5zTnJvc1B0b3NF
+blNlc2lvbi52YWx1ZSk7AIECgwQDAIX/TwAFAAAICQkJdkVzdGFkb1B0b3NFblNlc2lvbiA9IHN0
+cmluZ1RvVmVjdG9yKGRvYy5zRXN0YWRvUHRvc0VuU2VzaW9uLnZhbHVlKTsAgQKDBAMAhf8XAAUA
+AAgJCQl2YXIgaHRtbD0iIjsAgQKDBAMAhf86AAUAAAgJCQlmb3IgKHZhciBpID0gMDsgaTx2TnJv
+c1Nlc2lvblB0b3Mudkxlbmd0aDtpKyspe4ECgwQDAIX/GgAFAAAICQkJCWh0bWw9aHRtbCsiPHRy
+hf+sAAUAAAggY2xhc3M9XCJDZWxkYUl0ZW1Bc3VudG9zRW5TZXNpb25cIj48dGQ+Iit2TnJvc1Nl
+c2lvblB0b3MudkFycmF5W2ldKyI8L3RkPjx0ZD4iK3ZOcm9zUHRvc0VuU2VzaW9uLnZBcnJheVtp
+XSArIjwvdGQ+PHRkPiIrdkVzdGFkb1B0b3NFblNlc2lvbi52QXJyYXlbaV0gKyI8L3RkPjwvdHI+
+IoECgwQDAIX/DAAFAAAICQkJfYECgwQDAIX/ywAFAAAICQkJaHRtbD0iPHRhYmxlIGNlbGxwYWRk
+aW5nPVwiMlwiIGNlbGxzcGFjaW5nPVwiMFwiIHdpZHRoPVwiMTAwJVwiIGNsYXNzPVwiVGFibGFS
+ZWNvcnJpZG9cIj48dHIgY2xhc3M9XCJDZWxkYVRpdHVsb1wiPjx0ZD5Ocm8uIFNlc2lvbjwvdGQ+
+PHRkPk5yby4gQXN1bnRvPC90ZD48dGQ+RXN0YWRvPC90ZD48L3RyPiIraHRtbCsiPC90YWJsZT4i
+AIECgwQDAIX/SAAFAAAICQkJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoIkRpdkFzdW50b3NFblNl
+c2lvbiIpLmlubmVySFRNTD1odG1sO4ECgwQDAIX/CwAFAAAICQl9AIECgwQDAIX/GQAFAAAICQlj
+YXJnYXJQdW50b3MoKTsAgQKDBAMAhf8SAAUAAAgJPC9zY3JpcHQ+gQKDBAEAhf8OAAUAAAgJPC90
+ZD6BAoMEAQCF/w0ABQAACDwvdHI+AM3/CAAAAAAA
+</rawitemdata></item></note>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E0500631343" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="756" sequence="6" unid="D0F4F0A4562322D283257C1C003AA981">
+<created><datetime dst="true">20131107T084044,81-02</datetime></created>
+<modified><datetime>20150311T150217,96-03</datetime></modified>
+<revised><datetime>20150309T094354,41-03</datetime></revised>
+<lastaccessed><datetime>20150311T150217,96-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T150217,96-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>js/Cookie</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20100701T102215,70-03</datetime></item></note>

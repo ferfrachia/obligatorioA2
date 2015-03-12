@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257DF80042C028" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="28e" sequence="152" unid="A2A888EC9EEC55500325738D0044FDC2">
+<created><datetime>20071108T093334,10-03</datetime></created>
+<modified><datetime>20150309T094354,80-03</datetime></modified>
+<revised><datetime>20150309T094354,79-03</datetime></revised>
+<lastaccessed><datetime>20150309T094354,80-03</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20150226T100907,51-02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=administrador/O=bse_des</name><name>CN=Eduardo Vecino/O=ISA</name><name>CN=administrador/O=bse_des</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071113T131445,38-03</datetime><datetime>20071207T145749,48-03</datetime><datetime>20071207T150022,96-03</datetime><datetime>20071212T164835,47-03</datetime><datetime>20071212T164915,23-03</datetime><datetime>20071212T164946,20-03</datetime><datetime>20080319T170314,18-03</datetime><datetime>20080319T170526,62-03</datetime><datetime>20080319T171506,33-03</datetime><datetime>20080319T171511,70-03</datetime><datetime>20080319T171750,15-03</datetime><datetime>20080328T143615,24-03</datetime><datetime>20081029T161658,54-03</datetime><datetime>20081114T130800,21-03</datetime><datetime>20081114T130802,82-03</datetime><datetime>20081114T132514,84-03</datetime><datetime dst="true">20081117T102121,45-02</datetime><datetime dst="true">20081119T085513,50-02</datetime><datetime dst="true">20081119T162409,09-02</datetime><datetime dst="true">20081122T153310,54-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+<item name="$TITLE" sign="true"><text>js/NamePicker.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20130923T103125,70-03</datetime></item></note>

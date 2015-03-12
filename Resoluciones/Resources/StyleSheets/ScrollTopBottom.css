@@ -1,0 +1,37 @@
+.go_top,.go_bottom {
+	background:
+		url("./footer_fixed.png?OpenImageResource");
+		no-repeat: scroll 0 0 rgba(0, 0, 0, 0);
+	display: block;
+	height: 40px;
+	margin: 0 0 -1px;
+	width: 43px;
+}
+
+.go_top {
+	position: fixed;
+	right: 10px;
+	bottom: 58px;
+	height: 42px;
+}
+
+.go_top:hover {
+	background-position: -45px 0;
+}
+
+.go_bottom {
+	background-position: 0 -119px;
+	height: 43px;
+}
+
+.go_bottom:hover {
+	background-position: -45px -119px;
+}
+
+.goTop-goBottom .ph {
+	display: block;
+	position: fixed;
+	right: 10px;
+	bottom: 15px;
+	height: 42px;
+}

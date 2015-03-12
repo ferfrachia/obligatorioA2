@@ -1,0 +1,155 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************
+'*
+'*						 CLASS NUMERADOR 
+'*
+'********************************************************************************
+' Permite el manejo de los numeradores en la base de numeración
+' Esta clase NO es la la API que utiliza el cliente para el manejo de números
+'********************************************************************************
+
+'CONSTRUCTOR
+	'New(Byval Nombre As String)
+		'Crea el objeto numerador dado su nombre
+
+'MÉTODOS
+	'SiguienteNumero() As Long
+		'Retorna el siguiente número disponible del numerador
+
+'********************************************************************************
+
+Option Declare
+
+
+Use "ColaClass 1.1"
+Use "VectorClass 2.04"
+Use "ErrorHandlerClass 1.1"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Numerador
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+%INCLUDE "c:\lotus\notes\bibliotecas\numeracion\constantes.lss"
+
+'***************************************************************************************************************
+Public Class Numerador
+'***************************************************************************************************************
+	
+	'Variables privadas de la class
+	Private s As NotesSession
+	Private docNum As NotesDocument
+	Private colaNum As Cola
+	
+'***************************************************************************************************************
+	
+	Public Sub new(Byval NombreNumerador As String)
+	'Constructor de la class
+		Dim vistaNum As NotesView, v As Vector, valores As Variant
+		
+		Set s = New NotesSession
+		Set colaNum = New Cola
+		Set v = New Vector(0)
+		
+		Set vistaNum = s.CurrentDatabase.GetView(VISTA_NUMERADORES)
+		If vistaNum Is Nothing Then Error ERROR_NUMCLIENT_VIEW_NOT_FOUND,"No se encontró la vista " & VISTA_NUMERADORES
+		
+		Set docNum = vistaNum.getDocumentByKey(NombreNumerador,True)
+		If docNum Is Nothing Then Error ERROR_NUMCLIENT_NUMERATOR_NOT_FOUND,"No se encuentra el documento del numerador " & NombreNumerador
+		
+		If Cstr(docNum.GetItemValue(NUMERADOR_CAMPO_LASTQUEUED)(0)) = "" Then docNum.ReplaceItemValue NUMERADOR_CAMPO_LASTQUEUED, _
+		docNum.GetItemValue(NUMERADOR_CAMPO_NUMERO)(0) - 1
+		
+		If Cstr(docNum.GetItemValue(NUMERADOR_CAMPO_LARGO_COLA)(0)) = "" Then docNum.ReplaceItemValue NUMERADOR_CAMPO_LARGO_COLA,1
+		
+		If docNum.hasItem(NUMERADOR_CAMPO_COLA) Then
+			valores = docNum.getItemValue(NUMERADOR_CAMPO_COLA)
+			If Not Isnumeric(valores(0)) Then
+					'TO DO:
+					'	Do something
+			Else
+				v.Values = valores
+			End If
+			
+		End If
+		
+		Set colaNum.Values = v
+	End Sub
+	
+'***************************************************************************************************************
+	
+	Public Function SiguienteNumero() As Long
+	'Retorna el siguiente número disponible
+		Dim v As Vector
+		
+		Do While colaNum.CantElem <= docNum.GetItemValue(NUMERADOR_CAMPO_LARGO_COLA)(0)
+			colaNum.Encolar Clng(docNum.GetItemValue(NUMERADOR_CAMPO_LASTQUEUED)(0)) + 1	'Ultimo asignado + i
+			docNum.ReplaceItemValue NUMERADOR_CAMPO_LASTQUEUED,docNum.GetItemValue(NUMERADOR_CAMPO_LASTQUEUED)(0) + 1
+		Loop
+		
+		SiguienteNumero = colaNum.Decolar()						' Retiro el primer numero de la cola
+		docNum.ReplaceItemValue NUMERADOR_CAMPO_NUMERO,SiguienteNumero	' Reflejo la asignación del número en el documento numerador
+		
+		'Guardo la cola
+		Set v = colaNum.Values
+		docNum.ReplaceItemValue NUMERADOR_CAMPO_COLA,v.Values
+		
+		If Not docNum.Save(False,False) Then Error ERROR_NUMCLIENT_NUMERATOR_SAVE_FAILED, _
+		"SiguienteNumero: Fallo al salvar el documento de numerador."
+		
+		Exit Function
+		
+HANDLER_DN:
+		Dim eh As ErrorHandler, vDest As Vector
+		
+		Set vDest = New Vector(1)
+		vDest.InsertElement "ErrorLog", PRIMERAPOS
+		Set eh = New ErrorHandler(Err, Error, "NumServer", "NumeradorLib-DevolverNumero",Erl)
+		eh.Send vDest, "", ""
+		Exit Function
+	End Function
+	
+'***************************************************************************************************************
+	
+	Public Sub DevolverNumero(Byval numero As Long)
+	' Devuelve un número al numerador que no se ha utilizado generalmente
+		
+		On Error Goto HANDLER_DN
+		
+		Dim v As Vector,pos As Long, valores As Variant, i As Integer
+		
+		If colaNum.EstaVacia() Then
+			colaNum.Encolar numero
+		Else
+			Set v = colaNum.Values
+			pos = v.InsertPos(numero,True)
+			v.InsertElement numero,pos
+			Set colaNum.Values = v
+		End If
+		
+		'Guardo la cola
+		Set v = colaNum.Values
+		valores = v.Values
+		For i = Lbound(valores) To Ubound(valores)
+			valores(i) = Clng(valores(i))
+		Next
+		docNum.ReplaceItemValue NUMERADOR_CAMPO_COLA,valores
+		
+		If Not docNum.Save(False,False) Then Error ERROR_NUMCLIENT_NUMERATOR_SAVE_FAILED, _
+		"DevolverNumero: Fallo al salvar el documento de numerador."
+		
+		Exit Sub
+		
+HANDLER_DN:
+		Dim eh As ErrorHandler, vDest As Vector
+		
+		Set vDest = New Vector(1)
+		vDest.InsertElement "ErrorLog", PRIMERAPOS
+		Set eh = New ErrorHandler(Err, Error, "NumServer", "NumeradorLib-DevolverNumero",Erl)
+		eh.Send vDest,"",""
+		Exit Sub
+	End Sub
+	
+'***************************************************************************************************************	
+End Class
+'***************************************************************************************************************

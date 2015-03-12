@@ -1,0 +1,234 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía, basada en la que estaba en Motor Gestión Documental
+
+%END REM
+
+Option Declare
+
+Use "ConfEE 1.0"
+Use "FuncionesGenerales"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ExpBean
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'******************************************************************************************************************	
+'*
+'*									CLASS <EXPBEAN>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Const BASEEXPBEAN = "SESSIONID"
+Public Const VIEWEXPBEAN = "EXPEDIENTES"
+
+Public Const FIELDEXPBEANFORM 	= "ExpBean"
+Public Const FIELDEXPBEANEXP 		= "NroExp"
+Public Const FIELDEXPBEANACT 		= "NroAct"
+Public Const FIELDEXPBEANESTADO 	= "Estado"
+Public Const FIELDEXPBEANFECHA 	= "Fecha"
+
+Public Const ESTADOACTIVADO 		= "Activado"
+Public Const ESTADODESACTIVADO 	= "Desactivado" 
+
+Public Class ExpBean
+	
+	Private dbExpBean As notesDatabase
+	Private docExpBean As NotesDocument
+	
+	
+'******************************************************************************************************************		
+	Public Sub new (NroExp As String)
+		On Error Goto handler
+		Dim c As New Configuracion()
+		Dim viewExp As notesview
+		
+		If Not c.VisPublicaInstalada Then
+			Exit Sub
+		End If
+		
+		Set dbExpBean = New NotesDatabase(c.ServidorDomino(BASEEXPBEAN), c.BaseDeDatos(BASEEXPBEAN))
+		
+		If dbExpBean Is Nothing Then
+			Error 31201,"No se puede crear la base con clave: " & BASEEXPBEAN
+		End If
+		
+		If Not dbExpBean.IsOpen Then
+			dbExpBean.Open "",""
+		End If
+		
+		If Not dbExpBean.IsOpen Then
+			Error 31202,"No se puede abrir la base con clave: " & BASEEXPBEAN
+		End If
+		
+		Set viewExp = dbExpBean.GetView(VIEWEXPBEAN)
+		
+		Set docExpBean = viewExp.GetDocumentByKey(NroExp,True)
+		If docExpBean Is Nothing Then
+			Call CrearBean(NroExp)
+		End If
+		
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ExpBean - Creador","")
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************		
+	Private Sub CrearBean(NroExp As String)
+		
+		Set docExpBean = New NotesDocument(dbExpBean)
+		docExpBean.ReplaceItemValue "Form", FIELDEXPBEANFORM
+		docExpBean.ReplaceItemValue FIELDEXPBEANEXP, NroExp		
+		docExpBean.Save True,False
+		
+	End Sub
+'******************************************************************************************************************		
+	Public Sub PushActivar(NroAct As Integer)
+		On Error Goto handler
+		Dim c As New configuracion
+		If Not c.VisPublicaInstalada Then
+			Exit Sub
+		End If
+		If Me.Estado = ESTADOACTIVADO Then
+			If Me.TopActuacion >= NroAct Then
+				Error 31203, "El exp: " & Me.Expediente & " ya estaba activado en la actuación " & Cstr(NroAct) & " se intentaba activar en la act: " & Cstr(NroAct) 
+			End If
+		End If
+		
+		Me.Estado = ESTADOACTIVADO
+		Me.TopActuacion = NroAct
+		Me.TopFecha = Today
+		Me.Save
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ExpBean - Procedimiento Activar","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************			
+	Public Sub PopDesactivar (NroAct As Integer)
+		On Error Goto Handler
+%REM
+		If Me.Estado = ESTADOACTIVADO Then
+			If Me.TopActuacion <> NroAct Then
+				Error 31204, "El exp: " & Me.Expediente & " Estaba activado para la act: " & Me.TopActuacion & " y se quizo desactivar para la act: " & Cstr(NroAct)
+			End If
+		Else
+			Error 31205, "No existia pedido activado para el exp: " & Me.Expediente
+		End If
+%END REM
+		
+		'Dentro de la propiedad pop se cambia el estado si queda vacio 
+		Dim c As New configuracion
+		If Not c.VisPublicaInstalada Then
+			Exit Sub
+		End If
+		'Msgbox NroAct
+		'Msgbox Me.TopActuacion
+		If Me.TopActuacion = NroAct Then
+			
+			Me.pop = FIELDEXPBEANACT
+			Me.pop = FIELDEXPBEANFECHA	
+			Me.save
+		End If
+		
+		Exit Sub
+Handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ExpBean - Procedimiento PopDesactivar","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************			
+	Public Property Get Estado() As String
+		Estado = docExpBean.GetItemValue(FIELDEXPBEANESTADO)(0)
+	End Property
+'******************************************************************************************************************				
+	Public Property Set Estado() As String
+		docExpBean.ReplaceItemValue FIELDEXPBEANESTADO,Estado
+	End Property
+'******************************************************************************************************************				
+	Public Property Get TopActuacion () As Integer
+		Dim vAct As New Vector(0)
+		vAct.values = docExpBean.GetItemValue(FIELDEXPBEANACT)
+		If vAct.Cantelem = 0 Then
+			TopActuacion = -1
+		Else
+			TopActuacion = Cint(vAct.getelement(vAct.cantElem)) 	
+		End If				
+		
+	End Property
+'******************************************************************************************************************					
+	Public Property Set TopActuacion () As Integer
+		Dim vAct As New Vector(0)
+		
+		
+		vAct.values = docExpBean.GetItemValue(FIELDEXPBEANACT)
+		vAct.insertElement Cdbl(TopActuacion), vAct.Cantelem+1
+		
+		'Dim i As Integer
+		'For i = 1 To vAct.CantElem
+		'	Msgbox Datatype(vAct.getElement(i))
+		'Next
+		docExpBean.ReplaceItemValue FIELDEXPBEANACT, vAct.values
+	End Property
+'******************************************************************************************************************						
+	Public Property Get FirstActuacion () As Integer
+		FirstActuacion = docExpBean.GetItemValue(FIELDEXPBEANACT)(0)
+	End Property
+'******************************************************************************************************************						
+	Public Property Get TopFecha As Variant
+		Dim vAct As New Vector(0)
+		
+		vAct.values = docExpBean.GetItemValue(FIELDEXPBEANFECHA)
+		TopFecha = vAct.getElement(vAct.Cantelem)		
+	End Property	
+'******************************************************************************************************************							
+	Public Property Set TopFecha As Variant
+		Dim vAct As New Vector(0)
+		
+		vAct.values = docExpBean.GetItemValue(FIELDEXPBEANFECHA)
+		vAct.insertelement TopFecha, vAct.cantElem + 1
+		docExpBean.ReplaceItemValue FIELDEXPBEANFECHA, vAct.values
+	End Property		
+'******************************************************************************************************************									
+	Public Property Get FirstFecha As Variant
+		FirstFecha = docExpBean.GetItemValue(FIELDEXPBEANFECHA)(0)
+	End Property
+'******************************************************************************************************************										
+	Public Property Set pop As String
+		Dim vAct As New Vector(0)
+		vAct.values = docExpBean.getItemValue(pop)
+		vAct.deleteElement vAct.cantElem
+		If vAct.cantElem =0 Then
+			Me.Estado = ESTADODESACTIVADO
+		End If
+		docExpBean.ReplaceItemValue pop, vAct.values
+	End Property
+'******************************************************************************************************************								
+	Public Property Get Expediente () As String
+		Expediente = Cint(docExpBean.GetItemValue (FIELDEXPBEANEXP)(0)) 
+	End Property
+'******************************************************************************************************************					
+	Public Property Set Expediente () As String
+		docExpBean.ReplaceItemValue FIELDEXPBEANEXP, Expediente
+	End Property
+'******************************************************************************************************************							
+	Public Property Get Actuaciones () As Vector
+		Set Actuaciones = New Vector(0)
+		Actuaciones.values = docExpBean.GetItemValue(FIELDEXPBEANACT)
+	End Property
+'******************************************************************************************************************								
+	Public Property Get Fechas () As Vector
+		Set Fechas = New Vector(0)
+		Fechas.values = docExpBean.GetItemValue(FIELDEXPBEANFECHA)
+	End Property
+'******************************************************************************************************************						
+	Public Sub Save ()
+		docExpBean.Save True,False
+	End Sub
+'******************************************************************************************************************							
+End Class

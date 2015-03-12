@@ -1,0 +1,105 @@
+.tablaUno{
+	background:#b0c4de;
+	padding:10px;
+	width:90%;
+	margin:auto;
+}
+
+.tablaDos{
+	background:#FFFFFF;
+	padding:10px;
+	width:95%;
+	margin:auto;
+}
+
+.titulo{
+	width:100%;
+	font-weight: bold;
+	font-family: ebrima;
+	color:#000033;
+	font-size:30px;
+}
+
+.tdTamano{
+	width:25%;	
+}
+
+.tituloTablaDos{
+	font-weight: bold;
+	font-family: ebrima;
+	font-size:12px;
+}
+
+.textoTabla{
+	font-family: verdana;
+	font-size:12px;
+}
+
+.campoTablaDos{
+	font-family: verdana;
+	font-size:12px;
+	width:80px;
+}
+
+.etiqueta{
+	font-weight: bold;
+	font-family: verdana;
+	font-size:12px;
+	margin-left:10px;
+}
+
+.Campos{
+	font-family: verdana;
+	font-size:12px;	
+}
+
+.CeldaCentrada{
+	width:100%;
+	text-align: center;
+}
+
+.Linea{
+	background:#FFFFFF;
+	height:2px;
+}
+
+.espacio{
+	height:12px;
+}
+
+.boton{
+	font-weight: bold;
+	font-family: ebrima;
+	font-size:14px;
+	height:35px;
+	width:350px;
+}
+
+.botonBorrar{
+	font-weight: bold;
+	font-family: ebrima;
+	font-size:14px;
+	height:18px;
+}
+
+.CampoChico{
+	font-family: ebrima;
+	font-size:18px;	
+	width:25px;
+	text-align: center;
+}
+
+.CampoLargo{
+	font-family: ebrima;
+	height:45px;	
+	width:95%;
+}
+
+.btnBorrar{
+	border-style: none;
+	border-color: inherit;
+	border-width: 0;
+	background: url('http://www.206online.com.ar/boton_borrar.gif\') no-repeat 0 0;
+	cursor: pointer;
+	text-align: left;
+}

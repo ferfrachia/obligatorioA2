@@ -1,0 +1,85 @@
+/* CSS Document */
+body {height:100%;margin:0;} 
+
+.tdWrapLogo{
+	padding-left:10px;	
+}
+
+.divLogo{
+	height:43px;
+	width:150px; 
+}
+
+.tdLogo{
+	height:43px;
+	width:150px; 		
+}
+
+.spanLogo{
+	color:#666666; 
+	Font-family: Arial, Verdana, Ariel, sans-serif; 
+	font-size:7px		
+}
+
+.divBoton{
+	height:50px;
+	width:198px; 
+	cursor:pointer; 
+}
+
+.divTextoBoton{
+	margin:0 0 0 8px;
+}
+
+.spanBoton{
+	color:#045C87; 
+	Font-family: Arial, Verdana, Ariel, sans-serif; 
+	font-size:13px;
+}
+
+.imagenBoton{
+	height:43px; 
+	margin: 4px 0 0 4px
+}
+
+.divMenu{
+	display:none;
+	overflow:hidden;
+}
+
+.divMenuFloatR{
+	width:150px;
+	float:right;
+}
+
+.tablaMenu{
+	width:150px;
+}
+
+.spanMenu{
+	color:#666666; 
+	Font-family: Arial, Verdana, Ariel, sans-serif; 
+	font-size:10px;
+}
+
+.tdMenuItemB{
+	padding: 0 7px 0 7px;
+	height:15px;
+	border-bottom:1px solid #237eb1;
+	cursor:pointer;
+}
+
+.tdMenuItemB:hover{
+	padding: 0 7px 0 7px;
+	height:15px;
+	border-bottom:1px solid #237eb1;
+	background-color:#FFFFFF;
+	cursor:pointer;
+}
+
+.divMenuInferior{
+	height:7px;
+	width:150px; 
+	background-color: white;
+	margin-top: -7px;
+}

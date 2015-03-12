@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005C47C3'>
+<noteinfo noteid='14e' unid='F33935C7F72DD0B803256D6D00500C21' sequence='29'>
+<created><datetime>20030724T113419,85-03</datetime></created>
+<modified><datetime>20150311T134757,19-03</datetime></modified>
+<revised><datetime dst='true'>20150206T174555,04-02</datetime></revised>
+<lastaccessed><datetime>20150311T134757,19-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T134757,19-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Diego Celery/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=Testing</name><name>CN=Administrador/O=IMA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=CTM</name><name>CN=Administrador Isa/O=CTM</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030724T114544,43-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Flags'><text>m34</text></item>
+<item name='$TITLE'><text>Vistas</text></item>
+<item name='$SiteMapList' sign='true'>
+<rawitemdata type='1a'>
+AQIBAAEABABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAEAEgAVwABCAAAAQAAAAAAAAAWAAAAOAAAAAAAAAAJAAAAAAAAAAAA
+AwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFUmVnaXN0cm9zIHBvciBGZWNoYQAB
+APb/NgAAAAAAAwACABQAAAAAAAAAAAAAAAAAAAAAAAAAAABWT3BlcmFjaW9uZXNQb3JGZWNoYQAF
+VmlzdGFzAEgAWwABCAAABAAAAAAAAAAYAAAAOgAAAAAAAAAJAAAAAAAAAAAAAwACAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFUmVnaXN0cm9zIHBvciBVc3VhcmlvAAEA9v84AAAAAAAD
+AAIAFgAAAAAAAAAAAAAAAAAAAAAAAAAAAFZPcGVyYWNpb25lc1BvclVzdWFyaW8ABVZpc3RhcwBI
+AF8AAQgAAAUAAAAAAAAAGgAAADwAAAAAAAAACQAAAAAAAAAAAAMAAgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAABVJlZ2lzdHJvcyBwb3IgT3BlcmFjaaJuAAEA9v86AAAAAAADAAIAGAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAFZPcGVyYWNpb25lc1Bvck9wZXJhY2lvbgAFVmlzdGFzAEgAXwAB
+CAAABgAAAAAAAAAaAAAAPAAAAAAAAAAJAAAAAAAAAAAAAwACAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAFUmVnaXN0cm9zIHBvciBEb2N1bWVudG8AAQD2/zoAAAAAAAMAAgAYAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAVk9wZXJhY2lvbmVzUG9yRG9jdW1lbnRvAAVWaXN0YXMA
+</rawitemdata></item>
+<item name='$DesignerVersion' sign='true'><text>5</text></item>
+<item name='$POID'><datetime>20120725T175348,21-03</datetime></item></note>
+

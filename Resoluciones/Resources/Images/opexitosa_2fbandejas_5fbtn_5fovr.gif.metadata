@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E05005A68FF" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="b9e" sequence="21" unid="A838B89442C20039832579BB004B1EE3">
+<created><datetime dst="true">20120308T114031,07-02</datetime></created>
+<modified><datetime>20150311T132742,86-03</datetime></modified>
+<revised><datetime>20150309T094506,88-03</datetime></revised>
+<lastaccessed><datetime>20150311T132742,86-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132742,86-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Valsangiacomo/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+<item name="$FileModDT" sign="true"><datetime>20080826T082136,71-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>bandejas_ap_btn.gif</text></item>
+<item name="$TITLE" sign="true"><text>opexitosa/bandejas_btn_ovr.gif</text></item>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+</note>

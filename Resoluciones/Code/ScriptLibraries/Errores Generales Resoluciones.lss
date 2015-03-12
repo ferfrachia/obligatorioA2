@@ -1,0 +1,56 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+' Errores Generales de Resoluciones
+
+Public Const RESOL_ERR_PASAR_EJECUCION				= 2000
+Public Const RESOL_ERR_PASAR_DESARROLLO				= 2001
+Public Const RESOL_ERR_APROBAR_BLOQUE				= 2002
+Public Const RESOL_ERR_ENVIAR_FINALIZAR				= 2003
+Public Const RESOL_ERR_FINALIZAR_SESION				= 2004
+
+Public Const RESOL_ERR_ENVIAR_REVISION_PTO			= 2005
+Public Const RESOL_ERR_PASAR_BORRADOR_PTO			= 2006
+Public Const RESOL_ERR_ANULAR_PTO					= 2007
+Public Const RESOL_ERR_AUTORIZAR_PTO				= 2008
+Public Const RESOL_ERR_AGREGAR_A_SESION_PTO			= 2009
+Public Const RESOL_ERR_APROBAR_PTO					= 2010
+Public Const RESOL_ERR_APLAZAR_PTO					= 2011
+Public Const RESOL_ERR_RETIRAR_PTO					= 2012
+Public Const RESOL_ERR_RETIRAR_PREVIO_PTO			= 2013
+Public Const RESOL_ERR_QUITAR_AUTORIZACION_PTO		= 2014
+Public Const RESOL_ERR_ESTADO_SESION				= 2015
+Public Const RESOL_ERR_QUITAR_APROBAR_PTO			= 2016
+Public Const RESOL_ERR_FIRMAR_PTO					= 2017
+Public Const RESOL_ERR_MODIF_NRO_PTO				= 2018
+Public Const RESOL_ERR_GUARDAR_PTO					= 2019
+Public Const RESOL_ERR_GUARDAR_SESION				= 2020
+Public Const RESOL_ERR_ADJUNCION_IMAGEN				= 2021
+
+Public Const RESOL_MSG_ERR_PASAR_EJECUCION			= "El Acuerdo debe estar en estado 'En Desarrollo' para Pasarla a Ejecución"
+Public Const RESOL_MSG_ERR_PASAR_DESARROLLO			= "El Acuerdo debe estar en estado 'En Ejecución' para Pasarla a Desarrollo"
+Public Const RESOL_MSG_ERR_APROBAR_BLOQUE			= "Uno o mas asuntos estan aprobados"
+Public Const RESOL_MSG_ERR_ENVIAR_FINALIZAR			= "El Acuerdo debe estar en estado 'En Ejecución' para enviarla a Finalizar"
+Public Const RESOL_MSG_ERR_FINALIZAR_SESION			= "El Acuerdo debe estar en estado 'Firmada' o en estado 'Para Finalizar' para Finalizarla"
+Public Const RESOL_MSG_ERR_ENVIAR_REVISION_PTO		= "El Asunto debe estar en estado 'Borrador' para Enviarlo a Revisión"
+Public Const RESOL_MSG_ERR_PASAR_BORRADOR_PTO		= "El Asunto debe estar en estado 'Para Revisar' para pasarlo a Borrador"
+Public Const RESOL_MSG_ERR_ANULAR_PTO				= "El Asunto debe estar en estado 'Para Revisar' para Anularlo"
+Public Const RESOL_MSG_ERR_AUTORIZAR_PTO			= "El Asunto debe estar en estado 'Para Revisar' para Autorizarlo"
+Public Const RESOL_MSG_ERR_QUITAR_AUTORIZACION_PTO	= "El Asunto debe estar en estado 'Pendiente' para poder Quitarle la Autorización"
+Public Const RESOL_MSG_ERR_AGREGAR_A_SESION_PTO		= "El Asunto debe estar en estado 'Pendiente' para poder Agregarlo a un Acuerdo"
+Public Const RESOL_MSG_ERR_APROBAR_PTO				= "El Asunto debe estar en estado 'En Sesión' para poder Aprobarlo"
+Public Const RESOL_MSG_ERR_APLAZAR_PTO				= "El Asunto debe estar en estado 'En Sesión' para poder Aplazarlo"
+Public Const RESOL_MSG_ERR_RETIRAR_PTO				= "El Asunto debe estar en estado 'En Sesión' para poder Retirarlo"
+Public Const RESOL_MSG_ERR_RETIRAR_PREVIO_PTO		= "El Asunto debe estar en estado 'En Sesión' para poder Retirarlo Previo"
+Public Const RESOL_MSG_ERR_ESTADO_SESION			= "El Estado del Acuerdo debe ser: "
+Public Const RESOL_MSG_ERR_QUITAR_APROBAR_PTO		= "El Asunto debe estar en estado 'Aprobado' para Quitarle el Aprobar"
+Public Const RESOL_MSG_ERR_FIRMAR_PTO_CREADOR		= "El Asunto ya se encuentra Firmado por un Creador"
+Public Const RESOL_MSG_ERR_FIRMAR_PTO_SUPERVISOR	= "El Asunto ya se encuentra Firmado por un Supervisor"
+Public Const RESOL_MSG_ERR_MODIF_NRO_PTO			= "El Acuerdo debe estar en estado 'En Desarrollo' para poder modificar la posición de los asuntos."
+Public Const RESOL_MSG_ERR_GUARDAR_PTO				= "El Asunto Cambio de estado, no es posible guardarlo"
+Public Const RESOL_MSG_ERR_GUARDAR_SESION			= "El Acuerdo cambio de estado, no es posible guardarlo"
+Public Const RESOL_MSJ_ERR_ADJUNCION_IMAGEN			= "Se ha excedido en el tamaño de la imagen para adjuntar."
+Public Const RESOL_MSJ_ERR_ADJUNCION_IMAGEN_RTI		= "No es posible adjuntar más imagenes al Documento"

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A73F7'>
+<noteinfo noteid='15a' unid='A4D3560A0C0EC94683257B9C0063F32E' sequence='12'>
+<created><datetime>20130702T151143,18-03</datetime></created>
+<modified><datetime>20150311T132759,71-03</datetime></modified>
+<revised><datetime>20150309T094505,26-03</datetime></revised>
+<lastaccessed><datetime>20150311T132759,71-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132759,71-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='OriginalModTime' sign='true'><datetime>20070424T181839,57-03</datetime></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>indexMobile</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$WindowTitle' sign='true'><formula>"Sistema de Resoluciones"</formula></item>
+<item name='$HTMLHeadTag' sign='true'><formula>claves:=@GetProfileField("(ConfiguracionRD)" ; "sClave");
+paths:=@GetProfileField("(ConfiguracionRD)" ; "sPath");
+@If(@UserName="Anonymous";
+@Do(posPath:=@Member("RESOLUCIONESMOBILE"; claves);
+pathresol:= "/" + @ReplaceSubstring(@Subset(@Subset(paths;posPath);-1);@Char(92);"/");
+dir:= pathresol +  "/LoginMobile");
+@Do(posPath:=@Member("RESOLUCIONES"; claves);
+pathresol:= "/" + @ReplaceSubstring(@Subset(@Subset(paths;posPath);-1);@Char(92);"/");
+dir:= pathresol +  "/OrdenesDelDiaMobile?ReadForm")
+);
+
+
+ret:=  "&lt;META  http-equiv='Expires' content='0'&gt;&lt;META HTTP-EQUIV='Cache-Control' CONTENT='no-cache'&gt;&lt;META HTTP-EQUIV='Pragma'  CONTENT='no-cache'&gt; "+ @NewLine ;
+ret := ret + "&lt;STYLE type=\"text/css\"&gt;Body {background-color: WHITE;}"+@NewLine+
+".textoTitulo{font-family: Arial,  Verdana ; font-size: 12px;font-weight: bold;color : white}"+@NewLine+
+"&lt;/STYLE&gt;";
+ret := ret + "&lt;META HTTP-EQUIV=\"REFRESH\" CONTENT=\"1;URL="+dir+"\"&gt;";
+ret</formula></item>
+<item name='$StyleSheetList' sign='true'>
+<rawitemdata type='1'>
+9v8sAAAAAAADACEACgAAAAAAAAAAAAAAAAAAAAAAAAAAAGVzdGlsby5jc3M=
+</rawitemdata></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>indexMobile</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/0AAAQAACjxk
+aXYgZGF0YS1yb2xlPSJwYWdlIiBjbGFzcz0idHlwZS1pbmRleCIgaWQ9InBhZ2VJbmRleCIghf8b
+AAAAAAxkYXRhLWNhY2hlPSJuZXZlciIgAIX/CQABAAAKPgCBAoMEAQDdBgAAhf+F/ycAAQBwCjxz
+Y3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij4A0ggBAP8fNQDeBgAAhf+BAoMEAQDdBgAAhf+F
+/14AAQBwCi8vKioqKioqKipFbCBzaWd1aWVudGUgY29kaWdvIGVsaW1pbmEgbGFzIHBhZ2luYXMg
+Y29uIGVsIG1pc21vIGlkIGVuIGNhY2hlKioqKioqKioqKioq0ggBAP8fNQDeBgAAhf+BAoMEAQDd
+BgAAhf+F/ycAAQBwCiQoZG9jdW1lbnQpLnJlYWR5KGZ1bmN0aW9uICgpIHsA0ggBAP8fNQDeBgAA
+hf+BAoMEAQDdBgAAhf+F/zwAAQBwCiAgICAkKCdkaXYnKS5saXZlKCdwYWdlaGlkZScsIGZ1bmN0
+aW9uIChldmVudCwgdWkpIHvSCAEA/x81AN4GAACF/4ECgwQBAN0GAACF/4X/JAABAHAKICAgICAg
+ICB2YXIgJHRoaXMgPSAkKHRoaXMpO9IIAQD/HzUA3gYAAIX/gQKDBAEA3QYAAIX/hf+GAAEAcAog
+ICAgICAgIGlmICgkdGhpcy5hdHRyKCdJRCcpICE9PSB1bmRlZmluZWQgJiYgJHRoaXMuYXR0cign
+ZGF0YS1jYWNoZScpICE9PSB1bmRlZmluZWQgJiYgJHRoaXMuYXR0cignZGF0YS1jYWNoZScpID09
+ICJuZXZlciIpIHvSCAEA/x81AN4GAACF/4ECgwQBAN0GAACF/4X/MAABAHAKICAgICAgICAgICAg
+dmFyIHBhZ2UgPSAkdGhpcy5hdHRyKCdJRCcpO9IIAQD/HzUA3gYAAIX/gQKDBAEA3QYAAIX/hf8+
+AAEAcAogICAgICAgICAgICAkKGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKHBhZ2UpKS5yZW1vdmUo
+KTvSCAEA/x81AN4GAACF/4ECgwQBAN0GAACF/4X/EQABAHAKICAgICAgICB9ANIIAQD/HzUA3gYA
+AIX/gQKDBAEA3QYAAIX/hf8PAAEAcAogICAgfSk7ANIIAQD/HzUA3gYAAIX/gQKDBAEA3QYAAIX/
+hf8LAAEAcAp9KTsA0ggBAP8fNQDeBgAAhf+BAoMEAQCF/wkABAAADAkA3QYAAIX/hf8RAAEAcAo8
+L3NjcmlwdD4A0ggBAP8fNQDeBgAAhf+BAoMEAQCF/yoAAQAACjx0YWJsZSBoZWlnaHQ9IjEwMCUi
+IHdpZHRoPSIxMDAlIj6BAoMEAQCF/wwAAQAACjx0cj6BAoMEAQCF/ysAAQAACjx0ZCB2YWxpZ249
+ImNlbnRlciIgYWxpZ249ImNlbnRlciI+AIECgwQBAIX/EwABAAAKCTxpbWcgc3JjPSIA3QYAAK3/
+qf/wAAEAGAAEAOQA5AAAANYAAQARAChDb25maWd1cmFjaW9uUkQpAAEACgByUHJvdG9jb2xv9wIB
+AAMAOi8vACICAQARAChDb25maWd1cmFjaW9uUkQpAAEABQBzSG9zdAD3AgAAAAAAAAAA8D8gAiIC
+AQABADoAIgIBABEAKENvbmZpZ3VyYWNpb25SRCkAAQAHAHNQdWVydG8A9wIiAgEAAQAvACICiwAA
+AAAAAAAAAPA/EAFrAgEAAQBcAAEAAQAvAIQDIgIBABMAL2luZ3Jlc29fbW9kdWxvLnBuZwAiAgMA
+BwAMAAUACTBTMEUAhf8IAAEAAAqqAt4GAACuAIX/CgABAAAKIj6BAoMEAQCF/w0AAQAACjwvdGQ+
+AIECgwQBAIX/DAABAAAKPHRyPoECgwQBAIX/EAABAAAKPC90YWJsZT6BAoMEAQCF/w4AAQAACjwv
+ZGl2Ps3/CAAAAAAA
+</rawitemdata></item></note>
+

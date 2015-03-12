@@ -1,0 +1,39 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+Option Public
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Acciones
+%REM
+Public Const ACCION_CREAR_CS					="acc_crear"
+Public Const ACCION_CREAR_RESP_CS				="acc_crear_resp"
+Public Const ACCION_FIRMAR_CS					="acc_firmar"
+Public Const ACCION_AGREGAR_FIRMA_CS			="acc_agregar_firma"
+Public Const ACCION_ENVIAR_CS					="acc_enviar"
+Public Const ACCION_REENVIAR_CS				="acc_reenviar"
+Public Const ACCION_CREAR_FIRMAR_CS			="acc_crear_firmar"
+Public Const ACCION_CREAR_RESP_FIRMAR_CS		="acc_crear_resp_firmar"
+Public Const ACCION_FIRMAR_ENVIAR_CS			="acc_firmar_enviar"
+Public Const ACCION_REENVIAR_CC_CS				="acc_reenviar_cc"
+Public Const ACCION_CREAR_RESP_CC_CS			="acc_crear_resp_cc"
+Public Const ACCION_TOMAR_CONOCIMIENTO_CS		="acc_tomarconocimiento"
+Public Const ACCION_EDITAR_CS					="acc_editar"
+Public Const ACCION_ARCHIVAR_CS				="acc_archivar"
+Public Const ACCION_SACAR_DE_ARCHIVO_CS			="acc_saco_archivar"
+Public Const ACCION_ANULAR_REE_CS				="acc_anular_ree"
+%END REM
+'Estados
+
+Public Const ESTADOC_EN_GENERACION						= "En Generación"
+Public Const ESTADOC_ENVIADA							= "Enviada"
+Public Const ESTADOC_ARCHIVADO						= "Archivada"

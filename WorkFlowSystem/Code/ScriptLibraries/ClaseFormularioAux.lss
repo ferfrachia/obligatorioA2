@@ -1,0 +1,1381 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Public
+Use "VectorClass 2.05"
+Use "Configuracion Formularios"
+Use "UnidadForm Class"
+Use "UsuarioForm"
+Use "NumeradorClient"
+Use "Roles Class"
+Use "IGDocConfig"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class AccionesFormulario
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES
+
+Private Const FORMATO_FORM_CODIGO					= "IGDOC_FORM_c_yy"
+
+Public Const FRM_ROL_DESARROLLO					= "[Desarrollo]"
+Public Const FRM_ROL_VER_TODOS					= "[VerTodos]"
+
+'CAMPO ROLES
+Private Const ROL_CREADOR						= "RolCreador"
+Private Const ROL_EDITOR							= "RolEditor"
+Private Const ROL_RECEPTOR						= "RolReceptor"
+Private Const ROL_PASE							= "RolPase"
+Private Const ROL_FIRMAR							= "RolFirmante"
+Private Const ROL_ARCHIVAR						= "RolArchivo"
+Private Const ROL_FINALIZAR						= "RolFinalizar"
+
+'CAMPOS
+Private Const CAMPO_DEFFORMULARIO_ACCESOGLOBAL 		= "sAccesoGlobal"
+Private Const CAMPO_DEFFORMULARIO_UNIDADINICIO		= "sUnidadDeInicio"
+Private Const CAMPO_DEFFORMULARIO_INICIORESTRINGIDO 	= "sInicioRestringido"
+Private Const CAMPO_DEFFORMULARIO_VISIBILIDAD		= "sVisibilidad"
+Private Const CAMPO_DEFFORMULARIO_CODIGO			= "sCodigo"
+Private Const CAMPO_DEFFORMULARIO_ACUSERECEPCION		= "sAcuse"
+Private Const CAMPO_DEFFORMULARIO_UNIDAD			= "sUnidad"
+Private Const CAMPO_DEFFORMULARIO_SEL_UNIDADES_ENVIAR	= "sSeleccionaUnidadEnviar"
+Private Const CAMPO_DEFFORMULARIO_CCTEMAS			= "ccTemas"
+Private Const CAMPO_DEFFORMULARIO_TEMAS				= "sTemas"
+Private Const CAMPO_DEFFORMULARIO_UNIDADESTEMAS		= "sUnidadesTemas"
+Private Const CAMPO_DEFFORMULARIO_FIRMAENVIAR		= "sFirmarAlEnviar"
+
+Private Const CAMPO_FORMULARIO_TEMAS				= "sTemas"
+Private Const CAMPO_FORMULARIO_CODIGOFORM			= "Codigo"
+'Private Const CAMPO_FORMULARIO_INICIORESTRINGIDO		= "sInicioRestringido"
+Private Const CAMPO_FORMULARIO_UNIDAD				= "sUnidad"
+Private Const CAMPO_FORMULARIO_UNIDADACTUAL			= "UnidadActual"
+Private Const CAMPO_FORMULARIO_UNIDADANTERIOR		= "UnidadAnterior"
+Private Const CAMPO_FORMULARIO_ESTADO				= "sEstado"	
+Private Const CAMPO_FORMULARIO_RESERVADOPOR			= "ReservadoPor"
+Private Const CAMPO_FORMULARIO_USUARIORECEPTOR		= "sUsuarioRecepcion"
+Private Const CAMPO_FORMULARIO_USUARIORECORRIDO		= "sUsuarioRecorrido"
+Private Const CAMPO_FORMULARIO_NUMERO				= "Numero"
+Private Const CAMPO_FORMULARIO_FECHASRECEPCION		= "FechasRecepcion"
+Private Const CAMPO_FORMULARIO_AUTORES				= "Autores"
+Private Const CAMPO_FORMULARIO_SECCION				= "Seccion"
+Private Const CAMPO_FORMULARIO_REENVIADO			= "Reenviado"
+Private Const CAMPO_FORMULARIO_FECHAFIRMA			= "sFechaFirma"
+Private Const CAMPO_FORMULARIO_FIRMA				= "sFirma"
+Private Const CAMPO_FORMULARIO_FIRMANTE				= "sFirmante"
+Private Const CAMPO_FORMULARIO_FECHASENVIO			= "FechasEnvio"
+Private Const CAMPO_FORMULARIO_UNIDADRECORRIDO		= "sUnidadRecorrido"
+Private Const CAMPO_FORMULARIO_RAZONDEVOLVER			= "sRazonDevolver"
+Private Const CAMPO_FORMULARIO_UNIDADESPREVIAS		= "UnidadesPrevias"
+Private Const CAMPO_FORMULARIO_FECHAFINALIZACION		= "fFinalizacion"
+Private Const CAMPO_FORMULARIO_USUARIOFINALIZACION	= "sUsuarioFin"
+Private Const CAMPO_FORMULARIO_RAZONFINALIZACION		= "sRazonFinalizar"
+Private Const CAMPO_FORMULARIO_USUARIOINICIO			= "sUsuarioInicio"
+Private Const CAMPO_FORMULARIO_FECHACREACION			= "sFechaCreacion"
+Private Const CAMPO_FORMULARIO_UNIDADINICIO			= "sUnidadInicio"
+Private Const CAMPO_FORMULARIO_LECTORESPERMANENTES	= "LectoresPermanentes"
+
+Private Const CAMPO_UNIDAD_CODIGOFORM				= "sCodigoForm"
+
+'ESTADOS DE FORMULARIOS
+Private Const ESTADO_FORM_ENUNIDAD					= "En Unidad"
+Private Const ESTADO_FORM_ENTRANSITO				= "En Transito"
+Private Const ESTADO_FORM_RESERVADO				= "Reservado"
+Private Const ESTADO_FORM_FINALIZADO				= "Finalizado"
+Private Const ESTADO_FORM_ARCHIVADO				= "Archivado"
+Private Const ESTADO_FORM_ENGENERACION				= "En Generacion"
+
+'ERRORES GENERADOS
+Private Const ERROR_ID_FORM_NOTHING				= 16000
+Private Const MSG_ERROR_ID_FORM_NOTHING				= "El id de formulario no está seteado"
+
+Private Const ERROR_CREADO_FORM_NOTHING				= 16001
+Private Const MSG_ERROR_CREADO_FORM_NOTHING			= "La varibale creado no está seteada"
+
+Private Const ERROR_COD_FORM_NOTHING				= 16002
+Private Const MSG_ERROR_COD_FORM_NOTHING			= "El código de formulario no está seteado"
+
+Private Const ERROR_DEF_FORM_NOTHING				= 16003
+Private Const MSG_ERROR_DEF_FORM_NOTHING			= "No se encontró la definición del formulario"
+
+Private Const ERROR_USUARIO_NOTHING				= 16004
+Private Const MSG_ERROR_USUARIO_NOTHING				= "El usuario no está seteado"
+
+Private Const ERROR_OFICINA_CREAR					= 16005
+Private Const MSG_ERROR_OFICINA_CREAR				= "La unidad no está en la lista de unidades que pueden crear el formulario"
+
+Private Const ERROR_USUARIO_OFICINA				= 16006
+Private Const MSG_ERROR_USUARIO_OFICINA				= "El usuario no pertenece a la unidad o no tiene acceso al formulario"
+
+Private Const ERROR_ROL_USUARIO_CREADOR				= 16007
+Private Const MSG_ERROR_ROL_USUARIO_CREADOR			= "El usuario no cuenta con el rol de creador dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_EDITOR				= 16008
+Private Const MSG_ERROR_ROL_USUARIO_EDITOR			= "El usuario no cuenta con el rol de edicion dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_RECEPTOR			= 16009
+Private Const MSG_ERROR_ROL_USUARIO_RECEPTOR			= "El usuario no cuenta con el rol de receptor dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_FIRMAR				= 16010
+Private Const MSG_ERROR_ROL_USUARIO_FIRMAR			= "El usuario no cuenta con el rol de firmar dentro de la unidad"
+
+Private Const ERROR_ROL_USUARIO_PASE				= 16011
+Private Const MSG_ERROR_ROL_USUARIO_PASE			= "El usuario no cuenta con el rol de dar pase dentro de la unidad"
+
+Private Const ERROR_ACCESO_FORMULARIO				= 16012
+Private Const MSG_ERROR_ACCESO_FORMULARIO			= "La oficina no tiene acceso a el formulario"
+
+Private Const ERROR_USUARIO_OFICINAACTUAL			= 16013
+Private Const MSG_ERROR_USUARIO_OFICINAACTUAL		= "El usuario no pertenece a la unidad actual"
+
+Private Const ERROR_FORMULARIO_ESTADO				= 16014
+Private Const MSG_ERROR_FORMULARIO_ESTADO			= "El estado del formulario no es "
+
+Private Const ERROR_FORMULARIO_RESERVADOPOR			= 16015
+Private Const MSG_ERROR_FORMULARIO_RESERVADOPOR		= "El formulario no está reservado por el usuario "
+
+Private Const ERROR_ROL_USUARIO_EDITORAASIGNAR		= 16016
+Private Const MSG_ERROR_ROL_USUARIO_EDITORAASIGNAR	= "El usuario a asignarle al formulario no tiene rol de editor"
+
+Private Const ERROR_USUARIO_OFICINAACTUAL2			= 16017
+Private Const MSG_ERROR_USUARIO_OFICINAACTUAL2		= "El usuario al que se quiere asignar el formulario no pertenece a la unidad actual"
+
+Private Const ERROR_FORMULARIO_ESTADO_ENTRANSITO		= 16018
+Private Const MSG_ERROR_FORMULARIO_ESTADO_ENTRANSITO	= "El formulario no puede asignarse cuando su estado está en tránsito"
+
+Private Const ERROR_FORMULARIO_ESTADO_FINALIZADO		= 16019
+Private Const MSG_ERROR_FORMULARIO_ESTADO_FINALIZADO	= "El formulario no puede asignarse cuando su estado está en finalizado"
+
+Private Const ERROR_UNIDAD_RECEPTOR				= 16020
+Private Const MSG_ERROR_UNIDAD_RECEPTOR				= "La oficina de destino no tiene miembros con rol de receptor"
+
+Private Const ERROR_FORMULARIO_SECCION				= 16021
+Private Const MSG_ERROR_FORMULARIO_SECCION			= "No se puede devolver cuando es la primera o la segunda sección del formulario"
+
+Private Const ERROR_ROL_USUARIO_FINALIZAR			= 16022
+Private Const MSG_ERROR_ROL_USUARIO_FINALIZAR		= "El usuario no cuenta con el rol de finalizar dentro de la unidad"
+'******************************************************************************************************************	
+Public Class AccionesFormulario
+'******************************************************************************************************************	
+'MIEMBROS PRIVADOS	
+	
+	Private conf As ConfigForms
+	Private dbOrgan As NotesDatabase
+	Private dbFormularios As NotesDatabase
+	Private dbAdministracion As NotesDatabase
+	Private doc As NotesDocument
+	Private estaCreado As Boolean
+	Private vistaDefFormCodigo As NotesView
+	Private usuario As UsuarioForm
+	Private docDefFormulario As NotesDocument
+	Private igdocConf As IGDocConfig
+'******************************************************************************************************************	
+	
+'PROPERTIES	
+	
+'******************************************************************************************************************	
+	
+	
+	
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR	
+	
+'******************************************************************************************************************	
+	Public Sub new (id As String, creado As Boolean, usuarioF As UsuarioForm)
+		On Error Goto HANDLER
+		estaCreado=creado
+		If Not estaCreado Then
+			
+			Set conf = New ConfigForms()
+			Set usuario=usuarioF
+			
+			Set dbOrgan = conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+			Set dbFormularios = conf.ReferenciarBaseDeDatos(CLAVE_DBFORMULARIOS)
+			Set dbAdministracion= conf.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+			
+			Set vistaDefFormCodigo = dbAdministracion.GetView("vDefFormActivoCodigo")
+			
+			Set doc=dbFormularios.GetDocumentByUNID(id)
+			
+			Set docDefFormulario = vistaDefFormCodigo.GetDocumentByKey(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0), True)
+			
+			Set igdocConf = New IGDocConfig()
+		End If
+		Exit Sub
+HANDLER:
+		If Not usuarioF Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método new","",usuarioF.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método new","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PÚBLICOS
+	
+'******************************************************************************************************************	
+	Public Sub Crear(codigoFormulario As Integer, nroUnidad As String)
+		On Error Goto HANDLER
+		
+		Dim codigoUnidad As String
+		Dim formato As String
+		Dim formato_form As String
+		Dim docFormulario As NotesDocument
+		Dim secuencia As Long
+		Dim vLectoresPermanentes As New Vector(0)
+		
+		formato_form = FORMATO_FORM_CODIGO
+		
+		If Isnull(codigoFormulario) Then
+			Error ERROR_COD_FORM_NOTHING, MSG_ERROR_COD_FORM_NOTHING	
+		End If
+		
+		'Cargo la definición del formulario según el código
+		Set docFormulario=vistaDefFormCodigo.GetDocumentByKey(Cstr(codigoFormulario), True)
+		
+		Call checkCrear(docFormulario)
+		
+		'Obtengo el formato de la numeración del formulario, a partir de la definición del formulario
+		formato = docFormulario.GetItemValue("sNumeracion")(0)
+		'formato_form = "IGDOC_FORM_8_yy"
+		formato_form = conf.SustituirAnio(formato_form)
+		formato_form = conf.SustituirCodigoFormulario(formato_form, codigoFormulario)
+		'Obtengo el código de la unidad
+		codigoUnidad = doc.GetItemValue("sUnidad")(0)		
+		'Obtengo el número para sustituir los la secuencia de numerales
+		secuencia = conf.PedirNumero(formato_form)
+		largoSec = Len(Cstr(secuencia))
+		
+		'Sustituyo la secuencia
+		formato = conf.SustituirNumeroSecuencia(formato, secuencia)	
+		'Sustituyo el indicador de año por el año actual
+		formato = conf.SustituirAnio(formato)
+		'Sustituir el codigo de formulario
+		formato = conf.SustituirCodigoFormulario(formato, codigoFormulario)
+		'Sustituir el codigo de la unidad
+		formato = conf.SustituirCodigoUnidad(formato, codigoUnidad)
+		'Seteo la numeración del formulario en el documento del formulario
+		Call doc.ReplaceItemValue("Numero", formato)
+		
+		
+		
+		'**********************************************************************************************
+		'FALTA SETEAR CAMPOSSS!!!!! ESTAN ANOTADOS EN LA CUADERNOLA!!!
+		If docFormulario.GetItemValue(CAMPO_FORMULARIO_VISIBILIDAD)(0)= "Interno" Then
+			'Seteo el usuario de inicio 
+			Call doc.ReplaceItemValue(CAMPO_FORMULARIO_USUARIOINICIO, usuario.NombreUsuario)
+			
+			'Seteo la unidad de inicio
+			Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADINICIO, nroUnidad)
+		End If
+		
+		'Seteo la fecha de creación
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_FECHACREACION, Now)
+		
+		'Seteo la sección
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_SECCION, 1)
+		
+		'Seteo los lectores permanentes
+		Call vLectoresPermanentes.insertElement(FRM_ROL_DESARROLLO, vLectoresPermanentes.cantElem+1)
+		Call vLectoresPermanentes.insertElement(FRM_ROL_DESARROLLO, vLectoresPermanentes.cantElem+1)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_LECTORESPERMANENTES, vLectoresPermanentes.values)
+		
+		'Seteo el estado en Generación
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO,ESTADO_FORM_ENGENERACION)
+		'***********************************************************************************************
+		
+		
+		'Salvo el formulario con la numeración chequeada
+		Call doc.Save(True, False)
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Crear","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Crear","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	Public Sub Reenviar(unidadDestino As String, razon As String)
+		On Error Goto HANDLER
+		
+		Dim vUnidadesPrevias As New Vector(0)
+		Dim vUsuariosRecepcion As New Vector(0)
+		Dim vFechasRecepcion As New Vector(0)
+		Dim vReceptoresDestinatarios As New Vector(0)
+		Dim uDestino As UnidadFormClass
+		Dim link As String
+		
+		'VALIDACIONES
+		'************************************************
+		Call checkReenviar(unidadDestino)
+		'************************************************
+		
+		'Cambio el estado del formulario a "En tránsito"
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO, ESTADO_FORM_ENTRANSITO)
+		
+		'Seteo la unidad actual como unidad anterior
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADANTERIOR, _ 
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0))
+		
+		'Seteo la unidad destino como unidad actual
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADACTUAL, unidadDestino)
+		
+		'Seteo el campo autores con la unidad destino
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_AUTORES, "FORM_" & unidadDestino _
+		& "_" & doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		
+		'Seteo en Si el campo Reenviado
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_REENVIADO,"Si")
+		
+		'Cambio la última unidad de UnidadesPrevias (lectores) por la unidad de destino
+		vUnidadesPrevias.values = doc.GetItemValue(CAMPO_FORMULARIO_UNIDADESPREVIAS)
+		Call vUnidadesPrevias.replaceElement(vUnidadesPrevias.cantElem, "FORM_" & unidadDestino _
+		& "_" & doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADESPREVIAS, vUnidadesPrevias.values)
+		
+		'Quito el último usuario de recepción
+		vUsuariosRecepcion.values = doc.GetItemValue(CAMPO_FORMULARIO_USUARIORECEPTOR)
+		vUsuariosRecepcion.deleteElement(vUsuariosRecepcion.cantElem)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_USUARIORECEPTOR, vUsuariosRecepcion.values)
+		
+		'Quito la última fecha de recepción
+		vFechasRecepcion.values = doc.GetItemValue(CAMPO_FORMULARIO_FECHASRECEPCION)
+		vFechasRecepcion.deleteElement(vFechasRecepcion.cantElem)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_FECHASRECEPCION, vFechasRecepcion.values)
+		
+		'Seteo el campo RazonDevolver
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_RAZONDEVOLVER,razon)
+		
+		
+		Call doc.Save(True, False)
+		
+		'Envio un mail a los miembros con rol receptor de la unidad de destino
+		Set uDestino = New UnidadFormClass(unidadDestino)
+		Set vReceptoresDestinatarios = uDestino.RolesForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0), ROL_RECEPTOR)
+		link = igDocConf.Protocolo & "://" & conf.Hosts.getElement(1) & ":" & igDocConf.Puerto & "/" & Replace(doc.Parentdatabase.Filepath,{\},"/") & "/AbrirForm?OpenAgent&id=" & doc.UniversalID & "&numero=" & doc.GetItemValue(CAMPO_FORMULARIO_NUMERO)(0) & "&codigo=" & doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+		Call enviarMail(vReceptoresDestinatarios,"Aviso de Seccion Reenviada",link)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Recibir","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Recibir","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	
+	Public Sub Devolver(razonDevolver As String)
+		On Error Goto HANDLER
+		Dim vFechasEnvio As Vector
+		Dim vFechasRecepcion As New Vector(0)
+		Dim vUnidadesPrevias As Vector
+		Dim codigoFormulario As String
+		Dim unidadAnterior As UnidadFormClass
+		Dim vUnidadesRecorrido As New Vector(0)
+		Dim vUsuariosRecepcion As New Vector(0)
+		
+		Set unidadAnterior= New UnidadFormClass(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADANTERIOR)(0))
+		codigoFormulario = doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+		
+		'VALIDACIONES
+		'************************************************
+		Call checkDevolver()
+		'************************************************
+		
+		'Quito la última Fecha de Envío
+		Set vFechasEnvio = New Vector(0)
+		vFechasEnvio.Values = doc.GetItemValue(CAMPO_FORMULARIO_FECHASENVIO)
+		vFechasEnvio.deleteElement(vFechasEnvio.cantElem)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_FECHASENVIO, vFechasEnvio.values)
+		
+		'Quito la última unidad de UnidadesPrevias
+		Set vUnidadesPrevias = New Vector(0)
+		vUnidadesPrevias.values = doc.GetItemValue(CAMPO_FORMULARIO_UNIDADESPREVIAS)
+		vUnidadesPrevias.deleteElement(vUnidadesPrevias.cantElem)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADESPREVIAS, vUnidadesPrevias.values)
+		
+		'Seteo el campo unidad actual con la unidad anterior
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADACTUAL, doc.GetItemValue(CAMPO_FORMULARIO_UNIDADANTERIOR)(0))
+		
+		'Seteo en Autores la unidad previa que es la que pasa a ser unidad actual
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_AUTORES, "FORM_" & unidadAnterior.Numero _
+		& "_" & doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		
+		'Seteo como unidad anterior la antepenúltima, o vacío si no existe
+		vUnidadesRecorrido.values = doc.getItemValue(CAMPO_FORMULARIO_UNIDADRECORRIDO)
+		
+		If vUnidadesRecorrido.cantElem >= 1 Then
+			Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADANTERIOR, vUnidadesRecorrido.getelement(vUnidadesRecorrido.CantElem-1))
+		Else
+			Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADANTERIOR, "")
+		End If
+		
+		'Quito la última Fecha de Recepción
+		vFechasRecepcion.Values = doc.GetItemValue(CAMPO_FORMULARIO_FECHASRECEPCION)
+		vFechasRecepcion.deleteElement(vFechasRecepcion.cantElem)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_FECHASRECEPCION, vFechasRecepcion.Values)
+		
+		'Quito el último usuario de recepción
+		vUsuariosRecepcion.Values = doc.GetItemValue(CAMPO_FORMULARIO_USUARIORECEPTOR)
+		vUsuariosRecepcion.deleteElement(vUsuariosRecepcion.cantElem)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_USUARIORECEPTOR, vUsuariosRecepcion.Values)
+		
+		'Vuelvo a ocultar la última sección mostrada
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_SECCION ,doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)-1)
+		
+		'Agrego la razón de devolución
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_RAZONDEVOLVER, razonDevolver)
+		
+		'Guardo los cambios
+		Call doc.Save(True, False)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Devolver","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Devolver","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	Public Sub Recibir
+		On Error Goto HANDLER
+		
+		Dim usuariosRecorrido As New Vector(0)
+		Dim unidadAnterior As UnidadFormClass
+		Dim fechasRecepcion As New Vector(0)
+		Dim vUsuariosReceptores As New Vector(0)
+		Dim seccion As Integer
+		Dim link As String
+		
+		'VALIDACIONES
+		'************************************************
+		Call checkRecibir()
+		'************************************************
+		
+		'Seteo el estado del formulario como:"En Unidad"
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO,ESTADO_FORM_ENUNIDAD)
+		
+		'Agrego el usuario que recibió el formulario al campo de usuarios receptores del formulario
+		vUsuariosReceptores.values = doc.GetItemValue(CAMPO_FORMULARIO_USUARIORECEPTOR)
+		Call vUsuariosReceptores.insertElement(usuario.NombreUsuario, vUsuariosReceptores.cantElem + 1)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_USUARIORECEPTOR, vUsuariosReceptores.values)
+		
+		'Agrego la fecha de recepción
+		'Obtengo las fechas de recepción anteriores
+		fechasRecepcion.values=doc.GetItemValue(CAMPO_FORMULARIO_FECHASRECEPCION)
+		'Agrego la nueva fecha de recepción
+		Call fechasRecepcion.insertElement(Now, fechasRecepcion.cantElem +1)
+		'Reemplazo los datos del campo de fechas de recepcion
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_FECHASRECEPCION, fechasRecepcion.values)
+		
+		'Actualizo el número de sección si es que no fue reenviado
+		If Not doc.HasItem(CAMPO_FORMULARIO_REENVIADO) Or Not doc.GetItemValue(CAMPO_FORMULARIO_REENVIADO)(0)="Si" Then
+			'Recupero el número de sección
+			seccion=doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)
+			'Aumento el número de sección
+			seccion=seccion +1
+			'Reemplazo el número de sección
+			Call doc.ReplaceItemValue(CAMPO_FORMULARIO_SECCION,seccion)
+		End If
+		
+		'Seteo el campo reenviado
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_REENVIADO, "No")
+		
+		'Enviar mail a los miembros de la unidad anterior
+		Set docDefFormulario = vistaDefFormCodigo.GetDocumentByKey(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0), True)
+		If docDefFormulario.GetItemValue(CAMPO_DEFFORMULARIO_ACUSERECEPCION)(0)="Si" Then
+			Set unidad = New UnidadFormClass(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADANTERIOR)(0))
+			link = igDocConf.Protocolo & "://" & igDocConf.Host & ":" & igDocConf.Puerto & "/" & Replace(doc.Parentdatabase.Filepath,{\},"/") & "/AbrirForm?OpenAgent&id=" & doc.UniversalID & "&numero=" & doc.GetItemValue(CAMPO_FORMULARIO_NUMERO)(0) & "&codigo=" & doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+			Call enviarMail(unidad.Miembros, "Acuse de recepción, usuario: "+usuario.NombreUsuario, _ 
+			link)
+		End If
+		
+		'Guardo los cambios del formulario
+		Call doc.Save(True,False)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Recibir","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Recibir","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	Public Sub Editar
+		On Error Goto HANDLER
+		Dim seccion As String
+		Dim itemAutor As NotesItem
+		
+		'VALIDACIONES
+		'************************************************
+		Call checkEditar()
+		'************************************************
+		
+		'BORRAMOS LAS FIRMAS SI ES QUE EXISTEN
+		seccion=doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)
+		
+		If doc.HasItem(CAMPO_FORMULARIO_FECHAFIRMA & seccion) Then
+			'Elimino la fecha de la firma de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FECHAFIRMA & seccion)
+			'Elimino la firma de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FIRMA & seccion)
+			'Elimino el firmante de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FIRMANTE & seccion)
+		End If
+		
+		'Seteo el campo autores
+		Set itemAutor= New NotesItem(doc, "Autor", usuario.NombreUsuario, AUTHORS)
+		
+		'Guardo los cambios del formulario
+		Call doc.Save(True,False)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Editar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Editar","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	Public Sub Asignar (Byval usuarioEditor As String)'INCOMPLETO, CON DUDAS
+		On Error Goto HANDLER
+		
+		Dim itemAutor As NotesItem
+		Dim usuarioAAsignar As UsuarioForm
+		Dim i As Long 
+		
+		Set usuarioAAsignar= New UsuarioForm(usuarioEditor)
+		
+		'VALIDACIONES
+		'**************************************************
+		Call checkAsignar()
+		'**************************************************
+		
+		'BORRAMOS LAS FIRMAS SI ES QUE EXISTEN
+		seccion=doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)
+		
+		If doc.HasItem(CAMPO_FORMULARIO_FECHAFIRMA & seccion) Then
+			'Elimino la fecha de la firma de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FECHAFIRMA & seccion)
+			'Elimino la firma de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FIRMA & seccion)
+			'Elimino el firmante de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FIRMANTE & seccion)
+		End If
+		
+		'Seteo el campo autores 
+		Set itemAutor= New NotesItem(doc, "Autor", usuario.NombreUsuario, AUTHORS)
+		
+		'Seteo el formulario como Reservado
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO, ESTADO_FORM_RESERVADO)
+		
+		'Seteo el campo "ReservadoPor" con el usuario
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_RESERVADOPOR,usuarioEditor)
+		
+		Call	doc.Save(True, False)
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Asignar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Asignar","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	Public Sub DarPase (nroUnidad As String)
+		On Error Goto HANDLER
+		
+		Dim unidadDestino As String
+		Dim vFechasEnvio As New Vector(0)
+		Dim vUnidadRecorrido As New Vector(0)
+		Dim vUsuariosRecorrido As New Vector(0)
+		Dim vUnidadesPrevias As New Vector(0)
+		Dim vReceptoresDestinatarios As Vector
+		Dim uDestino As UnidadFormClass
+		Dim link As String
+		
+		'Hallo la unidad de destino dependiendo de la configuración del formulario
+		unidadDestino = calcularDestinoPase(nroUnidad)
+		
+		Set uDestino = New UnidadFormClass(unidadDestino)
+		
+		
+		'VALIDACIONES
+		'**************************************************
+		If doc.GetItemValue(CAMPO_FORMULARIO_VISIBILIDAD)(0)="Interno" Or _ 
+		doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)>1 Then
+			Call checkDarPaseFormInterno()
+		End If
+		Call checkDarPase(uDestino)
+		'**************************************************
+		
+		'BORRAMOS LAS FIRMAS SI ES QUE EXISTEN
+		seccion=doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)
+		
+		If doc.HasItem(CAMPO_FORMULARIO_FECHAFIRMA & seccion) Then
+			'Elimino la fecha de la firma de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FECHAFIRMA & seccion)
+			'Elimino la firma de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FIRMA & seccion)
+			'Elimino el firmante de la sección
+			Call doc.RemoveItem(CAMPO_FORMULARIO_FIRMANTE & seccion)
+		End If
+		
+		'Agrego la nueva fecha de envío
+		vFechasEnvio.values=doc.GetItemValue(CAMPO_FORMULARIO_FECHASENVIO)
+		Call vFechasEnvio.insertElement(Now,vFechasEnvio.cantElem+1)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_FECHASENVIO, vFechasEnvio.values)
+		
+		'Cambio el estado del formulario a "En tránsito"
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO, ESTADO_FORM_ENTRANSITO)
+		
+		'Seteo la unidad actual como unidad anterior
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADANTERIOR, _ 
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0))
+		
+		'Seteo la unidad destino calculada como unidad actual
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADACTUAL, unidadDestino)
+		
+		'Agrego en unidades previas la unidad actual (lectores)
+		vUnidadesPrevias.values= doc.GetItemValue(CAMPO_FORMULARIO_UNIDADESPREVIAS)
+		Call vUnidadesPrevias.insertElement("FORM_"& unidadDestino &"_"& doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		vUnidadesPrevias.cantElem+1)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADESPREVIAS, vUnidadesPrevias.Values)
+		
+		'Agrego el usuario al campo usuariosRecorrido
+		vUsuariosRecorrido.values= doc.GetItemValue(CAMPO_FORMULARIO_USUARIORECORRIDO)
+		Call vUsuariosRecorrido.insertElement(usuario.NombreUsuario, vUsuariosRecorrido.CantElem+1)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_USUARIORECORRIDO, vUsuariosEnvio.values)
+		
+		'Agrego la unidadDestino al campo unidad recorrido
+		vUnidadRecorrido.values = doc.GetItemValue(CAMPO_FORMULARIO_UNIDADRECORRIDO)
+		Call vUnidadRecorrido.insertElement(unidadDestino, vUnidadRecorrido.cantElem+1)
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_UNIDADRECORRIDO, vUnidadRecorrido.values)
+		
+		'Seteo el campo RazonDevolver
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_RAZONDEVOLVER,"")
+		
+		Call doc.Save(True, False)
+		
+		'Envio un mail a los miembros con rol receptor de la unidad de destino
+		Set vReceptoresDestinatarios = uDestino.RolesForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0), ROL_RECEPTOR)
+		link = igDocConf.Protocolo & "://" & igDocConf.Host & ":" & igDocConf.Puerto & "/" & Replace(doc.Parentdatabase.Filepath,{\},"/") & "/AbrirForm?OpenAgent&id=" & doc.UniversalID & "&numero=" & doc.GetItemValue(CAMPO_FORMULARIO_NUMERO)(0) & "&codigo=" & doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+		Call enviarMail(vReceptoresDestinatarios,"Notificación de pase",link)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método DarPase","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método DarPase","","")	
+		End If
+		Exit Sub
+		
+	End Sub
+	
+'******************************************************************************************************************		
+	Public Sub Finalizar(razonFinalizacion As String)
+		On Error Goto HANDLER
+		Dim vDestinatario As New Vector(0)
+		Dim asunto As String
+		Dim link As String
+		
+		'VALIDACIONES
+		'**************************************************
+		Call checkFinalizar()
+		'**************************************************
+		
+		'Seteo el estado a Finalizado
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO,ESTADO_FORM_FINALIZADO)
+		
+		'Seteo la fecha en que se finalizó
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_FECHAFINALIZACION, Now)
+		
+		'Seteo el usuario que finalizó el trámite
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_USUARIOFINALIZACION, usuario.NombreUsuario)
+		
+		'Seteo la razon de finalizacion
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_RAZONFINALIZACION,razonFinalizacion)
+		
+		'Mandamos un mail al usuario que inicio el tramite si no es el anonymous
+		If conf.NotificacionFinalizar And doc.hasItem(CAMPO_FORMULARIO_USUARIOINICIO)Then
+			vDestinatario.values=doc.GetItemValue(CAMPO_FORMULARIO_USUARIOINICIO)
+			asunto = "Notificacion de Formulario Finalizado"
+			link = igDocConf.Protocolo & "://" & igDocConf.Host & ":" & igDocConf.Puerto & "/" & Replace(doc.Parentdatabase.Filepath,{\},"/") & "/AbrirForm?OpenAgent&id=" & doc.UniversalID & "&numero=" & doc.GetItemValue(CAMPO_FORMULARIO_NUMERO)(0) & "&codigo=" & doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+			Call enviarMail(vDestinatario, asunto, link)
+		End If
+		
+		'Guardo los cambios
+		Call doc.Save(True, False)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método DarPase","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método DarPase","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	Public Sub Reservar
+		On Error Goto HANDLER
+		
+		'VALIDACIONES
+		'**************************************************
+		'Valido que la unidad actual tenga acceso al formulario
+		Call checkAccesoOficina(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		
+		'Valido que el usuario esté en la  oficina actual
+		Call checkUsuarioEnOficinaActual
+		'Valido que el estado del formulario sea "En unidad"
+		Call checkFormularioEstado(ESTADO_FORM_ENUNIDAD)
+		'Valido que el usuario tenga el rol Editor
+		If Not usuario.TieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_EDITOR) Then
+			Error ERROR_ROL_USUARIO_EDITOR,MSG_ERROR_ROL_USUARIO_EDITOR
+		End If
+		'**************************************************
+		
+		'Seteo el campo "ReservadoPor" con el usuario
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_RESERVADOPOR,usuario.NombreUsuario)
+		'Seteo el formulario como Reservado
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO, ESTADO_FORM_RESERVADO)
+		
+		'Guardo los cambios del formulario
+		Call doc.Save(True,False)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Reservar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Reservar","","")	
+		End If
+		Exit Sub
+	End Sub                                                                                                                                                                                                                                                                                         
+'******************************************************************************************************************		
+	Public Sub Liberar
+		On Error Goto HANDLER
+		
+		'VALIDACIONES
+		'**************************************************
+		Call checkLiberar()
+		'**************************************************
+		
+		'Seteo el estado a "En unidad"
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_ESTADO, ESTADO_FORM_ENUNIDAD)
+		
+		'Seteo el campo ReservadoPor a ""
+		Call doc.ReplaceItemValue(CAMPO_FORMULARIO_RESERVADOPOR,"")
+		
+		'Guardo los cambios
+		Call doc.Save(True,False)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Liberar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Método Liberar","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS
+	
+'******************************************************************************************************************
+	Private Sub checkFinalizar
+		On Error Goto HANDLER
+		'Valido que el usuario tenga rol finalizar
+		If Not usuario.TieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_FINALIZAR) Then
+			Error ERROR_ROL_USUARIO_FINALIZAR,MSG_ERROR_ROL_USUARIO_FINALIZAR
+		End If
+		
+		'Valido que el estado del formulario sea Reservado
+		Call checkFormularioEstado(ESTADO_FORM_RESERVADO)
+		
+		'Valido que el usuario sea quien reservó el formulario
+		Call checkReservadoPorUsuario
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkFinalizar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkFinalizar","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************
+	Private Sub checkDevolver()
+		On Error Goto HANDLER
+		
+		'Valido que no sea la primer ni segunda seccion
+		If doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)=1 Or doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)=2 Then
+			Error ERROR_FORMULARIO_SECCION,MSG_ERROR_FORMULARIO_SECCION
+		End If
+		
+		'Valido que el estado del formulario sea En Unidad
+		Call checkFormularioEstado(ESTADO_FORM_ENUNIDAD)
+		
+		'Validar que el usuario esté entre los miembros que pueden acceder al formulario
+		'Valida que le usuario tenga rol receptor
+		If Not usuario.TieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_RECEPTOR) Then
+			Error ERROR_ROL_USUARIO_RECEPTOR,MSG_ERROR_ROL_USUARIO_RECEPTOR
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkReenviar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkReenviar","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************			
+	Private Sub checkReenviar(unidadDestino As String)
+		On Error Goto HANDLER
+		Dim codigoFormulario As String
+		Dim unidad As UnidadFormClass
+		
+		Set unidad= New UnidadFormClass(unidadDestino)
+		codigoFormulario=doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+		
+		
+		
+		'Valido que el estado del formulario sea En Unidad
+		Call checkFormularioEstado(ESTADO_FORM_ENUNIDAD)
+		
+		'Validar que el usuario esté entre los miembros que pueden acceder al formulario
+		'Valida que le usuario tenga rol receptor
+		If Not usuario.TieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_RECEPTOR) Then
+			Error ERROR_ROL_USUARIO_RECEPTOR,MSG_ERROR_ROL_USUARIO_RECEPTOR
+		End If
+		
+		'Valido que la unidad de destino tenga acceso al formulario
+		If Not unidad.TieneAccesoAFormulario(codigoFormulario) Then
+			Error ERROR_ACCESO_FORMULARIO, MSG_ERROR_ACCESO_FORMULARIO
+		End If
+		
+		'Valido que la unidad de destino tenga receptores
+		If unidad.RolesForm(codigoFormulario, ROL_RECEPTOR).cantElem=0 Then
+			Error ERROR_UNIDAD_RECEPTOR,MSG_ERROR_UNIDAD_RECEPTOR
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkReenviar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkReenviar","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************
+	Private Sub checkLiberar()
+		On Error Goto HANDLER
+		
+		'Valido que la oficina tenga acceso al formuario
+		Call checkAccesoOficina(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		
+		'Valido que el usuario esté en la oficina actual
+		Call checkUsuarioEnOficinaActual
+		
+		'Valida que el formulario tenga el estado Reservado
+		Call checkFormularioEstado(ESTADO_FORM_RESERVADO)
+		
+		'Valida que le usuario tenga rol editor
+		If Not usuario.TieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_EDITOR) Then
+			Error ERROR_ROL_USUARIO_EDITOR,MSG_ERROR_ROL_USUARIO_EDITOR
+		End If
+		
+		'Valido que el usuario sea quien reservó el formulario
+		Call checkReservadoPorUsuario
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkLiberar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkLiberar","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	Private Sub checkRecibir()
+		On Error Goto HANDLER
+		
+		'Valido que la oficina tenga acceso al formuario
+		Call checkAccesoOficina(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		
+		'Valido que el usuario esté en la oficina actual
+		Call checkUsuarioEnOficinaActual
+		
+		'Valida que le usuario tenga rol receptor
+		If Not usuario.TieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_RECEPTOR) Then
+			Error ERROR_ROL_USUARIO_RECEPTOR,MSG_ERROR_ROL_USUARIO_RECEPTOR
+		End If
+		
+		'Valida que el formulario tenga el estado En tránsito
+		Call checkFormularioEstado(ESTADO_FORM_ENTRANSITO)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkRecibir","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkRecibir","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	'Éste método permite enviar un mail controlando que el remitente no sea quien moificó el código de la clase
+	Private Sub enviarMail(destinatarios As Vector, asunto As String, body As String)
+		On Error Goto HANDLER
+		Dim dbMailBox As NotesDatabase
+		Dim mail As NotesDocument
+		
+		'Seteo la base de datos
+		Set dbMailBox = New NotesDatabase("Desarrollo/DesarrolloISA","mail.box")
+		'Creo un documento en la base Mail.box
+		Set mail=dbMailBox.CreateDocument
+		
+		'Seteo los campos del mail
+		Call mail.ReplaceItemValue("From",igdocConf.EmailInstitucional)
+		Call mail.ReplaceItemValue("Principal", igdocConf.EmailInstitucional)
+		Call mail.ReplaceItemValue("Subject",asunto)
+		Call mail.ReplaceItemValue("Form","Memo")
+		Call mail.ReplaceItemValue("SendoTo",destinatarios.values)
+		Call mail.ReplaceItemValue("Body",body)
+		Call mail.ReplaceItemValue("Recipients", destinatarios.values)
+		
+		
+		Call mail.Save(True, False)
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub enviarMail","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub enviarMail","","")	
+		End If
+		Exit Sub
+	End Sub	
+	
+'******************************************************************************************************************			
+	'Validaciones para el método Editar
+	Private Sub checkEditar()
+		On Error Goto HANDLER
+		
+		'Valido que el usuario esté en la oficina actual
+		Call checkUsuarioEnOficinaActual
+		
+		'Valido que la oficina tenga acceso al formuario
+		Call checkAccesoOficina(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		
+		'Si el usuario no ha reservado el formulario, entonces llamo a Reservar para que lo reserve
+		If  doc.GetItemValue(CAMPO_FORMULARIO_ESTADO)(0)<> ESTADO_FORM_RESERVADO And _
+		doc.GetItemValue(CAMPO_FORMULARIO_RESERVADOPOR)(0)<>usuario.NombreUsuario Then
+			Me.Reservar
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkEditar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkEditar","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	'Validaciones para el método Asignar
+	Private Sub checkAsignar()
+		On Error Goto HANDLER
+		
+		'Valido que el estado del formulario no sea "En Transito"
+		If doc.GetItemValue(CAMPO_FORMULARIO_ESTADO)(0)=ESTADO_FORM_ENTRANSITO Then
+			Error ERROR_FORMULARIO_ESTADO_ENTRANSITO, MSG_ERROR_FORMULARIO_ESTADO_ENTRANSITO
+		End If
+		
+		'Valido que el estado del formulario no sea "Finalizado"
+		If doc.GetItemValue(CAMPO_FORMULARIO_ESTADO)(0)=ESTADO_FORM_FINALIZADO Then
+			Error ERROR_FORMULARIO_ESTADO_FINALIZADO, MSG_ERROR_FORMULARIO_ESTADO_FINALIZADO
+		End If
+		
+		'Valido que el estado del formulario no sea "Archivado"
+		If doc.GetItemValue(CAMPO_FORMULARIO_ESTADO)(0)=ESTADO_FORM_ARCHIVADO Then
+			Error ERROR_FORMULARIO_ESTADO_ARCHIVADO, MSG_ERROR_FORMULARIO_ESTADO_ARCHIVADO
+		End If
+		
+		'Valido que usuario que asigna esté en la unidad actual del formulario
+		Call checkUsuarioEnOficinaActual
+		
+		'Valido que el usuario que quiere asignar tenga rol firmar
+		If Not usuario.tieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_FIRMAR) Then
+			Error ERROR_ROL_USUARIO_FIRMAR,MSG_ERROR_ROL_USUARIO_FIRMAR
+		End If
+		
+		'Valido que el usuario a quien se le va a asignar el formulario, esté en la oficina actual
+		If Not usuarioAAsignar.Unidades.isMember(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),i, False) Then
+			Error ERROR_USUARIO_OFICINAACTUAL2, MSG_ERROR_USUARIO_OFICINAACTUAL2
+		End If
+		
+		'Valido que el usuario al que se le va a asignar el formulario, tenga rol editor
+		If Not usuarioAAsignar.tieneRolForm(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0),_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_EDITOR) Then
+			Error ERROR_ROL_USUARIO_EDITORAASIGNAR,MSG_ERROR_ROL_USUARIO_EDITORAASIGNAR
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkAsignar","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkAsignar","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	Private Sub checkDarPaseFormInterno()
+		On Error Goto HANDLER
+		
+		Dim codigoFormulario As String
+		codigoFormulario=doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+		
+		'Valido que la unidad actual tenga acceso al formulario
+		Call checkAccesoOficina(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),codigoFormulario)
+		
+		'Valido que el usuario esté en la  oficina actual
+		Call checkUsuarioEnOficinaActual
+		
+		'Valido que el estado del formulario sea Reservado
+		Call checkFormularioEstado(ESTADO_FORM_RESERVADO)
+		
+		'Valido que el usuario sea quien reservó el formulario
+		Call checkReservadoPorUsuario
+		
+		'Valido que el usuario tenga el rol Pase
+		If Not usuario.tieneRolForm(codigoFormulario,_
+		doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),ROL_PASE) Then
+			Error ERROR_ROL_USUARIO_PASE,MSG_ERROR_ROL_USUARIO_PASE
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkDarPaseFormInterno","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkDarPaseFormInterno","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	'Validaciones para el método DarPase
+	Private Sub checkDarPase(unidad As UnidadFormClass)
+		On Error Goto HANDLER
+		
+		Dim codigoFormulario As String
+		codigoFormulario=doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0)
+		
+		'Valido que la unidad de destino tenga acceso al formulario
+		If Not unidad.TieneAccesoAFormulario(codigoFormulario) Then
+			Error ERROR_ACCESO_FORMULARIO, MSG_ERROR_ACCESO_FORMULARIO
+		End If
+		
+		'Valido que la unidad de destino tenga receptores
+		If unidad.RolesForm(codigoFormulario, ROL_RECEPTOR).cantElem=0 Then
+			Error ERROR_UNIDAD_RECEPTOR,MSG_ERROR_UNIDAD_RECEPTOR
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkDarPase","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkDarPase","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	'Validaciones para el método CREAR
+	Private Sub checkCrear(docFormulario As NotesDocument)
+		On Error Goto HANDLER
+		
+		If docFormulario Is Nothing Then 
+			Error ERROR_DEF_FORM_NOTHING,MSG_ERROR_DEF_FORM_NOTHING
+		End If
+		
+		'No se hacen las validaciones si el formulario es de acceso global o si es externo
+		If docFormulario.GetItemValue(CAMPO_DEFFORMULARIO_ACCESOGLOBAL)(0)="No" And _
+		docFormulario.GetItemValue(CAMPO_DEFFORMULARIO_VISIBILIDAD)(0)="Interno" Then
+			'En la definición del formulario pregunto si el todos pueden iniciarlo. Si es así, quiere decir que
+			'todas las oficinas pueden crearlo y no es necesario validar las oficinas
+			If Not docFormulario.GetItemValue(CAMPO_DEFFORMULARIO_INICIORESTRINGIDO)(0)="T" Then
+				Call checkOficina(docFormulario)
+			End If
+			Call checkAccesoOficina(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),docFormulario.GetItemValue(CAMPO_DEFFORMULARIO_CODIGO)(0))
+			Call checkUsuarioEnOficina(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0))
+			
+			'Valido que el usuario tenga el rol Creador
+			If Not usuario.tieneRolForm(dooc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM),_
+			doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL),ROL_CREADOR) Then
+				Error ERROR_ROL_USUARIO_CREADOR,MSG_ERROR_ROL_USUARIO_CREADOR
+			End If
+			
+		End If
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkCrear","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkCrear","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	'Valida que el usuario que ejecuta el método pertenezca a la oficina actual
+	Private Sub checkUsuarioEnOficinaActual()
+		On Error Goto HANDLER
+		Dim i As Long
+		
+		Dim unidad As New UnidadFormClass(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0))
+		Dim vUsuariosAcceso As Vector
+		'Obtengo un vector con los integrantes de la unidad que tienen acceso al formulario
+		Set vUsuariosAcceso=unidad.UsuariosConAcceso(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0))
+		'Si el usuario que ejecuta la acción no está en el vector, entonces no tiene acceso y lanzo un error
+		If Not vUsuariosAcceso.isMember(usuario.NombreUsuario,i,False) Then
+			Error ERROR_USUARIO_OFICINA, MSG_ERROR_USUARIO_OFICINA
+		End If
+		
+		'Pido la lista de oficinas a las que pertenece el usuario y valido que la oficina actual esté en esa lista
+'		If Not usuario.Unidades.isMember(doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0),i, False) Then
+'			Error ERROR_USUARIO_OFICINAACTUAL, MSG_ERROR_USUARIO_OFICINAACTUAL
+'		End If
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkUsuarioEnOficinaActual","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkUsuarioEnOficinaActual","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************
+	'Valida que el estado del formulario sea el pasado por parámetro
+	Private Sub checkFormularioEstado(estado As String)
+		On Error Goto HANDLER
+		
+		If Not doc.GetItemValue(CAMPO_FORMULARIO_ESTADO)(0)=estado Then
+			Error ERROR_FORMULARIO_ESTADO, MSG_ERROR_FORMULARIO_ESTADO + estado
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkFormularioEstadoReservado","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkFormularioEstadoReservado","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************
+	'Valida que el formulario esté reservado por el usuario que lo quiere editar	
+	Private Sub checkReservadoPorUsuario()
+		On Error Goto HANDLER
+		
+		If Not doc.GetItemValue(CAMPO_FORMULARIO_RESERVADOPOR)(0)=usuario.NombreUsuario Then
+			Error ERROR_FORMULARIO_RESERVADOPOR, MSG_ERROR_FORMULARIO_RESERVADOPOR + usuario.NombreUsuario
+		End If
+		
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkReservadoPorUsuario","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkReservadoPorUsuario","","")	
+		End If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************
+	'Valida que la oficina desde la cual se llama la acción, esté dentro de la lista de oficinas
+	'que puede crear el formulario en la definición del formulario
+	Private Sub checkOficina(docFormulario As NotesDocument)
+		On Error Goto handler
+		Dim listaOficinas As New Vector(0)
+		Dim codOficina As String
+		Dim i As Long
+		
+		'Obtengo el código de la oficina que ejecuta la acción
+		codOficina = doc.GetItemValue(CAMPO_FORMULARIO_UNIDADACTUAL)(0)
+		
+		'Obtengo la lista de código de oficinas que pueden crear el formulario
+		aux=Split(docFormulario.GetItemValue(CAMPO_DEFFORMULARIO_UNIDADINICIO)(0),",")
+		listaOficinas.values= aux
+		
+		'Lanzo un error si la oficina que ejecuta la acción no está en la lista anterior
+		If Not listaOficinas.isMember(codOficina,i,False) Then
+			Error ERROR_OFICINA_CREAR, MSG_ERROR_OFICINA_CREAR
+		End If
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkOficina","",usuario.nombreUsuario)	
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkOficina","","")	
+		End If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************
+	'Valida que el usuario que ejecuta la acción pertenezca a la oficina y tenga acceso al formulario
+	Private Sub checkUsuarioEnOficina(codOficina As String)
+		On Error Goto HANDLER
+		Dim i As Long
+		Dim unidad As New UnidadFormClass(codoficina)
+		Dim vUsuariosAcceso As Vector
+		'Obtengo un vector con los integrantes de la unidad que tienen acceso al formulario
+		Set vUsuariosAcceso=unidad.UsuariosConAcceso(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM))
+		'Si el usuario que ejecuta la acción no está en el vector, entonces no tiene acceso y lanzo un error
+		If Not vUsuariosAcceso.isMember(usuario.NombreUsuario,i,False) Then
+			Error ERROR_USUARIO_OFICINA, MSG_ERROR_USUARIO_OFICINA
+		End If
+'		Dim aux As Vector
+'		Set aux= usuario.unidades
+'		'Pido las unidades a las que pertenece el usuario y pregunto si entre ellas está la que me pasan por parámetro
+'		If Not aux.isMember(codOficina,i,False) Then
+'			Error ERROR_USUARIO_OFICINA, MSG_ERROR_USUARIO_OFICINA
+'		End If
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkUsuarioEnOficina","",usuario.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkUsuarioEnOficina","","")			
+		End  If
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	'Valida que la oficina tenga acceso al formulario	
+	Private Sub checkAccesoOficina(codOficina As String, codigoFormulario As String)
+		On Error Goto HANDLER
+		Dim unidad As New UnidadFormClass(codOficina)
+		If Not unidad.TieneAccesoAFormulario(codigoFormulario) Then
+			Error ERROR_ACCESO_FORMULARIO, MSG_ERROR_ACCESO_FORMULARIO
+		End If
+		Exit Sub
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkAccesoOficina","",usuario.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Sub checkAccesoOficina","","")			
+		End  If
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	'Obtiene la unidad siguiente para dar pase
+	Private Function calcularDestinoPase(unidad As String)
+		On Error Goto HANDLER
+		Dim seccion As Integer
+		Dim unidades As String
+		Dim temas As String
+		Dim aUnidades As Variant
+		Dim aTemas As Variant
+		Dim vUnidades As Vector
+		Dim vTemas As Vector
+		Dim tema As String
+		Dim index As Long
+		
+'		Set docDefFormulario = vistaDefFormCodigo.GetDocumentByKey(doc.GetItemValue(CAMPO_FORMULARIO_CODIGOFORM)(0), True)
+		'sección
+		If doc.HasItem(CAMPO_FORMULARIO_SECCION) Then
+			seccion = doc.GetItemValue(CAMPO_FORMULARIO_SECCION)(0)
+		Else
+			seccion = 1
+		End If
+		
+		
+		If docDefFormulario.GetItemValue(CAMPO_DEFFORMULARIO_SEL_UNIDADES_ENVIAR)(seccion-1) = "Si" Then
+		'El usuario seleccionó la unidad a la que dar pase
+			calcularDestinoPase = unidad
+			
+		Elseif docDefFormulario.GetItemValue(CAMPO_DEFFORMULARIO_CCTEMAS)(seccion-1) = "Si" Then
+		'La unidad de destino se determina mediante temas
+			
+		'Obtengo todos los temas para la sección actual
+			temas = docDefFormulario.GetItemValue(CAMPO_DEFFORMULARIO_TEMAS)(seccion-1)
+			aTemas = Split(temas, "$$")
+			Set vTemas = New Vector(0)
+			Forall t In aTemas
+				Call vTemas.insertElement(t, vTemas.CantElem+1)
+			End Forall
+			
+		'Obtengo todas las unidades para la sección actual
+			unidades = docDefFormulario.GetItemValue(CAMPO_DEFFORMULARIO_UNIDADESTEMAS)(seccion-1)
+			aUnidades = Split(unidades, "$$")
+			Set vUnidades = New Vector(0)
+			Forall u In aUnidades
+				Call vUnidades.insertElement(u, vUnidades.CantElem+1)
+			End Forall
+			
+		'En base al tema seleccionado, determino la unidad de destino
+			tema = Ucase$(doc.GetItemValue("sTema" & seccion)(0))
+			If vTemas.isMember(tema, index, False) Then
+				calcularDestinoPase = vUnidades.getElement(index)
+			Else
+				Error 1001,"El tema seleccionado no se encontró en la configuración del formulario: " + tema+ "... "+vTemas.ToString(";")
+			End If
+			
+		Else
+		'La unidad de destino está fijada en la configuración
+			calcularDestinoPase = docDefFormulario.GetItemValue(CAMPO_DEFFORMULARIO_UNIDAD)(seccion-1)
+		End If
+		
+		Exit Function
+HANDLER:
+		If Not usuario Is Nothing Then
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Function calcularDestinoPase","",usuario.nombreUsuario)
+		Else
+			Call RegistrarYGenerarError2(Err,Error,NOMBRE_APLICACION,"Clase Formulario - Function calcularDestinoPase","","")			
+		End  If
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+End Class

@@ -1,0 +1,463 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+
+
+Use "VectorClass 2.05"
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigContratos 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const DOCUMENTO_PERFIL				= "ConfContratos"
+'******************************************************************************************************************		
+'							Constantes Campos documento de Perfil
+'******************************************************************************************************************		
+Private Const CAMPO_CATEGORIAS				= "sCategorias"
+Private Const CAMPO_MONEDAS					= "sMonedas"
+Private Const CAMPO_TIPOS_CONTRATOS			= "sTiposContratos"
+Private Const CAMPO_LOG_OPERACIONES			= "rLogOperaciones"
+Private Const CAMPO_NUMERADOR_CATEGORIAS 		= "sNumeraCategorias"
+Private Const CAMPO_URL_WEBSERVICE				= "sUrlWS"
+Private Const CAMPO_TIEMPO_MAXIMO_AUDITORIA		= "nTiempoVidaAuditoria"
+Private Const CAMPO_CLAVE_CREACION_AUDITORIA		= "sClaveCreacionAuditoria"
+Private Const CAMPO_FECHA_CREACION_AUDITORIA		= "dFechaCreacionAuditoria"
+Private Const CAMPO_CLAVE_DB					= "sClave"
+Private Const CAMPO_RUTA_DB					= "sPath"
+Private Const CAMPO_SERVIDOR_DB				= "sServer"
+Private Const CAMPO_HOST_DB 					= "sHost"
+'******************************************************************************************************************		
+
+
+Public Class ConfigContratos 
+'******************************************************************************************************************	
+'FUNCIONES Y PROCEDIMIENTOS PÚBLICOS
+'******************************************************************************************************************		
+	Private docConfiguracion As NotesDocument
+	Private vKeyDB As Vector
+	Private vServer As Vector
+	Private vFilePath As Vector
+	Private vHost As Vector	
+	Private sess As NotesSession
+	Public Sub new()
+	'CONSTRUCTOR
+		On Error Goto HANDLER
+		
+		Dim db As NotesDatabase
+		
+		Set sess = New NotesSession
+		Set db = sess.CurrentDatabase
+		
+		Set docConfiguracion = db.GetProfileDocument(DOCUMENTO_PERFIL)
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vFilePath = New Vector(0)
+		Set vHost = New Vector(0)		
+		
+		vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+		vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+		vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB)
+		vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Método new","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+'	Copia todos los campos del documento de configuracion del doc de origen al destino
+	Public Sub copiarDocPerfil(docOrigen As NotesDocument, docDestino As NotesDocument)
+		On Error Goto HANDLER
+		
+		' cargo los campos de interop
+		Call docDestino.ReplaceItemValue("sClave",docOrigen.GetItemValue("sClave"))
+		Call docDestino.ReplaceItemValue("sHost",docOrigen.GetItemValue("sHost"))
+		Call docDestino.ReplaceItemValue("sServer",docOrigen.GetItemValue("sServer"))
+		Call docDestino.ReplaceItemValue("sPath",docOrigen.GetItemValue("sPath"))
+		
+		' cargo los campos de parametros
+		Call docDestino.ReplaceItemValue("sPuertos",docOrigen.GetItemValue("sPuertos"))
+		Call docDestino.ReplaceItemValue("sMonedas",docOrigen.GetItemValue("sMonedas"))
+		Call docDestino.ReplaceItemValue("rLogOperaciones",docOrigen.GetItemValue("rLogOperaciones"))
+		Call docDestino.ReplaceItemValue("sNumeraCategorias", docOrigen.GetItemValue("sNumeraCategorias"))
+		Call docDestino.ReplaceItemValue("sUrlWS", docOrigen.GetItemValue("sUrlWS"))
+		
+		' cargo los campos de tipos de contrato
+		Call docDestino.ReplaceItemValue("sClavesTiposContratos",docOrigen.GetItemValue("sClavesTiposContratos"))
+		Call docDestino.ReplaceItemValue("sTiposContratos",docOrigen.GetItemValue("sTiposContratos"))
+		Call docDestino.ReplaceItemValue("rUTiempoContratos",docOrigen.GetItemValue("rUTiempoContratos"))
+		Call docDestino.ReplaceItemValue("nCantTiempoContratos",docOrigen.GetItemValue("nCantTiempoContratos"))
+		
+		' cargo los campos de tipos de hitos
+		Call docDestino.ReplaceItemValue("sClavesTiposHitos",docOrigen.GetItemValue("sClavesTiposHitos"))
+		Call docDestino.ReplaceItemValue("sTiposHitos",docOrigen.GetItemValue("sTiposHitos"))
+		
+		' cargo los campos de notificaciones
+		Call docDestino.ReplaceItemValue("sCodsTiposNotificacion",docOrigen.GetItemValue("sCodsTiposNotificacion"))
+		Call docDestino.ReplaceItemValue("sDescsTiposMensaje",docOrigen.GetItemValue("sDescsTiposMensaje"))
+		Call docDestino.ReplaceItemValue("sMensajesTiposMensaje",docOrigen.GetItemValue("sMensajesTiposMensaje"))
+		
+		'Campos de la auditoria
+		Call docDestino.ReplaceItemValue(CAMPO_TIEMPO_MAXIMO_AUDITORIA,docOrigen.GetItemValue(CAMPO_TIEMPO_MAXIMO_AUDITORIA)(0))
+		Call docDestino.ReplaceItemValue(CAMPO_CLAVE_CREACION_AUDITORIA,docOrigen.GetItemValue(CAMPO_CLAVE_CREACION_AUDITORIA))
+		Call docDestino.ReplaceItemValue(CAMPO_FECHA_CREACION_AUDITORIA,docOrigen.GetItemValue(CAMPO_FECHA_CREACION_AUDITORIA))
+		
+		'Campos de configuracion web
+		Call docDestino.ReplaceItemValue("rProtocolo",docOrigen.GetItemValue("rProtocolo")(0))
+		Call docDestino.ReplaceItemValue("sPuerto",docOrigen.GetItemValue("sPuerto")(0))
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Método new","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+' PROPERTIES DE LA CLASE
+'******************************************************************************************************************		
+	Public Property Set Categorias As Vector
+		On Error Goto handler
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_CATEGORIAS,Categorias.values)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property Set Categorias","")
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Categorias As Vector
+		On Error Goto handler
+		Set Categorias = New Vector(0)
+		categorias.values = docConfiguracion.getItemVAlue(CAMPO_CATEGORIAS)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property get Categorias","")
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Set Monedas As Vector
+		On Error Goto handler
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_MONEDAS,Monedas.values)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property Set Monedas","")
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Monedas As Vector
+		On Error Goto handler
+		Set Monedas = New Vector(0)
+		Monedas.values = docConfiguracion.getItemVAlue(CAMPO_MONEDAS)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property get Monedas","")
+	End Property	
+'******************************************************************************************************************		
+	Public Property Set TiposdeContratos As Vector
+		On Error Goto handler
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_TIPOS_CONTRATOS,TiposdeContratos.values)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property Set TiposdeContratos","")
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get TiposdeContratos As Vector
+		On Error Goto handler
+		Set TiposdeContratos = New Vector(0)
+		TiposdeContratos.values = docConfiguracion.getItemVAlue(CAMPO_TIPOS_CONTRATOS)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property get TiposdeContratos","")
+	End Property		
+'******************************************************************************************************************		
+	Public Property Set LogdeOperaciones As Boolean
+		On Error Goto handler
+		
+		If LogdeOperaciones Then
+			Call docConfiguracion.replaceItemValue(CAMPO_LOG_OPERACIONES,"Si")
+		Else
+			Call docConfiguracion.replaceItemValue(CAMPO_LOG_OPERACIONES,"No")
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property Set LogdeOperaciones","")
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get LogdeOperaciones As Boolean
+		On Error Goto handler
+		If docConfiguracion.getItemValue(CAMPO_LOG_OPERACIONES)(0)="Si" Then
+			LogdeOperaciones=True
+		Else
+			LogdeOperaciones=False
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property get LogdeOperaciones","")
+	End Property			
+'******************************************************************************************************************		
+	Public Property Set NumeradorCategorias As String
+		On Error Goto handler
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_NUMERADOR_CATEGORIAS,NumeradorCategorias)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property Set NumeradorCategorias","")
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get NumeradorCategorias As String
+		On Error Goto handler
+		NumeradorCategorias = docConfiguracion.getItemVAlue(CAMPO_NUMERADOR_CATEGORIAS)(0)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property get NumeradorCategorias","")
+	End Property		
+'******************************************************************************************************************	
+	
+	Public Property Set URLwebservice As String
+		On Error Goto handler
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_URL_WEBSERVICE, URLwebservice)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property Set URLwebservice","")
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get URLwebservice As String
+		On Error Goto handler
+		URLwebservice = docConfiguracion.getItemVAlue(CAMPO_URL_WEBSERVICE)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property get URLwebservice","")
+	End Property		
+'******************************************************************************************************************		
+	Public Property Set TiempoMaximoAuditoria As Integer
+		On Error Goto handler
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_TIEMPO_MAXIMO_AUDITORIA, TiempoMaximoAuditoria)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property Set TiempoMaximoAuditoria","")
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get TiempoMaximoAuditoria As Integer
+		On Error Goto handler
+		TiempoMaximoAuditoria = docConfiguracion.getItemVAlue(CAMPO_TIEMPO_MAXIMO_AUDITORIA)(0)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Contratos - Property get TiempoMaximoAuditoria","")
+	End Property		
+'******************************************************************************************************************	
+'******************************************************************************************************************				
+	
+	Public Property Get BaseDeDatos(Byval clave As String) As String
+	' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		BaseDeDatos = vFilePath.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set BaseDeDatos(Byval clave As String) As String
+	' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vFilePath.ReplaceElement(pos,BaseDeDatos)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Claves() As vector
+	' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = docConfiguracion.GetItemValue(CAMPO_CLAVE_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get Claves","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get ServidorDomino(Byval clave As String) As String
+	' Dada una clave retorna el Servidor. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		ServidorDomino = ObtenerNombreServidor(vServer.getElement(pos))
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get ServidorDomino(" & clave & ")","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set ServidorDomino(Byval clave As String) As String
+	' Dada una clave setea el Servidor. Si no lo genera un error
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vServer.ReplaceElement(pos,ServidorDomino)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "ServidorDomino: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set ServidorDomino","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Host(Byval clave As String) As String
+	' Dada una clave retorna el Host. Si lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		Host = vHost.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get Host","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Host(Byval clave As String) As String
+	' Dada una clave setea el Host. Si no retorna un error ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vHost.ReplaceElement(pos,Host)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "Host: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set Host","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+'******************************************************************************************************************		
+	Private Function ObtenerNombreServidor(Byval sValor As String) As String
+	' Retorna el verdadero valor del servidor en caso que sea una clave
+		On Error Goto HANDLER
+		
+		If sValor = CONF_SERVIDOR_ACTUAL Then
+			ObtenerNombreServidor = sess.CurrentDatabase.Server
+		Elseif sValor = CONF_SERVIDOR_LOCAL Then
+			ObtenerNombreServidor = ""
+		Else
+			ObtenerNombreServidor = sValor
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Procedimiento ObtenerNombreServidor","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PUBLICOS	
+	
+'******************************************************************************************************************			
+	
+	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
+		'Retorna una referencia a la base de datos que recibe como parámetro.
+		'En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+		On Error Goto HANDLER
+		Dim pos As Long
+		
+		
+		Set ReferenciarBaseDeDatos = Nothing
+		If vKeyDB.isMember(Ucase(clave), pos, False) Then _
+		Set ReferenciarBaseDeDatos = New NotesDatabase(ObtenerNombreServidor(vServer.getElement(pos)), vFilePath.getElement(pos))
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método ReferenciarBaseDeDatos","")
+		Exit Function
+		
+	End Function
+	
+	
+'******************************************************************************************************************	
+	
+'******************************************************************************************************************	
+'******************************************************************************************************************	
+	
+End Class

@@ -1,0 +1,158 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "FuncionesGenerales"
+Use "Configuracion Eventos"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class MotorCli
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'Diseño
+Public Const AGENTE_MOTOR			= "Motor"
+Public Class MotorCli
+	Private db As notesDatabase 
+	Private usuario As String
+	
+	'******************************************************************************************************************		
+	'Privadas	
+	
+	Private Sub runMotor()
+		On Error Goto errorHandler
+		Dim agente As NotesAgent
+		
+		Set agente=db.GetAgent(AGENTE_MOTOR)
+		agente.Run
+		Exit Sub
+errorHandler:
+		MsgBox "run motor erl " + CStr(Erl) + " error " + Error
+		RegistrarYGenerarError "Eventos","Clase MotorCli - Método RunMotor", ""
+		Exit Sub
+	End Sub	
+	
+	
+	'******************************************************************************************************************	
+	'Publicas
+	
+	Public Sub new(Byval sUsuario_ As String)
+		On Error Goto errorHandler
+		Dim conf As ConfigEventos
+		Dim path As String
+		Dim server As String
+		
+		
+		Set conf = New ConfigEventos
+		server=conf.Servidor(CLAVE_DBMOTOR_EV)
+		path=conf.BasedeDatos(CLAVE_DBMOTOR_EV)
+		
+		usuario = sUsuario_
+		Set db = New NotesDatabase("","")
+		Call db.Open(server,path)
+		Exit Sub
+errorHandler:
+		MsgBox "en el New de motorCli eventos"
+		RegistrarYGenerarError "Eventos","Clase MotorCli - Método New", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************
+	
+	Public Function ReservarDocumento(id As String)As String
+		On Error GoTo handler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		'MsgBox "isma " + id
+		solicitud.sId=id
+		'MsgBox "isma 2 " + CStr(solicitud.Getitemvalue("sId")(0))
+		solicitud.sAccion="acc_reservar"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		
+		Set solicitud = Nothing ' New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			MsgBox "Error"
+			MsgBox solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Error solicitud.GetItemValue("ErrorCode")(0),"No se pudo procesar la solicitud para guardar el comentario. Si el error persiste, comuniquese con el administrador."
+		End If
+		
+		
+		ReservarDocumento = |{"error":"| & CStr(solicitud.GetItemValue("Resultado")(0)) & |","mensaje":"| & CStr(solicitud.Getitemvalue("Respuesta")(0)) &|"}|
+		Exit function
+handler:
+		MsgBox "reservar documento motorcli erl " + CStr(Erl) + " error " + Error
+		'GuardarComentario = "Error. No se pudo procesar, ocurrió un error. Si el error persiste, comuniquese con el administrador"
+		ReservarDocumento = |{"error":"| & Err & |","mensaje":"| & Error &|"}|
+		Exit function
+	End Function
+	
+	'******************************************************************************************************************
+	
+	Public Function LiberarDocumento(id As String)As String
+		On Error GoTo handler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+
+		solicitud.sId=id
+
+		solicitud.sAccion="acc_liberar"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		
+		Set solicitud = Nothing ' New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then 
+			MsgBox "Error " + solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Error solicitud.GetItemValue("ErrorCode")(0),"No se pudo procesar la solicitud para guardar el comentario. Si el error persiste, comuniquese con el administrador."
+		End If
+		
+		
+		LiberarDocumento = |{"error":"| & CStr(solicitud.GetItemValue("Resultado")(0)) & |","mensaje":"| & CStr(solicitud.Getitemvalue("Respuesta")(0)) &|"}|
+		Exit Function
+handler:
+		MsgBox "reservar documento motorcli erl " + CStr(Erl) + " error " + Error
+		LiberarDocumento = |{"error":"| & Err & |","mensaje":"| & Error &|"}|
+		Exit Function
+	End Function
+	
+	Public Function EliminarDocumento(id As String)As String
+		On Error GoTo handler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+
+		solicitud.sId=id
+
+		solicitud.sAccion="acc_eliminar"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		
+		Set solicitud = Nothing ' New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then 
+			MsgBox "Error " + solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Error solicitud.GetItemValue("ErrorCode")(0),"No se pudo procesar la solicitud para guardar el comentario. Si el error persiste, comuniquese con el administrador."
+		End If
+		
+		EliminarDocumento = |{"error":"| & CStr(solicitud.GetItemValue("Resultado")(0)) & |","mensaje":"| & CStr(solicitud.Getitemvalue("Respuesta")(0)) &|"}|
+		Exit Function
+handler:
+		MsgBox "eliminar documento motorcli erl " + CStr(Erl) + " error " + Error
+		EliminarDocumento = |{"error":"| & Err & |","mensaje":"| & Error &|"}|
+		Exit Function
+	End Function
+	
+End Class

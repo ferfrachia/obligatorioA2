@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058E9F2'>
+<noteinfo noteid='3ce' unid='AAEACA39AAA727E303256D530075F9E0' sequence='208'>
+<created><datetime>20030628T182836,80-03</datetime></created>
+<modified><datetime>20150311T131114,55-03</datetime></modified>
+<revised><datetime>20150309T094325,26-03</datetime></revised>
+<lastaccessed><datetime>20150311T131114,55-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131114,55-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Cabrera/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name
+>CN=Martin Cabrera/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name
+>CN=Pablo Andrade/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Pablo Andrade/O=ISA</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Daniel Gomez/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Administrador/O=IMA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Martin Duran/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030628T184705,34-03</datetime><datetime>20030916T133919,29+00</datetime><datetime
+>20030916T134020,50+00</datetime><datetime>20030916T161439,30+00</datetime><datetime
+>20030917T142430,07+00</datetime><datetime>20030917T142549,36+00</datetime><datetime
+>20030924T184415,11+00</datetime><datetime>20031020T191214,95+03</datetime><datetime
+>20031020T193803,30+03</datetime><datetime>20031020T193826,77+03</datetime><datetime
+>20031020T195533,57+03</datetime><datetime>20031020T195534,71+03</datetime><datetime
+>20060410T104703,34-03</datetime><datetime>20060412T122214,34-03</datetime><datetime
+>20060412T122253,25-03</datetime><datetime>20060412T122349,49-03</datetime><datetime
+>20060905T144615,36-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>pMenuIzquierda</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAAAAAA
+</rawitemdata></item>
+<item name='$HTMLHeadTag' sign='true'><formula>"&lt;style type=\"text/css\"&gt;" + @NewLine +
+"BODY { font-family: Arial, Helvetica, sans-serif; " + @NewLine +
+" background-color: #CEEBFF; " + @NewLine +
+"}--&gt;" + @NewLine +
+"&lt;/style&gt;"</formula></item>
+<item name='$Flags'><text>C34WQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>5</text></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>pMenuIzquierda</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gv9GAAEAAAAAAAAAAACgBbU7oAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAACUBKYwAQAAAAEARE9fTk9UX1RBRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+EAAACIECgv9SAAIAAAAAAAAAAACgBQAAoAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAQAAAACUBwAAAAAAAAAAAAAAAIMEAgCF/wgAAQAACoECgwQCAIX/CAABAAAK
+gQKDBAIAhf8IAAEAAArdBgEAmQCZABwAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAfQAcAAAAAgBa
+AB0AAAAAAAAAAAAAAAAAAAAAAPb/NgAAAAAAAwATABQAAAAAAAAAAAAAAAAAAAAAAAAAAABMb2dv
+Rm9uZG9DZWxlc3RlLmpwZ94GAQCZAIX/CAABAAAKgQKDBAIAhf8IAAEAAAqBAoMEAgCF/wgAAQAA
+Cg==
+</rawitemdata></item></note>
+

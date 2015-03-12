@@ -1,0 +1,59 @@
+.DivTableClass {
+	margin:0px;padding:0px;
+	width:100%;
+}.DivTableClass table{
+	width:100%;
+	height:100%;
+	margin:0px;padding:0px;
+}.DivTableClass tr:hover td{
+	background-color:#80BBDD;
+	background:-o-linear-gradient(bottom, #80BBDD 5%, #FFFFFF 100%);	
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #80BBDD), color-stop(1, #56aaff) );
+	background:-moz-linear-gradient( center top, #80BBDD 5%, #FFFFFF 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#80BBDD", endColorstr="#FFFFFF");	
+	background: -o-linear-gradient(top,#80BBDD,#56aaff);
+}.DivTableClass tr:first-child td{
+	background: url("ui-bg_gloss-wave_55_5c9ccc_500x100.jpg") repeat-x scroll 50% 50% #5C9CCC;
+    color: #FFFFFF;
+    font-weight: bold;
+	font-size: 13px;
+	font-family: Arial;
+}.DivTableClass td{
+	background-color:#FFFFFF;
+	text-align:left;
+	padding:7px;
+	font-size:13px;
+	font-family:Arial;
+	color:#000000;
+}
+
+.buttonClass {
+	-moz-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	box-shadow: 0 0 0 0 #BBDAF7 inset;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79BBFF), color-stop(1, #185796) );
+	background:-moz-linear-gradient( center top, #79BBFF 5%, #185796 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79BBFF', endColorstr='#185796');
+	background-color:#79BBFF;
+	border-radius: 13px;
+	border: 1px solid #84BBF3;
+	display: inline-block;
+	color: #FFFFFF;
+	font-family: arial;
+	font-size: 3px;
+	font-weight: bold;
+	font-style:normal;
+	padding: 3px 13px;
+	text-decoration: none;
+	text-align:center;
+	text-shadow: 1px 1px 0 #528ECC;
+}
+.buttonClass:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee) );
+	background:-moz-linear-gradient( center top, #468ccf 5%, #63b8ee 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee');
+	background-color:#468ccf;
+}.buttonClass:active {
+	position:relative;
+	top:1px;
+}

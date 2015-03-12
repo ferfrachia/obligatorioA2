@@ -1,0 +1,14 @@
+
+
+.search {
+	padding:6px 15px 6px 30px;
+	margin:3px;
+	background: url('./images/search.png') no-repeat 8px 6px;
+}
+.lighter{
+	background: url('./images/lighter_grey.jpg');
+}
+.lighter input[type=text]{
+	border:1px solid #d0d0d0;
+	background-color:#fcfcfc;
+}

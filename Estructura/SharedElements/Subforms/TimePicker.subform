@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='1456' unid='04F03C75D03522D883257D410056C1AA' sequence='12'>
+<created><datetime>20140827T124736,74-03</datetime></created>
+<modified><datetime>20150311T131238,36-03</datetime></modified>
+<revised><datetime>20150309T094453,27-03</datetime></revised>
+<lastaccessed><datetime>20150311T131238,36-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131238,36-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Melissa Vidal/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABTVDb3VyaWVyIE5ldwAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>TimePicker</text></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQgA0AKgBXAIQAsQDuAQsBOAFgAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSEoAUKAKAFCgAAAGQAAQAAAAQAAACDBAEAzP8IAAAAAACF/yQABQAACjxs
+aW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj2F/wkABQAACiIA3QYAAK3/qf8mAAEAGAAEABoAGgAA
+ABgAAQAOAFRpbWVQaWNrZXIuY3NzAwCF/wgAAQAACqoC3gYAAK4Ahf8KAAUAAAoiPoECgwQBAIX/
+FQAFAAAKPHNjcmlwdCBzcmM9IgDdBgAArf+p/ygAAQAYAAQAHAAcAAAAGgABABAAanMvVGltZVBp
+Y2tlci5qcwMAhf8IAAEAAAqqAt4GAACuAIX/EwAFAAAKIj48L3NjcmlwdD4Azf8IAAAAAAA=
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>TimePicker</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.3</text></item></note>
+

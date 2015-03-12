@@ -1,0 +1,437 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*                                                 
+'*			 					CLASS <SOLICITUDAVISO>
+'* 
+'******************************************************************************************************************	
+%REM   
+Esta clase representa un objeto SOLICITUDAVISO
+
+CONSTRUCTOR
+Sub new(Byval nroDoc As String, tipo As Integer, datosSolicitante As String, asunto As String, unidad As Unidad)
+		'Setea las variables miembro del objeto
+Parámetros:
+	nroDoc			(IN) = 
+	tipo 			(IN) =
+	datosSolicitante	(IN) =
+	asunto			(IN) =
+	unidad			(IN) =
+	usuarioAccionE		(IN) = 
+ 
+
+ 
+ 
+PROPIEDADES       
+Get Estado() As Integer
+		'Devuelve es estado de la solicitud de aviso.
+
+Set Estado(nuevoEstado As Integer)
+		'Asigna es estado "nuevoEstado" a la solicitud de aviso.
+
+Get NroDoc() As Actuacion
+		'Devuelve el numero del documento que generó la solicitud.
+
+Set NroDoc(nuevoNroDoc As String)
+		'Asigna "nuevoNroDoc" como nuevo teléfono de la solicitud de aviso.
+
+Get NroTel() As String
+		'Devuelve el teléfono al que se le avisa.
+
+Set NroTel(nuevoTel As String)
+		'Asigna "nuevoTel" como nuevo teléfono de la solicitud de aviso.
+
+Get NroCel() As String
+		'Devuelve el celular al que se le avisa.
+
+Set NroCel(nuevoCel As String)
+		'Asigna "nuevoCel" como nuevo celular de la solicitud de aviso.
+
+Get Correo() As String
+		'Devuelve el correo al que se le avisa.
+
+Set Correo(nuevoCorreo as String)
+		'Asigna "nuevoCorreo" como nuevo correo de la solicitud de aviso.
+
+Get Asunto() As String
+		'Devuelve el asunto de la solicitud.
+
+Set Asunto(nuevoAsunto As String)
+		'Asigna el nuevo Asunto de la solicitud.
+
+Get Tema() As String
+		'Devuelve el tema de la solicitud.
+
+Set Tema(nuevoTema As String)
+		'Asigna el nuevo tema de la solicitud.
+
+Get RespEnvio() As Integer
+		'Devuelve 1 si la respuesta al envio es OK. 0 si no.
+
+Set RespEnvio(nuevaRespEnvio As Integer)
+		'Asigna el nuevo valor a RespEnvio de la solicitud.
+
+Get Id() As String
+		'Devuelve el identificador de la solicitud.
+
+Set Id(nuevaId As String)
+		'Asigna "nuevaId" como nueva id de la solicitud.
+
+Get NumOficina() As String
+		'Devuelve el numero de oficina de la solicitud
+
+Set NumOficina(nuevoNroOficina As Integer)
+		'Asigna a la solicitud un nuevo numero de oficina
+	
+Get TipoDocumento() As String
+		'Devuelve el tipo de documento de la solicitud
+
+Set TipoDocumento(nuevoTipoDoc As String)
+		'Asigna a la solicitud un nuevo tipo de documento
+
+
+MÉTODOS
+-------		
+%END REM
+
+
+
+Option Declare
+Use "VectorClass 2.05"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class SolicitudAviso
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+Public Const ROL_MODIFICAR_CARATULA			="[ModifCaratula]"
+
+'CAMPOS DEL DOCUMENTO
+Public Const CAMPO_SA_NRODOC					="NumDocumento"
+Public Const CAMPO_SA_TIPO					="TipoDocumento"
+Public Const CAMPO_SA_ID						="id"
+Public Const CAMPO_SA_ESTADO					="EstadoDocumento"
+Public Const CAMPO_SA_NROOFICINA				="NumeroOficina"
+Public Const CAMPO_SA_TIPOMENS				="TipoMensaje"
+Public Const CAMPO_SA_DEST					="Destinatario"
+Public Const CAMPO_SA_FECHA 					="fecha"
+Public Const CAMPO_SA_ANIO 					="anio"
+Public Const CAMPO_SA_MENSAJE					="Mensaje"
+Public Const CAMPO_SA_ASUNTO					="Asunto"
+Public Const CAMPO_SA_AUDITADA				="Auditada"
+
+
+'Public Const CAMPO_SA_TIPODOC				="sTipoDoc"
+'Public Const CAMPO_SA_TEMA					="sTema"
+'Public Const CAMPO_SA_RESPENVIO				="sRespEnvio"
+'
+
+'CONSTANTES DE ESTADO
+Public Const ESTADO_PENDIENTE					= 0
+Public Const ESTADO_ENVIADA					= 1
+Public Const ESTADO_ENVIADA_CONF				= 2
+Public Const ESTADO_CONFIRMAD					= 3
+Public Const ESTADO_ERR_ENVIAR				= 4
+
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <SOLICITUDAVISO>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class SolicitudAviso
+'******************************************************************************************************************		
+	
+'MIEMBROS PRIVADOS
+	Private db As notesDatabase
+	Public doc As notesDocument
+	
+'******************************************************************************************************************		
+	
+'CONSTRUCTOR	
+	
+	Sub new(id As String)
+		'Setea las variables miembro del objeto
+		On Error Goto HANDLER
+		
+		Dim session As New NotesSession
+		Set db = session.CurrentDatabase
+		
+		If id = "" Then
+			Set doc = New NotesDocument (db)
+			doc.Save True, False
+			doc.ReplaceItemValue CAMPO_SA_ID, doc.UniversalID
+			doc.ReplaceItemValue CAMPO_SA_FECHA,Date()
+			doc.ReplaceItemValue "form", "fSolicitud"
+			doc.Save True, False
+		End If
+		
+		Exit Sub	
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Constructor","")
+		Exit Sub
+		
+	End Sub
+	
+	
+'*****************************************************************************************************************	
+'Metodo - Save
+'*****************************************************************************************************************	
+	
+	Public Sub Save()
+		' Devuelve el numero de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.Save True, False			
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get NumDoc","")
+		Exit Sub
+	End Sub
+	
+	
+'*****************************************************************************************************************	
+'PROPIEDADES - Getters
+'*****************************************************************************************************************	
+	
+	Public Property Get NumDoc() As String
+		' Devuelve el numero de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		
+		NumDoc=doc.GetItemValue(CAMPO_SA_NRODOC)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get NumDoc","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get TipoAviso() As String
+		' Devuelve el tipo de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		
+		TipoAviso = doc.GetItemValue(CAMPO_SA_TIPO)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get IdAviso() As String
+		' Devuelve el asunto de la solicitud de aviso.
+		On Error Goto HANDLER		
+		
+		IdAviso = doc.GetItemValue(CAMPO_SA_ID)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get AsuntoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get EstadoAviso() As String
+		' Devuelve el estado de la solicitud de aviso.
+		On Error Goto HANDLER		
+		
+		EstadoAviso = doc.GetItemValue(CAMPO_SA_ESTADO)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get EstadoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Get Destinatario() As String
+		' Devuelve el telefono asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		
+		Destinatario = doc.GetItemValue(CAMPO_SA_DEST)(0)	
+		
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get NroTelAviso","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************		
+	
+	Public Property Get NumOficina() As String
+		' Devuelve el numero de oficina asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		NumOficina = doc.GetItemValue(CAMPO_SA_NROOFICINA)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get NumOficina","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************
+	
+	Public Property Get TipoMensaje() As String
+		' Devuelve el tipo de doc asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		TipoMensaje = doc.GetItemValue(CAMPO_SA_TIPOMENS)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoDocumento","")
+		Exit Property
+	End Property
+	
+	Public Property Get Mensaje() As String
+		' Devuelve el tipo de doc asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		Mensaje = doc.GetItemValue(CAMPO_SA_MENSAJE)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoDocumento","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get Asunto() As String
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		Asunto = doc.GetItemValue(CAMPO_SA_ASUNTO)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoDocumento","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get Auditada() As Integer
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		Asunto = doc.GetItemValue(CAMPO_SA_AUDITADA)(0)
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoDocumento","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+'PROPIEDADES - Setters
+'******************************************************************************************************************
+	
+	Public Property Set NumDoc() As String
+		' Devuelve el numero de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_NRODOC, NumDoc
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set NumDoc","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set TipoAviso() As String
+		' Devuelve el tipo de documento asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_TIPO, TipoAviso
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set TipoAviso","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************
+	
+	Public Property Set EstadoAviso() As String
+		' Asigna el estado de la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_ESTADO,EstadoAviso
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set EstadoAviso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	
+	Public Property Set Destinatario() As String
+		' Devuelve el telefono asociado a la solicitud de aviso.
+		On Error Goto HANDLER		
+		doc.ReplaceItemValue CAMPO_SA_DEST,Destinatario
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set NroTelAviso","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	
+	
+	Public Property Set IdAviso() As String
+		' Devuelve el UID asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_ID,IdAviso
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set IdAviso","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************
+	
+	Public Property Set NumOficina() As String
+		' Asigno un numero de oficina a la solicitud
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_NROOFICINA,NumOficina
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set NumOficina","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************
+	
+	Public Property Set TipoMensaje()As String
+		' Asigno un nuevo tipo de documento a la solicitud 
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_TIPOMENS,TipoMensaje
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Set TipoDocumento","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************
+	Public Property Set Mensaje() As String
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_MENSAJE,Mensaje
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoDocumento","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	Public Property Set Asunto() As String
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_ASUNTO,Asunto
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoDocumento","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	Public Property Set Auditada() As Integer
+		' Setea el mensaje  asociado a la solicitud de aviso.
+		On Error Goto HANDLER
+		doc.ReplaceItemValue CAMPO_SA_AUDITADA,Auditada
+		Exit Property
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Solicitud Aviso - Get TipoDocumento","")
+		Exit Property
+	End Property
+	
+End Class

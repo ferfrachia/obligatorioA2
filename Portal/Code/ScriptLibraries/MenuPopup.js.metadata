@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058B8FB" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="ab6" sequence="45" unid="4298F118B1CFC96F032574A900610708">
+<created><datetime>20080818T143947,92-03</datetime></created>
+<modified><datetime>20150311T130917,47-03</datetime></modified>
+<revised><datetime>20150309T094457,82-03</datetime></revised>
+<lastaccessed><datetime>20150311T130917,47-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T130917,47-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Maria Araujo/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20080818T144024,82-03</datetime><datetime>20080818T144658,64-03</datetime><datetime>20080818T145059,42-03</datetime><datetime>20080818T150059,97-03</datetime><datetime>20080818T150937,06-03</datetime><datetime>20080818T151010,06-03</datetime><datetime>20080818T151013,27-03</datetime><datetime>20080820T142916,95-03</datetime><datetime>20080820T143016,70-03</datetime><datetime>20080820T143022,15-03</datetime><datetime>20080820T143507,91-03</datetime><datetime>20080820T152811,68-03</datetime><datetime>20080820T152942,91-03</datetime><datetime>20080820T153113,05-03</datetime><datetime>20080820T153511,33-03</datetime><datetime>20080820T153630,24-03</datetime><datetime>20080820T164138,89-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>MenuPopup</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20150309T094457,82-03</datetime></item></note>

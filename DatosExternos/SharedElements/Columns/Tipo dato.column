@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059D1A3'>
+<noteinfo noteid='1de' unid='60279AF6F2BCA48B03257583003EFE34' sequence='15'>
+<created><datetime>20090324T082803,08-03</datetime></created>
+<modified><datetime>20150311T132104,88-03</datetime></modified>
+<revised><datetime>20150309T094359,08-03</datetime></revised>
+<lastaccessed><datetime>20150311T132104,88-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132104,88-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=CURSO</name><name
+>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Victoria Acuña/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$SourceSeqTime' sign='true'><datetime>20090324T082802,94-03</datetime></item>
+<item name='$SourceSequence' sign='true'><text>00000001</text></item>
+<item name='$SourceURL' sign='true'><textlist><text>Notes:///0325758200707FED//60279AF6F2BCA48B03257583003EFE34</text><text
+>Notes:///0325758200707FED:0325758200707FED:C5549647//272</text></textlist></item>
+<item name='$ClassName' sign='true'><text>View</text></item>
+<item name='$SourceDbPath' sign='true'><text>CN=Desarrollo/O=DesarrolloISA!!igDoc\DatosExternos.nsf</text></item>
+<item name='$CacheDocVersion' sign='true'><number>1</number></item>
+<item name='$TITLE' sign='true'><text>Tipo dato</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+ggACAFYAAgAkOAEAJgA8VEQgY2xhc3M9J0RhdG9FeHRlcm5vJyB3aWR0aD0nMTAwcHgnPgUADwBU
+aXBvRGF0b0V4dGVybm8AIgIBAAUAPC9URD4AIgIDAAUAHgAZAAMAAgAJAAQAJDgkQ29uZmxpY3Qk
+UkVGAAQABAAAAAgAZgADAA==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAQAFZDAAACAAwAaAAAAM4ABQAACAAAAAAAAAAAAAICAAAAJDhURCBUaXBvIERhdG9o
+AAIAVgACACQ4AQAmADxURCBjbGFzcz0nRGF0b0V4dGVybm8nIHdpZHRoPScxMDBweCc+BQAPAFRp
+cG9EYXRvRXh0ZXJubwAiAgEABQA8L1REPgAiAgMABwAQAAkACTFTMlIzUzRSACYAAQAAAAEBAAkB
+AAAKAQEOCgAAAQCtKwEAAQABAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA
+//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAUA////AAEAAAAAAAAAAAAAAAAAAQD///8AAQD/
+//8AAAABAAAAAAABAAAAAAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>^Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

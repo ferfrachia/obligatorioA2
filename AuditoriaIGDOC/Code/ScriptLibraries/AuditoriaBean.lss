@@ -1,0 +1,427 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "ConfEE 1.0"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class AuditoriaBean
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Class AuditoriaBean
+	Private url As String
+	Private accion As String 
+	Private fecha As String 
+	Private tipoDoc As String 
+	Private numero As String
+	Private usuario As String
+	Private parametros As String
+	
+	
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Sub new (doc As NotesDocument)
+		On Error Goto handler
+		Dim nInt As notesInternational
+		Dim ses As New NotesSession
+		Dim dtFecha As NotesDateTime
+		Dim nName As NotesName
+		Dim posUrl As Integer
+		Dim c As New Configuracion
+		Dim urlTemp As String
+		
+		Set nInt = ses.International
+		
+		Set dtFecha = New notesDateTime(doc.GetItemValue("fFecha")(0))
+		
+		If nInt.IsTime24Hour Then
+			fecha = dtFecha.DateOnly & " " & Left(dtFecha.TimeOnly,5) 
+		Else
+			fecha = dtFecha.DateOnly & " " & Left(dtFecha.TimeOnly,5) & " " & Right(dtFecha.TimeOnly,4)	
+		End If	
+		
+		accion = doc.GetItemValue("sOperacion")(0)
+		tipoDoc = doc.GetItemValue("sTipoDocumento")(0)
+		numero = Cstr(doc.GetItemValue("sNroDocumento")(0))
+		Set nName = New NotesName(doc.GetItemValue("nbUsuario")(0))
+		usuario = Strconv(nName.Common,3) ' El 3 es properCase
+		
+		urlTemp =  doc.HttpURL
+		posUrl = Instr (urlTemp, "://" )
+		If posUrl > 0 Then
+			posUrl = posUrl + 3
+		Else
+			posUrl = 1
+		End If
+		
+	'  para sacar el host q trae la url del doc busco la siguiente "/" comenzando en la posicion obtenida
+		posUrl = Instr (posUrl, urlTemp, "/")	
+		
+	'  sustituyo el host q trae la url del doc por el que esta en la configuracion
+		url =  "/" & Right(urlTemp, Len(urlTemp)-posUrl)
+		
+	'  Parametros de la operacion
+		parametros = doc.GetItemValue("SPARAMOPERACION")(0)
+		Exit Sub
+handler:
+		Msgbox "ERROR " & Erl & " " & Err & " " & Error$
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Procedimiento new","")
+		
+		Exit Sub
+	End Sub
+	
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get urlDoc As String
+		On Error Goto HANDLER
+		urlDoc = url
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get urlDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get accionDoc As String
+		On Error Goto HANDLER
+		accionDoc = getOperacion(accion)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get accion","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get fechaDoc As String
+		On Error Goto HANDLER
+		fechaDoc = fecha
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get fechaDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get tipo As String
+		On Error Goto HANDLER
+		tipo = tipoDoc
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get tipo","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get numeroDoc As String
+		On Error Goto HANDLER
+		numeroDoc = numero
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get numero","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get usuarioDoc As String
+		On Error Goto HANDLER
+		usuarioDoc = usuario
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get urlDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Public Property Get parametrosDoc As String
+		On Error Goto HANDLER
+		parametrosDoc = parametros
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase AuditoriaBean - Propiedad Get urlDoc","")
+		Exit Property
+	End Property
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$	
+	Private Function getOperacion(cod As String) As String
+		Dim operacion As String
+		Dim streval As String
+		operacion = Lcase(cod)
+		
+		If Instr(operacion,"acc_") > 0 Then
+			operacion = Lcase(Strright(operacion,"acc_"))
+		'operacion=Strconv(operacion, SC_ProperCase)
+		End If
+		
+		Select Case(operacion)
+		Case "Tomarconocimiento":	getOperacion =    "Tomar Conocimiento" 
+		Case "Tomar_Conocimiento":   	getOperacion =    "Tomar Conocimiento" 
+		Case "Saco_Archivar":   		getOperacion =    "Desarchivar" 
+		Case "Firmar_Enviar":   		getOperacion =    "Firmar y Enviar" 
+		Case "Crear_Resp":   		getOperacion =     "Responder" 
+		Case "Crear_Resp_Cc":   		getOperacion =     "Responder CC" 
+		Case "Anular_Pase":   		getOperacion =     "Anular Pase" 
+		Case "Enviar_Pase":   		getOperacion =     "Enviar a Pase" 
+		Case "Marcarconfidencial":   	getOperacion =    "Marcar Confidencial" 
+		Case "Quitarconfidencialidad":getOperacion =   "Quitar Confidencialidad" 
+		Case "Para_Firmar":   		getOperacion =     "Para Firmar" 
+		Case "Modif_Plazo":   		getOperacion =    "Modificar Plazo" 
+		Case "Add_Lect_Confidencial": getOperacion =  "Agregar Lectores Confidencialidad" 
+		Case "Del_Lect_Confidencial": getOperacion =  "Borrar Lectores Confidencialidad" 
+		Case "Set_Paquete":   		getOperacion =    "Paquete en Oficina" 
+		Case "Firmarpasar":   		getOperacion =    "Firmar y Enviar" 
+		Case "Carat_Edit":   		getOperacion =    "Editar Carátula" 
+		Case "Marcar_Exp":   		getOperacion =    "Marcar Expediente" 
+		Case "Crear_Firmar":   		getOperacion =    "Crear y Firmar" 
+		Case "Crear_Resp_Firmar":   	getOperacion =   "Responder y Firmar" 
+		Case "Reenviar_Cc":   		getOperacion =    "Reenviar CC" 
+		Case "Anular_Ree":   		getOperacion =    "Anular Responder" 
+		Case "Agregar_Firma":   		getOperacion =    "Firmar" 
+		Case "Agregar_Asunto_Exp":   	getOperacion =   "Agregar Asunto Expediente" 
+		Case "Agregar_Asunto_Sesion": getOperacion =  "Agregar Asunto Sesión" 
+		Case "Aprobar_Asunto":  		getOperacion =    "Aprobar Asunto" 
+		Case "Crear_Asunto_Extra":   	getOperacion =   "Nuevo Asunto Extra" 
+		Case "Crear_Sesion":   		getOperacion =    "Nueva Sesión" 
+		Case "Ctrl_Editar_Pto":   	getOperacion =   "Editar Asunto" 
+		Case "Publicar_Sesion":   	getOperacion =   "Publicar Sesión" 
+		Case "Retirar_Asunto_Previo_Sesion":getOperacion = "Retirar Asunto Previo Sesión" 
+		Case "Crear_Acta_Sesion":   	getOperacion =    "Finalizar Sesión" 
+		Case "ResSesion":   		getOperacion =     "Restringir Sesión" 
+		Case "BORRAR_PUNTO":   		getOperacion =    "Borrar Punto" 
+		Case "Cambio_en_Paquete_de_Caratula":   getOperacion = "Cambio en Caratula Paquete" 
+		Case "Cambio_en_Asunto_de_Caratula":   	getOperacion =  "Cambio en Caratula Asunto" 
+		Case "Organ_Cambio_Nombre":   getOperacion = "Estructura Organizacional - Cambio de Nombre " 
+			
+		Case "crear_contrato":   	getOperacion =   "Registrar Contrato" 
+		Case "reservar_contrato": getOperacion =  "Reservar Contrato" 
+		Case "guardar_contrato":  getOperacion =  "Guardar Contrato" 
+		Case "editar_contrato":   getOperacion =   "Editar Contrato" 
+		Case "liberar_contrato":  getOperacion =  "Liberar Contrato" 
+		Case "activar_contrato":  getOperacion =  "Activar Contrato" 
+		Case "activar_prorroga":  getOperacion =  "Activar Prorroga" 
+		Case "activar_ampliacion":getOperacion =  "Activar Ampliacion" 
+		Case "agregarhito":   	getOperacion =   "Agregar Hito" 
+		Case "modificar_hito":   	getOperacion =   "Modificar Hito" 
+		Case "correr_hito":   	getOperacion =   "Correr Hito" 
+		Case "solicitar_prorroga":getOperacion =  "solicitar Prorroga" 
+		Case "solicitar_ampliacion":getOperacion =  "Solicitar Amplicacion" 
+		Case "confirmar_hito":   	getOperacion =   "Confirmar Hito" 
+		Case "solic_corrim_hito": getOperacion =  "Solicitar Corrimientos de Hito" 
+		Case "corrimiento_hito":  getOperacion =  "Corrimiento de Hito" 
+			
+		Case "archivar_form":   	getOperacion =   "Archivar Formulario" 
+		Case "asignar_form":   	getOperacion =   "Asignar Formulario" 
+		Case "dar_pase_form":   	getOperacion =   "Dar Pase a Formulario" 
+		Case "devolver_form":   	getOperacion =   "Devolver Formulario" 
+		Case "editar_form":   	getOperacion =   "Editar Formulario" 
+		Case "enviar_form":   	getOperacion =   "Enviar Formulario" 
+		Case "finalizar_form":   getOperacion =   "Finalizar Formulario" 
+		Case "firmar_dar_pase_form":getOperacion =  "Firmar Formulario y Dar Pase" 
+		Case "firmar_form":   	getOperacion =   "Firmar Formulario" 
+		Case "guardar_salir_form":getOperacion =  "Guardar Formulario y Salir" 
+		Case "guardar_form":   	getOperacion =   "Guardar Formulario" 
+		Case "liberar_form":   	getOperacion =   "Liberar Formulario" 
+		Case "recibir_form":   	getOperacion =   "Recibir Formulario" 
+		Case "reenviar_form":   	getOperacion =   "Reenviar Formulario" 
+		Case "reservar_form":   	getOperacion =   "Reservar Formulario" 
+		Case "acc_reservar_form":getOperacion =   "Reservar Formulario" 
+		Case "reservar_form":   	getOperacion =   "Reservar Formulario" 			
+			
+		Case "agregar_pto_a_sesion":  getOperacion =  "Agregar Asunto a Sesión" 
+		Case "anular_pto":   		getOperacion =    "Anular Asunto" 
+		Case "aplazar_asunto":   	getOperacion =    "Aplazar Asunto" 
+		Case "aprobar_asunto":   	getOperacion =    "Aprobar Asunto" 
+		Case "aprobar_en_bloque":   	getOperacion =   "Aprobar en Bloque" 
+		Case "autorizar_pto":   		getOperacion =    "Autorizar Asunto" 
+		Case "comunicar_resol":   	getOperacion =   "Comunicar Resolución" 
+		Case "crear_sesion":   		getOperacion =    "Crear Acuerdo" 
+		Case "crear_pto":   		getOperacion =     "Crear Asunto" 
+		Case "editar_sesion":   		getOperacion =    "Editar Acuerdo" 
+		Case "editar_asunto":   		getOperacion =    "Editar Asunto" 
+		Case "enviar_a_finalizar":   	getOperacion =   "Enviar a Finalizar" 
+		Case "enviar_a_revisar_pto":  getOperacion =  "Enviar a Revisar Asunto" 
+		Case "finalizar_sesion":   	getOperacion =   "Finalizar Acuerdo" 
+		Case "firmar_sesion":   		getOperacion =    "Firmar Acuerdo" 
+		Case "firmar_y_autorizar":   	getOperacion =   "Firmar y Autorizar Asunto" 
+		Case "firmar_y_enviar_a_revision": getOperacion = "Firmar y Enviar a Revisar Asunto" 
+		Case "modif_nro_asuntos":   	getOperacion =   "Modificar Posición Asuntos" 
+		Case "pasar_a_borrador_pto":  getOperacion =  "Pasar a Borrador Asunto" 
+		Case "pasar_a_desarrollo":   	getOperacion =   "Pasar a Desarrollo" 
+		Case "pasar_a_ejecucion":   	getOperacion =   "Pasar a En Ejecución" 
+		Case "quitar_aprobar_asunto": getOperacion =  "Quitar Aprobar Asunto" 
+		Case "quitar_autorizar_pto":  getOperacion =  "Quitar Autorizar Asunto" 
+		Case "quitar_retirar_pto":   	getOperacion =   "Quitar Retirar Asunto" 
+		Case "retirar_pto_previo_sesion": getOperacion = "Retirar Asunto Previo a Acuerdo" 
+		Case "retirar_pto":   		getOperacion =    "Retirar Asunto" 
+			
+		Case "Agregar_Lista_Destinatarios_Notif_Diaria_Unidades":   getOperacion =    "Administración - Agregar Destinatarios Notificación Diaria de Unidades" 
+		Case "agregar_lista_destinatarios_notif_diaria_unidades":   getOperacion =    "Administración - Agregar Destinatarios Notificación Diaria de Unidades" 			
+		Case "Agregar_Lista_Destinatarios_Notif_Diaria":   		getOperacion =    "Administración - Agregar Destinatarios Notificación Diaria" 
+		Case "agregar_lista_destinatarios_notif_diaria":   		getOperacion =    "Administración - Agregar Destinatarios Notificación Diaria" 			
+		Case "Modificar_Cantidad_Devoluciones":   				getOperacion =    "Administración - Modificar Cantidad de Devoluciones" 
+		Case "modificar_cantidad_devoluciones":   				getOperacion =    "Administración - Modificar Cantidad de Devoluciones" 			
+		Case "Modificar_Cant_Dias_Actuacion_Externo":   			getOperacion =    "Administración - Modificar Cantidad de Días de Actuación de Unidad Externa" 
+		Case "modificar_cant_dias_actuacion_externo":   			getOperacion =    "Administración - Modificar Cantidad de Días de Actuación de Unidad Externa" 			
+		Case "Modificar_Cant_Dias_Actuacion_Interna":   			getOperacion =    "Administración - Modificar Cantidad de Días de Actuación de Unidad Interna" 
+		Case "modificar_cant_dias_actuacion_interna":   			getOperacion =    "Administración - Modificar Cantidad de Días de Actuación de Unidad Interna" 			
+		Case "Modificar_Cantidad_Anexos":   					getOperacion =    "Administración - Modificar Cantidad Máxima de Anexos" 
+		Case "modificar_cantidad_anexos":   					getOperacion =    "Administración - Modificar Cantidad Máxima de Anexos" 			
+		Case "Modificar_Impresion_Anexos":   					getOperacion =    "Administración - Modificar Impresión de Anexos" 
+		Case "modificar_impresion_anexos":   					getOperacion =    "Administración - Modificar Impresión de Anexos" 			
+		Case "Modificar_Notificacion_de_Archivado":   			getOperacion =    "Administración - Modificar Notificación de Archivado" 
+		Case "modificar_notificacion_de_archivado":   			getOperacion =    "Administración - Modificar Notificación de Archivado" 			
+		Case "Modificar_Notificacion_de_Exp_para_Firmar":   		getOperacion =    "Administración - Modificar Notificación de Expediente para la firma" 
+		Case "modificar_notificacion_de_exp_para_firmar":   		getOperacion =    "Administración - Modificar Notificación de Expediente para la firma" 			
+		Case "Modificar_Notificacion_de_Expiracion":   			getOperacion =    "Administración - Modificar Notificación de Expiración de Expediente" 
+		Case "modificar_notificacion_de_expiracion":   			getOperacion =    "Administración - Modificar Notificación de Expiración de Expediente" 			
+		Case "Modificar_Notificacion_de_Exp_para_Recibir":   		getOperacion =    "Administración - Modificar Notificación de Recepción" 
+		Case "modificar_notificacion_de_exp_para_recibir":   		getOperacion =    "Administración - Modificar Notificación de Recepción" 			
+		Case "Modificar_Notificacion_de_Resolucion":   			getOperacion =    "Administración - Modificar Notificación de Resoluciones" 
+		Case "modificar_notificacion_de_resolucion":   			getOperacion =    "Administración - Modificar Notificación de Resoluciones" 			
+		Case "Modificar_Notificacion_de_Jefe_Expiracion":   		getOperacion =    "Administración - Modificar Notificación de Vencimiento de Expediente" 
+		Case "modificar_notificacion_de_jefe_expiracion":   		getOperacion =    "Administración - Modificar Notificación de Vencimiento de Expediente" 			
+		Case "Modificar_Notificacion_Diaria_Unidades":   			getOperacion =    "Administración - Modificar Notificación Diaria de Unidades" 
+		Case "modificar_notificacion_diaria_unidades":   			getOperacion =    "Administración - Modificar Notificación Diaria de Unidades" 			
+		Case "Modificar_Notificacion_Diaria":   				getOperacion =    "Administración - Modificar Notificación Diaria" 
+		Case "modificar_notificacion_diaria":   				getOperacion =    "Administración - Modificar Notificación Diaria" 			
+		Case "Modificar_Tamaño_Anexos":   						getOperacion =    "Administración - Modificar Tamaño Maximo de Anexos" 
+		Case "modificar_tamaño_anexos":   						getOperacion =    "Administración - Modificar Tamaño Maximo de Anexos" 			
+		Case "Modificar_Tiempo_Auditoria":   					getOperacion =    "Administración - Modificar Tiempo de Auditoría" 
+		Case "modificar_tiempo_auditoria":   					getOperacion =    "Administración - Modificar Tiempo de Auditoría" 			
+		Case "Modificar_Tiempo_Cambio_Bandejas":   				getOperacion =    "Administración - Modificar Tiempo de Cambio de Año en Bandejas" 
+		Case "modificar_tiempo_cambio_bandejas":   				getOperacion =    "Administración - Modificar Tiempo de Cambio de Año en Bandejas" 			
+		Case "Modificar_Tiempo_Devolución":   					getOperacion =    "Administración - Modificar Tiempo de Devolución" 
+		Case "modificar_tiempo_devolución":   					getOperacion =    "Administración - Modificar Tiempo de Devolución" 			
+		Case "Modificar_Tiempo_Recepcion_Automatica":   			getOperacion =    "Administración - Modificar Tiempo de Recepción Automática" 
+		Case "modificar_tiempo_recepcion_automatica":   			getOperacion =    "Administración - Modificar Tiempo de Recepción Automática" 			
+		Case "Sacar_Lista_Destinatarios_Notif_Diaria_Unidades":   	getOperacion =    "Administración - Sacar Destinatarios Notificación Diaria de Unidades" 
+		Case "sacar_lista_destinatarios_notif_diaria_unidades":   	getOperacion =    "Administración - Sacar Destinatarios Notificación Diaria de Unidades" 			
+		Case "Sacar_Lista_Destinatarios_Notif_Diaria":   			getOperacion =    "Administración - Sacar Destinatarios Notificación Diaria" 
+		Case "sacar_lista_destinatarios_notif_diaria":   			getOperacion =    "Administración - Sacar Destinatarios Notificación Diaria" 			
+		Case "Agregar Anexo":   				getOperacion =    "Agregar Anexo" 
+		Case "agregar anexo":   				getOperacion =    "Agregar Anexo" 			
+		Case "Agregar_Asunto_Exp":   			getOperacion =   "Agregar Asunto Exp" 
+		Case "agregar_asunto_exp":   			getOperacion =   "Agregar Asunto Exp"			
+		Case "Agregar_Asunto_Sesion":   		getOperacion =  "Agregar Asunto Ses" 
+		Case "agregar_asunto_sesion":   		getOperacion =  "Agregar Asunto Ses" 			
+		Case "Agregar":   					getOperacion =     "Agregar Expediente" 
+		Case "agregar":   					getOperacion =     "Agregar Expediente" 			
+		Case "add_lect_confidencial":   		getOperacion =  "Agregar Lectores Confidencialidad" 
+		Case "Agregar_Rol":   				getOperacion =    "Agregar Rol" 
+		Case "agregar_rol":   				getOperacion =    "Agregar Rol" 	
+		Case "Agregar_Usuario":   			getOperacion =   "Agregar Usuario" 
+		Case "agregar_usuario":   			getOperacion =   "Agregar Usuario" 
+		Case "Anular_Pase":   				getOperacion =    "Anular Pase" 
+		Case "anular_pase":   				getOperacion =    "Anular Pase" 
+		Case "Anular_Ree":   				getOperacion =    "Anular Responder" 
+		Case "anular_ree":   				getOperacion =    "Anular Responder" 
+		Case "Aprobar_Asunto":   			getOperacion =    "Aprobar Asunto" 
+		Case "aprobar_asunto":   			getOperacion =    "Aprobar Asunto" 			
+		Case "ArchivarCC":   				getOperacion =    "Archivar CC" 
+		Case "archivarcc":   				getOperacion =    "Archivar CC" 			
+		Case "Archivar":   					getOperacion =     "Archivar" 
+		Case "archivar":   					getOperacion =     "Archivar" 			
+		Case "Asignar":   					getOperacion =     "Asignar" 
+		Case "asignar":   					getOperacion =     "Asignar" 			
+		Case "Del_Lect_Confidencial":   		getOperacion =  "Borrar Lector Confidencial" 
+		Case "del_lect_confidencial":   		getOperacion =  "Borrar Lector Confidencial" 			
+		Case "Borrar_Punto":   				getOperacion =    "Borrar Punto" 
+		Case "borrar_punto":   				getOperacion =    "Borrar Punto" 
+		Case "Cambio_en_Asunto_de_Caratula":   	getOperacion = "Cambio en Caratula Asunto" 
+		Case "cambio_en_asunto_de_caratula":   	getOperacion = "Cambio en Caratula Asunto" 			
+		Case "Cambio_en_Paquete_de_Caratula":   getOperacion = "Cambio en Caratula Paquete" 
+		Case "cambio_en_paquete_de_caratula":   getOperacion = "Cambio en Caratula Paquete" 			
+		Case "Crear_Acta_Sesion":   			getOperacion =   "Crear Acta Sesión" 
+		Case "crear_acta_aesion":   			getOperacion =   "Crear Acta Sesión" 			
+		Case "Crear_Unidad":   				getOperacion =    "Crear Unidad" 
+		Case "crear_unidad":   				getOperacion =    "Crear Unidad" 			
+		Case "Crear":   					getOperacion =     "Crear" 
+		Case "crear":   					getOperacion =     "Crear" 			
+		Case "Desagregar":   				getOperacion =    "Desagregar" 
+		Case "desagregar":   				getOperacion =    "Desagregar" 			
+		Case "Saco_Archivar":   				getOperacion =    "Desarchivar" 
+		Case "saco_archivar":   				getOperacion =    "Desarchivar" 			
+		Case "Devolver":   					getOperacion =     "Devolver" 
+		Case "devolver":   					getOperacion =     "Devolver" 			
+		Case "Editar_Actuacion":   			getOperacion =   "Editar Actuación" 
+		Case "editar_actuacion":   			getOperacion =   "Editar Actuación" 
+		Case "Ctrl_Editar_Pto":   			getOperacion =   "Editar Asunto" 
+		Case "ctrl_editar_pto":   			getOperacion =   "Editar Asunto" 			
+		Case "Carat_Edit":   				getOperacion =    "Editar Carátula" 
+		Case "carat_edit":   				getOperacion =    "Editar Carátula"
+		Case "Editar":   					getOperacion =     "Editar Carta"
+		Case "editar":   					getOperacion =     "Editar Carta"
+		Case "Enviar_Pase":   				getOperacion =    "Enviar a Pase"
+		Case "enviar_pase":   				getOperacion =    "Enviar a Pase"			
+		Case "Enviar":   					getOperacion =     "Enviar" 
+		Case "enviar":   					getOperacion =     "Enviar" 			
+		Case "organ_cambio_nombre":   		getOperacion =   "Estructura Organizacional - Cambio de Nombre" 
+		Case "Agregar_Firma":   				getOperacion =    "Firmar Carta" 
+		Case "agregar_firma":   				getOperacion =    "Firmar Carta" 			
+		Case "Firmar":   					getOperacion =     "Firmar Expediente" 
+		Case "firmar":   					getOperacion =     "Firmar Expediente" 			
+		Case "Firmar_Enviar":   				getOperacion =    "Firmar y Enviar" 
+		Case "firmar_enviar":   				getOperacion =    "Firmar y Enviar" 			
+		Case "Firmarpasar":   				getOperacion =    "Firmar y Pasar" 
+		Case "firmarpasar":   				getOperacion =    "Firmar y Pasar" 			
+		Case "Liberar":   					getOperacion =     "Liberar" 
+		Case "liberar":   					getOperacion =     "Liberar" 			
+		Case "Marcarconfidencial":   			getOperacion =   "Marcar Confidencial" 
+		Case "marcarconfidencial":   			getOperacion =   "Marcar Confidencial" 			
+		Case "Marcar_Exp":   				getOperacion =    "Marcar Expediente" 
+		Case "marcar_exp":   				getOperacion =    "Marcar Expediente" 			
+		Case "Add_Lect_Confidencial":   		getOperacion =  "Modificar Confidencialidad" 
+		Case "add_lect_confidencial":   		getOperacion =  "Modificar Confidencialidad" 			
+		Case "Modif_Plazo":   				getOperacion =    "Modificar Plazo" 
+		Case "modif_plazo":   				getOperacion =    "Modificar Plazo" 			
+		Case "Crear_Sesion":   				getOperacion =    "Nueva Sesión" 
+		Case "crear_sesion":   				getOperacion =    "Nueva Sesión" 			
+		Case "Crear_Asunto_Extra":   			getOperacion =   "Nuevo Asunto Extra" 
+		Case "crear_asunto_extra":   			getOperacion =   "Nuevo Asunto Extra" 			
+		Case "Set_Paquete":   				getOperacion =    "Paquete en Oficina" 
+		Case "set_paquete":   				getOperacion =    "Paquete en Oficina" 			
+		Case "Para_Firmar":   				getOperacion =    "Para Firmar" 
+		Case "para_firmar":   				getOperacion =    "Para Firmar" 			
+		Case "Pase":   					getOperacion =      "Pase" 
+		Case "pase":   					getOperacion =      "Pase" 			
+		Case "Publicar_Sesion":   			getOperacion =   "Publicar Sesión" 
+		Case "publicar_sesion":   			getOperacion =   "Publicar Sesión" 			
+		Case "Quitar Anexo":   				getOperacion =    "Quitar Anexo" 
+		Case "quitar anexo":   				getOperacion =    "Quitar Anexo" 			
+		Case "Quitarconfidencialidad":   		getOperacion =  "Quitar Confidencialidad" 
+		Case "quitarconfidencialidad":   		getOperacion =  "Quitar Confidencialidad" 			
+		Case "Quitar_Rol":   				getOperacion =    "Quitar Rol" 
+		Case "quitar_rol":   				getOperacion =    "Quitar Rol" 			
+		Case "Quitar_Usuario":   			getOperacion =    "Quitar Usuario" 
+		Case "quitar_usuario":   			getOperacion =    "Quitar Usuario" 			
+		Case "Recibir":   					getOperacion =     "Recibir" 
+		Case "recibir":   					getOperacion =     "Recibir" 			
+		Case "Reenviar_Cc":   				getOperacion =    "Reenviar CC" 
+		Case "reenviar_Cc":   				getOperacion =    "Reenviar CC" 			
+		Case "Reenviar":   					getOperacion =     "Reenviar" 
+		Case "reenviar":   					getOperacion =     "Reenviar" 			
+		Case "Reservar":   					getOperacion =     "Reservar" 
+		Case "reservar":   					getOperacion =     "Reservar" 			
+		Case "Crear_Resp_Cc":   				getOperacion =    "Responder CC" 
+		Case "crear_resp_cc":   				getOperacion =    "Responder CC" 			
+		Case "Crear_Resp_Firmar":   			getOperacion =   "Responder y Firmar" 
+		Case "crear_resp_firmar":   			getOperacion =   "Responder y Firmar" 			
+		Case "Crear_Resp":   				getOperacion =    "Responder" 
+		Case "crear_resp":   				getOperacion =    "Responder" 			
+		Case "Ressesion":   				getOperacion =     "Restringir Sesión" 
+		Case "ressesion":   				getOperacion =     "Restringir Sesión" 			
+		Case "Retirar_Asunto_Previo_Sesion":   	getOperacion = "Retirar Asunto" 
+		Case "retirar_asunto_previo_sesion":   	getOperacion = "Retirar Asunto" 			
+		Case "Modificar_Lista_Control_de_Acceso":getOperacion =    "Roles Especiales" 
+		Case "modificar_lista_control_de_acceso":getOperacion =    "Roles Especiales" 			
+		Case "Tomarconocimiento":   			getOperacion =   "Tomar Conocimiento"
+		Case "tomarconocimiento":   			getOperacion =   "Tomar Conocimiento"			
+		Case "IMPRIMIR_ACTUACION":   			getOperacion =   "Imprimir Actuacion"	
+		Case "IMPRIMIR_ACTUACIONES":   		getOperacion =   "Imprimir Actuaciones"	
+		Case "IMPRIMIR_CARATULA":   			getOperacion =   "Imprimir Carátula"	
+		Case "IMPRIMIR_EXPEDIENTE":   		getOperacion =   "Imprimir Expediente"
+		Case "IMPRIMIR_RECORRIDO":   			getOperacion =   "Imprimir Recorrido"	
+		Case Else
+			
+			If Instr(operacion,Lcase("Modificar_Lista_Control_de_Acceso")) > 0 Then
+				getOperacion = "Modificar Roles" & Strright(operacion,Lcase("Modificar_Lista_Control_de_Acceso"))
+			Else
+				getOperacion = operacion 	
+			End If
+			
+		End Select
+		
+		Exit Function
+	End Function
+	
+'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+End Class

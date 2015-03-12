@@ -1,0 +1,369 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "ClaseExpediente"
+Use "ClaseIndice"
+Use "ConstantesSistema"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class IndiceExpediente As Indice
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const VISTA_DOCSxMODULO_CLAVE					= "SearchDocsxModuloClave"
+Private Const FORM_INDICE								= "Indice"
+
+Private Const CAMPO_MODULO								= "modulo"
+Private Const CAMPO_CLAVE								= "clave"
+Private Const CAMPO_AÑO									= "año"
+Private Const CAMPO_UNIDAD								= "unidad"
+Private Const CAMPO_NOMBRE_UNIDAD						= "nombreUnidad"
+Private Const CAMPO_NOMBRE_UNIDAD_ANTERIOR				="nombreUnidadAnterior"
+Private Const CAMPO_BASE								= "base"
+Private Const CAMPO_UNID								= "unid"
+Private Const CAMPO_UNID2								= "unid2"
+Private Const CAMPO_COPIA_EXP							= "sUsuariosCopia"
+Private Const CAMPO_DOCUMENTACION_COMPLETA				= "sDocCompleta"
+
+Public Class IndiceExpediente As Indice
+	
+	Public Sub New(), Indice(Ucase(NOMBRE_APLICACION))
+		
+	End Sub
+'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	Public Sub ActualizarIndiceDocs (clave As String, unidad As String, año As String, doc As NotesDocument, campos As Vector, doc2 As NotesDocument, campos2 As Vector)
+		On Error Goto HANDLER
+		Dim vIndices As NotesView
+		Dim docIndice As NotesDocument
+		Dim key(1 To 2) As String
+		Dim nombre As String
+		Dim i As Long
+		Dim oUnidad As UnidadExp
+		
+		'Busco el índice
+		Set vIndices = dbIndice.GetView(VISTA_DOCSxMODULO_CLAVE)
+		key(1) = modulo
+		key(2) = clave
+		Set docIndice = vIndices.GetDocumentByKey(key,True)
+		
+		'Si no existe el índice, lo creo
+		If docIndice Is Nothing Then
+			Set docIndice = dbIndice.CreateDocument
+			Call docIndice.ReplaceItemValue("Form", FORM_INDICE)
+			Call docIndice.ReplaceItemValue(CAMPO_MODULO, modulo)
+			Call docIndice.ReplaceItemValue(CAMPO_CLAVE, clave)
+		End If
+		
+		'Actualizo siempre el año, la unidad y la base
+		If Len(año) < 4 Then
+			año = Cstr(Cint(año) + 2000)
+		End If
+		Call docIndice.ReplaceItemValue(CAMPO_UNIDAD, unidad)
+		Set oUnidad = New UnidadExp(unidad)
+		Call docIndice.ReplaceItemValue(CAMPO_NOMBRE_UNIDAD, oUnidad.NombreActual)
+		If doc.GetItemValue("ccOficinaAnterior")(0)<>"" Then
+			Set oUnidad= New UnidadExp(doc.GetItemValue("ccOficinaAnterior")(0))
+			Call docIndice.ReplaceItemValue(CAMPO_NOMBRE_UNIDAD_ANTERIOR,oUnidad.NombreActual)
+		End If
+		
+		'Para ANTEL para actualizar icono en pedido de informe
+		If Not doc2.Getitemvalue(DBSGD_CAMPO_DOCUMENTOS_GENERADOS)(0) = "" Then
+			Dim vGenerados as New Vector(0)
+			Dim vPublicados As New Vector(0)
+			
+			vGenerados.Values = doc2.Getitemvalue(DBSGD_CAMPO_DOCUMENTOS_GENERADOS)
+			vPublicados.Values = doc2.Getitemvalue(DBSGD_CAMPO_DOCUMENTOS_PUBLICADOS)
+			
+			If(vGenerados.cantElem = vPublicados.cantElem) Then
+				Call docIndice.Replaceitemvalue(CAMPO_DOCUMENTACION_COMPLETA, "1")
+			Else
+				call docIndice.Replaceitemvalue(CAMPO_DOCUMENTACION_COMPLETA, "0")
+			End If
+		Else
+			Call docIndice.Replaceitemvalue(CAMPO_DOCUMENTACION_COMPLETA, "")
+		End If		
+		''Fin iconos de pedido de informe
+		
+		Call docIndice.ReplaceItemValue(CAMPO_COPIA_EXP, doc.GetItemValue(CAMPO_COPIA_EXP))
+		Call docIndice.ReplaceItemValue(CAMPO_AÑO, Cstr(año))
+		Call docIndice.ReplaceItemValue(CAMPO_BASE, doc.ParentDatabase.FilePath)
+		Call docIndice.ReplaceItemValue(CAMPO_UNID, doc.UniversalID)
+		If Not doc2 Is Nothing Then
+			Call docIndice.ReplaceItemValue(CAMPO_UNID2, doc2.UniversalID)
+		End If
+		
+		'Actualizo campos de tipo lectores y autores
+		If doc.GetItemValue(DBSGD_CAMPO_FCARATULA_ESTADO)(0)<>ESTADO_EN_TRANSITO And doc.GetItemValue(DBSGD_CAMPO_FCARATULA_SEGURIDAD)(0)<>SEGURIDAD_CONFIDENCIAL And doc.GetItemValue("sNotificados")(0)="" Then
+		%REM
+	Forall item In doc.Items
+				If item.Type = AUTHORS Or item.Type = READERS Then
+					Call docIndice.RemoveItem(item.Name)
+					Call item.CopyItemToDocument(docIndice, item.Name)
+				End If
+			End Forall
+			If Not doc2 Is Nothing Then
+				Forall item In doc2.Items
+					If item.Type = AUTHORS Or item.Type = READERS Then
+						Call docIndice.RemoveItem(item.Name)
+						Call item.CopyItemToDocument(docIndice, item.Name)
+					End If
+				End Forall
+			End If
+%END REM
+		Else 
+			Forall item In doc.Items
+				If item.Type = AUTHORS Or item.Type = READERS Then
+					Call docIndice.RemoveItem(item.Name)
+				End If
+			End Forall
+			If Not doc2 Is Nothing Then
+				Forall item In doc2.Items
+					If item.Type = AUTHORS Or item.Type = READERS Then
+						Call docIndice.RemoveItem(item.Name)
+					End If
+				End Forall
+			End If
+			'Ahora tengo que copiar los lectores del doc2 pero como texto
+			If doc.GetItemValue(DBSGD_CAMPO_FCARATULA_SEGURIDAD)(0)= SEGURIDAD_CONFIDENCIAL Then
+				Call docIndice.ReplaceItemValue("Lectores",doc2.GetItemValue("Lectores"))
+			End If
+		End If
+		
+		'Actualizo los otros campos indicados
+		If Not campos Is Nothing Then
+			For i=1 To campos.CantElem
+				nombre = campos.getElement(i)
+				Call docIndice.RemoveItem(nombre)
+				If doc.HasItem(nombre) Then
+					Call doc.GetFirstItem(nombre).CopyItemToDocument(docIndice, nombre)
+				End If
+			Next
+		End If
+		If Not campos2 Is Nothing And Not doc2 Is Nothing Then
+			For i=1 To campos2.CantElem
+				nombre = campos2.getElement(i)
+				Call docIndice.RemoveItem(nombre)
+				If doc2.HasItem(nombre) Then
+					Call doc2.GetFirstItem(nombre).CopyItemToDocument(docIndice, nombre)
+				End If
+			Next
+		End If
+		
+		ActualizarCamposBandejasIndice docIndice, doc, doc2
+		
+		'Grabo el documento de índice
+		Call docIndice.Save(True, False)
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice - Método ActualizarIndice","")
+		Exit Sub
+	End Sub
+	'********************************************************************************************************************************
+	Public Function castearTipoCampo(doc As NotesDocument,actuacion As NotesDocument, tipo As String,campo As String,subEstado As String) As String
+		On Error GoTo handler
+		Dim res As String
+		
+		If(tipo = "String")Then
+			res = doc.Getitemvalue(campo)(0)
+		ElseIf (tipo = "Fecha")Then
+			res = "<div style='display:none' value='" & Year(doc.Getitemvalue(campo)(0)) & Right("0"&CStr(Month(doc.Getitemvalue(campo)(0))),2) & Right("0" & CStr(Day(doc.Getitemvalue(campo)(0))),2)
+			res = res & "'></div>"& doc.Getitemvalue(campo)(0)
+		ElseIf (tipo = "Estado")Then
+			If(subEstado="10")Then
+				res = "En Transito"				
+			ElseIf (subEstado="15")Then 
+				res = "Para Actuar"
+			ElseIf (subEstado="20")Then 
+				res = "Reservado para: " & doc.Getitemvalue("sReservadoPor")(0)
+			ElseIf (subEstado="25" And actuacion.Getitemvalue("sUsuarioFirma")(0)<>"")Then
+				res = "Firmado por: " & actuacion.Getitemvalue("sUsuarioFirma")(0)
+			ElseIf (subEstado="25" And actuacion.Getitemvalue("sFirmantes")(0)="")Then
+				res = "Para Firmar: " & actuacion.Getitemvalue("sFirmantes")(0)
+			ElseIf (subEstado="30")Then
+				res = "Para dar pase"
+			ElseIf (subEstado="35")Then
+				res = "Cursado"
+			ElseIf (subEstado="40")Then
+				res = "Anulado"
+			End If
+
+		ElseIf (tipo = "Oficina" Or tipo = "Unidad")Then
+			Dim dbOrgan As NotesDatabase
+			Dim vUnidades As NotesView
+			Dim docUnidad As NotesDocument
+			Dim conf As New Configuracion
+			Dim nomUnidad As String
+			
+			Set dbOrgan = conf.ReferenciarBaseDeDatos(CLAVE_DBORGANIZACION)
+			Set vUnidades = dbOrgan.GetView("BusquedaUnixNro")
+			Dim vAux As New Vector(0)
+			vAux.values = Split(doc.Getitemvalue(campo)(0),"_")
+			If (vAux.cantElem>0) Then
+				nomUnidad = CStr(vAux.getElement(2))
+			Else
+				nomUnidad = doc.Getitemvalue(campo)(0)
+			End If
+			Set docUnidad = vUnidades.GetDocumentByKey(nomUnidad)
+			If Not docUnidad Is Nothing Then
+				res=docUnidad.GetItemValue("sUnidad")(0)
+			Else
+				res = doc.Getitemvalue(campo)(0)
+			End If
+		ElseIf (tipo = "Formula Caratula") Then
+			Dim auxRes As Variant
+
+			campo = Replace(campo,"$%semColon%$",";")
+			auxRes = Evaluate (campo,doc)
+
+				res = auxRes(0)
+
+		ElseIf (tipo = "Formula Actuacion") Then
+			res = Evaluate (campo,actuacion)
+		End If
+		castearTipoCampo = res
+
+		Exit Function 
+handler:
+		MsgBox "ClaseIndiceExpedientes - CastearTipoCampo: " & Error & "-" & Erl		
+		Exit Function 
+	End Function
+	'**************************************************************************************************'
+	%REM
+		Sub ActualizarCamposBandejasIndice
+		Description: Comments for Sub
+	%END REM
+	Public Sub ActualizarCamposBandejasIndice(docIndice As NotesDocument, caratula As NotesDocument,actuacion As NotesDocument)
+		On Error GoTo HANDLER
+		Dim camposTrabajo As New Vector(0),camposEntrada As New Vector(0),camposSalida As New Vector(0)
+		Dim nombresTrabajo As New Vector(0),nombresEntrada As New Vector(0),nombresSalida As New Vector(0)
+		Dim tiposTrabajo As New Vector(0)
+		Dim tiposEntrada As New Vector(0)
+		Dim tiposSalida As New Vector(0)
+		Dim c As New Configuracion
+		Dim i As Integer
+		
+
+		Set camposTrabajo = c.CamposBandejaTrabajo
+		Set camposEntrada = c.CamposBandejaEntrada
+		Set camposSalida  = c.CamposBandejaSalida
+		
+		Set nombresTrabajo = c.NombresBandejaTrabajo
+		Set nombresEntrada = c.NombresBandejaEntrada
+		Set nombresSalida  = c.NombresBandejaSalida
+		
+		Set tiposTrabajo = c.TiposBandejaTrabajo
+		Set tiposEntrada = c.TiposBandejaEntrada
+		Set tiposSalida  = c.TiposBandejaSalida
+		
+		'Reemplazo los campos correspondientes a cada bandeja
+		For i = 1 To camposTrabajo.cantElem
+			'If caratula.HasItem(camposTrabajo.getElement(i)) Then
+				Call docIndice.ReplaceItemValue("campoTrabajo"&i,castearTipoCampo(caratula,actuacion,tiposTrabajo.getElement(i),camposTrabajo.getElement(i),docIndice.getItemValue("sSubEstado")(0)))	
+			'End If
+			'If caratula.HasItem(camposEntrada.getElement(i)) Then
+				Call docIndice.ReplaceItemValue("campoEntrada"&i,castearTipoCampo(caratula,actuacion,tiposEntrada.getElement(i),camposEntrada.getElement(i),docIndice.getItemValue("sSubEstado")(0)))			
+			'End If
+			'If caratula.HasItem(camposSalida.getElement(i)) Then
+				Call docIndice.ReplaceItemValue("campoSalida"&i,castearTipoCampo(caratula,actuacion,tiposSalida.getElement(i),camposSalida.getElement(i),docIndice.getItemValue("sSubEstado")(0)))				
+			'End If
+			
+			Call docIndice.ReplaceItemValue("nombreTrabajo"&i,nombresTrabajo.getElement(i))
+			Call docIndice.ReplaceItemValue("nombreEntrada"&i,nombresEntrada.getElement(i))
+			Call docIndice.ReplaceItemValue("nombreSalida"&i,nombresSalida.getElement(i))
+			
+			Call docIndice.Replaceitemvalue("colOrdenacionTrabajo",c.colOrdenacionTrabajo())
+			Call docIndice.Replaceitemvalue("colOrdenacionEntrada",c.colOrdenacionEntrada())
+			Call docIndice.Replaceitemvalue("colOrdenacionSalida",c.colOrdenacionSalida())
+			
+			Call docIndice.Replaceitemvalue("ordenColTrabajo",c.OrdenColTrabajo())
+			Call docIndice.Replaceitemvalue("ordenColEntrada",c.OrdenColEntrada())
+			Call docIndice.Replaceitemvalue("ordenColSalida",c.OrdenColSalida())
+		Next
+		Exit Sub
+HANDLER:
+		MsgBox "ClaseIndiceExpedientes - ActualizarCamposBandejasIndice: " & Error & "-" & Erl		 
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice Expediente- Método ActualizarCamposBandejasIndice","")
+		Exit Sub
+	End Sub
+	'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	Public Sub ActualizarIndiceExpediente(oExpediente As Expediente)
+		On Error Goto HANDLER
+		Dim c As New Configuracion
+		Dim clave As String
+		Dim unidad As String
+		
+		Dim anio As String
+		Dim vCampos As Vector
+		Dim vCampos2 As Vector
+		
+		clave = oExpediente.Caratula.NroExp
+		unidad = oExpediente.Unidad.NroUnidad
+		anio = c.AnioNroDoc(clave, NUMERADOR_EXP)
+		
+		'Campos para la caratula
+		Set vCampos = New Vector(0)
+		Call vCampos.insertElement(DBSGD_CAMPO_FCARATULA_ESTADO, vCampos.CantElem+1)
+		Call vCampos.insertElement(DBSGD_CAMPO_FCARATULA_OFICINA_ACTUAL, vCampos.CantElem+1)
+		Call vCampos.insertElement(DBSGD_CAMPO_FCARATULA_ASUNTO, vCampos.CantElem+1)
+		Call vCampos.insertElement("cCantAct", vCampos.CantElem+1)
+		Call vCampos.insertElement(DBSGD_CAMPO_FCARATULA_TEMA, vCampos.CantElem+1)
+		Call vCampos.insertElement(DBSGD_CAMPO_FCARATULA_CAMPO_TIPO_RUTA, vCampos.CantElem+1)
+		Call vCampos.insertElement(DBSGD_CAMPO_FCARATULA_SEGURIDAD, vCampos.CantElem+1)
+		Call vCampos.insertElement("sListaAgregadosNro", vCampos.CantElem+1)
+		Call vCampos.insertElement("rTienePaquete", vCampos.CantElem+1)
+		Call vCampos.insertElement("PaqueteEnAgregado", vCampos.CantElem+1)
+		Call vCampos.insertElement("sSolicitante", vCampos.CantElem+1)
+		Call vCampos.insertElement("ccFechaPase", vCampos.CantElem+1)
+		Call vCampos.insertElement("sNotificados", vCampos.CantElem+1)
+		Call vCampos.insertElement("sNotifAcusaron", vCampos.CantElem+1)
+		Call vCampos.insertElement("ccOficinaAnterior", vCampos.CantElem+1)
+		Call vCampos.insertElement("sUrgenteActs", vCampos.CantElem+1)
+		Call vCampos.insertElement("sNrosResol", vCampos.CantElem+1)
+		
+		'Campos para la ultima actualcion
+		Set vCampos2 = New Vector(0)
+		Call vCampos2.insertElement(DBSGD_CAMPO_FACTUACION_OFICINA, vCampos2.CantElem+1)
+		Call vCampos2.insertElement(DBSGD_CAMPO_FACTUACION_FECHA_REC, vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sDevueltaFlag", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sSubEstado", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sReservadoPor", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sFirma", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sFirmantes", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sUsuarioFirma", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sExtracto", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("ccnNroAct", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sExpiro", vCampos2.CantElem+1)
+		Call vCampos2.insertElement("sProxExpirar", vCampos2.CantElem+1)
+		
+		
+		Call ActualizarIndiceDocs(clave, unidad, anio, oExpediente.Caratula.Document, vCampos, oExpediente.LastActuacion.Document, vCampos2)
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndiceExpediente - ActualizarIndiceExpediente: " & Error$ & " " & Erl 
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice Expediente- Método ActualizarIndiceExpediente","")
+		Exit Sub
+	End Sub
+'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	Public Sub BorrarIndice(clave As String)
+		On Error Goto handler
+		
+		Dim vIndices As NotesView
+		Dim docIndice As NotesDocument
+		Dim key(1 To 2) As String
+		
+		'Busco el índice
+		Set vIndices = dbIndice.GetView(VISTA_DOCSxMODULO_CLAVE)
+		key(1) = modulo
+		key(2) = clave
+		Set docIndice = vIndices.GetDocumentByKey(key,True)
+		Call docIndice.Remove(True)
+		
+		Exit Sub
+HANDLER:
+		Msgbox "ClaseIndiceExpediente - BorrarIndice: " & Error$ & " " & Erl
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Indice Expediente- Método BorrarIndice","")
+		Exit Sub
+	End Sub
+End Class

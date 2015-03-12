@@ -1,0 +1,156 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "ClaseIndice"
+Use "UnidadExp Class"
+Use "ClaseSolicitud"
+Use "ClaseConfDocumentos"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+Use "Clase Documento 2.0"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class IndiceDoc As Indice
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const VISTA_DOCSxMODULO_CLAVE			= "SearchDocsxModuloClave"
+Private Const FORM_INDICE					= "Indice"
+Private Const NOMBRE_APLICACION				= "Documentos"
+ 
+Private Const CAMPO_MODULO					= "modulo"
+Private Const CAMPO_CLAVE					= "clave"
+Private Const CAMPO_AÑO						= "año"
+Private Const CAMPO_UNIDAD					= "unidad"
+Private Const CAMPO_NOMBRE_UNIDAD				= "nombreUnidad"
+Private Const CAMPO_BASE						= "base"
+Private Const CAMPO_UNID						= "unid"
+Private Const CAMPO_UNID2					= "unid2"
+
+Private Const CAMPO_NUMERO					= "numeroDocumento"
+Private Const CAMPO_ESTADO					= "estado"
+Private Const CAMPO_FECHA_MOD					= "fechaModificacion"
+Private Const CAMPO_USUARIO					= "usuario"
+Private Const CAMPO_TITULO					= "titulo"
+Private Const CAMPO_ASIGNADO_PARA				= "asignadoPara"
+Private Const CAMPO_DOC_LISTA_ASIGNACION		= "asignadoPara"
+Private Const CAMPO_DOC_AUTORES				= "autores"
+
+Private Const CAMPO_FIRMADO_POR					= "sUsuarioFirma"
+Private Const CAMPO_PUBLICADO_POR				= "publicadoPor"
+Private Const CAMPO_ARCHIVADO_POR				= "archivadoPor"
+Private Const CAMPO_RESERVADO_PARA				= "reservadoPara"
+Private Const CAMPO_PARA_REVISAR_POR			= "paraRevisarPor"
+
+Private Const CAMPO_TIPO_DOC					= "tipoDoc"
+
+
+
+Public Class IndiceDoc As Indice
+	
+'******************************************************************************************************************	
+	Public Sub New(), Indice(Ucase(NOMBRE_APLICACION))
+		On Error Goto HANDLER
+		'no hace nada, es para probar un error	
+		Dim comodin As Integer
+		Exit Sub
+HANDLER:
+		'Msgbox "Error en la ClaseIndice - New: " & Error & " " & Err & " " & Erl
+		Exit Sub
+	End Sub
+'******************************************************************************************************************	
+	Public Sub ActualizarIndice (clave As String, unidad As String, año As String, doc As NotesDocument, campos As Vector)
+		'Call ActualizarIndiceDocs (clave, unidad, año, doc, campos, Nothing, Nothing)
+	End Sub
+	
+'******************************************************************************************************************	
+	Public Sub ActualizarIndiceDocumentos(doc As Notesdocument)
+		
+		On Error Goto handler
+		Dim vIndices As NotesView
+		Dim docIndice As NotesDocument
+		Dim key(1 To 2) As String
+		Dim nombre As String
+		Dim i As Long
+		
+		Dim Sol As SolicitudDoc
+		Dim año As String
+		Dim unidad As String
+		Dim clave As String
+		
+		Dim accion As String
+		Dim confDoc As ConfDocumentos
+		Dim oUnidad As UnidadDoc
+		Dim unidades As New Vector(0)
+		Set confDoc=New ConfDocumentos()
+		
+		
+		
+		año = Cstr(Year(doc.GetItemValue("fFechaCreacion")(0)))
+		unidad= doc.GetItemValue("unidad")(0)
+		clave=doc.getItemValue("numeroDocumento")(0)'El uid
+		
+		'Msgbox "                                  el uid que viene es: " & clave
+		'Busco el índice
+		Set vIndices = dbIndice.GetView(VISTA_DOCSxMODULO_CLAVE)
+		key(1) = modulo
+		key(2) = clave
+		Set docIndice = vIndices.GetDocumentByKey(key,True)
+		
+		'Si no existe el índice, lo creo
+		If docIndice Is Nothing Then
+			Set docIndice = dbIndice.CreateDocument
+			Call docIndice.ReplaceItemValue("Form", FORM_INDICE)
+			Call docIndice.ReplaceItemValue(CAMPO_MODULO, modulo)
+			Call docIndice.ReplaceItemValue(CAMPO_CLAVE, clave)
+		End If
+		
+		'Actualizo siempre el año, la unidad y la campos del documento que tienen info dinamica
+		If Len(año) < 4 Then
+			año = Cstr(Cint(año) + 2000)
+		End If
+		
+		If Cstr(doc.GetItemValue("estado")(0))="5" Then
+			Set oUnidad = New UnidadDoc(unidad)
+			Set unidades = oUnidad.unidadesSuperiores(False)
+			Call unidades.insertelement(unidad,unidades.cantElem+1)
+			Call docIndice.ReplaceItemValue(CAMPO_UNIDAD,unidades.values)
+		Else
+			Call docIndice.ReplaceItemValue(CAMPO_UNIDAD, unidad)
+		End If
+		
+		Call docIndice.ReplaceItemValue(CAMPO_TIPO_DOC, doc.GetItemValue("formulario"))
+		Call docIndice.ReplaceItemValue(CAMPO_AÑO, Cstr(año))
+		Call docIndice.ReplaceItemValue(CAMPO_BASE, doc.ParentDatabase.FilePath)
+		Call docIndice.ReplaceItemValue(CAMPO_UNID, doc.UniversalID)
+		'**************************************************************************
+		
+		Call docIndice.ReplaceItemValue(CAMPO_NUMERO, doc.GetItemValue("numeroExternoDocumento")(0))
+		Call docIndice.ReplaceItemValue("numAbrirDoc", doc.GetItemValue("numeroDocumento")(0))
+		Call docIndice.ReplaceItemValue("numeroExternoDocumento", doc.GetItemValue("numeroExternoDocumento")(0))
+		Call docIndice.ReplaceItemValue("fFechaCreacion", doc.GetItemValue("fFechaCreacion")(0))
+		Call docIndice.ReplaceItemValue("asunto", doc.GetItemValue("asunto")(0))
+		Call docIndice.ReplaceItemValue("numeroDocumento",doc.GetItemValue("numeroDocumento")(0))
+		Call docIndice.ReplaceItemValue(CAMPO_ESTADO, doc.GetItemValue("estado")(0))
+		Call docIndice.ReplaceItemValue(CAMPO_FECHA_MOD, doc.GetItemValue("fechaM")(0))
+		'Call docIndice.ReplaceItemValue(CAMPO_TITULO, doc.getItemValue("Titulo")(0))
+		Call docIndice.ReplaceItemValue(CAMPO_TITULO, doc.getItemValue("Asunto")(0))
+		Call docIndice.ReplaceItemValue(CAMPO_FIRMADO_POR, doc.GetItemValue(CAMPO_FIRMADO_POR))	
+		Call docIndice.ReplaceItemValue(CAMPO_PUBLICADO_POR, doc.GetItemValue("finalizadoPor")(0))	
+		Call docIndice.ReplaceItemValue(CAMPO_ARCHIVADO_POR, doc.getItemValue(CAMPO_ARCHIVADO_POR)(0))
+		Call docIndice.ReplaceItemValue(CAMPO_RESERVADO_PARA, doc.GetItemValue(CAMPO_RESERVADO_PARA))
+		Call docIndice.ReplaceItemValue(CAMPO_PARA_REVISAR_POR, doc.GetItemValue(CAMPO_PARA_REVISAR_POR))
+		
+		'Al campo autores le paso lo que tengo en la lista de asignacion 
+		Call docIndice.ReplaceItemValue(CAMPO_DOC_AUTORES, doc.GetItemValue(CAMPO_DOC_AUTORES))
+		'Actualizo campos de tipo lectores y autores
+		
+		'Grabo el documento de índice
+		Call docIndice.Save(True, False)
+		Exit Sub
+handler:
+		Call RegistrarYGenerarError2(Err, Error$, "IGDOC - DOCUMENTOS" , "ClaseIncideDocumentos 2.0 - Sub ActualizarIndiceDocumentos", erl, "")
+		
+	End Sub
+
+End Class

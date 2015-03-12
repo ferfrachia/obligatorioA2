@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005AFB9A" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="13a" sequence="41" unid="41F244B151FA298803256B290064770F">
+<created><datetime>20011221T151720,79-03</datetime></created>
+<modified><datetime>20150311T133818,41-03</datetime></modified>
+<revised><datetime>20150311T133818,40-03</datetime></revised>
+<lastaccessed><datetime>20150311T133818,41-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T133346,72-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$POID"><datetime dst="true">20100312T164905,61-02</datetime></item>
+<item name="$TITLE" sign="true"><text>NumeradorClient</text></item>
+<item name="$DesignerVersion" sign="true"><text>7</text></item>
+
+</note>

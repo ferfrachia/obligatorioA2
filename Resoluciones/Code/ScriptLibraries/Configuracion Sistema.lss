@@ -1,0 +1,489 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía
+
+%END REM
+
+'******************************************************************************************************************	
+'* 
+'*									CLASS <CONFIGURACION>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'*
+'*		New()
+'*			Constructor de la clase 
+'*
+
+
+'******************************************************************************************************************
+
+Option Declare
+
+
+Use "NumeradorClient"
+Use "Errores Generales"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigSistema
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PRIVADAS
+Private Const CAMPO_RUTA_DB												= "sPath"
+Private Const CAMPO_SERVIDOR_DB										= "sServer"
+Private Const CAMPO_HOST_DB 												= "sHost"
+Private Const CAMPO_CLAVE_DB												= "sClave"
+Private Const CAMPO_CREACION_AUDITORIA							="dFechaCreacionAuditoria"
+Private Const CAMPO_CLAVE_CREACION_AUDITORIA					="sClaveCreacionAuditoria"
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class ConfigSistema
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private sNombreForm As String
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	Private vKeyDB As Vector
+	Private vServer As Vector
+	Private vHost As Vector
+	Private vFilePath As Vector
+	Private vFormNum As Vector	
+	Private vKeyNum As Vector
+	Private dbAdmin As NotesDatabase
+	
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR	
+	
+'******************************************************************************************************************		
+	Public Sub new(nombreForm As String)
+		On Error Goto HANDLER
+		
+		Dim docPerfilIGDoc As NotesDocument
+		
+		'Referencio Variables globales
+		sNombreForm = nombreForm
+		
+		Set ses = New NotesSession		
+		Set docPerfilIGDoc = ses.CurrentDatabase.GetProfileDocument("IGDocConfig")
+		'Se carga el documento de profile
+		
+		Set dbAdmin = ses.GetDatabase(ses.CurrentDatabase.Server,docPerfilIGDoc.GetItemValue("sPathAdmin")(0))
+		
+		Set docConfiguracion = dbAdmin.GetProfileDocument(nombreForm)
+		
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vHost = New Vector(0)
+		Set vFilePath = New Vector(0)
+		Set vFormNum = New Vector(0)
+		Set vKeyNum = New Vector(0)
+		
+		vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+		If docConfiguracion.HasItem(CAMPO_SERVIDOR_DB) Then
+			vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+		Else
+			vServer.values = docConfiguracion.GetItemValue("sServidor")
+		End If
+		vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+		If docConfiguracion.HasItem(CAMPO_RUTA_DB) Then
+			vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB)
+		Else
+			vFilePath.values = docConfiguracion.getItemValue("sRuta")
+		End If
+		
+		'En caso de que nunca haya sido editado se setea el campo form para poderse editar
+		If Not docConfiguracion.HasItem("Form") Then
+			docConfiguracion.ReplaceItemValue "Form",nombreForm
+		End If
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método new","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PUBLICOS
+	
+'******************************************************************************************************************	
+	
+	Public Sub Save()
+	'Salva la configuracion del sistema y la copia a todas las bases de datos
+		On Error Goto HANDLER
+		
+		Dim dbSetear As NotesDatabase,docDestino As NotesDocument, srv As String, path As String
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_CLAVE_DB,vKeyDB.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_SERVIDOR_DB,vServer.Values)
+		Call docConfiguracion.ReplaceItemValue("sServidor",vServer.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_RUTA_DB,vFilePath.Values)
+		Call docConfiguracion.ReplaceItemValue("sRuta",vFilePath.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_HOST_DB,vHost.Values)
+		
+		If Not docConfiguracion.Save(False,False) Then _
+		Error ERRORCONF_INTERNAL_ERROR,"Fallo al salvar el documento de configuración."
+		
+		'Actualizo el profile en las demás bases de datos
+		Forall ClaveBd In vKeyDB.Values
+			If Ucase(ClaveBd) <> Ucase(CLAVE_NAMES) Then  'si no es el names
+				'Seteo la base de datos
+				srv = Me.ServidorDomino(ClaveBd)
+				path = Me.BaseDeDatos(ClaveBd)
+				Set dbSetear = New NotesDatabase("","")
+				If Not dbSetear.Open (srv,path)Then 
+					Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+ClaveBd
+				Else
+					'Actualizo su profile
+					Set docDestino = dbSetear.GetProfileDocument(sNombreForm)
+					If Not docDestino Is Nothing Then
+						Call GuardarProfile(docDestino,docConfiguracion)
+					End If
+				End If
+			End If
+		End Forall
+		
+		'Nota: este método debería actualizar también las acl's de las bases de datos con los administradores nuevos
+		'En principio no lo hacemos porque los administradores solo se agregan desde la interfase y allí se actualizan las acl's
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método Save","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Public Property Get NombreFormularioConf As String
+		On Error Goto HANDLER
+		NombreFormularioConf = sNombreForm
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get NombreFormularioConf","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get TiempoMaximoAuditoria As Integer
+		On Error Goto handler
+		TiempoMaximoAuditoria = docConfiguracion.GetItemValue("nTiempoVidaAuditoria")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get TiempoMaximoAuditoria","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Sub addAuditoriaDate(sClave As String,dCreacion As Variant)
+		On Error Goto HANDLER
+		
+		'dCreacion es de tipo Date, sClave=clave de la base
+		Dim itClaves As notesItem,itFechas As notesItem,aFechas As Variant
+		
+		If docConfiguracion.hasItem(CAMPO_CLAVE_CREACION_AUDITORIA) Then
+			Set itClaves=docConfiguracion.getFirstItem(CAMPO_CLAVE_CREACION_AUDITORIA)
+		Else
+			Set itClaves=New notesItem(docConfiguracion,CAMPO_CLAVE_CREACION_AUDITORIA,"")	
+		End If
+		itClaves.appendToTextlist sClave
+		If docConfiguracion.hasItem(CAMPO_CREACION_AUDITORIA) Then
+			Set itFechas=docConfiguracion.getFirstItem(CAMPO_CREACION_AUDITORIA)
+		Else
+			Set itFechas=New notesItem(docConfiguracion,CAMPO_CREACION_AUDITORIA,"")		
+		End If
+		aFechas=itFechas.values
+		Redim Preserve aFechas(Lbound(itClaves.values) To Ubound(itClaves.values))
+		aFechas(Ubound(itClaves.values))=dCreacion
+		itFechas.values=aFechas
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método addAuditoriaDate","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************				
+	
+	Public Property Get BaseDeDatos(Byval clave As String) As String
+	' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		BaseDeDatos = vFilePath.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set BaseDeDatos(Byval clave As String) As String
+	' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vFilePath.ReplaceElement(pos,BaseDeDatos)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Claves() As vector
+	' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = docConfiguracion.GetItemValue(CAMPO_CLAVE_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get Claves","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get ServidorDomino(Byval clave As String) As String
+	' Dada una clave retorna el Servidor. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		ServidorDomino = ObtenerNombreServidor(vServer.getElement(pos))
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get ServidorDomino(" & clave & ")","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set ServidorDomino(Byval clave As String) As String
+	' Dada una clave setea el Servidor. Si no lo genera un error
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vServer.ReplaceElement(pos,ServidorDomino)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "ServidorDomino: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set ServidorDomino","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Host(Byval clave As String) As String
+	' Dada una clave retorna el Host. Si lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		Host = vHost.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Get Host","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Set Host(Byval clave As String) As String
+	' Dada una clave setea el Host. Si no retorna un error ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vHost.ReplaceElement(pos,Host)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "Host: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set Host","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Interoperabilidad() As Vector
+	'Recibe un vector de vectores con las columnas de la tabla
+	'Setea toda la informacion de la tabla de interoperabilidad con dichos vectores
+		On Error Goto HANDLER
+		
+		vKeyDB.Values = Interoperabilidad.GetElement(1).Values
+		vServer.Values = Interoperabilidad.GetElement(2).Values
+		vHost.Values = Interoperabilidad.GetElement(3).Values
+		vFilePath.Values = Interoperabilidad.GetElement(4).Values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Propiedad Set Interoperabilidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Function insertLineaInteroperabilidad(vIns As Vector,nColOrdenar As Integer)
+	'Inserta en forma ordenada segun la clave si nColOrdenar<>0
+	'nColOrdenar es la columna por la cual ordenar
+	'Si nColOrdenar=0 inserta al final
+		On Error Goto HANDLER
+		Dim posIns As Long
+		
+		If nColOrdenar<>0 Then
+			Select Case(nColOrdenar)
+			Case 1:
+				posIns=vKeyDB.InsertPos(vIns.getElement(1),True)
+			Case 2:
+				posIns=vServer.InsertPos(vIns.getElement(2),True)
+			Case 3:
+				posIns=vHost.InsertPos(vIns.getElement(3),True)
+			Case 4:
+				posIns=vFilePath.InsertPos(vIns.getElement(4),True)
+			End Select			
+		Else
+			posIns = vKeyDB.cantElem + 1
+		End If
+		vKeyDB.insertElement vIns.getElement(1),posIns
+		vServer.insertElement vIns.getElement(2),posIns
+		vHost.insertElement vIns.getElement(3),posIns
+		vFilePath.insertElement vIns.getElement(4),posIns
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método insertLineaInteroperabilidad","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
+		'Retorna una referencia a la base de datos que recibe como parámetro.
+		'En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+		On Error Goto HANDLER
+		Dim pos As Long
+		
+		Set ReferenciarBaseDeDatos = Nothing
+		If vKeyDB.isMember(Ucase(clave), pos, False) Then _
+		Set ReferenciarBaseDeDatos = New NotesDatabase(ObtenerNombreServidor(vServer.getElement(pos)), vFilePath.getElement(pos))
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método ReferenciarBaseDeDatos","")
+		Exit Function
+		
+	End Function
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+'******************************************************************************************************************		
+	Private Function ObtenerNombreServidor(Byval sValor As String) As String
+	' Retorna el verdadero valor del servidor en caso que sea una clave
+		On Error Goto HANDLER
+		
+		If sValor = CONF_SERVIDOR_ACTUAL Then
+			ObtenerNombreServidor = ses.CurrentDatabase.Server
+		Elseif sValor = CONF_SERVIDOR_LOCAL Then
+			ObtenerNombreServidor = ""
+		Else
+			ObtenerNombreServidor = sValor
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Procedimiento ObtenerNombreServidor","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Sub GuardarProfile(docDestino As NotesDocument, docOrigen As NotesDocument)
+	'Carga los campos del docDestino con los del docOrigen
+		On Error Goto HANDLER
+		
+		Call docDestino.ReplaceItemValue("$PublicAccess", "1")
+		
+		'Campos de auditoría
+		Call docDestino.ReplaceItemValue("nTiempoVidaAuditoria",docOrigen.GetItemValue("nTiempoVidaAuditoria"))
+		Call docDestino.ReplaceItemValue("sClaveCreacionAuditoria",docOrigen.GetItemValue("sClaveCreacionAuditoria"))
+		Call docDestino.ReplaceItemValue("dFechaCreacionAuditoria",docOrigen.GetItemValue("dFechaCreacionAuditoria"))
+		Call docDestino.ReplaceItemValue("rLogTOperaciones",docOrigen.GetItemValue("rLogTOperaciones"))
+		
+		'Campos de interoperabilidad
+		Call docDestino.ReplaceItemValue("sClave",docOrigen.GetItemValue("sClave"))
+		Call docDestino.ReplaceItemValue("sHost",docOrigen.GetItemValue("sHost"))
+		Call docDestino.ReplaceItemValue("sServer",docOrigen.GetItemValue("sServer"))
+		Call docDestino.ReplaceItemValue("sPath",docOrigen.GetItemValue("sPath"))
+		Call docDestino.ReplaceItemValue("sAccesoAnonimo", docOrigen.GetItemValue("sAccesoAnonimo"))
+		
+		'Guardo el doc
+		If Not docDestino.save(False, False) Then Error ERROR_CANT_SAVE_DOCUMENT, MSG_ERROR_CANT_SAVE_DOCUMENT
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Procedimiento GuardarProfile","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************						
+	
+End Class
+'******************************************************************************************************************

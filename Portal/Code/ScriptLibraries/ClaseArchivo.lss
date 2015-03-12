@@ -1,0 +1,336 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, no se modificó la que ya existía, basada en la que estaba en Motor Gestión Documental
+
+%END REM
+
+Option Declare
+
+Use "Errores Generales" 
+Use "ConfEE 1.0"
+Use "FuncionesGenerales"
+Use "ConstantesSistema"
+Use "Errores Generales"
+Use "ConstantesDBGestionDoc"
+
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Archivo
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Const NOMBRE_MODULO				="Archivo"
+Const NUMERO_PRIMER_BASE			=1
+Const MAX_NUMERO_BASE_NOT_FOUND	=-1
+
+Const VISTA_ARCHIVOS_POR_ID		="ArchivosPorId"
+
+Const EXPEDIENTE_PRINCIPAL		=True
+Const EXPEDIENTE_AGREGADO		=False
+
+Public Class Archivo
+	Public db As NotesDatabase
+	Private nroExp As String
+	
+	
+	Public Property Get ViewArchivosId As notesView
+		On Error Goto errorHandler
+		
+		Set ViewArchivosId=db.GetView(VISTA_ARCHIVOS_POR_ID)
+		If ViewArchivosId Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " : " & VISTA_ARCHIVOS_POR_ID
+		End If
+		
+		Exit Property
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Archivo - Property Get ViewArchivosId ", "")	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Private Function getDBGestion(sNroExp) As notesDatabase
+		On Error Goto HANDLER	
+		
+		
+		Dim c As New Configuracion,dbGestion As NotesDatabase
+		Set dbGestion = c.BaseDeDatosNroDoc(sNroExp,NUMERADOR_EXP,CLAVE_DBTEMPLATEGESTIONDOC,CLAVE_DBGESTIONDOC)
+		If dbGestion Is Nothing Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN & CLAVE_DBGESTIONDOC & " " & sNroExp
+		
+		Set getDBGestion=dbGestion
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Archivo - Método getDBGestion","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	
+	
+	Private Sub NotificarBaseCreada(destino As Variant)
+		On Error Goto errorHandler
+		
+		If Isempty(destino) Then
+			Exit Sub
+		End If
+		
+		Dim mail As notesDocument
+		Set mail=New notesDocument(db)
+		mail.form="Memo"
+		mail.Principal="Sistema de Expedientes Electrónico"
+		mail.subject="Atención: Nueva base de Archivo de Expedientes " 
+		
+		Dim rti As NotesRichTextItem
+		Set rti=New NotesRichTextItem(mail,"Body")
+		rti.AppendText  "Se ha creado una nueva base de Archivo. " 
+		rti.AddNewline 1
+		rti.AppendText  "Por favor, cree el índice de la misma." 
+		rti.AddNewline 2
+		rti.AppendText "Servidor: " & db.Server
+		rti.AddNewline 1
+		rti.AppendText "Archivo: " & db.FilePath 
+		
+		
+		mail.send False,destino
+		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Archivo - NotificarBaseCreada ", "")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Private Sub crearBase(c As Configuracion,anio As String) 		'Teminar busqueda de base en Conf
+		On Error Goto errorHandler
+		Dim template As New notesDatabase("","")
+		Dim sPath As String,sFile As String,server As String
+		Dim session As notesSession,ssDB As notesDatabase
+		
+		sPath=""
+		If template.open(c.ServidorDomino(CLAVE_DBARCHIVO_TEMPLATE),c.BaseDeDatos(CLAVE_DBARCHIVO_TEMPLATE)) Then
+			If db Is Nothing Then
+				Set session = New notesSession
+				Set ssDB=session.currentDatabase
+				server=ssDB.server
+				sPath=Strleft(ssDB.FilePath,ssDB.FileName)
+			Else								
+				server=db.server
+				sPath=Strleft(db.FilePath,db.FileName)
+			End If
+			sFile=NOMBRE_MODULO & anio & ".nsf"				
+			If sPath<>"" Then
+				Set db=template.Createcopy(server,sPath  & sFile)		
+			Else
+				Set db=template.Createcopy(server,sFile)		
+			End If			
+			
+			
+			If db.isOpen Then
+				db.Title=NOMBRE_MODULO & " " & anio 
+				'Agregar a la configuracion
+				Dim vIns As New Vector(0),nColOrd As Integer,serverName As NotesName
+				Set serverName=New notesname(db.server)
+				nColOrd=1
+				vIns.insertElement CLAVE_DBARCHIVO & anio , 1
+				Dim nom As New NotesName(db.server)
+				vIns.insertElement  nom.Abbreviated, 2
+				vIns.insertElement c.Host(CLAVE_DBARCHIVO_TEMPLATE) , 3  
+				vIns.insertElement db.filepath , 4
+				c.insertLineaInteroperabilidad vIns,nColOrd
+				c.save
+				
+				notificarBaseCreada c.Administradores.values
+			Else
+				Error ERROR_DB_NOT_CREATED,MSG_ERROR_DB_NOT_CREATED & " " & sPath &  sFile
+			End If	
+		Else
+			Error ERROR_DB_NOT_CREATED,MSG_ERROR_DB_NOT_CREATED  & " " & NOMBRE_MODULO
+		End If
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Archivo - CrearBase ", "")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	
+	
+	
+	
+	Private Function ExisteBase(anio As String)
+		On Error Goto errorHandler
+		
+		Dim c As New Configuracion
+		
+		ExisteBase=False
+		Forall cl In c.claves.values
+			If cl=CLAVE_DBARCHIVO & anio Then
+				ExisteBase=True
+				Exit Function
+			End If
+		End Forall	
+		
+		
+		
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Archivo - ExisteBase ", "")
+		Exit Function	
+	End Function
+	
+	
+'******************************************************************************************************************	
+	
+	
+	Public Sub new(sNroExp As String)
+		On Error Goto errorHandler
+		
+		Me.NroExp=sNroExp
+		
+		Dim c As New Configuracion, srv As String, path As String
+		Dim sClave As String
+		
+		
+		
+		Dim anio As String
+%REM
+		If Cint(c.AnioNroDoc(sNroExp,NUMERADOR_EXP)) >=90 Then
+			
+		End If
+			anio="19" & c.AnioNroDoc(sNroExp,NUMERADOR_EXP)			
+		Else
+			anio="20" & c.AnioNroDoc(sNroExp,NUMERADOR_EXP)	
+		End If
+%END REM
+		
+		anio=c.AnioNroDoc(sNroExp,NUMERADOR_EXP)
+		
+		
+		If Not ExisteBase(anio) Then
+			crearBase c,anio
+		Else
+			sClave=CLAVE_DBARCHIVO & anio
+			srv = c.ServidorDomino(sClave)
+			path = c.BaseDeDatos(sClave)
+			Set db = New NotesDataBase ("","")		
+			If Not db.Open (srv,path) Then
+				Error ERROR_DB_NOT_OPEN,MSG_ERROR_DB_NOT_OPEN & " - " & NOMBRE_APLICACION
+			End If			
+		End If		
+		
+		
+		
+		Exit Sub
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Archivo - New ", "")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Function getArchivo(sNroExp As String) As NotesDocumentCollection
+		'sNroExp  es el número de Expediente
+		'Tener en cuenta que esta función solo obtiene el expediente en estado Archivado pero no sus Agregados
+		On Error Goto errorHandler
+		
+		Set getArchivo=Me.ViewArchivosId.GetAllDocumentsByKey(sNroExp,True)
+		
+		Exit Function
+errorHandler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION, " Clase Archivo - getArchivo ", "")
+		Exit Function	
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Sub ExtraerArchivo(sNroExp As String,bPrincipal As Integer)
+		'dbG es la base de Gestión destino según el número
+		'bPrincipal=true indica un expediente Principal que esta en estado Archivado(con o sin Agregados)
+		'bPrincipal=false indica un expediente Agregado que esta en estado Agregado(con o sin Agregados)
+		On Error Goto HANDLER
+		
+%REM
+VISTA_ARCHIVOS_POR_ID: 
+Esta vista es solo para obtener el expediente principal del Archivo.
+Solo selecciona los que estan en estado Archivado(Caratula y sus Actuaciones)
+Pero restan los posibles expedientes agregados a éste principal, los cuales deben estar 
+en la misma base de Archivo que el Principal
+
+DBSGD_VISTA_AGREGADOS:
+Esta vista categoriza Caratulas y Actuaciones, por Número de Expediente
+Pero solo selecciona las Carátulas que estan en estado Agregado
+Quizas se podría haber utilizado una vista ya definida que agrupe documentos segun 
+el número de Expediente, pues no mimportaría el estado, lo que importa es el numero 
+de Expediente
+
+
+DBSGD_VISTA_CAR_DESC_DESA:
+Esta vista se usa en las operaciones RecibirDescendientes y DesagregarDescendientes
+Esta vista solo selecciona las Carátulas que tienen al menos dos padres de Agregación.
+La idea es obtener cuales son los expedientes Descendientes no directos(no hijos) de un
+expediente dato. O sea los expedientes cuyo padre actual en la agregación es el expediente
+principal y cuyo padre anterior es el expeiente a desagregar.
+%END REM
+		
+		
+		Dim dbG As NotesDatabase
+		Set dbG = getDBGestion(sNroExp)
+		
+		
+		Dim view As NotesView
+		Select Case(bPrincipal)
+		Case EXPEDIENTE_PRINCIPAL
+			Set view=Me.db.GetView(VISTA_ARCHIVOS_POR_ID)
+			If view Is Nothing Then
+				Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " : " & VISTA_ARCHIVOS_POR_ID
+			End If
+		Case Else	'EXPEDIENTE_AGREGADO
+			Set view=Me.db.GetView(DBSGD_VISTA_AGREGADOS) 
+			If view Is Nothing Then
+				Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND & " : " & DBSGD_VISTA_AGREGADOS
+			End If
+		End Select
+		
+		
+		
+		Dim colDoc As notesDocumentCollection
+		Set colDoc=view.GetAllDocumentsByKey(sNroExp,True)
+		
+		
+		
+		If colDoc.Count > 0 Then
+			Dim doc As notesDocument,i As Integer,newDoc As notesdocument
+			
+			'Saco
+			For i= 1 To colDoc.Count
+				Set doc=colDoc.GetNthDocument(i)
+				Set newDoc=New notesdocument(dbG)
+				doc.CopyAllItems newDoc
+				newdoc.Save True,False
+				Set newdoc=Nothing			
+			Next
+			
+			'Elimino los viejos archivados
+			For i= 1 To colDoc.Count
+				Set doc=colDoc.GetNthDocument(i)
+				doc.Remove True
+			Next			
+			
+		End If
+		
+		dbG.UpdateFTIndex( True)
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Expediente - Método Extraer Archivo","")
+		Exit Sub	
+	End Sub
+End Class

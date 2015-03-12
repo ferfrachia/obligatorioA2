@@ -1,0 +1,278 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'*
+'*	 								CLASS <PASO>
+'*
+'******************************************************************************************************************	
+%REM
+Esta clase representa un objeto PASO de una ruta
+Este objeto no "conoce" lo que es el NotesDocument ni nada de eso. El NotesDocument es manejado por la clase ruta	
+
+CONSTRUCTOR
+new () - Solo crea el objeto en memoria. Deben setearse sus variables utilizando las propiedades set
+
+PROPIEDADES
+Get/Set CodTema () As Integer
+Get/Set VersionRuta () As Integer
+Get Set NroPaso () As Integer
+Get/Set Unidad () As String
+Get/Set Tiempo () As Integer
+Get/Set Procedimiento () As String
+Get/Set Tipo () As String
+%END REM
+
+
+Option Declare
+Use "FuncionesGenerales"   
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Paso
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'CONSTANTES PÚBLICAS
+'ERRORES GENERADOS
+'CONSTANTES PRIVADAS
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <PASO>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************	
+Public Class Paso
+'******************************************************************************************************************		
+	
+	'MIEMBROS PRIVADOS
+	Private codtemaP As Integer
+	Private versionrutaP As Integer
+	Private nropasoP As Integer
+	Private unidadP As String
+	Private tiempoP As Integer
+	Private procedimientoP As String
+	Private tipoP As String
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR
+	
+	Public Sub new()
+		
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'PROPIEDADES
+	
+	Public Property Set CodTema () As Integer
+		
+		On Error Goto HANDLER
+		
+		codtemaP = CodTema
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Set CodTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get CodTema () As Integer
+		
+		On Error Goto HANDLER
+		
+		CodTema = codtemaP	
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Get CodTema","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set VersionRuta () As Integer
+		
+		On Error Goto HANDLER
+		
+		versionrutaP = VersionRuta
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Set VersionRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get VersionRuta () As Integer
+		
+		On Error Goto HANDLER
+		
+		VersionRuta = versionrutaP	
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Get VersionRuta","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set NroPaso () As Integer
+		
+		On Error Goto HANDLER
+		
+		nropasoP = NroPaso
+		
+		Exit Property		
+HANDLER:		
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Set NroPaso","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NroPaso () As Integer
+		
+		On Error Goto HANDLER
+		
+		NroPaso = nropasoP
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Get NroPaso","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Unidad () As String
+		
+		On Error Goto HANDLER
+		
+		unidadP = Unidad
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Set Unidad","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Unidad () As String
+		
+		On Error Goto HANDLER
+		
+		Unidad = unidadP	
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Get Unidad","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Tiempo () As Integer
+		
+		On Error Goto HANDLER
+		
+		tiempoP = Tiempo
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Set Tiempo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Tiempo () As Integer
+		
+		On Error Goto HANDLER
+		
+		Tiempo = tiempoP	
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Get Tiempo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Procedimiento () As String
+		
+		On Error Goto HANDLER
+		
+		procedimientoP = Procedimiento
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Set Procedimiento","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Procedimiento () As String
+		
+		On Error Goto HANDLER
+		
+		Procedimiento = procedimientoP	
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Get Procedimiento","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set Tipo () As String
+		
+		On Error Goto HANDLER
+		
+		tipoP = Tipo
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Set Tipo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Tipo () As String
+		
+		On Error Goto HANDLER
+		
+		Tipo = tipoP	
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Paso - Propiedad Get Tipo","")
+		Exit Property
+		
+	End Property
+	
+'******************************************************************************************************************		
+	
+End Class

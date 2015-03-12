@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E05005A84F3" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="14a" sequence="265" unid="92A78B2E416BE8910325723E006B8F4A">
+<created><datetime>20061208T163450,34-03</datetime></created>
+<modified><datetime>20150311T132843,09-03</datetime></modified>
+<revised><datetime>20150309T094435,83-03</datetime></revised>
+<lastaccessed><datetime>20150311T132843,09-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132843,09-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Valentina Da Silva/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Fabian Alvariza/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20140626T180810,10-03</datetime><datetime>20140721T153512,20-03</datetime><datetime>20140721T153512,25-03</datetime><datetime>20140722T103422,72-03</datetime><datetime>20140722T103422,78-03</datetime><datetime>20140731T152551,64-03</datetime><datetime>20140731T152551,79-03</datetime><datetime>20140904T172709,27-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>ConstantesDBResoluciones</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+<item name="$POID"><datetime dst="true">20150128T101419,07-02</datetime></item></note>

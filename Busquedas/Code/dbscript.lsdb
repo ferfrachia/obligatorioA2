@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500598295'>
+<noteinfo noteid='1c6' unid='3AC9D77804A0C8A343256DCF003DE8D8' sequence='92'>
+<created><datetime>20031030T141613,04+03</datetime></created>
+<modified><datetime>20150311T131742,47-03</datetime></modified>
+<revised><datetime>20150309T094342,73-03</datetime></revised>
+<lastaccessed><datetime>20150311T131742,47-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131742,47-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Pablo Andrade/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Administrador/O=IMF</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=administrador/O=iGDocTest</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060418T154812,57-03</datetime><datetime>20060526T143738,17-03</datetime><datetime
+>20060926T154837,68-03</datetime><datetime>20060928T104550,17-03</datetime><datetime
+>20061013T102659,70-03</datetime><datetime>20061013T103015,73-03</datetime><datetime
+>20061013T103412,08-03</datetime><datetime>20061013T103436,60-03</datetime><datetime
+>20061013T103655,92-03</datetime><datetime>20061013T103830,34-03</datetime><datetime
+>20061013T104037,04-03</datetime><datetime>20061013T104108,77-03</datetime><datetime
+>20061013T131356,67-03</datetime><datetime>20081008T152012,41-03</datetime><datetime
+>20090121T174924,75-03</datetime><datetime>20090719T145719,66-03</datetime><datetime
+>20100609T164934,32-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$DBAction1' sign='true'><formula>@Command([FileCloseWindow])</formula></item>
+<item name='$TITLE' sign='true'><text>Database Script</text></item>
+<item name='$Flags'><text>t34Q</text></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item>
+<item name='$POID'><datetime>20150309T094342,73-03</datetime></item></note>
+

@@ -1,0 +1,167 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	04/03/2009	Modificado por: Oscar Nogueira
+		Versión base
+
+%END REM
+
+Option Declare
+Use "Unidad Class"
+Use "VectorClass 2.05"
+Use "IGDocConfig"
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class UnidadForm As Unidad
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const CAMPO_UNIDAD_NOMBREACTUAL						= "sUnidad"
+Private Const VISTA_ACTIVOSXUNIINI							= "vDefFormActivoUniIni"
+Private Const VISTA_MIEMBROSFXUSUUNI						= "MiembrosFormxCreadorUni"
+Private Const VISTA_ACTIVOSXCOD						        = "vDefFormActivoCodigo"
+Private Const VISTA_FACTIVOSGLOBALES						= "vDefFormGlobales"
+Private Const VISTA_FACTIVOSACCXTODOS						= "vDefFormAccXTodos"
+Private Const CAMPO_MIEMBRO_CODIGOFORM						= "sCodigoForm"
+''Private Const CAMPO_DEFFORM_UNIDADINI						= "sUnidadDeInicio"
+Private Const CAMPO_DEFFORM_UNIDADINI						= "sUnidad"
+Private Const CAMPO_DEFFORM_NOMBRE						    = "sNombre"
+'******************************************************************************************************************	
+'* 
+'*									CLASS <UNIDADForm>
+'* 
+'******************************************************************************************************************
+'*
+'* Clase que utiliza como base la clase unidad y sobre escribe los metodos que son particulares de formularios
+'* 
+'*
+'*
+'*
+'*
+'*
+'*
+'*
+'******************************************************************************************************************
+Public Class UnidadForm As Unidad
+	'No tiene miembros propios estan todos en la clase base
+	
+	Public Sub new (Byval unidad As String), Unidad()
+		On Error Goto handler
+		
+		sUnidad = unidad
+		
+		
+		Set docUnidad = ViewUnidades.GetDocumentbyKey(Unidad, True)
+		If docUnidad Is Nothing Then _
+		Error ERROR_DOCUMENT_NOT_FOUND,MSG_ERROR_DOCUMENT_NOT_FOUND & " Unidad"
+		
+		
+		
+		Exit Sub
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadForm - Constructor","")
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Function codigosParaCrear (nomUsu As String) As Vector
+		On Error Goto handler
+		Dim igdocConf As IGDocConfig
+		Dim nombreFormPerfil As String
+		Dim dbAdm As NotesDatabase
+		Dim vfActivosxUniIni As NotesView 
+		Dim vmfxUsuCreaUnidad As NotesView 
+		Dim vfActivosxCod As NotesView
+		Dim vfActivosGlobales As NotesView
+		Dim vfActivosAccXTodos As NotesView
+		
+		Dim docMiembro As notesdocument, docConfForm As notesdocument
+		Dim dc As notesdocumentcollection
+		Dim i As Integer, res, res2 As Variant
+		
+		Set codigosParaCrear = New Vector(0)
+		
+		Set igdocConf = New IGDocConfig
+		'nombreFormPerfil = igdocConf.NombrePrimerFormPerfil
+		'If c Is Nothing Then Set c = New ConfigSistema(nombreFormPerfil)
+		'Set dbAdm = c.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+		Set dbAdm = New NotesDatabase("","") 'c.ReferenciarBaseDeDatos(CLAVE_DBADMINCONF)
+		Call dbadm.Open(igdocconf.ServerInstalacion, igdocconf.PathAdministracion)
+		
+		If dbAdm Is Nothing Then _
+		Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN & " " & CLAVE_DBADMINCONF
+		
+		'Set vfActivosxUniIni = dbAdm.GetView(VISTA_ACTIVOSXUNIINI)
+		'If vfActivosxUniIni Is Nothing Then _
+		'Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND	 & " " & VISTA_ACTIVOSXUNIINI
+		
+		Set vmfxUsuCreaUnidad = dbOrg.GetView(VISTA_MIEMBROSFXUSUUNI)
+		If vmfxUsuCreaUnidad Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND	 & " " & VISTA_MIEMBROSFXUSUUNI
+		
+		Set vfActivosxCod= dbAdm.GetView(VISTA_ACTIVOSXCOD)
+		If vfActivosxCod Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND	 & " " & VISTA_ACTIVOSXCOD
+		
+		'Estaba comentado - Descomentado por Juan Pommerenck
+		Set vfActivosGlobales = dbAdm.GetView(VISTA_FACTIVOSGLOBALES)
+		If vfActivosGlobales Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND	 & " " & VISTA_FACTIVOSGLOBALES
+		
+		Set vfActivosAccXTodos = dbAdm.getView(VISTA_FACTIVOSACCXTODOS)
+		If vfActivosAccXTodos Is Nothing Then
+			Error ERROR_VIEW_NOT_FOUND, MSG_ERROR_VIEW_NOT_FOUND & " " & VISTA_FACTIVOSACCXTODOS
+		End If
+		
+		Dim pos2 As Long
+		'Cargo los forms globales - Agregado por Juan Pommerenck
+		Set dc = vfActivosGlobales.Getalldocumentsbykey("Si")
+		For i = 1 To dc.Count
+			Set docMiembro = dc.GetnthDocument(i)
+			If Not codigosParaCrear.isMember(docMiembro.Getitemvalue("sCodigo")(0), pos2, True) Then
+				Call codigosParaCrear.insertElement(docMiembro.Getitemvalue("sCodigo")(0), codigosParaCrear.CantElem + 1)
+			End If
+		Next
+		
+		'Cargo los forms accesibles por todos
+		Set dc = vfActivosAccXTodos.Getalldocumentsbykey("T")
+		For i = 1 To dc.Count
+			Set docMiembro = dc.GetnthDocument(i)
+			If Not codigosParaCrear.isMember(docMiembro.Getitemvalue("sCodigo")(0), pos2, True) Then
+				Call codigosParaCrear.insertElement(docMiembro.Getitemvalue("sCodigo")(0), codigosParaCrear.CantElem + 1)
+			End If
+		Next
+		
+		Set dc = vmfxUsuCreaUnidad.GetAllDocumentsByKey(nomUsu+"##"+sUnidad)
+		For i = 1 To dc.count
+			Set docMiembro = dc.GetnthDocument(i)
+			Set docConfForm = vfActivosxCod.GetDocumentByKey(docMiembro.GetItemValue(CAMPO_MIEMBRO_CODIGOFORM)(0))
+			If Not docConfForm Is Nothing Then
+				If docConfForm.GetItemValue(CAMPO_DEFFORM_UNIDADINI)(0)<>" " Then
+					'''					res=Evaluate({@if(@member("}+sUnidad+{";}+CAMPO_DEFFORM_UNIDADINI+{);"SI";"NO")},docConfForm)
+					res=Evaluate({@if(@member("}+sUnidad+{";}+CAMPO_DEFFORM_UNIDADINI+{);"SI";"NO")},docConfForm)
+					If res(0)="SI" Then
+						If Not codigosParaCrear.isMember(docMiembro.Getitemvalue(CAMPO_MIEMBRO_CODIGOFORM)(0), pos2, True) Then
+							Call codigosParaCrear.insertElement(docMiembro.GetItemValue(CAMPO_MIEMBRO_CODIGOFORM)(0),codigosParaCrear.CantElem + 1)
+							'Call codigosParaCrear.insertElement(docMiembro.GetItemValue(CAMPO_MIEMBRO_CODIGOFORM)(0)+"|"+docConfForm.GetItemValue(CAMPO_DEFFORM_NOMBRE)(0),codigosParaCrear.CantElem + 1)
+						End If
+					End If
+				Else
+					If Not codigosParaCrear.isMember(docMiembro.Getitemvalue(CAMPO_MIEMBRO_CODIGOFORM)(0), pos2, True) Then
+						Call codigosParaCrear.insertElement(docMiembro.GetItemValue(CAMPO_MIEMBRO_CODIGOFORM)(0),codigosParaCrear.CantElem + 1)
+						'Call codigosParaCrear.insertElement(docMiembro.GetItemValue(CAMPO_MIEMBRO_CODIGOFORM)(0)+"|"+docConfForm.GetItemValue(CAMPO_DEFFORM_NOMBRE)(0),codigosParaCrear.CantElem + 1)
+					End If
+				End If
+			End If
+			
+		Next
+		Exit Function
+handler:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"UnidadForm - codigosParaCrear","")
+		Exit Function
+	End Function
+	'******************************************************************************************************************	
+End Class

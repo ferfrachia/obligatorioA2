@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A126E'>
+<noteinfo noteid='18e' unid='C9D819AFA47344C503256F0E0062CB9A' sequence='173'>
+<created><datetime>20040913T145906,50-03</datetime></created>
+<modified><datetime>20150311T132350,41-03</datetime></modified>
+<revised><datetime>20150309T094432,74-03</datetime></revised>
+<lastaccessed><datetime>20150311T132350,41-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132350,41-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=DNII</name><name
+>CN=Juan Funez/O=ISA</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Segalerba/O=ISA</name><name
+>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(ElementosABorrar)|ElementosABorrar</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+dAACAAwAAgAkMGkAAwAFAB4AGQADAAIACQAEACQwJENvbmZsaWN0JFJFRgAEAAQAAAA2AAUABABm
+b3JtAQAKAEZTb2xpY2l0dWQKAgUABgBjYW1wbzcAAAAAAAAAAPA/CgIcAgMABwAOAAgACUwxUzRT
+NVM=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAGYAAAACACQw
+</rawitemdata></item>
+<item name='$Collation1' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAGYAAAACACQw
+</rawitemdata></item>
+<item name='$Collation2' summary='true'>
+<rawitemdata type='2'>
+DwABAABEAWYAAAACACQw
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQABAAEACAAAAFZDAQMCAAYADgAAAFAAAQAACgAAAAAAAAAAAAICAAAAJDBDcmVhZG8OAAIADAAC
+ACQwaQADACYAAQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEAAQABAAAAAAAAAAAAV0MBAQAJAAAAAAAA
+AAAAAAAAAAAAAAEAAAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAUA////AAEAAAAA
+AAAAAAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAAAAAAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

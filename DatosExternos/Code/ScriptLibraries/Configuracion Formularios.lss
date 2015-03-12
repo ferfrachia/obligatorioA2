@@ -1,0 +1,475 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <CONFIGURACION>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'*
+'*		New()
+'*			Constructor de la clase 
+'*
+
+
+'******************************************************************************************************************
+
+Option Declare
+
+Use "Configuracion Sistema"
+Use "ConstantesSistema"
+Use "Errores Generales"
+Use "FuncionesGenerales"
+Use "NumeradorClient"
+Use "VectorClass"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigForms As ConfigSistema
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Private Const NOMBRE_FORM_CONF					= "ConfFormularios"
+
+'CONSTANTES PRIVADAS
+Private Const NOMBRE_APLICACION						= "IGDoc Formularios"
+Private Const CAMPO_RUTA_DB							= "sPath"
+Private Const CAMPO_SERVIDOR_DB					= "sServer"
+Private Const CAMPO_HOST_DB 							= "sHost"
+Private Const CAMPO_CLAVE_DB							= "sClave"
+Private Const CONF_SERVIDOR_ACTUAL				= "SERVER_ACTUAL"	
+Private Const CONF_SERVIDOR_LOCAL					= "LOCAL"
+
+'CAMPOS
+Private Const CAMPO_NOTIFICACION_ENVIAR							= "rNotificacionEnviar"
+Private Const CAMPO_NOTIFICACION_REENVIAR						= "rNotificacionReEnviar"
+Private Const CAMPO_NOTIFICACION_PASE								= "rNotificacionPase"
+Private Const CAMPO_NOTIFICACION_FINALIZAR						= "rNotificacionFinalizar"
+Private Const CAMPO_NOTIFICACION_ARCHIVAR						= "rNotificacionArchivar"
+Private Const CAMPO_TEMPLATE_NOTIFICACION						= "lMsgTemplate"
+
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class ConfigForms As ConfigSistema
+'******************************************************************************************************************	
+	
+'******************************************************************************************************************	
+'FUNCIONES Y PROCEDIMIENTOS PÚBLICOS
+'******************************************************************************************************************		
+	
+	Public Sub new(), ConfigSistema(NOMBRE_FORM_CONF)
+	'CONSTRUCTOR
+		On Error Goto HANDLER
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Método new","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Public Function PedirNumero (Byval nombrenumerador As String) As Long
+	'Pide un número a la clase numeración para el numerador que recibe y lo devuelve
+	'Suposiciones:
+		' 1) Si se utiliza un numerador diferente por año, el nombre del numerador indicará que va 
+		'    el año con yy o yyyy en el lugar que corresponda. Esta función sustituye ese indicador
+		'	por el año actual
+		On Error Goto HANDLER
+		
+		Dim num As NumClient, BASENUMERACION As String, SERVIDORNUMERACION As String
+		
+		'Sustituyo el indicador de año por el año actual
+		nombrenumerador = SustituirAnio(nombrenumerador)
+		
+		'Pido el número
+		'Busco srv y path de la base de numeracion
+		SERVIDORNUMERACION  = Me.ServidorDomino(CLAVE_DBNUMERACION)
+		BASENUMERACION  = Me.BaseDeDatos(CLAVE_DBNUMERACION)
+		If (nombrenumerador <> "") And (BASENUMERACION <> "") Then
+			'Creo el objeto numerador
+			Set num = New NumClient(nombrenumerador,SERVIDORNUMERACION,BASENUMERACION)		
+			PedirNumero = num.GetNumber()			
+		Else
+			Error ERROR_NUMERATION,MSG_ERROR_NUMERATION
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion PedirNumero","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function SustituirAnio (Byval formato As String)As String
+	'Busca el indicador del año (yy o yyyy) dentro del formato y lo sustituye por el año actual
+	'Si el indicador del año no está devuelve el formato como lo recibió
+		On Error Goto HANDLER
+		
+		Dim anioactual As String, pos As Integer
+		
+		'Veo si va el año con cuatro digitos
+		anioactual = Cstr(Year(Today))
+		pos = Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)
+		If pos = 0 Then  'veo si va el año con dos digitos
+			anioactual = Right(Cstr(Year(Today)),2)
+			pos = Instr(formato, INDICADOR_AÑO_DOS_DIGITOS)
+		End If
+		If pos <> 0 Then  'va el año
+			Mid$ (formato, pos,Len(anioactual)) = anioactual
+		End If  'si no va el año no modifiqué nada al texto		
+		SustituirAnio = formato
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Funcion SustituirAnio","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Property Get IngresoPublicoBasesSeparadas As String
+		On Error Goto handler
+		IngresoPublicoBasesSeparadas = docConfiguracion.getItemValue("IngresoPublicoBasesSeparadas")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get IngresoPublicoBasesSeparadas","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NombreServidorPublico As String
+		On Error Goto handler
+		NombreServidorPublico = docConfiguracion.getItemValue("NombreServidorPublico")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NombreServidorPublico","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get HostServidorPublico As String
+		On Error Goto handler
+		HostServidorPublico = docConfiguracion.getItemValue("HostServidorPublico")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get HostServidorPublico","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get PathServidorPublico As String
+		On Error Goto handler
+		PathServidorPublico = docConfiguracion.getItemValue("PathServidorPublico")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get PathServidorPublico","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get UnidadDefault As String
+		On Error Goto handler
+		If docConfiguracion.HasItem("UnidadDefault") Then
+			UnidadDefault = docConfiguracion.getItemValue("UnidadDefault")(0)
+		Else
+			UnidadDefault = ""
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get UnidadDefault","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get UsaCaptcha As String
+		On Error Goto handler
+		UsaCaptcha = docConfiguracion.getItemValue("UsaCaptcha")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get UsaCaptcha","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get TiempoExpiracionCaptcha As Long
+		On Error Goto handler
+		TiempoExpiracionCaptcha = Clng(docConfiguracion.getItemValue("CaptchaTiempoExpiracion")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get TiempoExpiracionCaptcha","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get HabilitarGraficasInforme As String
+		On Error Goto handler
+		HabilitarGraficasInforme = docConfiguracion.getItemValue("HabilitarGraficasInforme")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get HabilitarGraficasInforme","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get TamBandeja(nombreBandeja As String) As Integer
+		On Error Goto handler
+		TamBandeja = Cint(docConfiguracion.getItemValue("Tam" & nombreBandeja)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get TamBandeja","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get MaxBusqueda As Long
+		On Error Goto handler
+		MaxBusqueda = Clng(docConfiguracion.getItemValue("MaxBusqueda")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get MaxBusqueda","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Get docsPorPaginaBusqueda As String
+		On Error Goto handler
+		docsPorPaginaBusqueda = Clng(docConfiguracion.getItemValue("docsPorPagina")(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get docsPorPaginaBusqueda","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Get cabezalBusqueda As String
+		On Error Goto handler
+		cabezalBusqueda = docConfiguracion.getItemValue("cabezalBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get cabezalBusqueda","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************					
+	
+	Public Property Get filaBusqueda As String
+		On Error Goto handler
+		filaBusqueda = docConfiguracion.getItemValue("filaBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get filaBusqueda","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get pieBusqueda As String
+		On Error Goto handler
+		pieBusqueda = docConfiguracion.getItemValue("pieBusqueda")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get pieBusqueda","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionEnviar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_ENVIAR)(0)="Si" Then
+			NotificacionEnviar=True
+		Else
+			NotificacionEnviar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionEnviar","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionReEnviar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_REENVIAR)(0)="Si" Then
+			NotificacionReEnviar=True
+		Else
+			NotificacionReEnviar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionReEnviar","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionPase As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_PASE)(0)="Si" Then
+			NotificacionPase=True
+		Else
+			NotificacionPase=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionPase","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionFinalizar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_FINALIZAR)(0)="Si" Then
+			NotificacionFinalizar=True
+		Else
+			NotificacionFinalizar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionFinalizar","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get NotificacionArchivar As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_NOTIFICACION_ARCHIVAR)(0)="Si" Then
+			NotificacionArchivar=True
+		Else
+			NotificacionArchivar=False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get NotificacionArchivar","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get TemplateNotificacion As String
+		On Error Goto handler
+		TemplateNotificacion = docConfiguracion.GetItemValue(CAMPO_TEMPLATE_NOTIFICACION)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get TemplateNotificacion","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get AccesoAnonimo As String
+		On Error Goto handler
+		AccesoAnonimo = docConfiguracion.getItemValue("sAccesoAnonimo")(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Propiedad Get AccesoAnonimo","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+'******************************************************************************************************************		
+	
+	Private Function ObtenerNombreServidor(Byval sValor As String) As String
+	' Retorna el verdadero valor del servidor en caso que sea una clave
+		On Error Goto HANDLER
+		
+		If sValor = CONF_SERVIDOR_ACTUAL Then
+			ObtenerNombreServidor = ses.CurrentDatabase.Server
+		Elseif sValor = CONF_SERVIDOR_LOCAL Then
+			ObtenerNombreServidor = ""
+		Else
+			ObtenerNombreServidor = sValor
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Procedimiento ObtenerNombreServidor","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Sub GuardarProfile(docDestino As NotesDocument, docOrigen As NotesDocument)
+	'Carga los campos del docDestino con los del docOrigen
+		On Error Goto HANDLER
+		
+		Call docDestino.ReplaceItemValue("$PublicAccess", "1")
+		
+		'Campos generales
+		Call docDestino.ReplaceItemValue("IngresoPublicoBasesSeparadas",docOrigen.GetItemValue("IngresoPublicoBasesSeparadas"))
+		Call docDestino.ReplaceItemValue("NombreServidorPublico",docOrigen.GetItemValue("NombreServidorPublico"))
+		Call docDestino.ReplaceItemValue("HostServidorPublico",docOrigen.GetItemValue("HostServidorPublico"))
+		Call docDestino.ReplaceItemValue("PathServidorPublico",docOrigen.GetItemValue("PathServidorPublico"))
+		Call docDestino.ReplaceItemValue("UnidadDefault",docOrigen.GetItemValue("UnidadDefault"))
+		Call docDestino.ReplaceItemValue("UsaCaptcha",docOrigen.GetItemValue("UsaCaptcha"))
+		Call docDestino.ReplaceItemValue("HabilitarGraficasInforme",docOrigen.GetItemValue("HabilitarGraficasInforme"))
+		
+		'Campos bandejas
+		Call docDestino.ReplaceItemValue("TamBandejadeTrabajo",docOrigen.GetItemValue("TamBandejadeTrabajo")(0))
+		Call docDestino.ReplaceItemValue("TamBandejadeEntrada",docOrigen.GetItemValue("TamBandejadeEntrada")(0))
+		Call docDestino.ReplaceItemValue("TamBandejadeSalida",docOrigen.GetItemValue("TamBandejadeSalida")(0))
+		Call docDestino.ReplaceItemValue("TamBandejaReservados",docOrigen.GetItemValue("TamBandejaReservados")(0))
+		Call docDestino.ReplaceItemValue("TamBandejaFinalizados",docOrigen.GetItemValue("TamBandejaFinalizados")(0))
+		
+		'Campos de busqueda
+		Call docDestino.ReplaceItemValue("MaxBusqueda",docOrigen.GetItemValue("MaxBusqueda")(0))
+		Call docDestino.ReplaceItemValue("docsPorPagina",docOrigen.GetItemValue("docsPorPagina")(0))
+		Call docDestino.ReplaceItemValue("cabezalBusqueda",docOrigen.GetItemValue("cabezalBusqueda")(0))
+		Call docDestino.ReplaceItemValue("filaBusqueda",docOrigen.GetItemValue("filaBusqueda")(0))
+		Call docDestino.ReplaceItemValue("pieBusqueda",docOrigen.GetItemValue("pieBusqueda")(0))
+		
+		'Campos para las notificaciones
+		Call docDestino.ReplaceItemValue("rNotificacionEnviar",docOrigen.GetItemValue("rNotificacionEnviar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionReenviar",docOrigen.GetItemValue("rNotificacionReenviar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionPase",docOrigen.GetItemValue("rNotificacionPase")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionFinalizar",docOrigen.GetItemValue("rNotificacionFinalizar")(0))
+		Call docDestino.ReplaceItemValue("rNotificacionArchivar",docOrigen.GetItemValue("rNotificacionArchivar")(0))	
+		Call docDestino.ReplaceItemValue("lMsgTemplate",docOrigen.GetItemValue("lMsgTemplate")(0))
+		
+		'Campos de auditoría
+		Call docDestino.ReplaceItemValue("nTiempoVidaAuditoria",docOrigen.GetItemValue("nTiempoVidaAuditoria"))
+		Call docDestino.ReplaceItemValue("sClaveCreacionAuditoria",docOrigen.GetItemValue("sClaveCreacionAuditoria"))
+		Call docDestino.ReplaceItemValue("dFechaCreacionAuditoria",docOrigen.GetItemValue("dFechaCreacionAuditoria"))
+		Call docDestino.ReplaceItemValue("rLogTOperaciones",docOrigen.GetItemValue("rLogTOperaciones"))
+		
+		'Campos de interoperabilidad
+		Call docDestino.ReplaceItemValue("sClave",docOrigen.GetItemValue("sClave"))
+		Call docDestino.ReplaceItemValue("sHost",docOrigen.GetItemValue("sHost"))
+		Call docDestino.ReplaceItemValue("sServer",docOrigen.GetItemValue("sServer"))
+		Call docDestino.ReplaceItemValue("sPath",docOrigen.GetItemValue("sPath"))
+		Call docDestino.ReplaceItemValue("sAccesoAnonimo", docOrigen.GetItemValue("sAccesoAnonimo"))
+		
+		'Guardo el doc
+		If Not docDestino.save(False, False) Then Error ERROR_CANT_SAVE_DOCUMENT, MSG_ERROR_CANT_SAVE_DOCUMENT
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Procedimiento GuardarProfile","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************						
+	
+End Class
+'******************************************************************************************************************

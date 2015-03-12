@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059D1A3'>
+<noteinfo noteid='13a' unid='36E1F7565E9E2B980325757D00048E16' sequence='14'>
+<created><datetime>20090317T214945,18-03</datetime></created>
+<modified><datetime>20150311T132104,08-03</datetime></modified>
+<revised><datetime>20150309T094358,24-03</datetime></revised>
+<lastaccessed><datetime>20150311T132104,08-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132104,08-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Damseaux/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=CURSO</name><name
+>CN=Admin ISA/O=VISION</name><name>CN=Diego Ricca/O=ISA</name><name>CN=Admin ISA/O=VISION</name><name
+>CN=Victoria Acuña/O=ISA</name><name>CN=Fernando Moller/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$SiteMapList' sign='true'>
+<rawitemdata type='1a'>
+AQYBAAEABABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAEAEgAVAABCAAAAQAAAAAAAAAWAAAAMgAAAAAAAAAMAAAAAAAAAAAA
+AwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFRG9jdW1lbnRvcyBkZSBkYXRvcwAB
+APb/LwAAAAAAAwACAA0AAAAAAAAAAAAAAAAAAAAAAAAAAABEYXRvc0V4dGVybm9zPwAFQ29udGVu
+aWRvAEgASwABCAIAAgAAAAAAAAARAAAALgAAAAAAAAAMAAAAAAAAAAAAAwACAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAFVGlwb3MgZGUgZGF0b3MAAQD2/ywAAAAAAAMAAgAKAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAVGlwb3NEYXRvcwAFQ29udGVuaWRvAEgAYwABCAAAZAAAAAAAAAAnAAAA
+MAAAAAAAAAAMAAAAAAAAAAAAAwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFQ29u
+ZmlndXJhY2mibiBkZSBFbnRyZWdhIHkgQW51bGFjaaJuAAEA9v8uAAAAAAADAAIADAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAENvbmZGb3Jtc0V5QQAFQ29udGVuaWRvAEgAUAABCAIAZwAAAAAAAAAUAAAA
+MAAAAAAAAAAMAAAAAAAAAAAAAwACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFTWFw
+ZW8gZGUgVW5pZGFkZXMAAQD2/y4AAAAAAAMAAgAMAAAAAAAAAAAAAAAAAAAAAAAAAAAATWFwZW9z
+VW5pZGFkAAVDb250ZW5pZG8A
+</rawitemdata></item>
+<item name='$TITLE'><text>Menu</text></item>
+<item name='$Flags'><text>m</text></item>
+<item name='$DesignerVersion'><text>8.5</text></item>
+<item name='$POID'><datetime>20150309T094358,24-03</datetime></item></note>
+

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='e22' unid='F42D47579B28A6E0832579DF005AE13D' sequence='16'>
+<created><datetime>20120413T133239,01-03</datetime></created>
+<modified><datetime>20150311T131230,78-03</datetime></modified>
+<revised><datetime>20150309T094455,89-03</datetime></revised>
+<lastaccessed><datetime>20150311T131230,78-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131230,78-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Guillermo Segalerba/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQAxNlK1iDDhuXO+UgBmbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+1AACAEQAAwAkMjYABQANAHNVc3VhcmlvQXV0b3IABQAIAHNVc3VhcmlvHwIEAAEAAwAmJSYAIgIF
+AAYAbnJvQ29tIgIDAAIAEAADACQyNwCQAFYBAwAFACQAHwAEAAMAAwAJAAQAJDI2JDI3JENvbmZs
+aWN0JFJFRgAEAAQAAAA4AAUABABGb3JtYgEBAAwATUFSQ0FDT01VTklDCgIEAAUACQAkQ29uZmxp
+Y3QAaAEeARwCAwAHAB4AFwAJTDFTMkUyUzJFNlM3UzhTMkU5UzEwUwA=
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+EAABAABEiGYAAAADACQyNg==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQACABwAiAkAAFZDAQADAAAAWgAAAC0BAQAACgABAAAAAAAAAAICAAAAVkMAAAMAAAAeAAAAyQAB
+AAAKAAAAAAAAAAAAAgIAAAAkMjZaAAIARAADACQyNgAFAA0Ac1VzdWFyaW9BdXRvcgAFAAgAc1Vz
+dWFyaW8fAgQAAQADACYlJgAiAgUABgBucm9Db20iAgMABwAUAA0ACTJTM1M1UzZTN1M4UwAkMjce
+AAIAEAADACQyNwCQAFYBAwAHAAwABQAJMFMwRQAmAAcAAAABAQAJAQAACgEBDgoAAAEArSsCABgA
+AQEAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAABAAQAAAAAAP//AAAAAAAAAAAAAAAAAABX
+QwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQDg8f8A
+AQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAAAAEAAAAAAAEAgICAAAEAAAAAAAAACAAA
+AAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$V5ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAHn/bAABANTQyAABAAAAAAABAAAAAAABANTQyAAA
+AB8AAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPz/OgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAC+/yYAAAAFAAAAnQEAAAsAAAAAAAAAX0NhdGVnb3KhYXMO
+AQBOfL7/LAAAAAUAAACdAQAAEQAAAAAAAABfRWRpdGFyIGRvY3VtZW50bwACAAIKvv8sAAAABQAA
+AJ0BAAARAAAAAAAAAEVuX3ZpYXIgZG9jdW1lbnRvAAMAAwq+/yIAAAAFAAAAnQEAAAgAAAAAAAAA
+X1JlbWl0aXIEAAQKvv8yAAAABQAAAJ0BAAAXAAAAAAAAAF9Nb3ZlciBhIHVuYSBjYXJwZXRhLi4u
+AAUAPXy+/zAAAAAFAAAAnQEAABYAAAAAAAAARV94dHJhZXIgZGUgbGEgY2FycGV0YQYAPnw=
+</rawitemdata></item>
+<item name='$ACTIONS' sign='true'>
+<rawitemdata type='1'>
+vRwjAAAAAQABAAAAAQAAAAAAAAAAAAAACAACAL7/JgAAAAUAAACdAQAACwAAAAAAAABfQ2F0ZWdv
+cqFhcwABAE58vv8sAAAABQAAAJ0BAAARAAAAAAAAAF9FZGl0YXIgZG9jdW1lbnRvAAIAAgq+/ywA
+AAAFAAAAnQEAABEAAAAAAAAARW5fdmlhciBkb2N1bWVudG8AAwADCr7/IgAAAAUAAACdAQAACAAA
+AAAAAABfUmVtaXRpcgQABAq+/zIAAAAFAAAAnQEAABcAAAAAAAAAX01vdmVyIGEgdW5hIGNhcnBl
+dGEuLi7/BQA9fL7/MAAAAAUAAACdAQAAFgAAAAAAAABFX3h0cmFlciBkZSBsYSBjYXJwZXRhBgA+
+fA==
+</rawitemdata></item>
+<item name='$TITLE' sign='true'><text>Marcas por Nro Comunicacion Color y Texto|vMarcasUsuarioxNroCom</text></item>
+<item name='$DesignerVersion' sign='true'><text>8.5.2</text></item></note>
+

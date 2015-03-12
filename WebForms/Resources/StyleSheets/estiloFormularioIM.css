@@ -1,0 +1,122 @@
+
+
+body, caption, th, td, input, textarea, select, option, legend, fieldset {
+font-family: Arial, Helvetica, "Bitstream Vera Sans", sans-serif;
+}
+a{
+color:rgb(50,100,130);
+font-weight:bold;
+font-size:15px;
+}
+
+.tituloTabla
+{
+
+/*color:#EE7F00;*/
+color:black;
+font-weight:bold;
+font-size:14px;
+border:0px solid rgb(50,100,130);
+background-color:white;
+}
+
+.tituloTabla2
+{
+
+color:white;
+font-weight:bold;
+font-size:12px;
+border:1px solid rgb(50,100,130);
+background-color:rgb(50,100,130);
+}
+
+
+table.tablaSeccion
+{
+width:100%;
+
+border-bottom:0px solid rgb(50,100,130);
+}
+
+table.tablaTituloSeccion
+{
+width:100%;
+
+border-top:0px solid rgb(50,100,130);
+
+}
+
+.tablaDatos
+{
+	width:95%; 
+	padding:0; 
+	border-collapse: collapse;
+	border:1px solid black;	
+	
+}
+
+.celdaDatos
+{
+	border-bottom: 1px solid black;
+	text-align:center;	
+}
+
+.etiqueta
+{
+
+font-size:12px;
+}
+
+.dato
+{
+
+font-weight:normal;
+font-size:12px;
+padding-left:10px;
+}
+
+.datoCalc
+{
+color:gray;
+font-weight:normal;
+font-size:12px;
+padding-left:10px;
+}
+.pasos{
+	font-size: 16px;
+	font-weight: bold;
+	color: #707173;
+	
+}
+
+
+.asterisco {
+	font-size: 12px;
+	font-weight: bold;
+	color: #CB0A1D;
+	vertical-align: bottom;
+	line-height: 10px;
+}
+.requerido {
+	font-weight: bold;
+}
+.tituloFormularioIM{
+color: #555;
+font-size: 1.833em;
+}
+.tituloFormularioExternoIM{
+color: #555;
+font-size: 1.833em;
+}
+.FGridNrm TD {
+	background-color: #FFFFFF;
+	color: black;
+	cursor: pointer;
+	height: 18px;
+}
+.FGridOvr TD {
+	background-color: rgb(50,100,130);
+	color: white;
+	cursor: pointer;
+	height: 18px;
+}

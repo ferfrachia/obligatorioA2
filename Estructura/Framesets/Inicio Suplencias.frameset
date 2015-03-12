@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='482' unid='28CA8D7D1E9612EB43256DCD0041A225' sequence='41'>
+<created><datetime>20031028T145653,49+03</datetime></created>
+<modified><datetime>20150311T131219,22-03</datetime></modified>
+<revised><datetime>20150309T094441,23-03</datetime></revised>
+<lastaccessed><datetime>20150311T131219,22-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131219,22-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Martin Cabrera/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20031028T145654,86+03</datetime><datetime>20031028T145748,00+03</datetime><datetime
+>20031028T145748,09+03</datetime><datetime dst='true'>20071228T101600,86-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Inicio Suplencias|FrInicioSup</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIAAwAAAAAAAAAAAAAAAAAAAAAA8P8+AEEAAAAAAAAAAAAHAAcAAAAAAAUAAAAAAAUAAAAA
+AAEAAgAAAAAAAQAAAAAAAAADAAEAAgAUAAIAUADx/z0AEQAAAABAAAECAAEAAQAAAAAACQAAAAAA
+AQAAAAAAAABJenF1aWVyZG8BAP///wABAAAJAQD///8AP/b/OgAAAAAAAwAHABgAAAAAAAAAAAAA
+AAAAAAAAAAAAAABwTWVudUl6cXVpZXJkYVN1cGxlbmNpYXPx/zsAAQAAAABAAAADAAEAAQAAAAAA
+BwAAAAAAAQAAAAAAAABEZXJlY2hvAQD///8AAQAACQEA////AD/2/ykAAAAAAAMAAgAHAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAVlN1cEFjdD8=
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item></note>
+

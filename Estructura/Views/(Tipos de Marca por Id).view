@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='58a' unid='DF27B92E8689192C03256F090055090C' sequence='78'>
+<created><datetime>20040908T122848,76-03</datetime></created>
+<modified><datetime>20150311T131220,52-03</datetime></modified>
+<revised><datetime>20150309T094442,67-03</datetime></revised>
+<lastaccessed><datetime>20150311T131220,52-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131220,52-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Alejandro Goñi/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Martin Pereyra/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20071228T100937,57-03</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQATvulbaD6OUhMHYwBEbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Tipos de Marca por Id)|VTiposMarcaxId</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+AAECABQAAwBuSWQABQADAG5JZAADAAIAdgACACQyAQAZAFs8dGFibGU+PHRyPjx0ZCBiZ0NvbG9y
+PSIABQALAHNDb2xvck1hcmNhACICAQA1ACIgd2lkdGg9IjEwMCIgIGhlaWd0aD0iMTAiID4mbmJz
+cDs8L3RkPjwvdHI+PC90YWJsZT5dACICAwAFADAAKwAFAAMACwACAAkABABuSWRzVGV4dG9NYXJj
+YSQyJENvbmZsaWN0JFJFRgAEAAQAAAAyAAUABABmb3JtAQAKAEZUaXBvTWFyY2EKAgUACQAkQ29u
+ZmxpY3QAaAEeARwCAwAHAA4ACAAJTDFTNFM1Uw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+KwADAABEAGYAAAADAABmAAMACwAAZgAOAAIAbklkc1RleHRvTWFyY2EkMg==
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQADAAMACAEAAFZDAQADAAAAFgAAADoAAQAACgAAAAAAAAAAAAICAAAAVkMBAAsABQAAAAAAUAAB
+AAAKACAAAAAAAAAAAgIAAABWQwEAAgAFAIoAAABQAAEAAAoAAAAAAAAAAAACAgAAAG5JZBYAAgAU
+AAMAbklkAAUAAwBuSWQAAwBzVGV4dG9NYXJjYVRleHRvJDJDb2xvcooAAgB2AAIAJDIBABkAWzx0
+YWJsZT48dHI+PHRkIGJnQ29sb3I9IgAFAAsAc0NvbG9yTWFyY2EAIgIBADUAIiB3aWR0aD0iMTAw
+IiAgaGVpZ3RoPSIxMCIgPiZuYnNwOzwvdGQ+PC90cj48L3RhYmxlPl0AIgIDAAcAEgALAAkxUzJT
+MkUzUzRTACYAAQAAAAEBAAkBAAAKAQEOCgAAAQCtKwEAAQABAQAAAAAAAAAAV0MBAQAJAAAAAAAA
+AAAAAAAAAAAAAAEAAAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAD//wAA
+AAAAAAAAAAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAAAAAAAAABAP///wABAP///wAA
+AAEAAAAAAAEAgICAAAAAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$WebFlags' sign='true'><text>PY</text></item>
+<item name='$DesignerVersion' sign='true'><text>6.5</text></item></note>
+

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050059030D'>
+<noteinfo noteid='121a' unid='79D9FA5FD84BFC2F83257C270058FA95' sequence='14'>
+<created><datetime dst='true'>20131118T141153,17-02</datetime></created>
+<modified><datetime>20150311T131235,68-03</datetime></modified>
+<revised><datetime>20150309T094452,37-03</datetime></revised>
+<lastaccessed><datetime>20150311T131235,68-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131235,68-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$HTMLCode' sign='true'>
+<rawitemdata type='1'>
+X/8QAAIADwAHAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$TITLE'><text>CamposOcultosUnidadRESEditor</text></item>
+<item name='$Info' sign='true'>
+<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata></item>
+<item name='$Flags'><text>CUAx3</text></item>
+<item name='$DesignerVersion'><text>8.5.3</text></item>
+<item name='$Fonts'>
+<rawitemdata type='1'>
+i/8oAAEABSZBcmlhbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</rawitemdata></item>
+<item name='$$ScriptName' summary='false' sign='true'><text>CamposOcultosUnidadPDDEditor</text></item>
+<item name='CreadoresAsuntosResol' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='sSupervisorResolBorrado' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='nbMiembrosResol' placeholder='true'>
+<rawitemdata type='0'>
+</rawitemdata></item>
+<item name='$Fields'><textlist><text>nbMiembrosResol</text><text>sSupervisorResolBorrado</text><text
+>CreadoresAsuntosResol</text></textlist></item>
+<item name='$Body' sign='true'>
+<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJWHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAArdBgAAiv/+/1AA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAIr/NACKAAEFAiAAAAAAAAAAAAUAAAgAAAAAAAAAAA8AAAAAAG5i
+TWllbWJyb3NSZXNvbAB6/yoADwAAAAAAAAAAAAAAAAAAAAAAAAAAAG5iTWllbWJyb3NSZXNvbABi
+DgEAhAAAAAAAAAAAAN4GAACK/8z/CAAAAAAAhf81AAUAAAhVc3VhcmlvcyBjb24gQWNjZXNvIGFs
+IG2iZHVsbyBkZSBSZXNvbHVjaW9uZXMAzf8IAAAAAACBAoMEAQCF/wgAAQAACt0GAACK//7/UAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAiv86AIoAAQUCIAAAAAAAAAAABQAACAAAAAAAAAAAFQAAAAAAQ3Jl
+YWRvcmVzQXN1bnRvc1Jlc29sAHr/MAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ3JlYWRvcmVzQXN1
+bnRvc1Jlc29sAGIOAQCEAAAAAAAAAAAA3gYAAIr/zP8IAAAAAACF/z4ABQAACFVzdWFyaW9zIGNv
+biBlbCBSb2wgQ3JlYWRvciBkZSBBc3VudG9zIGRlIFJlc29sdWNpb25lc83/CAAAAAAAgQKDBAEA
+hf8IAAEAAArdBgAAiv/+/1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIr/PACKAAEFBiAAAAAAAAAAAAUA
+AAgAAAAAAAAAABcAAAAAAHNTdXBlcnZpc29yUmVzb2xCb3JyYWRvAHr/MgAXAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAc1N1cGVydmlzb3JSZXNvbEJvcnJhZG8AYg4BAIQAAAAAAAAAAADeBgAAiv/M/wgA
+AAAAAIX/SAAFAAAIQ2FtcG8gcGFyYSBtYXJjYXIgbG9zIHN1cGVydmlzb3JlcyBjdWFuZG8gc2Ug
+Y2FtYmlhbiBvIHNlIGJvcnJhbs3/CAAAAAAA
+</rawitemdata></item></note>
+

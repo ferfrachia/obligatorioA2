@@ -1,0 +1,18 @@
+<mxEditor>
+	<include name="/mxgraphjquery/javascript/examples/editors/config/wfeditor-commons.xml"/>
+	<ui>
+		<resource basename="/mxgraph/javascript/examples/editors/resources/"/>
+		<add as="graph" element="graph"
+			style="left:55px;right:20px;top:5px;bottom:40px"/>
+		<add as="status" element="status"
+			style="height:20px;bottom:20px;left:20px;right:20px"/>
+		<add as="toolbar" element="toolbarContainer"
+			style="padding:5px;padding-top:8px;padding-right:0px;"/>
+	</ui>
+	<mxGraph as="graph">
+		<include name="/mxgraph/javascript/examples/editors/config/wfgraph-commons.xml"/>
+	</mxGraph>
+	<mxDefaultToolbar as="toolbar">
+		<include name="/mxgraph/javascript/examples/editors/config/wftoolbar-commons.xml"/>
+	</mxDefaultToolbar>
+</mxEditor>

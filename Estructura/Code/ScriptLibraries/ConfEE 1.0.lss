@@ -1,0 +1,4294 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+'******************************************************************************************************************	
+'* 
+'*									CLASS <CONFIGURACION>
+'* 
+'******************************************************************************************************************	
+
+
+'*	CONSTRUCTOR
+'*
+'*		New()
+'*			Constructor de la clase 
+'*
+'*	PROPIEDADES 
+'*	
+'*		Get/Set BaseDeDatos(Byval clave As String) As String
+'*			Dada una clave retorna/setea el FilePath. 
+'*			GET: Si no encuentra la clave retorna "". Si el profile no tiene cargadas las claves retorna error.
+'*			SET: Si no lo encuentra genera un error ERRORCONF_CLAVE_NOTFOUND
+'*
+'*		Get/Set ServidorDomino(Byval clave As String) As String
+'*			Dada una clave retorna/setea el Servidor. 
+'*			GET: Si no encuentra la clave retorna "". Si el profile no tiene cargadas las claves retorna error.
+'*			SET: Si no lo encuentra genera un error ERRORCONF_CLAVE_NOTFOUND
+'*
+'*		Get Claves() As vector
+'*		Retorna un vector con la lista de claves de la tabla interoperabilidad
+'*
+'*		Get/Set Host(Byval clave As String) As String
+'*			Dada una clave retorna/setea el Host.
+'*			GET: Si no encuentra la clave retorna "". Si el profile no tiene cargadas las claves retorna error.
+'*			SET: Si no lo encuentra genera un error ERRORCONF_CLAVE_NOTFOUND
+'*
+'*		Set Interoperabilidad() As Vector
+'*			Recibe un vector de vectores con las columnas de la tabla
+'*			Setea toda la informacion de la tabla de interoperabilidad con dichos vectores
+'*
+'*		Public Property Set FechasCreacionAuditoria As Variant
+'*			Setea el Campo
+'*
+'*		Public Property Get FechasCreacionAuditoria As Variant
+'*			Devuelve el campo
+'*
+'*		Public Property Get ClavesCreacionAuditoria As Variant
+'*			Devuelve el campo
+'*
+'*		Public Property Set ClavesCreacionAuditoria As Variant
+'*			Setea el Campo
+'*
+'*		Public Property Get TiempoMaximoAuditoria()As Integer
+'*
+'*
+'*		Public Function insertLineaInteroperabilidad(vIns As Vector,nColOrdenar As Integer)
+'*			nColOrdenar es la columna por la cual ordenar la tabla
+'*			Inserta en forma ordenada segun  nColOrdenar
+'*			Si nColOrdenar=0 inserta al final de la tabla
+'*
+'*		Public Sub addAuditoriaDate(sClave As String,dCreacion As Variant)
+'*		dCreacion es de tipo Date, sClave es la clave de la base
+'*
+'*		Set LineaInteroperabilidad () As Vector
+'*			Recibe un vector con los valores a agregar y agrega una línea a la tabla
+'*             de interoperabilidad con ellos
+'*
+'*		Get/Set FormaDocumental() As Vector
+'*			Retorna/setea una lista de formas documentales del sistema
+'*
+'*		Get/Set Administradores() As Vector
+'*			Retorna/setea una lista de Administradores del sistema
+'*		
+'*		Get/Set CSS() As String
+'*			Retorna/setea el estilo del sistema
+'*		
+'*		Get/Set FormatoNumerador(Byval clave As String) As String
+'*			Retorna/setea el formato de numeración dada una clave
+'*			SET: Si no lo encuentra genera un error ERRORCONF_CLAVE_NOTFOUND
+'*
+'*		Set FormatoNumeracion() As Vector
+'*			Setea toda la información de la tabla de formato de numeración
+'*
+'*		Get/Set TiempoArchivadoAutomatico() As Integer
+'*			Retorna/Setea la cantidad de días en que se archivará
+'*			en forma automática un expediente si no es modificado
+'*	
+'*		Get/Set TiempoArchivadoAutomaticoCS() As Integer
+'*			Retorna/Setea la cantidad de días en que se archivará
+'*			en forma automática una carta de servicio
+'*	
+'*		Get/Set DesvioDeRutas() As Integer
+'*			Retorna/Setea la bandera booleana que permite desvios en la ruta
+'*			de un expediente	
+'*
+'*		Get/Set DestinatariosNotifDiaria() As Vector
+'*			Retorna/Setea la lista de destinatarios para la notificación diaria 
+'*			de expedientes creados ese día
+'*
+'*		Get/Set TiempoMaximoActuacion() As Integer
+'*			Retorna/Setea la cantidad máxima de días que tiene una oficina
+'*			para actuar
+'*
+'*		Get/Set TiempoMaximoActuacionExterna() As Integer
+'*			Retorna/Setea la cantidad máxima de días que tiene una oficina
+'*			para actuar
+'*
+'*		Get/Set TamañoMaximoAnexo() As Integer
+'*			Retorna/Setea el tamaño maximo de los anexos por actuación
+'*
+'*		Get/Set TiposArchivosAnexos() As Integer
+'*			Retorna/Setea u vector de los tipos de archivos que se pueden anexar
+'*
+'*		Get/Set TiempoMaximoDevolucion() As Integer
+'*			Retorna/Setea el tiempo maximo de devolución de un expediente
+'*
+'*		Get/Set LectoresCaratula() As Integer
+'*			Retorna/Setea la lista de lectores por defecto de las caratulas
+'*
+'*		Get/Set AutoresCaratula() As Integer
+'*			Retorna/Setea la lista de autores por defecto de las caratulas
+'*
+'*		Get/Set LectoresActuacion() As Integer
+'*			Retorna/Setea la lista de lectores por defecto de las actuaciones
+'*
+'*		Get/Set AutoresActuacion() As Integer
+'*			Retorna/Setea la lista de autores por defecto de las actuaciones
+'*
+'*		Get/Set ModificadoresCaratula() As Vector
+'*			Retorna/Setea la lista de usuarios que pueden modificar las carátulas de cualquier expediente
+'*
+'*		Get/Set AdministradoresPaquete() As Integer
+'*			Retorna/Setea la lista de usuarios autorizados a administrar paquetes
+'*
+'*		Get/Set LectoresCarta() As Integer
+'*			Retorna/Setea la lista de usuarios autorizados a leer cartas de servicio
+'*
+'*
+'*
+'*	MÉTODOS
+'* 		Function PedirNumero (Byval nombrenumerador As String) As Long
+		'Pide un número a la clase numeración para el numerador que recibe y lo devuelve
+		'Suposiciones:
+		' 1) Si se utiliza un numerador diferente por año, el nombre del numerador indicará que va 
+		'    el año con yy o yyyy en el lugar que corresponda. Esta función sustituye ese indicador
+		'	por el año actual
+'*
+'*		HabilitarNotifDiaria()
+'*			Habilita la notificación con los expedientes generados en el día
+'*
+'*		DeshabilitarNotifDiaria()
+'*			Deshabilita la notificación con los expedientes generados en el día
+'*
+'*		HabilitarNotificarArchivados()
+'*			Habilita
+'*
+'*		DeshabilitarNotificarArchivados()
+'*			Deshabilita
+'*
+'*		HabilitarNotificarRD()
+'*			Habilita la notificacion de creación de la 
+'*			Resolución Directorio a la persona/unidad que inicio el documento
+'*
+'*		DeshabilitarNotificarRD()
+'*			deshabilitada la notificacion de creación de la 
+'*			Resolución Directorio a la persona/unidad que inicio el documento
+'*
+'*		HabilitarNotificarRecepcion()
+'*			Habilita la notificacion de hay nuevos
+'*			documentos para recibir en la unidad
+'*
+'*		DeshabilitarNotificarRecepcion()
+'*			Deshabilitada la notificacion de hay nuevos
+'*			documentos para recibir en la unidad
+'*
+'*		HabilitarNotificarFirmar()
+'*			Habilita la notificacion de hay nuevos
+'*			documentos para firmar en la unidad
+'*
+'*		DeshabilitarNotificarFirmar()
+'*			Deshabilitada la notificacion de hay nuevos
+'*			documentos para firmar en la unidad
+'*
+'*		HabilitarAlarmaProximoExpirar()
+'*			Habilita la alarma de aviso que un documento
+'*			está próximo a expirar el tiempo de tramitacion
+'*
+'*		DeshabilitarAlarmaProximoExpirar()
+'*			Deshabilita la alarma de aviso que un documento
+'*			está próximo a expirar el tiempo de tramitacion
+'*
+'*		HabilitarAlarmaJefeExpiro()
+'*			Habilita la alarma al jefe de la unidad que expiro
+'*			el tiempo de tramitacion de los documetos de la unidad
+'*
+'*		DeshabilitarAlarmaJefeExpiro()
+'*			Deshabilita la alarma al jefe de la unidad que expiro
+'*			el tiempo de tramitacion de los documetos de la unidad
+'*
+'*		HabilitarRutaLibre()
+'*			Habilita la ruta libre
+'*
+'*		DeshabilitarRutaLibre()
+'*			Deshabilita la ruta libre
+'*
+'*		ReferenciarBaseDeDatos(byval nombreBase as string) as NotesDatabase
+'*			Retorna una referencia a la base de datos que recibe como parámetro.
+'*			En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+'*
+'*		GetFirstDatabase() As NotesDatabase
+'*			Esta funcion permite iterar sobre la lista de bases de datos de la
+'*			configuración. Para continuar recorriendo la lista utilizar el
+'*			método GetNextDatabase.
+'*			Si no hay ninguna base de datos en la lista retorna Nothing.
+'*
+'*		GetNextDatabase(dbClave As NotesDatabase) As NotesDatabase
+'*			Esta funcion retorna la siguiente base de datos en la lista.
+'*			Si no hay ninguna base de datos en la lista retorna Nothing.
+'*
+'*		Save
+'*			Salva la configuración del sistema. Siempre que se modifique la configuración
+'*			se debe llamar a este método para que los cambios queden almacenados
+'*			en la base de datos.
+'*			Actualiza el doc profile de todas las bases que figuran en la tabla de interoperabilidad
+'*			Nota: No actualiza las acl's con los administradores (se hace desde la interfase)
+'*
+'*		NumerarFormateado (byval NOMBRENUMERADOR As String) As String
+'*             Devuelve el nro que corresponde según el nombre del numerador que recibe, con el formato 
+'*             indicado en el doc de perfil para ese numerador
+'*
+'*		BaseDeDatosNroDoc (Byval nro As String, Byval clavenum As String, Byval clavetemplate As String, Byval claveprefijo As String) As NotesDatabase
+'*			Dado un nro de documento, setea la base de datos que le corresponda según la clave prefijo y al año incluido en el nro
+'*			Si la base de datos para dicho año no existe, la crea en base al template clavetemplate
+'*			Suposiciones: 
+'*				1) En el doc profile está el camino de la base clavetemplate, la cual se va a tomar para crear otras bases
+'*				2) La clave para las bases anuales de está formada por la claveprefijo + los dos ultimos digitos del año
+'*				   (por ejemplo: CLAVE_GESTIONDOC03, CLAVE_CARTASERV03, etc)
+'*
+'*		BaseDeDatosAnio (Byval anio As Integer, Byval clavetemplate As String, Byval claveprefijo As String) As NotesDatabase
+'*			Dado un año, setea la base de datos que le corresponda según la clave prefijo
+'*			Si la base de datos para dicho año no existe, la crea en base al template clavetemplate
+'*			Suposiciones: 
+'*				1) En el doc profile está el camino de la base clavetemplate, la cual se va a tomar para crear otras bases
+'*				2) La clave para las bases anuales de está formada por la claveprefijo + los dos ultimos digitos del año
+'*				   (por ejemplo: CLAVE_GESTIONDOC03, CLAVE_CARTASERV03, etc)
+'*
+'*		AnioNroDoc(Byval nro As String, Byval clavenum As String) As String
+'*			Devuelve el año correspondiente al nro de que recibe buscandolo según el formato 
+'*			del numerador que recibe
+'*
+
+'******************************************************************************************************************
+
+
+'********************************************************************************************************
+'							Actualizaciones
+'********************************************************************************************************
+%REM
+	1.0	20/08/2008	Modificado por: Alejandro Goñi
+		Versión base, basada en la que había en template de Gestión Documental, modificándolo para que herede de Configuración Sistema
+
+	2.0 24/09/2009 Modificado por:Ian Coates
+		Versión Base, esta clase será independiente y solo manejara atributos del módulo de expedientes, sera la clase base de ConfiguracionExpediente 
+		que puede ser accedida de IGDOCConfiguracion por cualquier modulo. En ConfiguracionExpediente estaran los meotodos comunes
+%END REM
+
+
+Option Declare
+
+
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Configuracion 
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+'Nombre del documento de perfil
+Private Const DOCUMENTO_PERFIL											= "fConfiguracion"
+
+'Claves de numeradores
+Public Const NUMERADOR_EXP												= "EE_NroExp_yy"
+Public Const NUMERADOR_CS												= "EE_NroCS_yy"
+Public Const CAMPO_ANIO_INICIO_BANDEJA										= "anioBandeja"
+Public Const CAMPO_CANT_BANDEJA_TODOS 										= "nCantExpBandeja"
+
+'Campo de claves (se usa desde la base portal)
+Public Const CAMPO_CLAVE_DB 												= "sClave"
+Public Const CAMPO_RUTA_DB												= "sRuta"
+Public Const CAMPO_SERVIDOR_DB											= "sServidor"
+Public Const CAMPO_HOST_DB 												= "sHost"
+Public Const CAMPO_TIPORUTA												= "lTipoRutas"
+
+Public Const NOMBRE_APLICACION_EXPEDIENTE									= "Expediente Electrónico"
+Public Const GRUPO_VIS_PUBLICA											= "VISUALIZACION PUBLICA"
+
+
+'CAMPOS
+'******************************************************************************************************************	
+Public Const CAMPO_VER_EXTRACTO 											= "sExtracto"
+Public Const CAMPO_VER_DESCADJUNTOS 										= "sDescAdjuntos"
+Public Const CAMPO_ALTO_EDITOR 											= "AltoEditor"
+Public Const CAMPO_ANCHO_EDITOR 											= "AnchoEditor"
+Public Const CAMPO_VER_SOLICITANTE 										= "cSolicitante"
+Public Const CAMPO_VER_NRO_EXTERNO											= "cNroExterno"
+Public Const CAMPO_VER_NRO_ANTERIOR										= "cNroAnterior"
+Public Const CAMPO_VER_TEMA_EN_ACTUACION									= "cTemaenActuacion"
+Public Const CAMPO_VER_DATOS_COMPLEMENTARIOS									= "cDatosComplementarios"
+Public Const CAMPO_ALTO_ADJUNTOS											= "AltoAdjuntos"
+Public Const CAMPO_ANCHO_ADJUNTOS											= "AnchoAdjuntos"
+Public Const CAMPO_INSTALAR_VIS_PUBLICA										= "InstalarVisPublica"
+Public Const CAMPO_ESTADO_VIS_PUBLICA 										= "lVisPublica" 
+Public Const CAMPO_DIAS_VIS_PUBLICA 										= "sDiasVisual"
+Public Const CAMPO_VALIDACION_FIRMA										= "rValidacionFirmas"
+Public Const CAMPO_FORM 													= "form" 
+Public Const CAMPO_RUTA 													= "sRuta" 
+Public Const CAMPO_CLAVE 												= "sClave" 
+Public Const CAMPO_ADMINISTRADORES 										= "sAdministradores"
+
+Public Const CAMPO_NAMES_MEMBERS											= "Members"
+Public Const CAMPO_NAMES_LISTNAME											= "ListName"
+Public Const CAMPO_NAMES_GROUPTYPE											= "GroupType"
+Public Const FORM_NAMES_GRUPO 											= "Group"
+Public Const CAMPO_NAMES_TYPE 											= "Type"
+Public Const CAMPO_LIST_DESCRIPTION										= "ListDescription"
+
+Public Const CAMPO_VISPROFILE_CLAVEDBS										= "sClave"
+Public Const CAMPO_VISPROFILE_RUTAS										= "sRuta"
+Public Const CAMPO_VISPROFILE_HOSTS										= "sHost"
+Public Const CAMPO_VISPROFILE_SERVIDORES									= "sServidor"
+Public Const CAMPO_VISPROFILE_RUTALIBRE										= "lTipoRutas"
+Public Const CAMPO_VISPROFILE_FORMATONUM									= "sFormato"
+Public Const CAMPO_VISPROFILE_CLAVENUM										= "sClaveNum"
+Public Const CAMPO_VISPROFILE_FORMADOCUMENTAL								= "sFormaDoc"
+Public Const CAMPO_VISPROFILE_CSS											= "sCSS"
+
+Public Const CAMPO_VISPROFILE_NOTIFDIARIA									= "lNotifDiaria"
+Public Const CAMPO_VISPROFILE_DESTINATARIOS_DIARIA							= "lDestinatarios"
+Public Const CAMPO_VISPROFILE_DESTINATARIOS_DIA_NOTIF							= "lDestinatariosNotif"
+
+Public Const CAMPO_VISPROFILE_NOTIFDIARIAUNIDADES			 					= "lNotifDiariaIngUnidades"
+Public Const CAMPO_VISPROFILE_DEST_DIARIAUNIDADES 							= "lDestinatariosIngUnidades"
+Public Const CAMPO_VISPROFILE_DEST_DIARIAUNIDADESCOD 							= "lDestinatariosIngUnidadesCod"
+Public Const CAMPO_VISPROFILE_NOTIFARCHIVADO									= "lNotifArchivado"
+Public Const CAMPO_VISPROFILE_NOTIF_RD										= "lNotifRD"
+Public Const CAMPO_VISPROFILE_NOTIFRECIBIR									= "lNotifRecibir"
+Public Const CAMPO_VISPROFILE_NOTIFFIRMAR									= "lNotifRevisar"
+Public Const CAMPO_VISPROFILE_ALARMAPROXIMOEXPIRAR							= "lAlarmaProxExpirar"
+Public Const CAMPO_VISPROFILE_ALARMAJEFEEXPIRO								= "lAlarmaJefeExpiro"
+Public Const CAMPO_VISPROFILE_CANTIDAD_FIRMAS								= "lCantidadFirmas"
+Public Const CAMPO_VISPROFILE_ARCHIVOAUTOMATICO								= "nArchivadoAuto"
+Public Const CAMPO_VISPROFILE_ARCHIVOAUTOMATICO_CS							= "nArchivadoAutoCS"
+Public Const CAMPO_VISPROFILE_PERMITIRDESVIOS								= "lPermitirDesvios"
+Public Const CAMPO_VISPROFILE_DIASMAXTRAMITE									= "nDiasMaxTramite"
+Public Const CAMPO_VISPROFILE_DIASMAXTRAMITE_EXTERNO							= "nDiasMaxTramiteExterno"
+Public Const CAMPO_VISPROFILE_TAMMAXIMOANEXOS								= "nTamMaxAnexosAct"
+Public Const CAMPO_VISPROFILE_CANTMAXIMOANEXOS								= "nCantMaxAnexosAct"
+Public Const CAMPO_VISPROFILE_TIPOSANEXOS									= "sTiposPermitidosAnexos"
+Public Const CAMPO_VISPROFILE_TIEMPODEVOLUCION								= "nTiempoMaximoDev"
+Public Const CAMPO_VISPROFILE_CANTDEVOLUCION									= "nCantMaximoDev"
+Public Const CAMPO_TIEMPOVIDAAUDITORIA										= "nTiempoVidaAuditoria"
+Public Const CAMPO_CREACION_AUDITORIA					 					= "dFechaCreacionAuditoria"
+Public Const CAMPO_CLAVE_CREACION_AUDITORIA									= "sClaveCreacionAuditoria"
+Public Const CAMPO_TEMPLATE_NOTIFICA										= "lMsgTemplate"
+Public Const CAMPO_PTJE_PASAR_EXPIRAR										= "nPtjePasarExpirar"
+Public Const CAMPO_ALARMAEXPIRO_REITERAR									= "lAlarmaJefeExpiroReiterar"
+Public Const CAMPO_FERIADOS												= "lFeriados"
+Public Const CAMPO_ROL_GESTION_CONFIDENCIALIDAD								= "lGestionConfidencial"
+Public Const CAMPO_TITULO_BIENVENIDA										= "sTituloBienvenida"
+Public Const CAMPO_SUB_TITULO_BIENVENIDA									= "sSubTituloBienvenida"
+Public Const CAMPO_VISPROFILE_LECTORES_CARATULA								= "sLectoresCaratula"
+Public Const CAMPO_VISPROFILE_AUTORES_CARATULA								= "sAutoresCaratula"
+Public Const CAMPO_VISPROFILE_LECTORES_ACTUACION								= "sLectoresActuacion"
+Public Const CAMPO_VISPROFILE_AUTORES_ACTUACION								= "sAutoresActuacion"
+Public Const CAMPO_VISPROFILE_ADMINISTRADORES_PAQUETE							= "lAdminPaquetes"
+Public Const CAMPO_VISPROFILE_MODIFICADORES_CARATULA							= "lModifCaratula"
+Public Const CAMPO_VISPROFILE_LECTORES_CARTA									= "sLectoresCarta"
+Public Const CAMPO_MIEMBROS_VISUALIZACION_PUBLICA								= "IUsuariosVisPub"
+Public Const CAMPO_VISPROFILE_LIMITE_ACTUACION_CS								= "limiteActuaciones"
+
+Public Const CAMPO_CARTAS_AVAILABLE 																			= "Cartas"
+
+Public Const CAMPO_CORRECTOR												= "lCorrector"
+Public Const CORRECTOR_ACTIVADO											= "1"
+Public Const CORRECTOR_DESACTIVADO											= "0"
+Public Const CAMPO_CORRECTOR_HABILITADOS									= "sPerHabilitados"
+Public Const CAMPO_CORRECTOR_PERSONAS										= "sPersCorrector"
+Public Const CORRECTOR_HABILITADOS_TODOS									= "Todos"
+Public Const LICENCIA_CORRECTOR											= "sLicenciaCorrector"
+'******************************************************************************************************************	
+
+'CONSTANTES PRIVADAS
+Private Const CAMPO_NOTIFDIARIA											= "lNotifDiaria"
+Private Const CAMPO_DESTINATARIOS_DIARIA									= "lDestinatarios"
+
+Private Const CAMPO_NOTIFDIARIAUNIDADES						 				= "lNotifDiariaIngUnidades"
+Private Const CAMPO_DESTINATARIOS_DIARIAUNIDADES								= "lDestinatariosIngUnidades"
+Private Const CAMPO_DESTINATARIOS_DIARIAUNIDADESCOD							= "lDestinatariosIngUnidadesCod"
+
+Private Const CAMPO_NOTIFARCHIVADO											= "lNotifArchivado"
+Private Const CAMPO_NOTIF_RD												= "lNotifRD"
+Private Const CAMPO_NOTIFRECIBIR											= "lNotifRecibir"
+Private Const CAMPO_NOTIFFIRMAR											= "lNotifRevisar"
+Private Const CAMPO_ALARMAPROXEXPIRAR										= "lAlarmaProxExpirar"
+Private Const CAMPO_ALARMAJEFEEXPIRO										= "lAlarmaJefeExpiro"
+Private Const CAMPO_CSS													= "sCSS"
+Public Const CAMPO_FORMATO_NUMERACION										= "sFormato"
+Public Const CAMPO_CLAVE_NUMERACION										= "sClaveNum"
+Private Const CAMPO_FORMADOCUMENTAL										= "sFormaDoc"
+Private Const CAMPO_ARCHIVOAUTOMATICO										= "nArchivadoAuto"
+Private Const CAMPO_PERMITIRDESVIOS										= "lPermitirDesvios"
+Private Const CAMPO_DIASMAXTRAMITE											= "nDiasMaxTramite"
+Private Const CAMPO_DIASMAXTRAMITEETERNO									= "nDiasMaxTramiteExterno"
+Private Const CAMPO_NOTIFICARPARAREVISAR									= "lNotifRevisar"
+Private Const CAMPO_TAMMAXIMOANEXOS										= "nTamMaxAnexosAct"
+Private Const CAMPO_TIPOSANEXOS											= "sTiposPermitidosAnexos"
+Private Const CAMPO_TIEMPODEVOLUCION										= "nTiempoMaximoDev"
+Private Const CAMPO_LECTORES_CARATULA										= "sLectoresCaratula"
+Private Const CAMPO_AUTORES_CARATULA										= "sAutoresCaratula"
+Private Const CAMPO_LECTORES_ACTUACION										= "sLectoresActuacion"
+Private Const CAMPO_AUTORES_ACTUACION										= "sAutoresActuacion"
+Private Const CAMPO_ADMINISTRADORES_PAQUETE									= "lAdminPaquetes"
+Private Const CAMPO_MODIFICADORES_CARATULA									= "lModifCaratula"
+Private Const CAMPO_ARCHIVOAUTOMATICO_CS									= "nArchivadoAutoCS"
+Private Const CAMPO_LECTORES_CS											= "sLectoresCarta"
+Private Const CAMPO_LIMITE_ACTUACION_CS										= "limiteActuaciones"
+Private Const CAMPO_TIPO_OBLIGATORIO										= "cTipoObligatorio"
+Private Const CAMPO_DATOS_CONTACTO_SOLIC									= "cVerDatosContacto"
+Private Const CAMPO_TIEMPO_AUTOGRABADO 										= "nAutoSave"
+Private Const CAMPO_TIEMPO_BANDEJAS 										= "nTiempoBandejas"
+
+Private Const CAMPO_TIEMPO_RECEP_AUTO 										= "nTiempoRecepAuto"
+Private Const CAMPO_NRO_DOCS_BUSQ											= "nNroDocs"
+Private Const CAMPO_NRO_MAX_RESUL											= "nNroMaxRes"
+Public Const CAMPO_TIPO_BUSQUEDAS											= "lTipoBusq"
+Public Const CAMPO_LOG_TIEMPOS											= "rLogTOperaciones"	
+Public Const CAMPO_BUSQ_TEMA												= "rBusqTema"
+Public Const CAMPO_IMPRESION_CONSTANCIAS									= "cImpConstancias"
+Public Const CAMPO_CERTIFICADO_CA											= "CertificadoCA"
+Public Const CAMPO_ACCION_PARA_DAR_PASE										= "rParaDarPase"
+
+'Numeracion
+Private Const CAMPO_NUMERACION_INCISO 										= "Inciso"
+Private Const CAMPO_NUMERACION_UNIDAD										= "uUnidad"
+
+Public Const CAMPO_INSTITUCION																				= "sInstitucion"
+Private Const CAMPO_EMAIL_INSTITUCIONAL																			= "sEmailInstitucional"
+
+Private Const FORM_SETROLES_CAMPO_USUARIO 																		= "Usuario"
+Private Const FORM_SETROLES_CAMPO_ROLES 																		= "saveRoles"
+Private Const FORM_SETROLES_CAMPO_USUARIO_ORGAN 																	= "Usuario_1"
+Private Const FORM_SETROLES_CAMPO_ROLES_ORGAN 																	= "saveRoles_1"
+Private Const FORM_SETROLES_CAMPO_USUARIO_CARTAS 																	= "Usuario_2"
+Private Const FORM_SETROLES_CAMPO_ROLES_CARTAS 																	= "saveRoles_2"
+Private Const FORM_SETIMAGES_CAMPO_DOC_UNID 																		= "unidImagenes"
+
+Private Const FORM_SETROLES_CAMPO_USUARIO_TEMASRUTAS 																= "Usuario_4"
+Private Const FORM_SETROLES_CAMPO_ROLES_TEMASRUTAS																= "saveRoles_4"
+
+Public Const CAMPO_HOST_ANEXOS																				= "sHostAnexo"
+Public Const CAMPO_IMPR_ANEXOS_ACT_DESACT																		= "lImprAnexos"
+Public Const IMPR_ANEXOS_ACTIVADO																				= "1"
+Public Const IMPR_ANEXOS_DESACTIVADO																			= "0"
+
+'Valores de los campos
+Public Const	ACCION_ALTA 																					= "1"
+Public Const	ACCION_BAJA 																					= "2"
+Public Const RUTA_HABILITADA																					= "1"
+Public Const RUTA_DESHABILITADA																				= "0"
+Public Const NOTIFDIARIA_CHECKED																				= "1"
+Public Const NOTIFARCHIVADO_CHECKED																			= "1"
+Public Const NOTIFRD_CHECKED																					= "1"
+Public Const NOTIFRECIBIR_CHECKED																				= "1"
+Public Const NOTIFFIRMAR_CHECKED																				= "1"
+Public Const ALARMAPROXEXPIRAR_CHECKED																			= "1"
+Public Const ALARMAJEFEEXPIRO_CHECKED																			= "1"
+Public Const ALARMAEXPIRO_REITERAR_CHECKED																		= "1"
+Public Const TIPO_LOTUSSCRIPT																					= "1"
+Public Const TIPO_JAVA																									= "2"
+Public Const	VALOR_GRUPO_MULTIPROPOSITO																		= "0"
+Public Const	VALOR_NAMES_TYPE 																				= "Group"
+Public Const	VALOR_LIST_DESCRIPTION																			= "Grupo generado desde la aplicación SGD"
+
+Public Const CAMPO_PROTOCOLO																					="rProtocolo"
+Public Const CAMPO_PUERTO																					="sPuerto"
+
+'IMAGENES
+Private Const CAMPO_IMGPPALPORTAL 																				= "ImgPPalPortal"
+Private Const CAMPO_IMGBANDEJAS 																				= "ImgBandejas"
+Private Const CAMPO_IMGIMPACT 																				= "ImgImpAct"
+
+'Acciones de expediente
+Public Const ACCION_CREAR																					="acc_crear"
+Public Const ACCION_PASE																						="acc_pase"
+Public Const ACCION_ANULAR_PASE																				="acc_anular_pase"
+Public Const ACCION_ENVIAR_PASE																				="acc_enviar_pase"
+Public Const ACCION_RESERVAR																					="acc_reservar"
+Public Const ACCION_ARCHIVAR																					="acc_archivar"
+Public Const ACCION_SACAR_ARCHIVO																				="acc_sacar_archivo"
+Public Const ACCION_MARCAR_CONFIDENCIAL																			="acc_marcarConfidencial"
+Public Const ACCION_QUITAR_CONFIDENCIALIDAD																		="acc_quitarConfidencialidad"
+Public Const ACCION_DEVOLVER																					="acc_devolver"
+Public Const ACCION_AGREGAR																					="acc_agregar"
+Public Const ACCION_RUTEAR																					="acc_rutear"
+Public Const ACCION_LIBERAR																					="acc_liberar"
+Public Const ACCION_DESAGREGAR																				="acc_desagregar"
+Public Const ACCION_FIRMAR																					="acc_firmar"
+Public Const ACCION_PARA_FIRMAR																				="acc_para_firmar"
+Public Const ACCION_RECIBIR																					="acc_recibir"
+Public Const ACCION_ASIGNAR																					="acc_asignar"
+Public Const ACCION_MODIFICAR_PLAZO																			="acc_modif_plazo"
+Public Const ACCION_ADD_LECT_CONFIDENCIAL																		="acc_add_lect_confidencial"
+Public Const ACCION_DEL_LECT_CONFIDENCIAL																		="acc_del_lect_confidencial"
+Public Const ACCION_SET_PAQUETE																				="acc_set_paquete"
+Public Const ACCION_FIRMAR_PASAR																				="acc_firmarPasar"
+Public Const ACCION_EDITAR_CARAT																				="acc_carat_edit"
+Public Const ACCION_TOMAR_CONOCIMIENTO																			="acc_tomar_conocimiento"
+Public Const ACCION_MARCAR_EXPEDIENTE																			="acc_marcar_exp"
+Public Const ACCION_EXPORTAR_MARCAS																			="acc_export_marcas"
+Public Const ACCION_QUITAR_MARCAS																				="acc_quitar_marcas"
+
+'Acciones de cartas de servicio
+Public Const ACCION_AGREGAR_ROL																				="acc_agregar_rol"
+Public Const ACCION_QUITAR_ROL																				="acc_quitar_rol"
+Public Const ACCION_CREAR_CS																					="acc_crear"
+Public Const ACCION_CREAR_RESP_CS																				="acc_crear_resp"
+Public Const ACCION_FIRMAR_CS																					="acc_firmar"
+Public Const ACCION_AGREGAR_FIRMA_CS																			="acc_agregar_firma"
+Public Const ACCION_ENVIAR_CS																					="acc_enviar"
+Public Const ACCION_REENVIAR_CS																				="acc_reenviar"
+Public Const ACCION_CREAR_FIRMAR_CS																			="acc_crear_firmar"
+Public Const ACCION_CREAR_RESP_FIRMAR_CS																		="acc_crear_resp_firmar"
+Public Const ACCION_FIRMAR_ENVIAR_CS																			="acc_firmar_enviar"
+Public Const ACCION_REENVIAR_CC_CS																				="acc_reenviar_cc"
+Public Const ACCION_CREAR_RESP_CC_CS																			="acc_crear_resp_cc"
+Public Const ACCION_TOMAR_CONOCIMIENTO_CS																		="acc_tomarconocimiento"
+Public Const ACCION_EDITAR_CS																					="acc_editar"
+Public Const ACCION_ARCHIVAR_CS																				="acc_archivar"
+Public Const ACCION_SACAR_DE_ARCHIVO_CS																			="acc_saco_archivar"
+Public Const ACCION_ANULAR_REE_CS																				="acc_anular_ree"
+Public Const ACCION_ACUSAR_CS																					="acc_acusar"
+
+'campos avisos
+Public Const AVISAR_YES																						="1"
+Public Const AVISAR_NO																						="0"
+Public Const CAMPO_GENERAR_AVISO_AL_DEVOLVER																		="rAvisarAlDevolver"
+Public Const CAMPO_GENERAR_AVISO_AL_RECIBIR																		="rAvisarAlRecibir"
+Public Const CAMPO_TEMPLATE_MSG_CORREO_AVISOS																	="MsgTemplateAvisosCorreo"
+Public Const CAMPO_TEMPLATE_ASUNTO_CORREO_AVISOS																	="sAsuntoAvisosCorreo"
+Public Const CAMPO_TEMPLATE_MSG_MSG_AVISOS																		="MsgTemplateAvisosMensajeTxt"
+Public Const CAMPO_TEMPLATE_MSG_VOZ_AVISOS																		="MsgTemplateAvisosMensajeVoz"
+
+
+Public Const MODULO_EXPEDIENTE 					= "Expediente"
+'******************************************************************************************************************	
+'*
+'*									CLASS <CONFIGURACION>
+'*
+'******************************************************************************************************************	
+
+'******************************************************************************************************************
+Public Class Configuracion 
+'******************************************************************************************************************	
+	
+'MIEMBROS PRIVADOS
+	Private ses As NotesSession
+	Private docConfiguracion As NotesDocument
+	Private vKeyDB As Vector
+	Private vServer As Vector
+	Private vHost As Vector
+	Private vFilePath As Vector
+	Private vFormNum As Vector	
+	Private vKeyNum As Vector
+	
+'******************************************************************************************************************	
+	
+'FUNCIONES Y PROCEDIMIENTOS PRIVADOS	
+	
+	Private Function ObtenerNombreServidor(Byval sValor As String) As String
+	' Retorna el verdadero valor del servidor en caso que sea una clave
+		On Error Goto HANDLER
+		
+		If sValor = CONF_SERVIDOR_ACTUAL Then
+			ObtenerNombreServidor = ses.CurrentDatabase.Server
+		Elseif sValor = CONF_SERVIDOR_LOCAL Then
+			ObtenerNombreServidor = ""
+		Else
+			ObtenerNombreServidor = sValor
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Procedimiento ObtenerNombreServidor","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Function AgregarInteroperabilidad(Byval clave As String, srv As String, host As String, path As String)
+	'Recibe la lista de parámetros de una nueva linea y los agrega a la tabla de interoperabilidad	
+		On Error Goto HANDLER
+		
+		Dim vNuevaLinea As Vector
+		
+		Set vNuevaLinea = New Vector(0)
+		Call vNuevaLinea.insertElement(clave,1)
+		Call vNuevaLinea.insertElement(srv,2)
+		Call vNuevaLinea.insertElement(host,3)
+		Call vNuevaLinea.insertElement(path,4)
+		Set Me.LineaInteroperabilidad = vNuevaLinea
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Funcion AgregarInteroperabilidad","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function PedirNumero (Byval nombrenumerador As String) As Long
+	'Pide un número a la clase numeración para el numerador que recibe y lo devuelve
+	'Suposiciones:
+		' 1) Si se utiliza un numerador diferente por año, el nombre del numerador indicará que va 
+		'    el año con yy o yyyy en el lugar que corresponda. Esta función sustituye ese indicador
+		'	por el año actual
+		On Error Goto HANDLER
+		Dim num As NumClient, BASENUMERACION As String, SERVIDORNUMERACION As String
+		
+		'Sustituyo el indicador de año por el año actual
+		nombrenumerador = SustituirAnio(nombrenumerador)
+		
+		'Pido el número
+		'Busco srv y path de la base de numeracion
+		SERVIDORNUMERACION  = Me.ServidorDomino(CLAVE_DBNUMERACION)
+		BASENUMERACION  = Me.BaseDeDatos(CLAVE_DBNUMERACION)
+		If (nombrenumerador <> "") And (BASENUMERACION <> "") Then
+			'Creo el objeto numerador
+			Set num = New NumClient(nombrenumerador,SERVIDORNUMERACION,BASENUMERACION)		
+			PedirNumero = num.GetNumber()			
+		Else
+			Error ERROR_NUMERATION,MSG_ERROR_NUMERATION
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Funcion PedirNumero","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function SustituirAnio (Byval formato As String)As String
+	'Busca el indicador del año (yy o yyyy) dentro del formato y lo sustituye por el año actual
+	'Si el indicador del año no está devuelve el formato como lo recibió
+		On Error Goto HANDLER
+		
+		Dim anioactual As String, pos As Integer
+		
+		'Veo si va el año con cuatro digitos
+		anioactual = Cstr(Year(Today))
+		pos = Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)
+		If pos = 0 Then  'veo si va el año con dos digitos
+			anioactual = Right(Cstr(Year(Today)),2)
+			pos = Instr(formato, INDICADOR_AÑO_DOS_DIGITOS)
+		End If
+		If pos <> 0 Then  'va el año
+			Mid$ (formato, pos,Len(anioactual)) = anioactual
+		End If  'si no va el año no modifiqué nada al texto		
+		SustituirAnio = formato
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Funcion SustituirAnio","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	Public Function SustituirCantDigitos (indicadorUnitario As String, indicadorTotal As String,Byval formato As String, Byval nro As String) As String
+	'Chequea la cantidad de veces que aparece el indicador de un digito y lo sustituye
+	'por el nro formateado con esa cantidad de digitos
+		On Error Goto HANDLER
+		
+		Dim pos As Integer, digitos As Integer, prefijo As String, resto As String, sufijo As String
+		
+		'Busco la cantidad de dígitos para el número
+		pos = Instr(formato,indicadorUnitario)	'debe haber por lo menos un indicador (digitos segun los que tenga el nro)
+		If pos <> 0 Then
+			digitos = 1
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			resto = Right(formato, Len(formato)-pos)
+			pos = Instr(resto,indicadorUnitario)		
+			While pos <> 0  'cuento los dígitos
+				digitos = digitos + 1
+				resto = Right(resto, Len(resto)-pos)
+				pos = Instr(resto,indicadorUnitario)
+			Wend
+			sufijo = resto
+		'Agrego 0's al nro hasta llegar a la cant de dígitos
+			While Len(nro)<digitos
+				nro = "0" + nro
+			Wend 
+		'Armo el nuevo formato
+			SustituirCantDigitos = prefijo + nro + sufijo
+		Else   'no está el #
+		'busco el *
+			pos = Instr(formato,indicadorTotal)
+			If pos = 0 Then Error ERROR_INDICADOR_DIGITO_NOT_FOUND, MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND & indicadorTotal
+			
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			If pos = Len(formato) Then  'no hay sufijo
+				sufijo = ""
+			Else
+				sufijo = Right(formato, Len(formato)-pos)
+			End If
+			
+			SustituirCantDigitos = prefijo + nro + sufijo
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Funcion SustituirCantDigitos","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Private Function GenerarDb(Byval clavetemplate As String, Byval anio As String, srvt As String, hostt As String, path As String) As NotesDatabase
+	'Si aún no existe, crea la base de datos correspondiente al anio que recibe
+	'La genera en base al template ubicado en la interoperabilidad por clavetemplate
+	'Devuelve servidor, host y path de la nueva base de datos
+		On Error Goto HANDLER
+		
+		If Not Isnumeric(anio) Then
+			Error ERROR_CREATE_DB,MSG_ERROR_CREATE_DB_ANIO
+		End If
+		
+		
+		Dim pos As Integer, patht As String, dbNew As NotesDatabase, dbTemplate As NotesDatabase
+		Dim existe As Integer
+		
+		'Seteo datos de la base template
+		srvt = Me.ServidorDomino(clavetemplate)
+		If srvt = "" Then Error ERRORCONF_CLAVE_NOTFOUND, MSG_ERRORCONF_CLAVE_NOTFOUND+" "+clavetemplate
+		patht = Me.BaseDeDatos(clavetemplate)
+		hostt = Me.Host(clavetemplate)
+		Set dbTemplate = New NotesDataBase ("","")
+		existe = dbTemplate.Open(srvt,patht)
+		If Not existe Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+clavetemplate
+		'Armo el path de la nueva base de datos incluyendo los dos digitos del año
+		pos = Instr(Ucase(patht),".NSF") 
+		If pos = 0 Then Error ERROR_PATH_INCOMPLETED, MSG_ERROR_PATH_INCOMPLETED+" "+clavetemplate
+		path = Left(patht,pos-1)+ anio + Right(patht,4)
+		'Controlo que no exista la base para el año
+		Set dbNew = New NotesDataBase ("","")
+		existe = dbNew.Open(srvt,path)
+		If Not existe Then   'no existe
+			'Creo la nueva base de datos como copia de la template para no perder la acl		
+			Set dbNew = dbTemplate.CreateCopy(srvt,path)
+			'Le cambio el título
+			Select Case clavetemplate
+			Case CLAVE_DBTEMPLATEGESTIONDOC
+				dbNew.title = "Gestión documental "+anio	
+			Case CLAVE_DBTEMPLATECARTASERV
+				dbNew.title = "Cartas de Servicio "+anio	
+			End Select
+			
+		End If
+		Set GenerarDb = dbNew
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Funcion GenerarDb","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Sub GuardarProfile(doc As NotesDocument, docContext As NotesDocument)
+	'Carga los campos del doc con los del docContext	
+		On Error Goto HANDLER
+		
+		' Cargo host de busqueda
+		doc.ReplaceItemValue "sHostBusqueda",docContext.sHostBusqueda(0)
+		' Cargo tabla interoperabilidad
+		doc.ReplaceItemValue CAMPO_VISPROFILE_CLAVEDBS, docContext.GetItemValue(CAMPO_VISPROFILE_CLAVEDBS) 
+		doc.ReplaceItemValue CAMPO_VISPROFILE_SERVIDORES, docContext.GetItemValue(CAMPO_VISPROFILE_SERVIDORES) 
+		doc.ReplaceItemValue CAMPO_VISPROFILE_HOSTS, docContext.GetItemValue(CAMPO_VISPROFILE_HOSTS) 
+		doc.ReplaceItemValue CAMPO_VISPROFILE_RUTAS, docContext.GetItemValue(CAMPO_VISPROFILE_RUTAS) 
+		' Cargo Tabla formato de numeración
+		doc.ReplaceItemValue CAMPO_VISPROFILE_CLAVENUM, docContext.GetItemValue(CAMPO_VISPROFILE_CLAVENUM) 
+		doc.ReplaceItemValue CAMPO_VISPROFILE_FORMATONUM, docContext.GetItemValue(CAMPO_VISPROFILE_FORMATONUM) 
+		' Guardo Ruta habilitada	
+		doc.ReplaceItemValue CAMPO_VISPROFILE_RUTALIBRE, docContext.GetItemValue(CAMPO_VISPROFILE_RUTALIBRE)(0)
+		'Cargo nuevos Administradores	
+	'	doc.ReplaceItemValue CAMPO_ADMINISTRADORES, docContext.GetItemValue(CAMPO_ADMINISTRADORES)
+		' Guardo Forma Documental
+		doc.ReplaceItemValue CAMPO_VISPROFILE_FORMADOCUMENTAL, docContext.GetItemValue(CAMPO_VISPROFILE_FORMADOCUMENTAL)
+		' Guardo estilo
+		doc.ReplaceItemValue CAMPO_VISPROFILE_CSS, docContext.GetItemValue(CAMPO_VISPROFILE_CSS)(0)
+		' Guardo Alarmas
+		doc.ReplaceItemValue CAMPO_VISPROFILE_NOTIFDIARIA, docContext.GetItemValue(CAMPO_VISPROFILE_NOTIFDIARIA)(0) 		
+		doc.ReplaceItemValue CAMPO_VISPROFILE_DESTINATARIOS_DIARIA, docContext.GetItemValue(CAMPO_VISPROFILE_DESTINATARIOS_DIARIA)
+		
+		'Campo nuevo para las notificaciones diarias
+		doc.ReplaceItemValue CAMPO_VISPROFILE_DESTINATARIOS_DIA_NOTIF, docContext.GetItemValue(CAMPO_VISPROFILE_DESTINATARIOS_DIA_NOTIF)
+		
+		doc.ReplaceItemValue CAMPO_VISPROFILE_NOTIFDIARIAUNIDADES, docContext.GetItemValue(CAMPO_VISPROFILE_NOTIFDIARIAUNIDADES)(0) 		
+		doc.ReplaceItemValue CAMPO_VISPROFILE_DEST_DIARIAUNIDADES, docContext.GetItemValue(CAMPO_VISPROFILE_DEST_DIARIAUNIDADES)
+		
+		doc.ReplaceItemValue CAMPO_VISPROFILE_NOTIFARCHIVADO, docContext.GetItemValue(CAMPO_VISPROFILE_NOTIFARCHIVADO)(0) 
+		doc.ReplaceItemValue CAMPO_VISPROFILE_NOTIF_RD, docContext.GetItemValue(CAMPO_VISPROFILE_NOTIF_RD)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_NOTIFRECIBIR, docContext.GetItemValue(CAMPO_VISPROFILE_NOTIFRECIBIR)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_NOTIFFIRMAR, docContext.GetItemValue(CAMPO_VISPROFILE_NOTIFFIRMAR)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_ALARMAPROXIMOEXPIRAR, docContext.GetItemValue(CAMPO_VISPROFILE_ALARMAPROXIMOEXPIRAR)(0) 
+		doc.ReplaceItemValue CAMPO_VISPROFILE_ALARMAJEFEEXPIRO, docContext.GetItemValue(CAMPO_VISPROFILE_ALARMAJEFEEXPIRO)(0)
+		' Guardo Configuración global expedientes
+		doc.ReplaceItemValue CAMPO_VISPROFILE_CANTIDAD_FIRMAS, docContext.GetItemValue(CAMPO_VISPROFILE_CANTIDAD_FIRMAS)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_ARCHIVOAUTOMATICO, docContext.GetItemValue(CAMPO_VISPROFILE_ARCHIVOAUTOMATICO)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_PERMITIRDESVIOS, docContext.GetItemValue(CAMPO_VISPROFILE_PERMITIRDESVIOS)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_DIASMAXTRAMITE, docContext.GetItemValue(CAMPO_VISPROFILE_DIASMAXTRAMITE)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_DIASMAXTRAMITE_EXTERNO, docContext.GetItemValue(CAMPO_VISPROFILE_DIASMAXTRAMITE_EXTERNO)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_TAMMAXIMOANEXOS, docContext.GetItemValue(CAMPO_VISPROFILE_TAMMAXIMOANEXOS)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_CANTMAXIMOANEXOS, docContext.GetItemValue(CAMPO_VISPROFILE_CANTMAXIMOANEXOS)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_TIEMPODEVOLUCION, docContext.GetItemValue(CAMPO_VISPROFILE_TIEMPODEVOLUCION)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_CANTDEVOLUCION, docContext.GetItemValue(CAMPO_VISPROFILE_CANTDEVOLUCION)(0)
+		' tipos permitidos de archivos anexos
+		doc.ReplaceItemValue CAMPO_VISPROFILE_TIPOSANEXOS, docContext.GetItemValue(CAMPO_VISPROFILE_TIPOSANEXOS)
+		'Guardo lectores y autores de caratula y actuaciones
+		doc.ReplaceItemValue CAMPO_LECTORES_CARATULA, docContext.GetItemValue(CAMPO_LECTORES_CARATULA)
+		doc.ReplaceItemValue CAMPO_AUTORES_CARATULA, docContext.GetItemValue(CAMPO_AUTORES_CARATULA)
+		doc.ReplaceItemValue CAMPO_LECTORES_ACTUACION, docContext.GetItemValue(CAMPO_LECTORES_ACTUACION)
+		doc.ReplaceItemValue CAMPO_AUTORES_ACTUACION, docContext.GetItemValue(CAMPO_AUTORES_ACTUACION)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_ADMINISTRADORES_PAQUETE, docContext.GetItemValue(CAMPO_VISPROFILE_ADMINISTRADORES_PAQUETE)(0) 
+		doc.ReplaceItemValue CAMPO_VISPROFILE_MODIFICADORES_CARATULA, docContext.GetItemValue(CAMPO_VISPROFILE_MODIFICADORES_CARATULA)(0) 
+		'Guardo configuración de cartas de servicio
+		doc.ReplaceItemValue CAMPO_VISPROFILE_ARCHIVOAUTOMATICO_CS, docContext.GetItemValue(CAMPO_VISPROFILE_ARCHIVOAUTOMATICO_CS)(0)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_LECTORES_CARTA, docContext.GetItemValue(CAMPO_LECTORES_CS)
+		doc.ReplaceItemValue CAMPO_VISPROFILE_LIMITE_ACTUACION_CS, docContext.GetItemValue(CAMPO_LIMITE_ACTUACION_CS)		
+		'Auditoria
+		doc.ReplaceItemValue CAMPO_TIEMPOVIDAAUDITORIA, docContext.GetItemValue(CAMPO_TIEMPOVIDAAUDITORIA)
+		doc.ReplaceItemValue CAMPO_CREACION_AUDITORIA, docContext.GetItemValue(CAMPO_CREACION_AUDITORIA)
+		doc.ReplaceItemValue CAMPO_CLAVE_CREACION_AUDITORIA, docContext.GetItemValue(CAMPO_CLAVE_CREACION_AUDITORIA)
+		
+		'Notificaciones
+		doc.ReplaceItemValue CAMPO_TEMPLATE_NOTIFICA, docContext.GetItemValue(CAMPO_TEMPLATE_NOTIFICA)
+		doc.ReplaceItemValue CAMPO_PTJE_PASAR_EXPIRAR, docContext.GetItemValue(CAMPO_PTJE_PASAR_EXPIRAR)
+		doc.ReplaceItemValue CAMPO_ALARMAEXPIRO_REITERAR, docContext.GetItemValue(CAMPO_ALARMAEXPIRO_REITERAR)
+		doc.ReplaceItemValue CAMPO_FERIADOS, docContext.GetItemValue(CAMPO_FERIADOS)
+		doc.ReplaceItemValue CAMPO_INSTITUCION, docContext.GetItemValue(CAMPO_INSTITUCION)(0)
+		doc.ReplaceItemValue CAMPO_EMAIL_INSTITUCIONAL, docContext.GetItemValue(CAMPO_EMAIL_INSTITUCIONAL)(0)
+		'Roles
+		doc.ReplaceItemValue CAMPO_ROL_GESTION_CONFIDENCIALIDAD, docContext.GetItemValue(CAMPO_ROL_GESTION_CONFIDENCIALIDAD)
+		
+		doc.ReplaceItemValue CAMPO_TIEMPO_AUTOGRABADO, docContext.GetItemValue(CAMPO_TIEMPO_AUTOGRABADO)
+		doc.ReplaceItemValue CAMPO_TIEMPO_BANDEJAS, docContext.GetItemValue(CAMPO_TIEMPO_BANDEJAS)
+		
+		doc.ReplaceItemValue "cFirmaRemota", docContext.cFirmaRemota(0)
+		
+		doc.ReplaceItemValue CAMPO_TIEMPO_RECEP_AUTO, docContext.getItemValue(CAMPO_TIEMPO_RECEP_AUTO)(0)
+		
+		'Busqueda
+		doc.ReplaceItemValue CAMPO_NRO_MAX_RESUL, docContext.GetItemValue(CAMPO_NRO_MAX_RESUL)(0)
+		doc.ReplaceItemValue CAMPO_NRO_DOCS_BUSQ, docContext.GetItemValue(CAMPO_NRO_DOCS_BUSQ)(0)
+		doc.ReplaceItemValue CAMPO_TIPO_BUSQUEDAS, docContext.GetItemValue(CAMPO_TIPO_BUSQUEDAS)(0)
+		
+		
+		'Notificaciones
+		
+		doc.ReplaceItemValue CAMPO_VISPROFILE_DEST_DIARIAUNIDADESCOD,docContext.GetItemValue(CAMPO_VISPROFILE_DEST_DIARIAUNIDADESCOD)
+		
+		
+		'Corrector		
+		doc.ReplaceItemValue CAMPO_CORRECTOR, docContext.GetItemValue(CAMPO_CORRECTOR)(0)
+		doc.ReplaceItemValue LICENCIA_CORRECTOR,docContext.GetItemValue(LICENCIA_CORRECTOR)(0)
+		doc.ReplaceItemValue CAMPO_CORRECTOR_HABILITADOS, docContext.GetItemValue(CAMPO_CORRECTOR_HABILITADOS)(0)
+		doc.ReplaceItemValue CAMPO_CORRECTOR_PERSONAS, docContext.GetItemValue(CAMPO_CORRECTOR_PERSONAS)
+		'Log
+		doc.ReplaceItemValue CAMPO_LOG_TIEMPOS, docContext.GetItemValue(CAMPO_LOG_TIEMPOS)(0)
+		
+		'Host anexos
+		doc.ReplaceItemValue CAMPO_HOST_ANEXOS, docContext.GetItemValue(CAMPO_HOST_ANEXOS)(0)
+		
+		'Numeracion
+		doc.ReplaceItemValue CAMPO_NUMERACION_INCISO, docContext.GetItemValue(CAMPO_NUMERACION_INCISO)(0)		
+		doc.ReplaceItemValue CAMPO_NUMERACION_UNIDAD, docContext.GetItemValue(CAMPO_NUMERACION_UNIDAD)(0)
+		
+		' Configuracion Web
+		doc.ReplaceItemValue CAMPO_PROTOCOLO,docContext.GetItemValue(CAMPO_PROTOCOLO)(0)
+		doc.ReplaceItemValue CAMPO_PUERTO,docContext.getItemValue(CAMPO_PUERTO)(0)
+		
+		doc.ReplaceItemValue CAMPO_BUSQ_TEMA, docContext.GetItemValue(CAMPO_BUSQ_TEMA)(0)
+		
+		doc.ReplaceItemValue "sAdministradoresViejos",doc.GetItemValue("sAdministradoresViejos")
+		doc.ReplaceItemValue CAMPO_ADMINISTRADORES,docContext.GetItemValue(CAMPO_ADMINISTRADORES)	
+		doc.ReplaceItemValue "usrRolesAdminUniPer",docContext.GetItemValue("usrRolesAdminUniPer")			
+		doc.ReplaceItemValue "usrAgregarRoles",docContext.GetItemValue("usrAgregarRoles")
+		doc.ReplaceItemValue "usrAdminRutas",docContext.GetItemValue("usrAdminRutas")
+		doc.ReplaceItemValue CAMPO_ESTADO_VIS_PUBLICA,docContext.GetItemValue(CAMPO_ESTADO_VIS_PUBLICA)(0)
+		doc.ReplaceItemValue CAMPO_DIAS_VIS_PUBLICA,docContext.GetItemValue(CAMPO_DIAS_VIS_PUBLICA)
+		doc.ReplaceItemValue CAMPO_MIEMBROS_VISUALIZACION_PUBLICA,docContext.GetItemValue(CAMPO_MIEMBROS_VISUALIZACION_PUBLICA)
+		doc.ReplaceItemValue CAMPO_INSTALAR_VIS_PUBLICA,docContext.GetItemValue(CAMPO_INSTALAR_VIS_PUBLICA)(0)
+		doc.ReplaceItemValue "sPathCertificado",docContext.GetItemValue("sPathCertificado")(0)
+		
+		
+		'Campos del Portal
+		doc.ReplaceItemValue CAMPO_TITULO_BIENVENIDA, docContext.GetItemValue(CAMPO_TITULO_BIENVENIDA)
+		doc.ReplaceItemValue CAMPO_SUB_TITULO_BIENVENIDA, docContext.GetItemValue(CAMPO_SUB_TITULO_BIENVENIDA)
+		doc.ReplaceItemValue  CAMPO_ANIO_INICIO_BANDEJA,docContext.GetItemValue(CAMPO_ANIO_INICIO_BANDEJA)	
+		
+		'IMAGENES!!!!
+		doc. ReplaceItemValue CAMPO_IMGPPALPORTAL, docContext.GetItemValue(CAMPO_IMGPPALPORTAL)(0)
+		doc.ReplaceItemValue CAMPO_IMGBANDEJAS,docContext.GetItemValue(CAMPO_IMGBANDEJAS)(0)
+		doc.ReplaceItemValue CAMPO_IMGIMPACT,docContext.GetItemValue(CAMPO_IMGIMPACT)(0)
+		
+		'Configuracion Bandejas
+		doc.ReplaceItemValue CAMPO_CANT_BANDEJA_TODOS, docContext.GetItemValue(CAMPO_CANT_BANDEJA_TODOS)(0)
+		
+		'Tipo de Validacion de Firmas
+		Call doc.ReplaceItemValue(CAMPO_VALIDACION_FIRMA,docContext.GetItemValue(CAMPO_VALIDACION_FIRMA))
+		
+		'Certificado de la CA
+		Call doc.ReplaceItemValue(CAMPO_CERTIFICADO_CA,docContext.GetItemValue(CAMPO_CERTIFICADO_CA))
+		
+		'Campo de visualizacion en caratula o en actuacion
+		doc.ReplaceItemValue CAMPO_VER_TEMA_EN_ACTUACION,docContext.GetItemValue(CAMPO_VER_TEMA_EN_ACTUACION)(0)
+		doc.ReplaceItemValue CAMPO_VER_NRO_ANTERIOR, docContext.GetItemValue(CAMPO_VER_NRO_ANTERIOR)
+		doc.replaceItemValue CAMPO_TIPO_OBLIGATORIO, docContext.getItemValue(CAMPO_TIPO_OBLIGATORIO)
+		doc.ReplaceItemValue CAMPO_VER_EXTRACTO,docContext.GetItemValue(CAMPO_VER_EXTRACTO)(0)
+		doc.ReplaceItemValue CAMPO_VER_DESCADJUNTOS,docContext.GetItemValue(CAMPO_VER_DESCADJUNTOS)(0)
+		doc.ReplaceItemValue CAMPO_ALTO_EDITOR,docContext.GetItemValue(CAMPO_ALTO_EDITOR)(0)
+		doc.ReplaceItemValue CAMPO_ANCHO_EDITOR,docContext.GetItemValue(CAMPO_ANCHO_EDITOR)(0)
+		doc.ReplaceItemValue CAMPO_ANCHO_ADJUNTOS,docContext.GetItemValue(CAMPO_ANCHO_ADJUNTOS)(0)
+		doc.ReplaceItemValue CAMPO_ALTO_ADJUNTOS,docContext.GetItemValue(CAMPO_ALTO_ADJUNTOS)(0)
+		doc.ReplaceItemValue CAMPO_IMPR_ANEXOS_ACT_DESACT,docContext.GetItemValue(CAMPO_IMPR_ANEXOS_ACT_DESACT)(0)
+		doc.ReplaceItemValue CAMPO_DATOS_CONTACTO_SOLIC, docContext.GetItemValue(CAMPO_DATOS_CONTACTO_SOLIC)
+		doc.ReplaceItemValue CAMPO_VER_SOLICITANTE,docContext.GetItemValue(CAMPO_VER_SOLICITANTE)(0)
+		doc.ReplaceItemValue CAMPO_VER_DATOS_COMPLEMENTARIOS,docContext.GetItemValue(CAMPO_VER_DATOS_COMPLEMENTARIOS)(0)
+		doc.ReplaceItemValue CAMPO_VER_NRO_EXTERNO,docContext.GetItemValue(CAMPO_VER_NRO_EXTERNO)(0)
+		
+		'Campos de visualización de Acciones 
+		doc.ReplaceItemValue CAMPO_ACCION_PARA_DAR_PASE, docContext.GetItemValue(CAMPO_ACCION_PARA_DAR_PASE)(0)
+		doc.ReplaceItemValue CAMPO_IMPRESION_CONSTANCIAS, docContext.GetItemValue(CAMPO_IMPRESION_CONSTANCIAS)
+		
+		'Configuracion de Avisos
+		
+		doc.ReplaceItemValue CAMPO_TEMPLATE_MSG_CORREO_AVISOS, docContext.GetItemValue(CAMPO_TEMPLATE_MSG_CORREO_AVISOS)
+		doc.ReplaceItemValue CAMPO_TEMPLATE_ASUNTO_CORREO_AVISOS, docContext.GetItemValue(CAMPO_TEMPLATE_ASUNTO_CORREO_AVISOS)
+		doc.ReplaceItemValue CAMPO_TEMPLATE_MSG_MSG_AVISOS, docContext.GetItemValue(CAMPO_TEMPLATE_MSG_MSG_AVISOS)
+		doc.ReplaceItemValue CAMPO_TEMPLATE_MSG_VOZ_AVISOS, docContext.GetItemValue(CAMPO_TEMPLATE_MSG_VOZ_AVISOS)		
+		
+		'Guardo el doc
+		If Not doc.save(False, False) Then Error ERROR_CANT_SAVE_DOCUMENT, MSG_ERROR_CANT_SAVE_DOCUMENT
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Procedimiento GuardarProfile","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+'CONSTRUCTOR
+	Public Sub new()
+		On Error Goto HANDLER
+		
+		'Referencio Variables globales
+		Set ses = New NotesSession		
+		
+		'Se carga el documento de profile
+		Set docConfiguracion = ses.CurrentDatabase.GetProfileDocument(DOCUMENTO_PERFIL)
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vHost = New Vector(0)
+		Set vFilePath = New Vector(0)
+		Set vFormNum = New Vector(0)
+		Set vKeyNum = New Vector(0)
+		
+		vKeyDB.values = docConfiguracion.getItemValue(CAMPO_CLAVE_DB)
+		vServer.values = docConfiguracion.getItemValue(CAMPO_SERVIDOR_DB)
+		vHost.values = docConfiguracion.getItemValue(CAMPO_HOST_DB)
+		vFilePath.values = docConfiguracion.getItemValue(CAMPO_RUTA_DB)
+		vFormNum.values = docConfiguracion.getItemValue(CAMPO_FORMATO_NUMERACION)
+		vKeyNum.values = docConfiguracion.getItemValue(CAMPO_CLAVE_NUMERACION)
+		'En caso de que nunca haya sido editado se setea el campo form para poderse editar
+		If Not docConfiguracion.HasItem("Form") Then
+			docConfiguracion.ReplaceItemValue "Form",DOCUMENTO_PERFIL
+		End If
+		
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método new","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************	
+	
+	Public Property Get CorrectorHabilitados As String
+		On Error Goto handler
+		CorrectorHabilitados = docConfiguracion.GetItemValue(CAMPO_CORRECTOR_HABILITADOS)(0)		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get CorrectorHabilitados","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************		
+	
+	Public Property Set CampoNroAnterior As Boolean
+		On Error Goto handler
+		If CampoNroAnterior Then
+			docConfiguracion.ReplaceItemValue CAMPO_VER_NRO_ANTERIOR,"1"		
+		Else 
+			docConfiguracion.ReplaceItemValue CAMPO_VER_NRO_ANTERIOR,""					
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set CampoNroAnterior","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Get CampoNroAnterior As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_VER_NRO_ANTERIOR)(0)="1" Then
+			CampoNroAnterior = True
+		Else
+			CampoNroAnterior = False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get CampoNroAnterior","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set CampoNroExterno As Boolean
+		On Error Goto handler
+		If CampoNroExterno Then
+			docConfiguracion.ReplaceItemValue CAMPO_VER_NRO_EXTERNO,"1"		
+		Else 
+			docConfiguracion.ReplaceItemValue CAMPO_VER_NRO_EXTERNO,""					
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set CampoNroExterno","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Get CampoNroExterno As Boolean
+		On Error Goto handler
+		If docConfiguracion.GetItemValue(CAMPO_VER_NRO_EXTERNO)(0)="1" Then
+			CampoNroExterno = True
+		Else
+			CampoNroExterno = False
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get CampoNroExterno","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set CorrectorHabilitados As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CORRECTOR_HABILITADOS,CorrectorHabilitados		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set CorrectorHabilitados","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	
+	Public Property Get AnioBandeja As Integer
+		On Error Goto handler
+		AnioBandeja = docConfiguracion.GetItemValue(CAMPO_ANIO_INICIO_BANDEJA)(0)		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get AnioBandeja","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Function ControlAdjuntosActivo As Boolean
+		On Error Goto handler
+		
+		ControlAdjuntosActivo=True
+		
+		
+		Exit Function
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método ControlAdjuntosActivo","")		
+	End Function
+	'******************************************************************************************************************	
+	
+	Public Property Get AltoAdjuntos As Integer
+		On Error Goto handler
+		Dim str1 As Variant
+		str1=docConfiguracion.GetItemValue(CAMPO_ALTO_ADJUNTOS)(0)
+		If (Isnumeric(str1)) Then
+			AltoAdjuntos=Cint(str1)
+		Else
+			AltoAdjuntos=280
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get AltoAdjuntos","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************		
+	Public Property Set AltoAdjuntos As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_ALTO_ADJUNTOS,Cstr(AltoAdjuntos)		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set AltoAdjuntos","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Set Protocolo As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_PROTOCOLO,Cstr(Protocolo)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método set Protocolo","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get Protocolo As String
+		On Error Goto handler
+		Protocolo =Cstr(ses.Currentdatabase.Getprofiledocument("IGDOCCONFIG").GetItemValue(CAMPO_PROTOCOLO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método get Protocolo","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Set BusqTema As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_BUSQ_TEMA,Cstr(BusqTema)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método set BusqTema","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get BusqTema As String
+		On Error Goto handler
+		BusqTema =Cstr(docConfiguracion.GetItemValue(CAMPO_BUSQ_TEMA)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método get BusqTema","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Set Puerto As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_PUERTO,Cstr(Puerto)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método set Puerto","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get Puerto As String
+		On Error Goto handler
+		Puerto =Cstr(ses.Currentdatabase.Getprofiledocument("IGDOCCONFIG").GetItemValue(CAMPO_PUERTO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método get Puerto","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	Public Property Get AnchoAdjuntos As Integer
+		On Error Goto handler
+		Dim str1 As Variant
+		str1=docConfiguracion.GetItemValue(CAMPO_ANCHO_ADJUNTOS)(0)
+		If (Isnumeric(str1)) Then
+			AnchoAdjuntos=Cint(str1)
+		Else
+			AnchoAdjuntos=280
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get AnchoAdjuntos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set AnchoAdjuntos As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_ANCHO_ADJUNTOS,Cstr(AnchoAdjuntos)		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set AnchoAdjuntos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************			
+	Public Property Set AnioBandeja As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_ANIO_INICIO_BANDEJA,AnioBandeja		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set AnioBandeja","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Get AltoEditor As Integer
+		On Error Goto handler
+		Dim str1 As Variant
+		str1=docConfiguracion.GetItemValue(CAMPO_ALTO_EDITOR)(0)
+		If (Isnumeric(str1)) Then
+			AltoEditor=Cint(str1)
+		Else
+			AltoEditor=280
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get AltoEditor","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set AltoEditor As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_ALTO_EDITOR,Cstr(AltoEditor)		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set AltoEditor","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	
+	Public Property Get AnchoEditor As Integer
+		On Error Goto handler
+		Dim str1 As Variant
+		str1=docConfiguracion.GetItemValue(CAMPO_ANCHO_EDITOR)(0)
+		If (Isnumeric(str1)) Then
+			AnchoEditor=Cint(str1)
+		Else
+			AnchoEditor=280
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get AnchoEditor","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set AnchoEditor As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_ANCHO_EDITOR,Cstr(AnchoEditor)		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set AnchoEditor","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get CorrectorPerHab As Vector
+		On Error Goto handler
+		Set CorrectorPerHab = New Vector(0)
+		CorrectorPerHab.values = docConfiguracion.GetItemValue(CAMPO_CORRECTOR_PERSONAS)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get CorrectorPerHab","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set CorrectorPerHab As Vector
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CORRECTOR_PERSONAS, CorrectorPerHab.values
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set CorrectorPerHab","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get LicenciaCorrector As String
+		On Error Goto handler
+		LicenciaCorrector = docConfiguracion.getItemValue(LICENCIA_CORRECTOR)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get LicenciaCorrector","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set LicenciaCorrector As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue LICENCIA_CORRECTOR,LicenciaCorrector
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set LicenciaCorrector","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	
+	Public Sub ActivarCorrector()
+		On Error Goto HANDLER
+		
+		docConfiguracion.ReplaceItemValue CAMPO_CORRECTOR,CORRECTOR_ACTIVADO
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Sub ActivarCorrector","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Public Sub DesactivarCorrector()
+		On Error Goto HANDLER
+		
+		docConfiguracion.ReplaceItemValue CAMPO_CORRECTOR,CORRECTOR_DESACTIVADO
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Sub DesactivarCorrector","")
+		Exit Sub
+	End Sub	
+'******************************************************************************************************************			
+	
+	Public Sub ActivarImpresionAnexos()
+		On Error Goto HANDLER
+		
+		docConfiguracion.ReplaceItemValue CAMPO_IMPR_ANEXOS_ACT_DESACT,IMPR_ANEXOS_ACTIVADO
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Sub ActivarImpresionAnexos","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************		
+	
+	Public Sub DesactivarImpresionAnexos()
+		On Error Goto HANDLER
+		
+		docConfiguracion.ReplaceItemValue CAMPO_IMPR_ANEXOS_ACT_DESACT,IMPR_ANEXOS_DESACTIVADO
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Sub DesactivarImpresionAnexos","")
+		Exit Sub
+	End Sub	
+'******************************************************************************************************************			
+	
+	Public Property Get CartasHabilitadas As String
+		On Error Goto handler
+		CartasHabilitadas = docConfiguracion.getItemValue(CAMPO_CARTAS_AVAILABLE)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get CartasHabilitadas","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set CartasHabilitadas As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_CARTAS_AVAILABLE, CartasHabilitadas
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set LogOperaciones","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get LimiteActuacionesCS() As Integer
+	' Retorna/Setea el limite de actuaciones permitido para una carta de servicio
+		On Error Goto HANDLER
+		
+		LimiteActuacionesCS = docConfiguracion.GetItemValue(CAMPO_LIMITE_ACTUACION_CS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get LimiteActuacionesCS","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set LimiteActuacionesCS() As Integer
+	' Retorna/Setea el limite de actuaciones permitido para una carta de servicio
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_LIMITE_ACTUACION_CS,LimiteActuacionesCS)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set LimiteActuacionesCS","")
+		Exit Property
+	End Property		
+	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Institucion As String
+		On Error Goto handler
+		Institucion = docConfiguracion.getItemValue(CAMPO_INSTITUCION)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get Institucion","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set Institucion As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_INSTITUCION, Institucion
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set Institucion","")
+		Exit Property
+	End Property		
+	'******************************************************************************************************************	
+	
+	Public Property Get EmailInstitucional As String
+		On Error Goto handler
+		EmailInstitucional = docConfiguracion.getItemValue(CAMPO_EMAIL_INSTITUCIONAL)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get EmailInstitucional","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Set EmailInstitucional As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_EMAIL_INSTITUCIONAL, EmailInstitucional
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set EmailInstitucional","")
+		Exit Property
+	End Property	
+''******************************************************************************************************************		
+	Public Property Get LogOperaciones As String
+		On Error Goto handler
+		LogOperaciones = docConfiguracion.getItemValue(CAMPO_LOG_TIEMPOS)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get LogOperaciones","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Set LogOperaciones As String
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue CAMPO_LOG_TIEMPOS, LogOperaciones
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set LogOperaciones","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************	
+	
+	Public Property Get FirmaRemota As Integer
+		On Error Goto handler
+		FirmaRemota = docConfiguracion.cFirmaRemota(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get FirmaRemota","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	Public Property Set FirmaRemota As Integer
+		On Error Goto handler
+		docConfiguracion.ReplaceItemValue "cFirmaRemota", FirmaRemota
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set FirmaRemota","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Get HostBaseBusqueda As String
+		On Error Goto handler
+		HostBaseBusqueda = docConfiguracion.sHostBusqueda(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get HostBaseBusqueda","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set HostBaseBusqueda As String
+		On Error Goto handler
+		docConfiguracion.replaceitemvalue "sHostBusqueda",HostBaseBusqueda 
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set HostBaseBusqueda","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Get UsuariosRolGestionConfidencial As Vector
+		On Error Goto HANDLER
+		
+		Set UsuariosRolGestionConfidencial=New Vector(0)
+		
+		If docConfiguracion.HasItem(CAMPO_ROL_GESTION_CONFIDENCIALIDAD) Then
+			UsuariosRolGestionConfidencial.values=docConfiguracion.getItemValue(CAMPO_ROL_GESTION_CONFIDENCIALIDAD)
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get UsuariosRolGestionConfidencial","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set UsuariosRolGestionConfidencial As Vector
+		On Error Goto HANDLER
+		
+		
+		If UsuariosRolGestionConfidencial.cantElem > 0 Then
+			docConfiguracion.replaceItemValue CAMPO_ROL_GESTION_CONFIDENCIALIDAD,UsuariosRolGestionConfidencial.values
+		End If		
+		
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set UsuariosRolGestionConfidencial","")
+		Exit Property
+	End Property
+'********************************************************************************************************************************************	
+	Public Property Set ImgBandejas As String 
+		On Error Goto HANDLER
+		
+		docConfiguracion.replaceItemValue CAMPO_IMGBANDEJAS,ImgBandejas
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set ImgBandejas","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get ImgBandejas As String 
+		On Error Goto HANDLER
+		
+		
+		ImgBandejas=docConfiguracion.getItemValue(CAMPO_IMGBANDEJAS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get ImgBandejas","")
+		Exit Property
+	End Property
+'******************************************************************************************************************			
+	Public Property Set NumerarUnidad As Boolean 
+		On Error Goto HANDLER
+		If NumerarUnidad Then
+			docConfiguracion.replaceItemValue CAMPO_NUMERACION_UNIDAD,"1"
+		Else
+			docConfiguracion.replaceItemValue CAMPO_NUMERACION_UNIDAD,""
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set NumerarUnidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get NumerarUnidad As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.getItemValue(CAMPO_NUMERACION_UNIDAD)(0)<>"" Then
+			NumerarUnidad = True
+		Else
+			NumerarUnidad = False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get NumerarUnidad","")
+		Exit Property
+	End Property
+	
+	
+'********************************************************************************************************************************************	
+	
+	Public Property Set NumerarInciso As Boolean 
+		On Error Goto HANDLER
+		If NumerarInciso Then
+			docConfiguracion.replaceItemValue CAMPO_NUMERACION_INCISO,"1"
+		Else
+			docConfiguracion.replaceItemValue CAMPO_NUMERACION_INCISO,""
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set NumerarInciso","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get NumerarInciso As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.getItemValue(CAMPO_NUMERACION_INCISO)(0)<>"" Then
+			NumerarInciso = True
+		Else
+			NumerarInciso=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get NumerarInciso","")
+		Exit Property
+	End Property
+	
+'********************************************************************************************************************************************	
+	
+	Public Property Set VerExtracto As Boolean 
+		On Error Goto HANDLER
+		If VerExtracto Then
+			docConfiguracion.replaceItemValue CAMPO_VER_EXTRACTO,"1"
+		Else
+			docConfiguracion.replaceItemValue CAMPO_VER_EXTRACTO,""
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set VerExtracto","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get VerExtracto As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.getItemValue(CAMPO_VER_EXTRACTO)(0)<>"" Then
+			VerExtracto = True
+		Else
+			VerExtracto=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get VerExtracto","")
+		Exit Property
+	End Property
+'********************************************************************************************************************************************	
+	
+	Public Property Set VerDescAdjuntos As Boolean 
+		On Error Goto HANDLER
+		If VerDescAdjuntos Then
+			docConfiguracion.replaceItemValue CAMPO_VER_DESCADJUNTOS,"1"
+		Else
+			docConfiguracion.replaceItemValue CAMPO_VER_DESCADJUNTOS,""
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set VerDescAdjuntos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get VerDescAdjuntos As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.getItemValue(CAMPO_VER_DESCADJUNTOS)(0)<>"" Then
+			NumerarInciso = True
+		Else
+			NumerarInciso=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get NumerarInciso","")
+		Exit Property
+	End Property
+	
+	
+'********************************************************************************************************************************************	
+	
+	
+	Public Property Set ImgImpAct As String 
+		On Error Goto HANDLER
+		
+		docConfiguracion.replaceItemValue CAMPO_IMGIMPACT,ImgImpAct
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set ImgImpAct","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get ImgImpAct As String 
+		On Error Goto HANDLER
+		
+		ImgImpAct=docConfiguracion.getItemValue(CAMPO_IMGIMPACT)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get ImgImpAct","")
+		Exit Property
+	End Property
+	
+'********************************************************************************************************************************************	
+	Public Property Set ImgPPalPortal As String 
+		On Error Goto HANDLER
+		
+		docConfiguracion.replaceItemValue CAMPO_IMGPPALPORTAL,ImgPPalPortal
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set ImgPPalPortal","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get ImgPPalPortal As String 
+		On Error Goto HANDLER
+		
+		
+		ImgPPalPortal=docConfiguracion.getItemValue(CAMPO_IMGPPALPORTAL)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get ImgPPalPortal","")
+		Exit Property
+	End Property
+	
+	'********************************************************************************************************************************************	
+	Public Property Set HostAnexo As String 
+		On Error Goto HANDLER
+		
+		docConfiguracion.replaceItemValue CAMPO_HOST_ANEXOS,HostAnexo
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set HostAnexo","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get HostAnexo As String 
+		On Error Goto HANDLER
+		
+		
+		HostAnexo=docConfiguracion.getItemValue(CAMPO_HOST_ANEXOS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get HostAnexo","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	Public Property Set Feriados As Vector
+		On Error Goto HANDLER
+		
+		
+		If Feriados.CantElem > 0 Then
+			docConfiguracion.replaceItemValue CAMPO_FERIADOS,Feriados.values	
+		End If
+		
+		Exit Property
+		
+		
+		
+		'dd/mm/aaaa
+		'DateNumber ( year , month , day )
+		
+		
+		Dim vFechas As New Vector(0),i As Integer
+		Dim dd As Integer,mm As Integer,aaaa As Integer,strFecha As String
+		Dim nFecha As Variant
+		
+		If Not Feriados Is Nothing Then
+			If Feriados.CantElem > 0 Then
+				
+				For i=1 To Feriados.CantElem
+					strFecha=Cstr(Feriados.getElement(i))
+					dd=Cint(Strleft(strFecha,"/"))
+					mm=Cint(Strleft(Strright(strFecha,"/"),"/"))
+					aaaa=Cint(Strrightback(strFecha,"/"))
+					nFecha=Datenumber ( aaaa , mm , dd )
+					vFechas.insertElement nFecha,vFechas.cantElem + 1
+				Next	
+				docConfiguracion.replaceItemValue CAMPO_FERIADOS,vFechas.values
+			End If	
+		End If		
+		
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set Feriados","")
+		Exit Property			
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get Feriados As Vector
+		On Error Goto HANDLER
+		
+		Set Feriados=New vector(0)
+		
+		Dim vFechas As New Vector(0),i As Integer,vFeriados As New Vector(0)
+		Dim dd As Integer,mm As Integer,aaaa As Integer,strFecha As String
+		Dim nFecha As Variant
+		
+		If docConfiguracion.HasItem(CAMPO_FERIADOS) Then
+			vFechas.values=docConfiguracion.getItemValue(CAMPO_FERIADOS)	
+			
+			For i=1 To vFechas.CantElem
+				strFecha=Cstr(vFechas.getElement(i))
+				dd=Cint(Strleft(strFecha,"/"))
+				mm=Cint(Strleft(Strright(strFecha,"/"),"/"))
+				aaaa=Cint(Strrightback(strFecha,"/"))
+				nFecha=Datenumber ( aaaa , mm , dd )
+				vFeriados.insertElement nFecha,vFeriados.cantElem + 1
+			Next	
+			Set Feriados=vFeriados
+		End If		
+		
+		
+		
+		
+		Exit Property
+		
+		
+		
+		
+		
+		Set Feriados=New Vector(0)
+		If docConfiguracion.HasItem(CAMPO_FERIADOS) Then
+			Feriados.values=docConfiguracion.GetItemValue(CAMPO_FERIADOS)
+		End If
+		
+		
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Feriados","")
+		Exit Property			
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get PorcentajeProxExpirar As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_PTJE_PASAR_EXPIRAR) Then
+			PorcentajeProxExpirar=docConfiguracion.getItemValue(CAMPO_PTJE_PASAR_EXPIRAR)(0)	
+		Else
+			PorcentajeProxExpirar=0
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get PorcentajeProxExpirar","")
+		Exit Property		
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Set PorcentajeProxExpirar As Integer
+		On Error Goto HANDLER
+		
+		
+		docConfiguracion.replaceItemValue CAMPO_PTJE_PASAR_EXPIRAR,	PorcentajeProxExpirar
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set PorcentajeProxExpirar","")
+		Exit Property		
+	End Property
+'******************************************************************************************************************		
+	Public Property Set TemplateNotificacion As Variant
+		On Error Goto HANDLER
+		
+		docConfiguracion.replaceItemValue CAMPO_TEMPLATE_NOTIFICA,TemplateNotificacion
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TemplateNotificacion","")
+		Exit Property		
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get TemplateNotificacion As Variant
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_TEMPLATE_NOTIFICA) Then
+			TemplateNotificacion=docConfiguracion.getItemValue(CAMPO_TEMPLATE_NOTIFICA)
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TemplateNotificacion","")
+		Exit Property	
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get BaseDeDatos(Byval clave As String) As String
+	' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		BaseDeDatos = vFilePath.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set BaseDeDatos(Byval clave As String) As String
+	' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vFilePath.ReplaceElement(pos,BaseDeDatos)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set BaseDeDatos","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NroDocsBusq() As Integer
+		NroDocsBusq = docConfiguracion.GetItemValue(CAMPO_NRO_DOCS_BUSQ)(0)
+	End Property
+	
+'******************************************************************************************************************		
+	
+	Public Property Set NroDocsBusq() As Integer
+		docConfiguracion.ReplaceItemValue CAMPO_NRO_DOCS_BUSQ ,NroDocsBusq
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get NroMaxResul() As Integer
+		NroMaxResul = docConfiguracion.GetItemValue(CAMPO_NRO_MAX_RESUL)(0)
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set NroMaxResul() As Integer
+		docConfiguracion.ReplaceItemValue CAMPO_NRO_MAX_RESUL,NroMaxResul
+	End Property
+	'******************************************************************************************************************		
+	Public Property Get NroMaxBandeja() As Integer
+		NroMaxBandeja = docConfiguracion.GetItemValue(CAMPO_CANT_BANDEJA_TODOS )(0)
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set NroMaxBandeja() As Integer
+		docConfiguracion.ReplaceItemValue CAMPO_CANT_BANDEJA_TODOS ,NroMaxBandeja
+	End Property
+'******************************************************************************************************************		
+	
+	Public Property Get Claves() As vector
+	' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = docConfiguracion.GetItemValue(CAMPO_CLAVE_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Claves","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Get ServidorDomino(Byval clave As String) As String
+	' Dada una clave retorna el Servidor. Si no lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		ServidorDomino = ObtenerNombreServidor(vServer.getElement(pos))
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get ServidorDomino","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************	
+	
+	Public Property Set ServidorDomino(Byval clave As String) As String
+	' Dada una clave setea el Servidor. Si no lo genera un error
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vServer.ReplaceElement(pos,ServidorDomino)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "ServidorDomino: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set ServidorDomino","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	
+	Public Property Get Host(Byval clave As String) As String
+	' Dada una clave retorna el Host. Si lo encuentra retorna "".
+	'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		Host = vHost.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Host","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************	
+	
+	Public Property Set Host(Byval clave As String) As String
+	' Dada una clave setea el Host. Si no retorna un error ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vHost.ReplaceElement(pos,Host)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "Host: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set Host","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Interoperabilidad() As Vector
+	'Recibe un vector de vectores con las columnas de la tabla
+	'Setea toda la informacion de la tabla de interoperabilidad con dichos vectores
+		On Error Goto HANDLER
+		
+		vKeyDB.Values = Interoperabilidad.GetElement(1).Values
+		vServer.Values = Interoperabilidad.GetElement(2).Values
+		vHost.Values = Interoperabilidad.GetElement(3).Values
+		vFilePath.Values = Interoperabilidad.GetElement(4).Values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set Interoperabilidad","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set TiempoMaximoAuditoria()As Integer
+		docConfiguracion.replaceItemValue CAMPO_TIEMPOVIDAAUDITORIA,TiempoMaximoAuditoria
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get TiempoMaximoAuditoria()As Integer
+		On Error Goto handler
+		
+		If docConfiguracion.hasItem(CAMPO_TIEMPOVIDAAUDITORIA) Then
+			If Cstr(docConfiguracion.getItemValue(CAMPO_TIEMPOVIDAAUDITORIA)(0))<>"" Then				
+				TiempoMaximoAuditoria=docConfiguracion.getItemValue(CAMPO_TIEMPOVIDAAUDITORIA)(0)	
+			Else				
+				TiempoMaximoAuditoria=90
+			End If			
+		End If		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TiempoMaximoAuditoria","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set ClavesCreacionAuditoria As Variant
+		docConfiguracion.replaceItemValue CAMPO_CLAVE_CREACION_AUDITORIA,ClavesCreacionAuditoria
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get ClavesCreacionAuditoria As Variant
+		If docConfiguracion.hasItem(CAMPO_CLAVE_CREACION_AUDITORIA) Then
+			ClavesCreacionAuditoria=docConfiguracion.getItemValue(CAMPO_CLAVE_CREACION_AUDITORIA)
+		End If	
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Set FechasCreacionAuditoria As Variant
+		docConfiguracion.replaceItemValue CAMPO_CREACION_AUDITORIA,FechasCreacionAuditoria
+		
+	End Property
+	
+'******************************************************************************************************************				
+	
+	Public Property Get FechasCreacionAuditoria As Variant
+		If docConfiguracion.hasItem(CAMPO_CREACION_AUDITORIA) Then
+			FechasCreacionAuditoria=docConfiguracion.getItemValue(CAMPO_CREACION_AUDITORIA)
+		End If	
+	End Property
+	
+'******************************************************************************************************************				
+	Public Property Get AutoGrabado As Variant
+		If docConfiguracion.HasItem(CAMPO_TIEMPO_AUTOGRABADO) Then
+			AutoGrabado = docConfiguracion.GetItemValue(CAMPO_TIEMPO_AUTOGRABADO)
+		End If
+	End Property
+'******************************************************************************************************************	
+	Public Property Set AutoGrabado As Variant
+		docConfiguracion.ReplaceItemValue CAMPO_TIEMPO_AUTOGRABADO,AutoGrabado
+	End Property
+'******************************************************************************************************************		
+	Public Property Get TiempoBandejas As Variant
+		If docconfiguracion.HasItem(CAMPO_TIEMPO_BANDEJAS) Then
+			TiempoBandejas = docConfiguracion.GetItemValue(CAMPO_TIEMPO_BANDEJAS)
+		End If		
+	End Property
+'******************************************************************************************************************		
+	Public Property Set TiempoBandejas As Variant
+		docConfiguracion.ReplaceItemValue CAMPO_TIEMPO_BANDEJAS, TiempoBandejas
+	End Property
+	
+'******************************************************************************************************************			
+	Public Property Get TiempoRecepcionAuto As Variant
+		If docconfiguracion.HasItem(CAMPO_TIEMPO_RECEP_AUTO) Then
+			TiempoRecepcionAuto = docConfiguracion.GetItemValue(CAMPO_TIEMPO_RECEP_AUTO)(0)
+		End If		
+	End Property
+'******************************************************************************************************************		
+	Public Property Set TiempoRecepcionAuto As Variant
+		docConfiguracion.ReplaceItemValue CAMPO_TIEMPO_RECEP_AUTO, TiempoRecepcionAuto
+	End Property
+'******************************************************************************************************************			
+	Public Function insertLineaInteroperabilidad(vIns As Vector,nColOrdenar As Integer)
+	'Inserta en forma ordenada segun la clave si nColOrdenar<>0
+	'nColOrdenar es la columna por la cual ordenar
+	'Si nColOrdenar=0 inserta al final
+		Dim posIns As Long
+		
+		If nColOrdenar<>0 Then
+			Select Case(nColOrdenar)
+			Case 1:
+				posIns=vKeyDB.InsertPos(vIns.getElement(1),True)
+			Case 2:
+				posIns=vServer.InsertPos(vIns.getElement(2),True)
+			Case 3:
+				posIns=vHost.InsertPos(vIns.getElement(3),True)
+			Case 4:
+				posIns=vFilePath.InsertPos(vIns.getElement(4),True)
+			End Select			
+		Else
+			posIns = vKeyDB.cantElem + 1
+		End If
+		vKeyDB.insertElement vIns.getElement(1),posIns
+		vServer.insertElement vIns.getElement(2),posIns
+		vHost.insertElement vIns.getElement(3),posIns
+		vFilePath.insertElement vIns.getElement(4),posIns
+	End Function
+	
+'******************************************************************************************************************				
+	
+	Public Sub addAuditoriaDate(sClave As String,dCreacion As Variant)
+		'dCreacion es de tipo Date, sClave=clave de la base
+		
+		Dim itClaves As notesItem,itFechas As notesItem,aFechas As Variant
+		
+		If docConfiguracion.hasItem(CAMPO_CLAVE_CREACION_AUDITORIA) Then
+			Set itClaves=docConfiguracion.getFirstItem(CAMPO_CLAVE_CREACION_AUDITORIA)
+		Else
+			Set itClaves=New notesItem(docConfiguracion,CAMPO_CLAVE_CREACION_AUDITORIA,"")	
+		End If
+		itClaves.appendToTextlist sClave
+		If docConfiguracion.hasItem(CAMPO_CREACION_AUDITORIA) Then
+			Set itFechas=docConfiguracion.getFirstItem(CAMPO_CREACION_AUDITORIA)
+		Else
+			Set itFechas=New notesItem(docConfiguracion,CAMPO_CREACION_AUDITORIA,"")		
+		End If
+		aFechas=itFechas.values
+		Redim Preserve aFechas(Lbound(itClaves.values) To Ubound(itClaves.values))
+		aFechas(Ubound(itClaves.values))=dCreacion
+		itFechas.values=aFechas
+	End Sub
+	
+'******************************************************************************************************************				
+	
+	'Deprecated
+	Public Property Set LineaInteroperabilidad () As Vector
+	'Recibe un vector con los valores a agregar y los agrega a la tabla de interoperabilidad
+		On Error Goto HANDLER
+		
+		Dim pos As Long, elemento As String
+		
+		pos = vkeyDB.cantElem + 1  'posición a agregar
+		elemento = LineaInteroperabilidad.GetElement(1)
+		Call vKeyDB.insertElement(elemento,pos)		
+		elemento = LineaInteroperabilidad.GetElement(2)
+		Call vServer.insertElement(elemento,pos)
+		elemento = LineaInteroperabilidad.GetElement(3)
+		Call vHost.insertElement(elemento,pos)
+		elemento = LineaInteroperabilidad.GetElement(4)
+		Call vFilePath.insertElement(elemento,pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set LineaInteroperabilidad","")
+		Exit Property
+	End Property
+'******************************************************************************************************************			
+	
+	Public Property Get FormaDocumental() As Vector
+	' Retorna una lista de formas documentales del sistema
+		On Error Goto HANDLER
+		
+		Set FormaDocumental = New Vector(0)
+		FormaDocumental.Values = docConfiguracion.GetItemValue(CAMPO_FORMADOCUMENTAL)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get FormaDocumental","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set FormaDocumental() As Vector
+	' setea una lista de FormasDocumentales del sistema
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_FORMADOCUMENTAL ,FormaDocumental.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set FormaDocumental","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get Administradores() As Vector
+	' Retorna una lista de Administradores del sistema
+		On Error Goto HANDLER
+		
+		Set Administradores = New Vector(0)
+		Administradores.Values = docConfiguracion.GetItemValue(CAMPO_ADMINISTRADORES)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Administradores","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set Administradores() As Vector
+	' setea una lista de Administradores del sistema
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_ADMINISTRADORES ,Administradores.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set Administradores","")
+		Exit Property
+	End Property
+	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get CSS() As String
+	' Retorna el estilo del sistema
+		On Error Goto HANDLER
+		
+		CSS = docConfiguracion.GetItemValue(CAMPO_CSS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get CSS","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set CSS() As String
+	' Setea el estilo del sistema
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_CSS,CSS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set CSS","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************				
+	Public Property Get FormatoNumerador(Byval ClaveNum As String) As String
+	' Retorna el formato de numeración dada una clave
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyNum.isMember(ClaveNum, pos, False) Then _
+		FormatoNumerador = vFormNum.getElement(pos)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get FormatoNumerador","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set FormatoNumerador(Byval ClaveNum As String) As String
+	' Dada una clave setea el Formato de la Numeración. Si no lo encuentra genera un error 
+	' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyNum.isMember(ClaveNum, pos, False) Then 
+			Call vFormNum.ReplaceElement(pos,FormatoNumerador)
+		Else
+			Error ERRORCONF_CLAVE_NOTFOUND, "FormatoNumerador: No se encuentra la clave " _ 
+			& ClaveNum & " en la tabla de Formato de numeradores."
+		End If	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set FormatoNumerador","")
+		Exit Property
+	End Property
+	
+'***************************************************************************************************************			
+	
+	Public Property Set FormatoNumeracion() As Vector
+	' Setea toda la informacion de la tablas de Formato de numeración
+		On Error Goto HANDLER
+		
+		vKeyNum.Values = FormatoNumeracion.GetElement(1).Values
+		vFormNum.Values = FormatoNumeracion.GetElement(2).Values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set FormatoNumeracion","")
+		Exit Property
+	End Property	
+	
+'********************************************************************************************************************************************	
+	
+	Public Property Get TiempoArchivadoAutomatico() As Integer
+	' Retorna/Setea la cantidad de días en que se archivará
+	' en forma automática un expediente si no es modificado
+		On Error Goto HANDLER
+		
+		TiempoArchivadoAutomatico = docConfiguracion.GetItemValue(CAMPO_ARCHIVOAUTOMATICO)(0)
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TiempoArchivadoAutomatico","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set TiempoArchivadoAutomatico() As Integer
+	' Retorna/Setea la cantidad de días en que se archivará
+	' en forma automática un expediente si no es modificado
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_ARCHIVOAUTOMATICO,TiempoArchivadoAutomatico)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set TiempoArchivadoAutomatico","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get TiempoArchivadoAutomaticoCS() As Integer
+	' Retorna la cantidad de días en que se archivará
+	' en forma automática una carta de servicio
+		On Error Goto HANDLER
+		
+		TiempoArchivadoAutomaticoCS = docConfiguracion.GetItemValue(CAMPO_ARCHIVOAUTOMATICO_CS)(0)
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TiempoArchivadoAutomaticoCS","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set TiempoArchivadoAutomaticoCS() As Integer
+	' Setea la cantidad de días en que se archivará
+	' en forma automática una carta de servicio
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_ARCHIVOAUTOMATICO_CS,TiempoArchivadoAutomaticoCS)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set TiempoArchivadoAutomaticoCS","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get DesvioDeRutas() As Integer
+	' Retorna/Setea la bandera booleana que permite desvios en la ruta
+	' de un expediente	
+		On Error Goto HANDLER
+		
+		DesvioDeRutas = docConfiguracion.GetItemValue(CAMPO_PERMITIRDESVIOS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get DesvioRutas","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set DesvioDeRutas() As Integer
+	' Retorna/Setea la bandera booleana que permite desvios en la ruta
+	' de un expediente	
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_PERMITIRDESVIOS,DesvioDeRutas)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set DesvioRutas","")
+		Exit Property
+	End Property	
+	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get DestinatariosNotifDiariaNew() As Vector
+	' Retorna un vector con los usuarios que deben recibir la notificación diaria de expedientes creados ese día
+		On Error Goto HANDLER
+		
+		Set DestinatariosNotifDiariaNew = New Vector(0)
+		DestinatariosNotifDiariaNew.Values = docConfiguracion.GetItemValue(CAMPO_VISPROFILE_DESTINATARIOS_DIA_NOTIF)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get DestinatariosNotifDiariaNew","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set DestinatariosNotifDiariaNew() As Vector
+		'Setea los usuarios que deben recibir la notificación diaria de expedientes creados ese día
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_VISPROFILE_DESTINATARIOS_DIA_NOTIF ,DestinatariosNotifDiariaNew.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set DestinatariosNotifDiariaNew","")
+		Exit Property
+	End Property	
+	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get DestinatariosNotifDiaria() As Vector
+	' Retorna un vector con los usuarios que deben recibir la notificación diaria de expedientes creados ese día
+		On Error Goto HANDLER
+		
+		Set DestinatariosNotifDiaria = New Vector(0)
+		DestinatariosNotifDiaria.Values = docConfiguracion.GetItemValue(CAMPO_DESTINATARIOS_DIARIA)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get DestinatariosNotifDiaria","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set DestinatariosNotifDiaria() As Vector
+		'Setea los usuarios que deben recibir la notificación diaria de expedientes creados ese día
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_DESTINATARIOS_DIARIA ,DestinatariosNotifDiaria.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set DestinatariosNotifDiaria","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get DestNotifDiariaUnidades() As Vector
+	' Retorna un vector con los usuarios que deben recibir la notificación diaria de expedientes ingresados ese día
+		On Error Goto HANDLER
+		
+		Set DestNotifDiariaUnidades = New Vector(0)
+		DestNotifDiariaUnidades.Values = docConfiguracion.GetItemValue(CAMPO_DESTINATARIOS_DIARIAUNIDADES)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get DestNotifDiariaUnidades","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set DestNotifDiariaUnidades() As Vector
+		'Setea los usuarios que deben recibir la notificación diaria de expedientes INGRESADOS ese día
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_DESTINATARIOS_DIARIAUNIDADES ,DestNotifDiariaUnidades.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set DestNotifDiariaUnidades","")
+		Exit Property
+	End Property	
+	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get DestNotifDiariaUnidadesCod() As Vector
+	' Retorna un vector con los usuarios que deben recibir la notificación diaria de expedientes ingresados ese día
+		On Error Goto HANDLER
+		
+		Set DestNotifDiariaUnidadesCod = New Vector(0)
+		DestNotifDiariaUnidadesCod.Values = docConfiguracion.GetItemValue(CAMPO_DESTINATARIOS_DIARIAUNIDADESCOD)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get DestNotifDiariaUnidadesCod","")
+		Exit Property
+	End Property
+	
+'***************************************************************************************************************			
+	
+	Public Property Set DestNotifDiariaUnidadesCod() As Vector
+		'Setea los usuarios que deben recibir la notificación diaria de expedientes INGRESADOS ese día
+		On Error Goto HANDLER
+		Call docConfiguracion.ReplaceItemValue( CAMPO_DESTINATARIOS_DIARIAUNIDADESCOD ,DestNotifDiariaUnidadesCod.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set DestNotifDiariaUnidadesCod","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get TiempoMaximoActuacion() As Integer
+	' Retorna/Setea la cantidad máxima de días que tiene una oficina
+	' para actuar
+		On Error Goto HANDLER
+		
+		TiempoMaximoActuacion = docConfiguracion.GetItemValue(CAMPO_DIASMAXTRAMITE)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TiempoMaximoActuacion","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set TiempoMaximoActuacion() As Integer
+	' Retorna/Setea la cantidad máxima de días que tiene una oficina
+	' para actuar
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_DIASMAXTRAMITE,TiempoMaximoActuacion)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set TiempoMaximoActuacion","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get TiempoMaximoActuacionExterna() As Integer
+	' Retorna/Setea la cantidad máxima de días que tiene una oficina
+	' para actuar
+		On Error Goto HANDLER
+		
+		TiempoMaximoActuacionExterna = docConfiguracion.GetItemValue(CAMPO_DIASMAXTRAMITEETERNO)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TiempoMaximoActuacionExterna","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set TiempoMaximoActuacionExterna() As Integer
+	' Retorna/Setea la cantidad máxima de días que tiene una oficina
+	' para actuar
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_DIASMAXTRAMITEETERNO,TiempoMaximoActuacionExterna)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set TiempoMaximoActuacionExterna","")
+		Exit Property
+	End Property	
+'***************************************************************************************************************				
+	
+	Public Property Get TamañoMaximoAnexo() As Long
+	' Retorna/Setea el tamaño maximo de los anexos por actuación
+		On Error Goto HANDLER
+		
+		TamañoMaximoAnexo = docConfiguracion.GetItemValue(CAMPO_TAMMAXIMOANEXOS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TamañoMaximoAnexo","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set TamañoMaximoAnexo() As Long
+	' Retorna/Setea el tamaño maximo de los anexos por actuación
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_TAMMAXIMOANEXOS,TamañoMaximoAnexo)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set TiempoMaximoAnexo","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get CantMaximoAnexo() As Integer
+		' Retorna/Setea el númro maximo de anexos por actuación
+		On Error Goto HANDLER
+		
+		CantMaximoAnexo = docConfiguracion.GetItemValue(CAMPO_VISPROFILE_CANTMAXIMOANEXOS)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get CantMaximoAnexo","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set CantMaximoAnexo() As Integer
+	' Retorna/Setea el númro maximo de anexos por actuación
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_VISPROFILE_CANTMAXIMOANEXOS,CantMaximoAnexo)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set CantMaximoAnexo","")
+		Exit Property
+	End Property		
+'***************************************************************************************************************				
+	
+	Public Property Get TiposArchivosAnexos() As Vector
+	' Retorna un vector con los tipos de anexos permitidos
+		On Error Goto HANDLER
+		
+		Set TiposArchivosAnexos = New Vector(0)
+		TiposArchivosAnexos.Values = docConfiguracion.GetItemValue(CAMPO_TIPOSANEXOS)	
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TiposArchivosAnexos","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set TiposArchivosAnexos() As Vector
+		' Devuelve un vector con los tipos de anexos permitidos
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_TIPOSANEXOS ,TiposArchivosAnexos.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set TiposArchivosAnexos","")
+		Exit Property
+	End Property	
+	
+'***************************************************************************************************************				
+	
+	Public Property Get TiempoMaximoDevolucion() As Integer
+	' Retorna/Setea el tiempo maximo de devolución de un expediente
+		On Error Goto HANDLER
+		
+		TiempoMaximoDevolucion = docConfiguracion.GetItemValue(CAMPO_TIEMPODEVOLUCION)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get TiempoMaximoDevolucion","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set TiempoMaximoDevolucion() As Integer
+	' Retorna/Setea el tiempo maximo de devolución de un expediente
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_TIEMPODEVOLUCION,TiempoMaximoDevolucion)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set TiempoMaximoDevolucion","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	Public Property Get CantMaximoDevolucion() As Integer
+	' Retorna/Setea la cantidad de devoluciónes de una actuacion
+		On Error Goto HANDLER
+		
+		CantMaximoDevolucion = docConfiguracion.GetItemValue(CAMPO_VISPROFILE_CANTDEVOLUCION)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get CantMaximoDevolucion","")
+		Exit Property
+	End Property		
+	
+'***************************************************************************************************************			
+	
+	Public Property Set CantMaximoDevolucion() As Integer
+	' Retorna/Setea la cantidad de devoluciónes de una actuacion
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_VISPROFILE_CANTDEVOLUCION,CantMaximoDevolucion)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set CantMaximoDevolucion","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get LectoresCaratula() As Vector
+	' Retorna una lista con los lectores por defecto de las caratulas
+		On Error Goto HANDLER
+		
+		Set LectoresCaratula = New Vector(0)
+		LectoresCaratula.Values = docConfiguracion.GetItemValue(CAMPO_LECTORES_CARATULA)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get LectoresCaratula","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set LectoresCaratula() As Vector
+	' Setea la lista de lectores de caratulas
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_LECTORES_CARATULA ,LectoresCaratula.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set LectoresCaratula","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+	Public Property Get AutoresCaratula() As Vector
+	' Retorna una lista con los autores por defecto de las caratulas
+		On Error Goto HANDLER
+		
+		Set AutoresCaratula = New Vector(0)
+		AutoresCaratula.Values = docConfiguracion.GetItemValue(CAMPO_AUTORES_CARATULA)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get AutoresCaratula","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set AutoresCaratula() As Vector
+	' Setea la lista de autores de caratulas
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_AUTORES_CARATULA ,AutoresCaratula.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set AutoresCaratula","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+	Public Property Get LectoresActuacion() As Vector
+	' Retorna una lista con los lectores por defecto de las actuaciones
+		On Error Goto HANDLER
+		
+		Set LectoresActuacion = New Vector(0)
+		LectoresActuacion.Values = docConfiguracion.GetItemValue(CAMPO_LECTORES_ACTUACION)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get LectoresActuacion","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set LectoresActuacion() As Vector
+	' Setea la lista de lectores de actuaciones
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_LECTORES_ACTUACION ,LectoresActuacion.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set LectoresActuacion","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+	Public Property Get AutoresActuacion() As Vector
+	' Retorna una lista con los autores por defecto de las actuaciones
+		On Error Goto HANDLER
+		
+		Set AutoresActuacion = New Vector(0)
+		AutoresActuacion.Values = docConfiguracion.GetItemValue(CAMPO_AUTORES_ACTUACION)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get AutoresActuacion","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set AutoresActuacion() As Vector
+	' Setea la lista de autores de actuaciones
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_AUTORES_ACTUACION ,AutoresActuacion.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set AutoresActuacion","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+	Public Property Get ModificadoresCaratula() As Vector
+	' Retorna la lista de usuarios que tienen el rol de modificador de caratula
+		On Error Goto HANDLER
+		
+		Set ModificadoresCaratula = New Vector(0)
+		ModificadoresCaratula.Values = docConfiguracion.GetItemValue(CAMPO_MODIFICADORES_CARATULA)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get ModificadoresCaratula","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set ModificadoresCaratula() As Vector
+	' Setea la lista de usuarios que tienen el rol de modificador de caratula
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_MODIFICADORES_CARATULA ,ModificadoresCaratula.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set ModificadoresCaratula","")
+		Exit Property
+	End Property	
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get LectoresCarta() As Vector
+	' Retorna una lista con los lectores por defecto de las cartas de servicio
+		On Error Goto HANDLER
+		
+		Set LectoresCarta = New Vector(0)
+		LectoresCarta.Values = docConfiguracion.GetItemValue(CAMPO_LECTORES_CS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get LectoresCarta","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set LectoresCarta() As Vector
+	' Setea la lista de lectores de cartas de servicio
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_LECTORES_CS ,LectoresCarta.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set LectoresCarta","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+	Public Property Get AdministradoresPaquete() As Vector
+	' Retorna la lista de usuarios que tienen el rol de administrador de paquetes
+		On Error Goto HANDLER
+		
+		Set AdministradoresPaquete = New Vector(0)
+		AdministradoresPaquete.Values = docConfiguracion.GetItemValue(CAMPO_ADMINISTRADORES_PAQUETE)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get AdministradoresPaquete","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************			
+	
+	Public Property Set AdministradoresPaquete() As Vector
+	' Setea la lista de usuarios que tienen el rol de administradores de paquetes
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_ADMINISTRADORES_PAQUETE ,AdministradoresPaquete.Values)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set AdministradoresPaquete","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+	Public Property Get HabilitadoNotificarArchivado As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_NOTIFARCHIVADO) Then
+			HabilitadoNotificarArchivado=docConfiguracion.getItemValue(CAMPO_NOTIFARCHIVADO)(0)=NOTIFARCHIVADO_CHECKED	
+		Else
+			HabilitadoNotificarArchivado=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoNotificarArchivado","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get HabilitadoAlarmaJefeExpiro As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_ALARMAJEFEEXPIRO) Then
+			HabilitadoAlarmaJefeExpiro=docConfiguracion.getItemValue(CAMPO_ALARMAJEFEEXPIRO)(0) = ALARMAJEFEEXPIRO_CHECKED	
+		Else
+			HabilitadoAlarmaJefeExpiro=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoAlarmaJefeExpiro","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get AlarmaExpiroReiterar As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_ALARMAEXPIRO_REITERAR) Then
+			AlarmaExpiroReiterar=docConfiguracion.getItemValue(CAMPO_ALARMAEXPIRO_REITERAR)(0) = ALARMAEXPIRO_REITERAR_CHECKED	
+		Else
+			AlarmaExpiroReiterar=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get AlarmaExpiroReiterar","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+	Public Property Set AlarmaExpiroReiterarText As String
+		On Error Goto HANDLER
+		
+		
+		docConfiguracion.replaceItemValue CAMPO_ALARMAEXPIRO_REITERAR,AlarmaExpiroReiterarText
+		
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Set AlarmaExpiroReiterarText","")
+		Exit Property
+	End Property	
+	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get HabilitadoNotificarRecibir As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_NOTIFRECIBIR) Then
+			HabilitadoNotificarRecibir=docConfiguracion.getItemValue(CAMPO_NOTIFRECIBIR)(0) = NOTIFRECIBIR_CHECKED	
+		Else
+			HabilitadoNotificarRecibir=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoNotificarRecibir","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get HabilitadoNotificarIniciados As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_NOTIFDIARIA) Then
+			HabilitadoNotificarIniciados=docConfiguracion.getItemValue(CAMPO_NOTIFDIARIA)(0) = NOTIFDIARIA_CHECKED
+		Else
+			HabilitadoNotificarIniciados=False
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoNotificarIniciados","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get HabilitadoNotificarIngresos As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_NOTIFDIARIAUNIDADES) Then
+			HabilitadoNotificarIngresos=docConfiguracion.getItemValue(CAMPO_NOTIFDIARIAUNIDADES)(0) = NOTIFDIARIA_CHECKED
+		Else
+			HabilitadoNotificarIngresos=False
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoNotificarIngresos","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get HabilitadoNotificarFirmar As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_NOTIFFIRMAR) Then
+			HabilitadoNotificarFirmar=docConfiguracion.getItemValue(CAMPO_NOTIFFIRMAR)(0) = NOTIFFIRMAR_CHECKED	
+		Else
+			HabilitadoNotificarFirmar=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoNotificarFirmar","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************			
+	
+	Public Property Get HabilitadoNotificarProxExpirar As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_ALARMAPROXEXPIRAR) Then
+			HabilitadoNotificarProxExpirar=docConfiguracion.getItemValue(CAMPO_ALARMAPROXEXPIRAR)(0)= ALARMAPROXEXPIRAR_CHECKED	
+		Else
+			HabilitadoNotificarProxExpirar=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoNotificarProxExpirar","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************					
+	
+	Public Property Get TipoBusqueda As Integer
+		On Error Goto HANDLER
+		
+		If docConfiguracion.HasItem(CAMPO_TIPO_BUSQUEDAS) Then
+			TipoBusqueda=docConfiguracion.getItemValue(CAMPO_TIPO_BUSQUEDAS)(0)
+		Else
+			TipoBusqueda=False
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get HabilitadoNotificarProxExpirar","")
+		Exit Property
+	End Property	
+	
+'******************************************************************************************************************				
+	
+'METODOS
+	
+	Public Function HabilitarNotificarArchivados()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_NOTIFARCHIVADO, NOTIFARCHIVADO_CHECKED)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarNotificarArchivados","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************				
+	
+	Public Function DeshabilitarNotificarArchivados()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_NOTIFARCHIVADO)	
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarNotificarArchivados","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Sub HabilitarBusqLotusScript()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_TIPO_BUSQUEDAS,TIPO_LOTUSSCRIPT)	
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarBusqLotusScript","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************			
+	
+	Public Sub HabilitarBusqJava()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_TIPO_BUSQUEDAS,TIPO_JAVA)	
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarBusqJava","")
+		Exit Sub
+	End Sub
+	
+'******************************************************************************************************************				
+	
+	Public Function HabilitarNotifDiaria()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_NOTIFDIARIA, NOTIFDIARIA_CHECKED)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarNotifDiaria","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************				
+	
+	Public Function DeshabilitarNotifDiaria()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_NOTIFDIARIA)	
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarNotifDiaria","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function HabilitarNotifIngDiariaUnidades()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_NOTIFDIARIAUNIDADES, NOTIFDIARIA_CHECKED)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarNotifIngDiariaUnidades","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************				
+	
+	Public Function DeshabilitarNotifIngDiariaUnidades()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_NOTIFDIARIAUNIDADES)	
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarNotifIngDiariaUnidades","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function HabilitarNotificarRD()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_NOTIF_RD, NOTIFRD_CHECKED)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarNotificarRD","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function DeshabilitarNotificarRD()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_NOTIF_RD)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarNotificarRD","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function HabilitarNotificarRecepcion()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_NOTIFRECIBIR, NOTIFRECIBIR_CHECKED	)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarNotificarRecepcion","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function DeshabilitarNotificarRecepcion()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_NOTIFRECIBIR)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarNotificarRecepcion","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function HabilitarNotificarFirmar()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_NOTIFFIRMAR, NOTIFFIRMAR_CHECKED	)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarNotificarFirmar","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function DeshabilitarNotificarFirmar()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_NOTIFFIRMAR)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarNotificarFirmar","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function HabilitarAlarmaProximoExpirar()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_ALARMAPROXEXPIRAR, ALARMAPROXEXPIRAR_CHECKED	)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarAlarmaProximoExpirar","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function DeshabilitarAlarmaProximoExpirar()
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_ALARMAPROXEXPIRAR)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarAlarmaProximoExpirar","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function HabilitarAlarmaJefeExpiro()
+	' Habilita AlarmaJefeExpiro
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.ReplaceItemValue( CAMPO_ALARMAJEFEEXPIRO, ALARMAJEFEEXPIRO_CHECKED )
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarAlarmaJefeExpiro","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function DeshabilitarAlarmaJefeExpiro()
+	' Desabilita AlarmaJefeExpiro
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.RemoveItem(CAMPO_ALARMAJEFEEXPIRO)	
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarAlarmaJefeExpiro","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function HabilitarRutaLibre()
+	' Habilita ruta libre
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue (CAMPO_TIPORUTA , RUTA_HABILITADA)
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método HabilitarRutaLibre","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function DeshabilitarRutaLibre()
+	' Deshabilita ruta libre
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue (CAMPO_TIPORUTA , RUTA_DESHABILITADA)	
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método DeshabilitarRutaLibre","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************			
+	
+	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
+		'Retorna una referencia a la base de datos que recibe como parámetro.
+		'En caso de que no encuentra el nombre de la base en la configuración retorna Nothing
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		Set ReferenciarBaseDeDatos = Nothing
+		If vKeyDB.isMember(Ucase(clave), pos, False) Then _
+		Set ReferenciarBaseDeDatos = New NotesDatabase(ObtenerNombreServidor(vServer.getElement(pos)), vFilePath.getElement(pos))
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método ReferenciarBaseDeDatos","")
+		Exit Function
+		
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function GetFirstDatabase() As NotesDatabase
+	' Esta funcion permite iterar sobre la lista de bases de datos de la
+	' configuración. Para continuar recorriendo la lista utilizar el
+	' método GetNextDatabase.
+	' Si no hay ninguna base de datos en la lista retorna Nothing.
+		On Error Goto HANDLER
+		
+		Set GetFirstDatabase = Nothing
+		If vServer.CantElem > 0 Then
+			Set GetFirstDatabase = Me.ReferenciarBaseDeDatos(vKeyDB.GetElement(1))
+		End If			
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método GetFirstDatabase","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function GetNextDatabase(dbClave As NotesDatabase) As NotesDatabase
+	' Esta funcion retorna la siguiente base de datos en la lista.
+	' Si no hay ninguna base de datos en la lista retorna Nothing.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		Dim pos2 As Long
+		Dim path As String
+		Dim path2 As String
+		
+		
+		Set GetNextDatabase = Nothing
+		
+		If dbClave Is Nothing Then Exit Function
+		path=Replace(dbClave.FilePath,"\","/") 
+		path2=Replace(dbClave.FilePath,"/","\") 
+		
+		If vFilePath.IsMember(dbClave.FilePath,pos, False) Then
+			If pos < vFilePath.CantElem Then 
+				Set GetNextDatabase = Me.ReferenciarBaseDeDatos(vKeyDB.GetElement(pos+1))
+			End If
+		Elseif vFilePath.IsMember(path,pos, False) Then 
+			If pos < vFilePath.CantElem Then 
+				Set GetNextDatabase = Me.ReferenciarBaseDeDatos(vKeyDB.GetElement(pos+1))
+			End If 
+		Elseif vFilePath.IsMember(path2,pos, False) Then 
+			If pos < vFilePath.CantElem Then 
+				Set GetNextDatabase = Me.ReferenciarBaseDeDatos(vKeyDB.GetElement(pos+1))
+			End If 
+		End If
+		
+		Exit Function
+		
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método GetNextDatabase","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Sub Save()
+	'Salva la configuracion del sistema y la copia a todas las bases de datos
+		On Error Goto HANDLER
+		
+		Dim dbSetear As NotesDatabase,docDestino As NotesDocument, srv As String, path As String
+		Dim vAdminN As New Vector(0)
+		Dim vAdminV As New Vector(0)
+		Dim i As Integer
+		Dim alta As New Vector(0)
+		Dim baja As New Vector(0)
+		Dim usuario As String
+		Dim pos As Long
+		
+		
+		Call docConfiguracion.ReplaceItemValue(CAMPO_CLAVE_DB,vKeyDB.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_SERVIDOR_DB,vServer.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_RUTA_DB,vFilePath.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_HOST_DB,vHost.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_CLAVE_NUMERACION,vKeyNum.Values)
+		Call docConfiguracion.ReplaceItemValue(CAMPO_FORMATO_NUMERACION,vFormNum.Values)
+		
+		' Vamos a ver los roles de las cartas
+		Dim vEntradasNombres As New Vector(0)
+		Dim vEntradasRoles As New Vector(0)
+		Dim vdelRol As New Vector(0)
+		Dim ListaRoles As String
+		
+		vEntradasNombres.values=docConfiguracion.getItemValue(FORM_SETROLES_CAMPO_USUARIO_CARTAS)
+		vEntradasRoles.values=docConfiguracion.GetItemValue(FORM_SETROLES_CAMPO_ROLES_CARTAS)
+		ListaRoles =vEntradasRoles.ToString(",")
+		If docConfiguracion.salvoUsuarioRoles_2(0) <>"" Then
+			vdelRol.values = docConfiguracion.getitemvalue("salvoUsuarioRoles_2")	
+		End If
+		
+		If Not docConfiguracion.Save(False,False) Then _
+		Error ERRORCONF_INTERNAL_ERROR,"Fallo al salvar el documento de configuración."
+		
+		'Actualizo el profile en las demás bases de datos
+		Forall ClaveBd In vKeyDB.Values
+			If Ucase(ClaveBd) <> Ucase(CLAVE_NAMES) Then  'si no es el names
+				'Seteo la base de datos
+				srv = Me.ServidorDomino(ClaveBd)
+				path = Me.BaseDeDatos(ClaveBd)
+				Set dbSetear = New NotesDatabase("","")
+				If Not dbSetear.Open (srv,path)Then 
+					Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+ClaveBd
+				Else
+					'Actualizo su profile
+					Set docDestino = dbSetear.GetProfileDocument(DOCUMENTO_PERFIL)
+					If Not docDestino Is Nothing Then
+						Call GuardarProfile(docDestino,docConfiguracion)
+					End If
+				End If
+			End If
+		End Forall
+		
+		'Nota: este método debería actualizar también las acl's de las bases de datos con los administradores nuevos
+		'En principio no lo hacemos porque los administradores solo se agregan desde la interfase y allí se actualizan las acl's
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Save","")
+		Exit Sub
+	End Sub
+'******************************************************************************************************************		
+	
+	Public Function NumerarFormateado (Byval NOMBRENUMERADOR As String, codigo As String,inciso As String) As String
+	'Devuelve el nro que corresponde según el nombre del numerador y con el formato indicado en el doc de perfil	
+		On Error Goto HANDLER
+		
+		Dim formato As String, nro As String, NOMBRENUMERADORAUX As String
+		NOMBRENUMERADORAUX = NOMBRENUMERADOR
+		
+		If NumerarUnidad Then
+			NOMBRENUMERADORAUX = NOMBRENUMERADORAUX &"_" & codigo
+		End If
+		
+		If NumerarInciso Then
+			NOMBRENUMERADORAUX = NOMBRENUMERADORAUX &"_" & inciso
+		End If
+		'Pido número a la clase de numeración
+		nro = Cstr(PedirNumero(NOMBRENUMERADORAUX))
+		'Obtengo el formato del nro
+		formato = Me.FormatoNumerador(NOMBRENUMERADOR)
+		If formato = "" Then Error ERRORCONF_CLAVE_NOTFOUND, "FormatoNumerador: No se encuentra la clave " _ 
+		& NOMBRENUMERADOR & " en la tabla de Formato de numeradores."
+		'Sustituyo el indicador de año por el año actual
+		formato = SustituirAnio(formato)
+		'Sustituyo el indicador de digitos por el nro
+		NumerarFormateado = SustituirCantDigitos(INDICADOR_DIGITO,INDICADOR_DIGITOS_PROPIO_NRO,formato,nro)	
+		If NumerarUnidad Then
+			NumerarFormateado = SustituirCantDigitos(INDICADOR_UNIDAD,INDICADOR_DIGITOS_PROPIO_UNIDAD	,NumerarFormateado,codigo)	
+		End If
+		
+		If NumerarInciso Then
+			NumerarFormateado = SustituirCantDigitos(INDICADOR_INCISO,INDICADOR_DIGITOS_PROPIO_INCISO	,NumerarFormateado,inciso)	
+		End If
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método NumerarFormateado","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************		
+	
+	Public Function BaseDeDatosNroDoc (Byval nro As String, Byval clavenum As String, Byval clavetemplate As String, Byval claveprefijo As String) As NotesDatabase
+	'Dado un nro de documento, setea la base de datos que le corresponda según la clave prefijo y al año incluido en el nro
+	'Si la base de datos para dicho año no existe, la crea en base al template clavetemplate
+	'Suposiciones: 
+	'1) En el doc profile está el camino de la base clavetemplate, la cual se va a tomar para crear otras bases
+	'2) La clave para las bases anuales de está formada por la claveprefijo + los dos ultimos digitos del año
+	'   (por ejemplo: CLAVE_GESTIONDOC03, CLAVE_CARTASERV03, etc)
+		
+		On Error Goto HANDLER
+		
+		Dim anio As String, claveint As String, srv As String, srvt As String, hostt As String, path As String, dbGestionDoc As NotesDatabase
+		
+		'Busco el año en el número
+		anio = AnioNroDoc(nro,clavenum)
+		'Busco srv y path del la base que corresponda segun ese año (si el año es "" encontrará la única base de datos)
+		claveint = claveprefijo + anio
+		srv = Me.ServidorDomino(claveint)
+		path = Me.BaseDeDatos(claveint)
+		If srv = "" Then   'no encontro la clave
+			'Si no existe, creo la nueva base de gestion 
+			Set BaseDeDatosNroDoc = GenerarDb(clavetemplate,anio,srvt,hostt,path)	
+			'Inserto la línea en la interoperabilidad
+			Call AgregarInteroperabilidad(claveint,srvt,hostt,path)
+			'Salvo el doc configuracion para copiarlo a la nueva bd
+			Call Me.Save()
+		Else   'encontro la clave
+			Set BaseDeDatosNroDoc = New NotesDatabase("","")
+			If Not BaseDeDatosNroDoc.Open (srv,path)Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+claveint
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método BaseDeDatosNroDoc","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************
+	Public Function BaseDeDatosNroDocumento (Byval nro As String, Byval clavenum As String, Byval clavetemplate As String, Byval claveprefijo As String) As NotesDatabase
+	'Dado un nro de documento, setea la base de datos que le corresponda según la clave prefijo y al año incluido en el nro
+	'Suposiciones: 
+	'1) En el doc profile está el camino de la base clavetemplate, la cual se va a tomar para crear otras bases
+	'2) La clave para las bases anuales de está formada por la claveprefijo + los dos ultimos digitos del año
+	'   (por ejemplo: CLAVE_GESTIONDOC03, CLAVE_CARTASERV03, etc)
+		
+		On Error Goto HANDLER
+		
+		Dim anio As String, claveint As String, srv As String, srvt As String, hostt As String, path As String, dbGestionDoc As NotesDatabase
+		
+		'Busco el año en el número
+		anio = AnioNroDoc(nro,clavenum)
+		'Busco srv y path del la base que corresponda segun ese año (si el año es "" encontrará la única base de datos)
+		claveint = claveprefijo + anio
+		srv = Me.ServidorDomino(claveint)
+		path = Me.BaseDeDatos(claveint)
+		
+		If srv = "" Then   'no encontro la clave
+			Set BaseDeDatosNroDocumento = Nothing
+		Else   'encontro la clave
+			Set BaseDeDatosNroDocumento = New NotesDatabase("","")
+			If Not BaseDeDatosNroDocumento.Open (srv,path)Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+claveint
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método BaseDeDatosNroDoc","")
+		Exit Function
+	End Function
+'******************************************************************************************************************	
+	Public Function BaseDeDatosAnio (Byval anio As Integer, Byval clavetemplate As String, Byval claveprefijo As String) As NotesDatabase
+	'Dado un año, setea la base de datos que le corresponda según la clave prefijo
+	'Si la base de datos para dicho año no existe, la crea en base al template clavetemplate
+	'Suposiciones: 
+	'1) En el doc profile está el camino de la base clavetemplate, la cual se va a tomar para crear otras bases
+	'2) La clave para las bases anuales de está formada por la claveprefijo + los dos ultimos digitos del año
+	'   (por ejemplo: CLAVE_GESTIONDOC03, CLAVE_CARTASERV03, etc)
+		
+		On Error Goto HANDLER
+		
+		Dim claveanio As String, claveint As String, srv As String, srvt As String, hostt As String, path As String, dbGestionDoc As NotesDatabase
+		
+		'Seteo las dos últimas cifras del año
+		claveanio = Right(Cstr(anio),2)
+		'Busco srv y path del la base que corresponda segun el año
+		claveint = claveprefijo + claveanio
+		srv = Me.ServidorDomino(claveint)
+		path = Me.BaseDeDatos(claveint)
+		If srv = "" Then   'no encontro la clave
+			'Si no existe, creo la nueva base de gestion 
+			Set BaseDeDatosAnio = GenerarDb(clavetemplate,claveanio,srvt,hostt,path)	
+			'Inserto la línea en la interoperabilidad
+			Call AgregarInteroperabilidad(claveint,srvt,hostt,path)
+			'Salvo el doc configuracion para copiarlo a la nueva bd
+			Call Me.Save()
+		Else   'encontro la clave
+			Set BaseDeDatosAnio = New NotesDatabase("","")
+			If Not BaseDeDatosAnio.Open (srv,path)Then Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN+" "+claveint
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método BaseDeDatosAnio","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************
+	Public Function AnioNroDoc(Byval nro As String, Byval clavenum As String) As String
+		'Devuelve el año incluído en el nro que recibe, de acuerdo al formato del numerador llamado clavenum
+		'Si el año no forma parte del nro devuelve ""
+		On Error Goto HANDLER
+		
+		Dim formato As String, pos As Integer, largo As Integer, posdigito As Integer
+		Dim carac_ant_anio As String, carac_sig_anio As String, pos_ant_anio As Integer, pos_sig_anio As Integer
+		
+		'Busco el formato correpondiente al numerador
+		formato = Me.FormatoNumerador(clavenum)		
+		If formato = "" Then Error ERRORCONF_CLAVE_NOTFOUND, MSG_ERRORCONF_CLAVE_NOTFOUND+" "+clavenum
+		
+		'Si el nro es de carta de servicio me quedo sin el nombre de la unidad
+		Dim posguion As Integer
+		If clavenum = NUMERADOR_CS Then
+			posguion = Instr(nro," -")
+			If posguion > 0 Then  'pasaron el nro con unidad y todo
+				nro = Left(nro,posguion-1)
+			End If
+		End If
+		
+		'Veo si está el año con 4 digitos
+		pos = Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)
+		largo = Len(INDICADOR_AÑO_CUATRO_DIGITOS)
+		If pos = 0 Then  'no está el año con 4 digitos, veo si va el año con dos
+			pos = Instr(formato, INDICADOR_AÑO_DOS_DIGITOS)
+			largo = Len(INDICADOR_AÑO_DOS_DIGITOS)
+		End If
+		If pos <> 0 Then  'si está alguno de los dos, saco el año del nro con dos digitos
+			
+			'Si el nro tiene una cantidad prefijada de digitos tomo de pos a largo; sino veo los caracteres de los costados para extraer en base a ellos
+			posdigito = Instr(formato, INDICADOR_DIGITO)
+			If posdigito <> 0 Then  'cantidad prefijada de digitos				
+				AnioNroDoc = Right(Mid$(nro,pos,largo),2)				
+			Else
+				'digitos según los que correspondan al nro asignado
+				posdigito = Instr(formato, INDICADOR_DIGITOS_PROPIO_NRO)  'Chequeo que esté el otro indicador
+				If posdigito = 0 Then Error ERROR_INDICADOR_DIGITO_NOT_FOUND, MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND
+				
+				'Busco caracter anterior al año
+				If pos = 1 Then
+					carac_ant_anio = ""
+				Else
+					carac_ant_anio = Mid$(formato,pos-1,1)
+				End If
+				
+				'Busco caracter siguiente al año
+				If pos + largo > Len(formato) Then
+					carac_sig_anio = ""
+				Else
+					carac_sig_anio = Mid$(formato,pos+largo,1)
+				End If
+				
+				'Saco el año del número
+				If carac_ant_anio = "" Then  'el año está al principio del nro
+					AnioNroDoc = Right(Mid$(nro,pos,largo),2)					
+				Else
+					If carac_sig_anio = "" Then  'el año está al final
+						AnioNroDoc = Right(nro,2)						
+					Else  'hay caracter anterior y siguiente
+						'controlo que ninguno sea el *
+						If carac_ant_anio = INDICADOR_DIGITOS_PROPIO_NRO Then
+							'solo me baso en el caracter siguiente
+							pos_sig_anio = Instr(nro,carac_sig_anio)							
+							AnioNroDoc = Mid$(nro,pos_sig_anio - 2 ,2)
+						Else
+							If carac_sig_anio = INDICADOR_DIGITOS_PROPIO_NRO Then
+								'solo me baso en el caracter anterior
+								pos_ant_anio = Instr(nro,carac_ant_anio)
+								If Instr(formato, INDICADOR_AÑO_CUATRO_DIGITOS)<> 0 Then   'está el año con cuatro digitos
+									AnioNroDoc = Right(Mid$(nro,pos_ant_anio + 1 ,4),2)
+								Else 
+									AnioNroDoc = Mid$(nro,pos_ant_anio + 1 ,2)
+								End If
+							Else						
+								'los dos caracteres son válidos, los busco en el nro y tomo el año entre medio
+								pos_ant_anio = Instr(nro,carac_ant_anio)								
+								pos_sig_anio = Instr(nro,carac_sig_anio)
+								If pos_sig_anio - 3 = pos_ant_anio Then   'tengo el año con dos digitos
+									AnioNroDoc = Mid$(nro,pos_ant_anio + 1 ,2)									
+								Else
+									If pos_sig_anio - 5 = pos_ant_anio Then  'tengo el año con cuatro digitos								
+										AnioNroDoc = Right(Mid$(nro,pos_ant_anio + 1 ,4),2)
+									End If
+								End If
+							End If
+						End If
+					End If
+				End If
+				
+			End If
+		Else
+			AnioNroDoc = ""  'no está el año
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Funcion AnioNroDoc","")
+		Exit Function
+	End Function
+	
+'******************************************************************************************************************	
+	
+	Public Function GetKeysGestion() As vector
+		'devuelve un vector ordenado con todas las claves de gestion documental
+		
+		Dim vAux As New Vector(0)
+		Dim i As Integer, pos As Long
+		
+		For i = 1 To vKeyDB.cantElem
+			If Left(vKeyDB.Getelement(i),10) = CLAVE_DBGESTIONDOC Then
+				pos = vAux.InsertPos(vKeyDb.getElement(i),True)
+				vAux.insertElement vKeyDb.getElement(i), pos 				
+			End If
+		Next
+		Set GetKeysGestion= vAux
+	End Function
+'******************************************************************************************************************		
+	
+	Public Property Set VerSolicitante As Boolean 
+		On Error Goto HANDLER
+		If VerSolicitante Then
+			docConfiguracion.replaceItemValue CAMPO_VER_SOLICITANTE,"1"
+		Else
+			docConfiguracion.replaceItemValue CAMPO_VER_SOLICITANTE,""
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set VerSolicitante","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get VerSolicitante As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.getItemValue(CAMPO_NUMERACION_INCISO)(0)<>"" Then
+			VerSolicitante = True
+		Else
+			VerSolicitante=False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get VerSolicitante","")
+		Exit Property
+	End Property
+			'********************************************************************************************************************************************	
+	Public Function GetKeysCartas() As vector
+		'devuelve un vector ordenado con todas las claves de gestion documental
+		
+		Dim vAux As New Vector(0)
+		Dim i As Integer, pos As Long
+		
+		For i = 1 To vKeyDB.cantElem
+			If Left(vKeyDB.Getelement(i),10) = CLAVE_DBCARTASERV Then
+				pos = vAux.InsertPos(vKeyDb.getElement(i),True)
+				vAux.insertElement vKeyDb.getElement(i), pos 				
+			End If
+		Next
+		Set GetKeysCartas= vAux
+	End Function
+'******************************************************************************************************************	
+	
+	Public Function GetKeysCartasArchivo() As Vector
+		Dim vAux As New Vector(0)
+		Dim i As Integer, pos As Long
+		
+		For i = 1 To vKeyDB.cantElem
+			If Left(vKeyDB.Getelement(i),9) = CLAVE_DBARCHIVOCS Then
+				pos = vAux.InsertPos(vKeyDb.getElement(i),True)
+				vAux.insertElement vKeyDb.getElement(i), pos 				
+			End If
+		Next
+		Set GetKeysCartasArchivo= vAux
+	End Function
+	
+	'******************************************************************************************************************	
+	Public Property Set VisualizacionPublica As Boolean 
+		On Error Goto HANDLER
+		If VisualizacionPublica Then
+			docConfiguracion.replaceItemValue CAMPO_ESTADO_VIS_PUBLICA,"1"
+		Else
+			docConfiguracion.replaceItemValue CAMPO_ESTADO_VIS_PUBLICA,"0"
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set VisualizacionPublica","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get VisualizacionPublica As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.getItemValue(CAMPO_ESTADO_VIS_PUBLICA)(0)<>"" And docConfiguracion.getItemValue(CAMPO_ESTADO_VIS_PUBLICA)(0)<>"0"Then
+			VisualizacionPublica = True
+		Else
+			VisualizacionPublica =False
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get VisualizacionPublica","")
+		Exit Property
+	End Property
+				'********************************************************************************************************************************************	
+	
+	Public Property Set tiempoVisualizacionPublica As Integer 
+		On Error Goto HANDLER
+		
+		docConfiguracion.replaceItemValue "sDiasVisual",tiempoVisualizacionPublica
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set tiempoVisualizacionPublica","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get tiempoVisualizacionPublica As Integer 
+		On Error Goto HANDLER
+		
+		tiempoVisualizacionPublica=Cint(docConfiguracion.GetItemValue("sDiasVisual")(0))
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get tiempoVisualizacionPublica","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Set miembrosVisualizacionPublica As Vector 
+		On Error Goto HANDLER
+		
+		docConfiguracion.replaceItemValue CAMPO_MIEMBROS_VISUALIZACION_PUBLICA,miembrosVisualizacionPublica.values
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set miembrosVisualizacionPublica","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************
+	Public Property Get miembrosVisualizacionPublica As Vector 
+		On Error Goto HANDLER
+		Set miembrosVisualizacionPublica = New Vector(0)
+		miembrosVisualizacionPublica.values=docConfiguracion.GetItemValue(CAMPO_MIEMBROS_VISUALIZACION_PUBLICA)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get miembrosVisualizacionPublica","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************		
+	Public Property Set VisPublicaInstalada As Boolean
+		On Error Goto HANDLER
+		
+		If VisPublicaInstalada Then
+			docConfiguracion.replaceItemValue CAMPO_INSTALAR_VIS_PUBLICA,"Si"
+		Else
+			docConfiguracion.replaceItemValue CAMPO_INSTALAR_VIS_PUBLICA,"No"
+		End If 
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set VisPublicaInstalada","")
+		Exit Property
+	End Property
+	
+		'******************************************************************************************************************	
+	Public Property Get VisPublicaInstalada As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.GetItemValue(CAMPO_INSTALAR_VIS_PUBLICA)(0)="Si" Then
+			VisPublicaInstalada= True
+		Else 
+			VisPublicaInstalada=False
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get VisPublicaInstalada","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get CodUnidadesIngOficina As Vector 
+		On Error Goto HANDLER
+		
+		Set CodUnidadesIngOficina = New Vector(0)
+		CodUnidadesIngOficina.values = docConfiguracion.GetItemValue("lDestinatariosIngUnidadesCod")
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get CodUnidadesIngOficina","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get TipoValidacionFirma As String 
+		On Error Goto HANDLER
+		
+		TipoValidacionFirma = docConfiguracion.getItemValue(CAMPO_VALIDACION_FIRMA)(0)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get ValidacionFirma","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Set TipoValidacionFirma As String 
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_VALIDACION_FIRMA,TipoValidacionFirma)
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set ValidacionFirma","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get CertificadoCA As Vector 
+		On Error Goto HANDLER
+		
+		Set CertificadoCA = New Vector(0)
+		CertificadoCA.values = docConfiguracion.getItemValue(CAMPO_CERTIFICADO_CA)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get CertificadoCA","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Set CertificadoCA As Vector 
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_CERTIFICADO_CA,CertificadoCA.values)
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set CertificadoCA","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get VerTemaActuacion As Boolean 
+		On Error Goto HANDLER
+		VerTemaActuacion=False
+		If docConfiguracion.getItemValue(CAMPO_VER_TEMA_EN_ACTUACION)(0)="1" Then
+			VerTemaActuacion = True
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get VerTemaActuacion","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Set VerTemaActuacion As Boolean 
+		On Error Goto HANDLER
+		
+		If VerTemaActuacion Then
+			Call docConfiguracion.replaceItemValue(CAMPO_VER_TEMA_EN_ACTUACION,"1")
+		Else
+			Call docConfiguracion.replaceItemValue(CAMPO_VER_TEMA_EN_ACTUACION,"")
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set VerTemaActuacion","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Get ParaDarPase As Boolean 
+		On Error Goto HANDLER
+		
+		If docConfiguracion.getItemValue(CAMPO_ACCION_PARA_DAR_PASE)(0)="1" Then
+			ParaDarPase = True
+		Else 
+			ParaDarPase = False
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get ParaDarPase","")
+		Exit Property
+	End Property
+		'******************************************************************************************************************	
+	Public Property Set ParaDarPase As Boolean 
+		On Error Goto HANDLER
+		
+		If ParaDarPase Then
+			Call docConfiguracion.replaceItemValue(CAMPO_ACCION_PARA_DAR_PASE,"1")
+		Else
+			Call docConfiguracion.replaceItemValue(CAMPO_ACCION_PARA_DAR_PASE,"0")
+		End If
+		
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set ParaDarPase","")
+		Exit Property
+	End Property
+	
+'******************************************************************************************************************		
+	Public Property Get TemplateMsgCorreoAvisos As Variant 
+		On Error Goto HANDLER
+		
+		TemplateMsgCorreoAvisos= docConfiguracion.getItemValue(CAMPO_TEMPLATE_MSG_CORREO_AVISOS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get TemplateMsgCorreoAvisos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set TemplateMsgCorreoAvisos As Variant 
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_TEMPLATE_MSG_CORREO_AVISOS,TemplateMsgCorreoAvisos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set TemplateMsgCorreoAvisos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************		
+	Public Property Get TemplateAsuntoCorreoAvisos As Variant 
+		On Error Goto HANDLER
+		
+		TemplateAsuntoCorreoAvisos= docConfiguracion.getItemValue(CAMPO_TEMPLATE_ASUNTO_CORREO_AVISOS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get TemplateAsuntoCorreoAvisos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set TemplateAsuntoCorreoAvisos As Variant 
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_TEMPLATE_ASUNTO_CORREO_AVISOS,TemplateAsuntoCorreoAvisos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set TemplateAsuntoCorreoAvisos","")
+		Exit Property
+	End Property	
+'******************************************************************************************************************		
+	Public Property Get TemplateMensajeSmsAvisos As Variant 
+		On Error Goto HANDLER
+		
+		TemplateMensajeSmsAvisos= docConfiguracion.getItemValue(CAMPO_TEMPLATE_MSG_MSG_AVISOS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get TemplateMensajeSmsAvisos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set TemplateMensajeSmsAvisos As Variant 
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_TEMPLATE_MSG_MSG_AVISOS,TemplateMensajeSmsAvisos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set TemplateMensajeSmsAvisos","")
+		Exit Property
+	End Property		
+'******************************************************************************************************************		
+	Public Property Get TemplateMensajeVozAvisos As Variant 
+		On Error Goto HANDLER
+		
+		TemplateMensajeVozAvisos= docConfiguracion.getItemValue(CAMPO_TEMPLATE_MSG_VOZ_AVISOS)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get TemplateMensajeVozAvisos","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set TemplateMensajeVozAvisos As Variant 
+		On Error Goto HANDLER
+		
+		Call docConfiguracion.replaceItemValue(CAMPO_TEMPLATE_MSG_MSG_AVISOS,TemplateMensajeVozAvisos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set TemplateMensajeVozAvisos","")
+		Exit Property
+	End Property		
+'******************************************************************************************************************	
+	Public Property Get AvisarAlDevolver As Boolean
+		On Error Goto HANDLER
+		AvisarAlDevolver = (docConfiguracion.getItemValue(CAMPO_GENERAR_AVISO_AL_DEVOLVER)(0) = AVISAR_YES)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get AvisarAlDevolver","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set AvisarAlDevolver As Boolean 
+		On Error Goto HANDLER
+		If AvisarAlDevolver Then
+			Call docConfiguracion.replaceItemValue(CAMPO_GENERAR_AVISO_AL_DEVOLVER,AVISAR_YES)
+		Else
+			Call docConfiguracion.replaceItemValue(CAMPO_GENERAR_AVISO_AL_DEVOLVER,AVISAR_NO)
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set AvisarAlDevolver","")
+		Exit Property
+	End Property		
+'******************************************************************************************************************		
+	Public Property Get AvisarAlRecibir As Boolean
+		On Error Goto HANDLER
+		AvisarAlRecibir= (docConfiguracion.getItemValue(CAMPO_GENERAR_AVISO_AL_RECIBIR)(0) = AVISAR_YES)
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Get AvisarAlRecibir","")
+		Exit Property
+	End Property
+'******************************************************************************************************************	
+	Public Property Set AvisarAlRecibir As Boolean 
+		On Error Goto HANDLER
+		If AvisarAlRecibir Then
+			Call docConfiguracion.replaceItemValue(CAMPO_GENERAR_AVISO_AL_RECIBIR,AVISAR_YES)
+		Else
+			Call docConfiguracion.replaceItemValue(CAMPO_GENERAR_AVISO_AL_RECIBIR,AVISAR_NO)
+		End If		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set AvisarAlRecibir","")
+		Exit Property
+	End Property		
+'******************************************************************************************************************			
+End Class
+		'******************************************************************************************************************	

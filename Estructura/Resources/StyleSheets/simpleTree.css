@@ -1,0 +1,255 @@
+.ui-simpleTree
+{	margin:0;
+	margin-left: 4px;
+	padding: 0px;
+	font: 8pt 'Arial'; 
+	vertical-align: top;
+	list-style-type: none; 
+}
+
+/* Renglon de cada nodo */
+.ui-simpleTree li.root
+{	cursor: pointer;
+	list-style: none;
+	margin: 0px;
+	padding:0 0 0 8px;
+	line-height: 20px;
+	vertical-align: middle;
+	background-image: url(i/accordion-left.gif); 
+	background-position: top left; 
+	background-repeat: no-repeat; 
+	border: 1px solid #0000FF;
+}
+
+/* Texto de cada nodo */
+.ui-simpleTree li a.ui-simpleTree-link
+{	margin: 0px; 
+	height: 20px;
+	width: 140px;
+	display: inline;
+	clear: left;
+	vertical-align: middle;
+	cursor: pointer;
+	padding:0 0 0 0px;
+	background-color: transparent;
+	background-image: url(i/accordion-fondo.gif);
+	background-repeat: repeat-x; 
+	white-space: nowrap;
+	border: 1px solid #FF0000;
+}
+
+.ui-simpleTree li div.ui-simpleTree-right
+{	margin: 0px;
+	display: inline;
+	height: 20px;
+	width: 4px;
+	vertical-align: middle;
+	background-image: url(i/accordion-right.gif); 
+	background-position: top bottom; 
+	background-repeat: no-repeat; 
+}
+
+.ui-simpleTree ul.ui-simpleTree
+{	margin-left: 16px;
+	display: inline;
+}
+
+/* Sub arbol */
+.simpleTree ul, 
+.simpleTree .root ul
+{	margin:0px; 
+	padding:0px;
+	margin-left: 16px;
+	line-height: 20px;
+	background-position: top left;
+}
+/* Arbol principal */
+.simpleTree .root
+{	//margin-left:-16px;
+	background: url(arbol/root.gif) no-repeat 16px 0;
+	margin-top: 4px;
+	padding-top: 0px;
+}
+/* Linea vertical del arbol, entre los nodos*/
+.simpleTree .line
+{	//margin:0 0 0 -16px;
+	padding:0;
+	line-height: 3px;
+	height:4px;
+	font-size:2px;
+	background: url(arbol/line_bg.gif) 0 0 no-repeat; 
+}
+
+/* Espacio al final del arbol */
+.simpleTree .line-last
+{	//margin:0 0 0 -16px;
+	padding:0;
+	line-height: 2px;
+	margin-top:2px;
+	//height:3px;
+	font-size:2px;
+	background: url(arbol/spacer.gif) 0 0 no-repeat; 
+	vertical-align: top;
+}
+
+.simpleTree .line-over
+{
+	//margin:0 0 0 -16px;
+	padding:0;
+	line-height: 3px;
+	//height:3px;
+	font-size:2px;
+	background: url(arbol/line_bg_over.gif) 0 0 no-repeat; 
+}
+.simpleTree .line-over-last
+{
+	//margin:0 0 0 -16px;
+	padding:0;
+	line-height: 3px;
+	//height:3px;
+	font-size:2px;
+	background: url(arbol/line_bg_over_last.gif) 0 0 no-repeat; 
+}
+.simpleTree .folder-open
+{
+	//margin-left:-16px;
+	background: url(arbol/collapsable.gif) 0 -2px no-repeat;
+}
+
+.simpleTree .folder-open-last
+{
+	//margin-left:-16px;
+	background: url(arbol/collapsable-last.gif) 0 0px no-repeat;
+}
+.simpleTree .folder-close
+{
+	//margin-left:-16px;
+	background: url(arbol/expandable.gif) 0 0px no-repeat ;
+}
+.simpleTree .folder-close-last
+{
+	//margin-left:-16px;
+	background: url(arbol/expandable-last.gif) 0 0px no-repeat ;
+}
+.simpleTree .doc
+{
+	//margin-left:-16px;
+	background: url(arbol/leaf.gif) 0 0px no-repeat ;
+}
+.simpleTree .doc-last
+{
+	//margin-left:-16px;
+	height:15px;
+	background: url(arbol/leaf-last.gif) 0 0px no-repeat ;
+}
+.simpleTree .ajax
+{
+	background: url(arbol/spinner.gif) no-repeat 0 0 ;
+	//height: 16px;
+	display:none;
+}
+.simpleTree .ajax li
+{
+	display:none;
+	margin:0; 
+	padding:0;
+}
+.simpleTree .trigger
+{
+	display:inline;
+	//margin-left:-32px;
+	//width: 28px;
+	//height: 11px;
+	background: url(arbol/spacer.gif) 0 0 no-repeat; 
+	cursor:pointer;
+}
+.simpleTree .text
+{
+	cursor: default;
+	font: 8pt 'Arial'; 
+	vertical-align: top;
+}
+.simpleTree .active
+{
+	cursor: default;
+	padding:0px 1px 0px 1px;
+	margin: 0px 0px 0px 2px;
+	border: 1px solid #666;
+	
+}
+
+/* Para acomodar espacios cuando hay un subarbol */
+UL UL
+{
+	margin-top: -8px; 
+	margin-bottom: 0px; padding: 0px;
+}
+
+/*** Los #drag son para cuando de "pincha" el nodo y se arrastra ***/
+/*
+#drag_container
+{
+	color:#000;
+	font: normal 8pt arial, tahoma, helvetica, sans-serif;
+	border: 1px dashed #767676;   
+}
+#drag_container ul
+{
+	list-style: none;
+	padding:2px;
+	margin:0;
+}
+#drag_container li
+{
+	list-style: none;
+	line-height:18px;
+	white-space: nowrap;
+	padding 1px 1px 0px 16px;
+	margin:0;
+}
+#drag_container li span
+{
+	padding:0;
+	line-height: 18px;
+}
+
+#drag_container li.doc, #drag_container li.doc-last
+{
+	background: url('<Computed Value>arbol/leaf.gif') no-repeat -14px 0 ;
+}
+#drag_container .folder-close, #drag_container .folder-close-last
+{
+	background: url('<Computed Value>arbol/expandable.gif') no-repeat -14px 0 ;
+}
+
+#drag_container .folder-open, #drag_container .folder-open-last
+{
+	background: url('<Computed Value>arbol/collapsable.gif') no-repeat -14px 0 ;
+}
+*/
+.contextMenu
+{
+	display:none;
+}
+
+/* Celda para el primer renglon, qu ehace como de un titulo y se continua con la celda de cerrar */
+.simpleTree .NodoCabezal  ,
+.simpleTree .NodoCabezalDocumento  
+{
+/* 	background-color: #CCC;	*/
+/*	background-image: none;	*/
+/*	height: 14px;	 		*/
+/*	border-bottom: 1px solid #AAA;	*/
+/*	widht: 100%;	 		*/
+/*	margin: 0px; padding: 0px;	*/
+	display: none;
+}
+
+
+/* Bordes para efecto de ventana Box */
+#tablaArbol.conBordesVentana
+{	border-top: 1px solid #FAFAFA;
+	border-right: 1px solid #666666;
+	border-bottom: 1px solid #666666;
+	border-left: 1px solid #FAFAFA;
+}

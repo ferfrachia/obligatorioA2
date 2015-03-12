@@ -1,0 +1,1042 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+Use "NumeradorClient"
+Use "FuncionesGenerales"
+Use "VectorClass 2.05" 
+Use "ConstantesSistema"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class ConfigRD
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+Public Const NOMBRE_NUMERADOR_SESION 		= "NRO_SESION_DIR_"
+Public Const NOMBRE_NUMERADOR_SESION_ORDI 	= "NRO_SESION_DIR_ORDI_"
+Public Const NOMBRE_NUMERADOR_SESION_EXTRA 	= "NRO_SESION_DIR_EXTRA_"
+Public Const NOMBRE_NUMERADOR_RESOLUCION 	= "NRO_RESOLUCION_DIR_"
+Public Const NOMBRE_NUMERADOR_DECRETO 		= "NRO_DECRETO_DIR_"
+Public Const NOMBRE_NUMERADOR_ACTA 			= "NRO_ACTA_DIR_"
+
+Public Const CAMPO_PROTOCOLO							="rProtocolo"
+Public Const CAMPO_PUERTO							="sPuerto"
+Private Const CAMPO_RUTA_DB							= "sPath"
+Private Const CAMPO_SERVIDOR_DB						= "sServidor"
+Private Const CAMPO_HOST_DB 							= "sHost"
+Private Const CAMPO_CLAVE_DB							= "sClave"
+Private Const CAMPO_FORM_NRO_SESION					= "sFormNroSes"
+Private Const CAMPO_FORM_NRO_RESOLUCION					= "sFormNroRes"
+Private Const CAMPO_FORM_NRO_DECRETO					= "sFormNroDec"
+Private Const CAMPO_FORM_NRO_ACTA						= "sFormNroActa"
+Private Const CAMPO_PLAZO_ELIMINACION_ASUNTOS			= "nDias"
+Public Const CAMPO_TIEMPO_MAX_AUDITORIA					= "sTiempoMaxAuditoria"
+Public Const CAMPO_PERMITIR_NUMERA_UNICA_SES			=	"sNumUnicaSes"
+Public Const CAMPO_PERMITIR_NUMERA_UNICA_RES			=	"sNumUnicaRes"
+Public Const CAMPO_PERMITIR_NUMERA_UNICA_DEC			=	"sNumUnicaDec"
+Public Const CAMPO_PERMITIR_NUMERA_UNICA_ACTA			=	"sNumUnicaActa"
+Public Const CAMPO_UNIDAD_MIL_ACTA						= "sUnidadDeMilActa"
+Public Const CAMPO_UNIDAD_MIL_SESION					= "sUnidadDeMilSesion"
+Public Const CAMPO_NUM_RESOL_EJEC						= "rNumerarResoluciones"
+
+Public Class ConfigRD
+	Private doc As NotesDocument
+	Private session As NotesSession
+	Private db As NotesDatabase
+	Private vKeyDB As Vector
+	Private vServer As  Vector
+	Private vHost As Vector
+	Private vFilePath As Vector
+	
+	Public Sub new ()
+		On Error Goto HANDLER
+		Set session = New NotesSession
+		Set db = session.CurrentDatabase
+		Set doc = db.GetProfileDocument("(ConfiguracionRD)")
+		
+		Set vKeyDB = New Vector(0)
+		Set vServer = New Vector(0)
+		Set vHost = New Vector(0)
+		Set vFilePath = New Vector(0)
+		
+		vKeyDB.values = doc.getItemValue(CAMPO_CLAVE_DB)
+		vServer.values = doc.getItemValue(CAMPO_SERVIDOR_DB)
+		vHost.values = doc.getItemValue(CAMPO_HOST_DB)
+		vFilePath.values = doc.getItemValue(CAMPO_RUTA_DB)
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Procedimiento GuardarProfile","")
+		Exit Sub
+	End Sub
+	'********************************************************************************************************************	
+	Public Sub BaseDeDatosNroDoc(sNroExpediente As String,numerador As String,templateGestion As String,claveGestion As String)
+		
+	End Sub
+	'********************************************************************************************************************		
+	Public Sub BaseDeDatosAnio(anio As String,template As String,template2 As String)
+		
+	End Sub
+	
+	'********************************************************************************************************************		
+	Public Function getNroSesion(tipoSesionActual As String) As String
+		On Error Goto handler
+		
+		Dim dbNum As NotesDatabase
+		Dim oNumerador As NumClient
+		Dim nro As Long
+		Dim strNro As String
+		Dim path As String
+		Dim server As String
+		Dim formatoSesion As String
+		Dim nombreNum As String
+		Dim conanio As Boolean
+		Dim numeradores As String
+		
+		server = Servidor("NUMERACION")
+		path =BasedeDatos("NUMERACION")
+		
+		numeradores = doc.Getitemvalue("rNumeraSesOrdiExtra")(0)
+		
+		If numeradores = "No" Then ' significa que usan el mismo numerador para ordinarias y extra-ordinarias
+			If doc.Getitemvalue(CAMPO_PERMITIR_NUMERA_UNICA_SES)(0)="Si" Then
+				nombreNum = NOMBRE_NUMERADOR_SESION
+			Else
+				nombreNum = NOMBRE_NUMERADOR_SESION + CStr(Year(Now))
+			End If
+		Else ' significa que utilizan numeradores distintos para sesiones ordinarias y extra.
+			If tipoSesionActual = "Ordinaria" Then
+				If doc.Getitemvalue(CAMPO_PERMITIR_NUMERA_UNICA_SES)(0)="Si" Then
+					nombreNum = NOMBRE_NUMERADOR_SESION_ORDI
+				Else
+					nombreNum = NOMBRE_NUMERADOR_SESION_ORDI + CStr(Year(Now))
+				End If
+			Else
+				If doc.Getitemvalue(CAMPO_PERMITIR_NUMERA_UNICA_SES)(0)="Si" Then
+					nombreNum = NOMBRE_NUMERADOR_SESION_EXTRA
+				Else
+					nombreNum = NOMBRE_NUMERADOR_SESION_EXTRA + CStr(Year(Now))
+				End If
+			End If
+			
+		End If
+		
+		
+		
+		
+		
+		
+		
+		
+		'-----
+		'	If doc.Getitemvalue(CAMPO_PERMITIR_NUMERA_UNICA_SES)(0)="Si" Then
+		'		nombreNum = NOMBRE_NUMERADOR_SESION
+		
+		'	Else
+		'		nombreNum = NOMBRE_NUMERADOR_SESION + CStr(Year(Now))
+		
+		'	End If
+		'-----
+		Set oNumerador = New NumClient(nombreNum,server,path)
+		nro = oNumerador.getNumber()
+		strNro = Cstr(nro)
+		'aca va el codigo para insertrar punto en unidad de mil.
+		
+		Dim mil As String
+		mil = doc.Getitemvalue(CAMPO_UNIDAD_MIL_SESION)(0)
+		
+		If (mil="Si" And Len(strNro)>3) Then
+			strNro = Left$(strNro, Len(strNro)-3) & "." & Right$(strNro, 3)
+		End If
+		formatoSesion = doc.GetItemValue(CAMPO_FORM_NRO_SESION)(0)
+		
+		'vamo a ver si tiene las yyyy
+		If Instr(formatoSesion,INDICADOR_AÑO_CUATRO_DIGITOS)>0 Then
+			'tenemos yyyy
+			formatoSesion = Strleft(formatoSesion,INDICADOR_AÑO_CUATRO_DIGITOS) & Cstr(Year(Now)) & Strright(formatoSesion,INDICADOR_AÑO_CUATRO_DIGITOS)
+		ElseIf InStr(formatoSesion,INDICADOR_AÑO_TRES_DIGITOS)>0 Then
+			'tenemos yyy
+			formatoSesion = StrLeft(formatoSesion,INDICADOR_AÑO_TRES_DIGITOS) & Right(CStr(Year(Now)),3) & StrRight(formatoSesion,INDICADOR_AÑO_TRES_DIGITOS)
+		Else
+			If Instr(formatoSesion,INDICADOR_AÑO_DOS_DIGITOS)>0 Then
+				'tenemos yy
+				formatoSesion = Strleft(formatoSesion,INDICADOR_AÑO_DOS_DIGITOS) & Right$(Cstr(Year(Now)),2) & Strright(formatoSesion,INDICADOR_AÑO_DOS_DIGITOS)
+			End If
+		End If
+		'---cont punto de mil
+		Dim pos As Integer
+		pos = InStr(formatoSesion,INDICADOR_DIGITO)
+		If (mil="Si" And pos<>0) Then
+			If pos=1 Then
+				'nada
+			Else 
+				formatoSesion = Left$(formatoSesion, Len(formatoSesion)-pos)&INDICADOR_DIGITO & Right$(formatoSesion,Len(formatoSesion)-pos)
+				
+			End If
+		End If
+		
+		'--fin punto de mil
+		formatoSesion = SustituirCantDigitos(formatoSesion,strNro)
+		getNroSesion=formatoSesion
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"ConfiguracionRD - Procedimiento getNroSesion","")
+		Exit Function
+	End Function
+	'********************************************************************************************************************		
+	Public Function obtenerNroSesionAnterior(nro As String) As String
+		On Error Goto handler
+		
+		Dim dbNum As NotesDatabase
+		Dim oNumerador As NumClient
+		
+		Dim strNro As String
+		Dim path As String
+		Dim server As String
+		Dim formatoSesion As String
+		Dim pos As Long
+		Dim nroSesion As String
+		formatoSesion = doc.GetItemValue(CAMPO_FORM_NRO_SESION)(0)
+		'vamo a ver si tiene las yyyy
+		If Instr(formatoSesion,INDICADOR_AÑO_CUATRO_DIGITOS)>0 Then
+			'tenemos yyyy
+			pos = Instr(formatoSesion,INDICADOR_AÑO_CUATRO_DIGITOS)
+			formatoSesion = Strleft(formatoSesion,INDICADOR_AÑO_CUATRO_DIGITOS) & Mid(nro,pos,pos+4) & Strright(formatoSesion,"INDICADOR_AÑO_CUATRO_DIGITOS")
+		Else
+			If Instr(formatoSesion,INDICADOR_AÑO_DOS_DIGITOS)>0 Then
+				pos = Instr(formatoSesion,INDICADOR_AÑO_DOS_DIGITOS)
+				'tenemos yy
+				formatoSesion = Strleft(formatoSesion,INDICADOR_AÑO_DOS_DIGITOS) & Mid(nro,pos,pos+2)& Strright(formatoSesion,INDICADOR_AÑO_DOS_DIGITOS)
+			End If
+		End If
+		Dim strFormato As String
+		Dim posInicial As Integer
+		Dim posFinal As Integer
+		Dim prefijo As String
+		Dim nroSes As Long
+		prefijo = Strleft(formatoSesion,"#")
+		If Instr(formatoSesion,"#")>0 Then
+			
+			pos = Instr(formatoSesion,"#")
+			posInicial = pos
+			posFinal = pos
+			strFormato=Strright(formatoSesion,"#")
+			pos = Instr(strFormato,"#")
+			
+			While pos>0 
+				posFinal = posFinal+1
+				strFormato = Strright(strFormato,"#")
+				pos = Instr(strFormato,"#")
+			Wend
+			nroSesion = Left(nro,posFinal)
+		End If
+		If Left(nroSesion,1)="E" Then
+			nroSesion = StrRight(nroSesion,"E")
+		End If
+		
+		nroSes = Clng(nroSesion)
+		If nroSes>1 Then
+			nroSes=nroSes-1
+			obtenerNroSesionAnterior=SustituirCantDigitos(formatoSesion,nroSes)
+		Else
+			obtenerNroSesionAnterior="PRIMERA"
+		End If
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"ConfiguracionRD - Procedimiento obtenerNroSesionAnterior","")
+		Exit Function
+	End Function
+	'********************************************************************************************************************	
+	'Public Function getNroResolucion(Tipo As String) As String
+	Public Function getNroResolucion(EsDecreto As String) As String
+		On Error Goto handler
+		
+		Dim dbNum As NotesDatabase
+		Dim oNumerador As NumClient
+		Dim nro As Long
+		Dim strNro As String
+		Dim path As String
+		Dim server As String
+		Dim formatoResolucion As String
+		Dim nombreNum As String
+		
+		Dim ResDec As String
+		server = Servidor("NUMERACION")
+		path =BasedeDatos("NUMERACION")
+		
+		Dim Tipo As String
+		If (EsDecreto="No")Then
+			Tipo = "Resolucion"
+		Else
+			Tipo = "Decreto"
+		End If
+		
+		If Tipo = "Resolucion" Then
+			If doc.Getitemvalue(CAMPO_PERMITIR_NUMERA_UNICA_RES)(0)="Si" Then
+				nombreNum = NOMBRE_NUMERADOR_RESOLUCION
+			Else
+				nombreNum = NOMBRE_NUMERADOR_RESOLUCION + CStr(Year(Now))
+			End If
+		Else
+			If doc.Getitemvalue(CAMPO_PERMITIR_NUMERA_UNICA_DEC)(0)="Si" Then
+				nombreNum = NOMBRE_NUMERADOR_DECRETO
+			Else
+				nombreNum = NOMBRE_NUMERADOR_DECRETO + CStr(Year(Now))
+			End If
+		End If
+		Set oNumerador = New NumClient(nombreNum,server,path)
+		nro = oNumerador.getNumber()
+		strNro = Cstr(nro)
+		If Tipo = "Resolucion" Then
+			formatoResolucion = doc.GetItemValue(CAMPO_FORM_NRO_RESOLUCION)(0)
+		Else
+			formatoResolucion = doc.GetItemValue(CAMPO_FORM_NRO_DECRETO)(0)
+		End if
+		'formatoResolucion = doc.GetItemValue(CAMPO_FORM_NRO_RESOLUCION)(0)
+		'vamo a ver si tiene las yyyy
+		If Instr(formatoResolucion,INDICADOR_AÑO_CUATRO_DIGITOS)>0 Then
+			'tenemos yyyy
+			formatoResolucion = Strleft(formatoResolucion,INDICADOR_AÑO_CUATRO_DIGITOS) & Cstr(Year(Now)) & Strright(formatoResolucion,INDICADOR_AÑO_CUATRO_DIGITOS)
+		ElseIf InStr(formatoResolucion,INDICADOR_AÑO_TRES_DIGITOS)>0 Then
+			'tenemos yyy
+			formatoResolucion = StrLeft(formatoResolucion,INDICADOR_AÑO_TRES_DIGITOS) & Right(CStr(Year(Now)),3) & StrRight(formatoResolucion,INDICADOR_AÑO_TRES_DIGITOS)
+		Else
+			If Instr(formatoResolucion,INDICADOR_AÑO_DOS_DIGITOS)>0 Then
+				'tenemos yy
+				formatoResolucion = Strleft(formatoResolucion,INDICADOR_AÑO_DOS_DIGITOS) & Right$(Cstr(Year(Now)),2) & Strright(formatoResolucion,INDICADOR_AÑO_DOS_DIGITOS)
+			End If
+		End If
+		formatoResolucion = SustituirCantDigitos(formatoResolucion,strNro)
+		getNroResolucion=formatoResolucion
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"ConfiguracionRD - Procedimiento getNroResolucion","")
+		Exit Function
+	End Function
+	'********************************************************************************************************************	
+	Public Function getNroActa() As String
+		On Error Goto handler
+		
+		Dim dbNum As NotesDatabase
+		Dim oNumerador As NumClient
+		Dim nro As Long
+		Dim strNro As String
+		Dim path As String
+		Dim server As String
+		Dim formatoActa As String
+		Dim nombreNum As String
+		
+		server = Servidor("NUMERACION")
+		path =BasedeDatos("NUMERACION")
+
+		If doc.Getitemvalue(CAMPO_PERMITIR_NUMERA_UNICA_ACTA)(0)="Si" Then
+			nombreNum = NOMBRE_NUMERADOR_ACTA
+		Else
+			nombreNum = NOMBRE_NUMERADOR_ACTA + CStr(Year(Now))
+			
+		End If
+
+		Set oNumerador = New NumClient(nombreNum,server,path)
+		nro = oNumerador.getNumber()
+		strNro = Cstr(nro)
+		
+		Dim mil As String 
+		mil = doc.Getitemvalue(CAMPO_UNIDAD_MIL_ACTA)(0)
+		
+		'si en la conf esta la variable que se quiere punto en unidades de mil, se inserta
+		If( mil="Si" And Len(strNro)>3 ) Then
+			strNro = Left$(strNro, Len(strNro)-3) & "." & Right$(strNro, 3)
+		End If
+		formatoActa = doc.GetItemValue(CAMPO_FORM_NRO_ACTA)(0)
+		
+		
+		'vamo a ver si tiene las yyyy
+		If Instr(formatoActa,INDICADOR_AÑO_CUATRO_DIGITOS)>0 Then
+			'tenemos yyyy
+			formatoActa = Strleft(formatoActa,INDICADOR_AÑO_CUATRO_DIGITOS) & Cstr(Year(Now)) & Strright(formatoActa,INDICADOR_AÑO_CUATRO_DIGITOS)
+		ElseIf InStr(formatoActa,"yyy")>0 Then
+			'tenemos yyy
+			formatoActa = StrLeft(formatoActa,INDICADOR_AÑO_TRES_DIGITOS) & Right(CStr(Year(Now)),3) & StrRight(formatoActa,INDICADOR_AÑO_TRES_DIGITOS)
+		Else
+			If Instr(formatoActa,INDICADOR_AÑO_DOS_DIGITOS)>0 Then
+				'tenemos yy
+				formatoActa = Strleft(formatoActa,INDICADOR_AÑO_DOS_DIGITOS) & Right$(Cstr(Year(Now)),2) & Strright(formatoActa,INDICADOR_AÑO_DOS_DIGITOS)
+			End if
+			
+		End If
+		
+		Dim pos As Integer
+		
+		pos= InStr(formatoActa,INDICADOR_DIGITO)
+		If(mil ="Si" And pos <>0) Then
+			If pos=1 Then
+				'no hay pref
+			Else
+				formatoActa= Left$(formatoActa, Len(formatoActa)-pos) & INDICADOR_DIGITO & Right$(formatoActa, Len(formatoActa)-pos)
+			End If 
+		End If
+		
+		'MsgBox "formatoacta antesformato "&formatoActa
+		formatoActa = SustituirCantDigitos(formatoActa,strNro)
+		
+		'msgbox "formato despues " & formatoActa
+		getNroActa=formatoActa
+		
+		'Esto se agrego
+		'getNroActa= Cstr(Year(Now))& "/" & strNro
+		'Msgbox "MOTOR EL NRO DE ACTA Q MANDA ES: " & getNroActa
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"ConfiguracionRD - Procedimiento getNroActa","")
+		Exit Function
+	End Function	
+	'********************************************************************************************************************	
+	Public Function SustituirCantDigitos (Byval formato As String, Byval nro As String) As String
+		'Chequea la cantidad de veces que aparece el indicador de un digito y lo sustituye
+		'por el nro formateado con esa cantidad de digitos
+		On Error Goto HANDLER
+		
+		Dim pos As Integer, digitos As Integer, prefijo As String, resto As String, sufijo As String
+		
+		'Busco la cantidad de dígitos para el número
+		pos = Instr(formato,INDICADOR_DIGITO)	'debe haber por lo menos un indicador (digitos segun los que tenga el nro)
+		If pos <> 0 Then
+			digitos = 1
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			resto = Right(formato, Len(formato)-pos)
+			pos = Instr(resto,INDICADOR_DIGITO)		
+			While pos <> 0  'cuento los dígitos
+				digitos = digitos + 1
+				resto = Right(resto, Len(resto)-pos)
+				pos = Instr(resto,INDICADOR_DIGITO)
+			Wend
+			sufijo = resto
+			'Agrego 0's al nro hasta llegar a la cant de dígitos
+			While Len(nro)<digitos
+				nro = "0" + nro
+			Wend 
+			'Armo el nuevo formato
+			SustituirCantDigitos = prefijo + nro + sufijo
+		Else   'no está el #
+			'busco el *
+			pos = Instr(formato,INDICADOR_DIGITOS_PROPIO_NRO)
+			If pos = 0 Then Error ERROR_INDICADOR_DIGITO_NOT_FOUND, MSG_ERROR_INDICADOR_DIGITO_NOT_FOUND
+			
+			If pos = 1 Then   'no hay prefijo
+				prefijo = ""
+			Else
+				prefijo = Left(formato, pos-1)
+			End If
+			If pos = Len(formato) Then  'no hay sufijo
+				sufijo = ""
+			Else
+				sufijo = Right(formato, Len(formato)-pos)
+			End If
+			
+			SustituirCantDigitos = prefijo + nro + sufijo
+		End If
+		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Funcion SustituirCantDigitos","")
+		Exit Function
+	End Function
+	'********************************************************************************************************************		
+	Public Property Set PlazoEliminacionAsuntos As String
+		On Error Goto handler
+		doc.ReplaceItemValue CAMPO_PLAZO_ELIMINACION_ASUNTOS,Cstr(PlazoEliminacionAsuntos)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método set PlazoEliminacionAsuntos","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************		
+	Public Property Get TiempoMaximoAuditoria As String
+		On Error Goto handler
+		TiempoMaximoAuditoria=doc.GetItemValue(CAMPO_TIEMPO_MAX_AUDITORIA)(0)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método set TiempoMaximoAuditoria","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get PlazoEliminacionAsuntos As String
+		On Error Goto handler
+		PlazoEliminacionAsuntos =Cstr(doc.GetItemValue(CAMPO_PLAZO_ELIMINACION_ASUNTOS)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método get PlazoEliminacionAsuntos","")
+		Exit Property
+	End Property	
+	
+	'********************************************************************************************************************		
+	Public Property Set Protocolo As String
+		On Error Goto handler
+		doc.ReplaceItemValue CAMPO_PROTOCOLO,Cstr(Protocolo)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método set Protocolo","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get Protocolo As String
+		On Error Goto handler
+		Protocolo =Cstr(doc.GetItemValue(CAMPO_PROTOCOLO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método get Protocolo","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Set Puerto As String
+		On Error Goto handler
+		doc.ReplaceItemValue CAMPO_PUERTO,Cstr(Puerto)
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método set Puerto","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get Puerto As String
+		On Error Goto handler
+		Puerto =Cstr(doc.GetItemValue(CAMPO_PUERTO)(0))
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método get Puerto","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	'***********************************************************************************
+	%REM
+	Property Get AccionVotar
+	Description: Comments for Property Get
+	%END REM
+	Public Property Get AccionVotar() As string
+		On Error GoTo handler
+		AccionVotar = doc.Getitemvalue("puntoVotar")(0)
+		
+		Exit Property
+handler:
+		Exit Property
+	End Property	
+	'****************************************************************************************
+	%REM
+		Property Set OrdenPublico
+		Description: Comments for Property Set
+	%END REM
+	Public Property Set OrdenPublico As Boolean
+		If OrdenPublico Then
+			Call doc.Replaceitemvalue("rOrdenPublico", "Si")
+		Else
+			Call doc.Replaceitemvalue("rOrdenPublico", "No")
+		End If
+	End Property
+	'********************************************************************************************************************
+	%REM
+		Property Get OrdenPublico
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get OrdenPublico As Boolean
+		If doc.Getitemvalue("rOrdenPublico")(0)="Si" Then
+			OrdenPublico = True
+		Else
+			OrdenPublico = False
+		End If
+	End Property
+	'********************************************************************************************************************	
+	
+	Public Property Get ServerMotor As String
+		On Error Goto handler
+		ServerMotor =Servidor("MOTORRD")
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método get Puerto","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************	
+	Public Property Get PathMotor As String
+		On Error Goto handler
+		PathMotor =BasedeDatos("MOTORRD")
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método get PathMotor","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Get Host(Byval clave As String) As String
+		' Dada una clave retorna el Host. Si lo encuentra retorna "".
+		'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		'If vKeyDB.cantElem = 0 Then Error ERROR_PROFILE_NOTHING, MSG_ERROR_PROFILE_NOTHING
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		Host = vHost.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Propiedad Get Host","")
+		Exit Property
+	End Property	
+	'******************************************************************************************************************
+	%REM
+		Property Get ActasPublicas
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get ActasPublicas () As Boolean
+		On Error GoTo handler
+		ActasPublicas = doc.Getitemvalue("actasPublicas")(0)="Si"
+		Exit property
+handler:
+		
+	End Property
+	
+	
+	
+	'******************************************************************************************************************
+	Public Property Set Host(Byval clave As String) As String
+		' Dada una clave setea el Host. Si no retorna un error ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vHost.ReplaceElement(pos,Host)
+		Else
+			Error 10000, "Host: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Propiedad Set Host","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************			
+	
+	Public Property Get BaseDeDatos(Byval clave As String) As String
+		' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+		'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		
+		If vKeyDB.isMember(clave, pos, False) Then _
+		BaseDeDatos = vFilePath.getElement(pos)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Propiedad Get BaseDeDatos","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set BaseDeDatos(Byval clave As String) As String
+		' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+		' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vFilePath.ReplaceElement(pos,BaseDeDatos)
+		Else
+			Error 10000, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Propiedad Set BaseDeDatos","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************		
+	
+	Public Property Get Claves() As vector
+		' Retorna un vector con la lista de claves de la tabla interoperabilidad
+		On Error Goto HANDLER
+		
+		Set Claves = New Vector(0)
+		Claves.Values = doc.GetItemValue(CAMPO_CLAVE_DB)
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get Claves","")
+		Exit Property
+	End Property	
+	'******************************************************************************************************************			
+	
+	Public Property Get Servidor(Byval clave As String) As String
+		' Dada una clave retorna el FilePath. Si no lo encuentra retorna "".
+		'Si el vector de claves no está cargado retorna error.
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Servidor = vServer.getElement(pos)
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Propiedad Get Servidor","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************	
+	
+	Public Property Set Servidor(Byval clave As String) As String
+		' Dada una clave setea el FilePath. Si no lo encuentra genera un error 
+		' ERRORCONF_CLAVE_NOTFOUND
+		On Error Goto HANDLER
+		
+		Dim pos As Long
+		
+		If vKeyDB.isMember(clave, pos, False) Then 
+			Call vServer.ReplaceElement(pos,Servidor)
+		Else
+			Error 10000, "BaseDeDatos: No se encuentra la clave " _ 
+			& clave & " en la tabla de bases de datos."
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Propiedad Set Servidor","")
+		Exit Property
+	End Property
+	
+	'******************************************************************************************************************		
+	
+	Public Property Get FirmaActivada() As Boolean
+		On Error Goto HANDLER
+		
+		If doc.GetItemValue("rFirmaActivada")(0)="Si" Then
+			FirmaActivada=True
+		Else
+			FirmaActivada=False
+		End If
+		
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Propiedad get FirmaActivada","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************			
+	Public Function ReferenciarBaseDeDatos(clave As String) As NotesDatabase
+		On Error Goto handler
+		Dim servidor As String
+		Dim path As String
+		
+		servidor = Me.Servidor(clave)
+		path = Me.BasedeDatos(clave)
+		
+		Set ReferenciarBaseDeDatos=New NotesDatabase(servidor,path)
+		Exit Function 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Funcion ReferenciarBasedeDatos","")
+		Exit Function
+	End Function
+	'******************************************************************************************************************			
+	Public Function insertLineaInteroperabilidad(vIns As Vector,nColOrdenar As Integer)
+		'Inserta en forma ordenada segun la clave si nColOrdenar<>0
+		'nColOrdenar es la columna por la cual ordenar
+		'Si nColOrdenar=0 inserta al final
+		On Error Goto handler		
+		Dim posIns As Long
+		
+		If nColOrdenar<>0 Then
+			Select Case(nColOrdenar)
+			Case 1:
+				posIns=vKeyDB.InsertPos(vIns.getElement(1),True)
+			Case 2:
+				posIns=vServer.InsertPos(vIns.getElement(2),True)
+			Case 3:
+				posIns=vHost.InsertPos(vIns.getElement(3),True)
+			Case 4:
+				posIns=vFilePath.InsertPos(vIns.getElement(4),True)
+		End Select			
+		Else
+			posIns = vKeyDB.cantElem + 1
+		End If
+		vKeyDB.insertElement vIns.getElement(1),posIns
+		vServer.insertElement vIns.getElement(2),posIns
+		vHost.insertElement vIns.getElement(3),posIns
+		vFilePath.insertElement vIns.getElement(4),posIns
+		Exit Function 
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Funcion ReferenciarBasedeDatos","")
+		Exit Function
+	End Function
+	'******************************************************************************************************************			
+	Public Sub save
+		On Error Goto handler
+		Dim db As NotesDatabase
+		Dim servidor As String
+		Dim path As String
+		Dim claves As Vector
+		Dim docConfig As NotesDocument
+		Dim i As Integer
+		
+		Call doc.ReplaceItemValue(CAMPO_CLAVE_DB,vKeyDB.values)
+		Call doc.ReplaceItemValue(CAMPO_SERVIDOR_DB,vServer.values)
+		Call doc.ReplaceItemValue(CAMPO_HOST_DB,vHost.values)
+		Call doc.replaceItemValue(CAMPO_RUTA_DB,vFilePath.values)
+		
+		Call doc.Save(True,False)
+		
+		Set claves = Me.vKeyDB
+		For i = 1 To claves.CantElem
+			servidor = Me.Servidor(claves.getElement(i))
+			path = Me.BasedeDatos(claves.getElement(i))
+			Set db = New NotesDatabase(servidor,path)
+			If db.FilePath <> session.CurrentDatabase.FilePath Then
+				Set docConfig = db.GetProfileDocument("(ConfiguracionRD)")
+				Call doc.CopyAllItems(docConfig,True)
+				docConfig.Save True,False
+			End If
+		Next
+		
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Sub Save","")
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************				
+	
+	Public Sub addAuditoriaDate(sClave As String,dCreacion As Variant)
+		'dCreacion es de tipo Date, sClave=clave de la base
+		
+		Dim itClaves As notesItem,itFechas As notesItem,aFechas As Variant
+		
+		If doc.hasItem(CAMPO_CLAVE_CREACION_AUDITORIA) Then
+			Set itClaves=doc.getFirstItem(CAMPO_CLAVE_CREACION_AUDITORIA)
+		Else
+			Set itClaves=New notesItem(doc,CAMPO_CLAVE_CREACION_AUDITORIA,"")	
+		End If
+		itClaves.appendToTextlist sClave
+		If doc.hasItem(CAMPO_CREACION_AUDITORIA) Then
+			Set itFechas=doc.getFirstItem(CAMPO_CREACION_AUDITORIA)
+		Else
+			Set itFechas=New notesItem(doc,CAMPO_CREACION_AUDITORIA,"")		
+		End If
+		aFechas=itFechas.values
+		Redim Preserve aFechas(Lbound(itClaves.values) To Ubound(itClaves.values))
+		aFechas(Ubound(itClaves.values))=dCreacion
+		itFechas.values=aFechas
+	End Sub
+	'*******************************************************************************************************
+	Public Property Get PublicarTodas() As Boolean
+		On Error Goto handler
+		
+		If doc.GetItemValue("rPublicarTodas")(0)="Si" Then
+			PublicarTodas=True
+		Else
+			PublicarTodas=False
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property get PublicarTodas","")
+		Exit Property
+	End Property
+	'*******************************************************************************************************
+	Public Property Set PublicarTodas() As Boolean
+		On Error Goto handler
+		
+		If PublicarTodas  Then
+			Call doc.replaceItemValue("rPublicarTodas","Si")
+		Else
+			Call doc.replaceItemValue("rPublicarTodas","No")
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property set PublicarTodas","")
+		Exit Property
+	End Property
+	'*******************************************************************************************************
+	Public Property Get UsaEstructura() As Boolean
+		On Error GoTo handler
+		
+		UsaEstructura = doc.GetItemValue("rUsarEstructura")(0)="Si"
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property Get UsaEstructura","")
+		Exit Property
+	End Property
+	'*******************************************************************************************************
+	Public Property Get HabilitadoVistoBueno() As Boolean
+		On Error Goto handler
+		
+		HabilitadoVistoBueno = doc.GetItemValue("vistoBueno")(0)="Si"
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property Get HabilitadoVistoBueno","")
+		Exit Property
+	End Property
+	'********************************************************************************************************************		
+	Public Property Get HabilitadoRechazarAsunto() As Boolean
+		On Error GoTo handler
+		
+		HabilitadoRechazarAsunto = doc.GetItemValue("rechazarAsunto")(0)="Si"
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property Get HabilitadoRechazarAsunto","")
+		Exit Property
+	End Property
+	'********************************************************************************************************************		
+	Public Property Get HabilitadoAbstencionAsunto() As Boolean
+		On Error GoTo handler
+		
+		HabilitadoAbstencionAsunto = doc.GetItemValue("abstencionAsunto")(0)="Si"
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property Get HabilitadoAbstencionAsunto","")
+		Exit Property
+	End Property
+	'********************************************************************************************************************		
+	
+	%REM
+		Property Get CantVotosMinimos
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get CantVotosMinimos As Integer
+		On Error GoTo handler
+		
+		CantVotosMinimos = doc.GetItemValue(DBRES_CAMPO_CANT_MINIMA_APROBAR_ASUNTO)(0)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property Get CantVotosMinimos","")
+		Exit Property
+	End Property
+	'********************************************************************************************************************		
+	%REM
+		Author: Juan Pommerenck
+		Property Get Campo Numerar Resoluciones en Ejecucion
+		Description: Retorna el valor  de la configuración (Si o No)
+	%END REM
+	Public Property Get NumerarResEnEjec As String
+		On Error GoTo handler
+		
+		NumerarResEnEjec = doc.GetItemValue(CAMPO_NUM_RESOL_EJEC)(0)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property Get CantVotosMinimos","")
+		Exit Property
+	End Property
+	'********************************************************************************************************************
+	%REM
+		Property Get usaRepositorio
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get usaRepositorioResol As Boolean
+		If doc.Getitemvalue("rUsaRepositorioResol")(0)="Si" Then 
+			usaRepositorioResol = True
+		Else 
+			usaRepositorioResol = False 
+		End If
+	End Property
+	'********************************************************************************************************************
+	%REM
+		Author> Ismael Olivet
+		Property Get TiempoVotacion
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get TiempoVotacion As Integer
+		On Error GoTo handler
+
+		TiempoVotacion = doc.GetItemValue("rHorasVotacion")(0)
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion RD - Property Get TiempoVotacion","")
+		Exit Property
+	End Property
+	
+	
+	
+	'********************************************************************************************************************		
+	
+	%REM
+		Author: Ismael Olivet
+		Property Get ActaUsaMismoNumeradorSesion
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get ActaUsaMismoNumeradorSesion As Boolean
+		On Error GoTo handler
+		
+		ActaUsaMismoNumeradorSesion = (doc.Getitemvalue("rNroActaIgualSesion")(0)="Si")
+		
+		Exit property
+handler:
+		
+		Exit property
+	End Property
+	'********************************************************************************************************************		
+	
+	%REM
+		Author: Ismael Olivet
+		Property Get SingularDeSesion
+		Description: Comments for Property Get
+	%END REM
+	Public Property Get SingularDeSesion As String 
+		On Error GoTo handler
+		
+		SingularDeSesion  = doc.Getitemvalue("sSes")(0)
+		
+		Exit Property
+handler:
+		
+		Exit Property
+	End Property	
+	'********************************************************************************************************************		
+	
+	%REM
+		Author: Ismael Olivet
+		Property Get NotificarVotantes
+		Description: si la congifuracion esta en si entonces retorna true, false en caso contrario
+	%END REM
+	Public Property Get NotificarVotantes As boolean 
+		On Error GoTo handler
+		
+		If (doc.Getitemvalue("rNotificarVotantesEjecucion")(0)="Si") Then
+			NotificarVotantes  = False
+		Else
+			NotificarVotantes  = True
+		End If
+		
+		Exit Property
+handler:
+		
+		Exit Property
+	End Property	
+	'******************************************************************************************************************	
+	Public Property Get NotificarFirmantes As Boolean
+		On Error GoTo handler
+		NotificarFirmantes = false
+		If doc.GetItemValue("rNotificarFirmantes")(0)="Si" Then
+			NotificarFirmantes = True
+		Else 
+			NotificarFirmantes= false
+		End If
+		
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfiguracionRD - Método get NotificarFirmantes","")
+		Exit Property
+	End Property
+End Class

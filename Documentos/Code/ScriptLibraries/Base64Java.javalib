@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A23D7'>
+<noteinfo noteid='dba' unid='1AFCCE81751DCF63832578E30069F4BE' sequence='9'>
+<created><datetime>20110805T161719,34-03</datetime></created>
+<modified><datetime>20150311T132449,86-03</datetime></modified>
+<revised><datetime>20150309T094413,98-03</datetime></revised>
+<lastaccessed><datetime>20150311T132449,86-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132449,86-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Julian Robichaux/O=nsftools</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Francisco Alvarez/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Leticia Vilarino/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Base64Java</text></item>
+<item name='$PublicAccess' sign='true'><text>1</text></item>
+<item name='$AssistAction' sign='true'>
+<rawitemdata type='10'>
+k/9VABAAFAAfAAAAAAAAAAAAQmFzZTY0SmF2YS5jbGFzc0M6XExvdHVzXG5vdGVzN1xkYXRhJSVz
+b3VyY2UlJS5qYXIAJSVvYmplY3QlJS5qYXIAAAA=
+</rawitemdata></item>
+<item name='$FILE' summary='true' sign='true' seal='true'><object><file hosttype='msdos'
+ compression='none' flags='sign' encoding='none' name='%%source%%.jar' size='569'>
+<created><datetime>20060909T215049,07-05</datetime></created>
+<modified><datetime>20060910T160521,25-05</datetime></modified><filedata>
+UEsDBBQACAAIAKOIKjUAAAAAAAAAAAAAAAAPAAAAQmFzZTY0SmF2YS5qYXZh3VRNa+MwED37oP8w
++OSEolxCLqGHhs1CemgWmj+gyJNmFlsyspwElv73jj7cTbY99lAWBLL03sx7MxpMbWedh34wsqVe
+y9XD83oxXxtta3RLQZ/CP/AW/q1OSpKV06UQs6nYHakHXgp0o/oe/FF50MrAXvW4mAPG7GDdeFHH
+fELBC53QwIEalLDxcKamgdpyAkxBZF5mkcwfUJKBrlEayzs2qI8i6gRuSJCC9yxzQnd25D0aKaYz
+Ibph35DO3lbRwSMXAH9EIYoMnizV2dbPkKx69i5ohsy/lD8+mPpJtThhOWfPPWy264vGzpM1IU+x
+Gg4HdFhvTDd4jkXVAtu9B4Nn+ASsgIOKIqBB7xr5IDlZMpdXNOax7eLHfQyUmmM87vJtVab6wpm7
+VMr9Yl7G+IBuB//XnR18tvcvVI0ao/DNEOQuubG2a6yKEZkg056Kr8jcBclIICN1Y3tMdL69Po6F
+cvJc5+jxQ2cCPdNYrEGfU4z+pUPDvJ2tMiugr+HVb989zef/+e7vvUgN2pr1hXz1RSORfxu5gbcj
+kbEklQky7d9zJF6FeANQSwcI6C688qkBAAAdBQAAUEsBAhQAFAAIAAgAo4gqNeguvPKpAQAAHQUA
+AA8AAAAAAAAAAAAAAAAAAAAAAEJhc2U2NEphdmEuamF2YVBLBQYAAAAAAQABAD0AAADmAQAAAAA=
+</filedata></file></object></item>
+<item name='$FILE' summary='true' sign='true' seal='true'><object><file hosttype='msdos'
+ compression='none' flags='sign' encoding='none' name='%%object%%.jar' size='818'>
+<created><datetime>20060910T160521,25-05</datetime></created>
+<modified><datetime>20060910T160521,26-05</datetime></modified><filedata>
+UEsDBBQACAAIAKqIKjUAAAAAAAAAAAAAAAAQAAAAQmFzZTY0SmF2YS5jbGFzc41T604aQRT+Ri6L
+69YLioq29a6owFal2KJtFcVWQ6UJpBb/Lcto1sBiYGl8kP7sS/QPNCXpA/Shmp5ZENaGJt1kz8yc
+y3e+c+bMr98/fgKI4p2MIFYkrEpYk+FCSMYA1n3Y8GFTxijCEiIyBhGVoMoYwooQz4TTllBvSdgW
+biEhdoSICfFcQlxGQHgHsCvhhYSXDN59wzSs1wyu0PpHBvdRpcgZRtKGyc/r5QKv5rRCiTRyketk
+OjHEIRBK32ifNbWkmddq1qoa5vWeiJZTdzq/tYyKWZOQoDM3e0FytlKv6p3DSFKr8XjsjFCiAkrB
+DGYZZm1Yo6Im61dXvMqLp+Zt3aIMXCszTN1bBYbDIoLnhNijLG3gHC/fUjXRQjymYB+vGKadwZm6
+9SCa6p+s1U21bNR0NXmYTcVjx3a9VQVvcKDgULBTnBAKkjhScIyUghNh/RsgZXYA3uKgy0sUzDDa
+616mcMN1i2H8Hvs0020ike40Wuh79dq9HtZpa3FRaLulsT6X0uea0s4iqGFjoYcaga20L7t9CQzR
+/iy6Smc37XiPXqrUiJK3yEvc4vZwXTL4qtzUyjxX6ZP10s4qvDNm6s6gjijt4WmTwAKm6VGIzwUm
+hoXkYzo9oZXR6tlogn2jDSMV4LWVQySfYo4ehnD9Ag8kWnMtDORbcOU3m3A34Xnv9/ql7/CdtzCY
+jzQhJ9wtDOWbUBKeoCccdDfwKNzAsNiMtDAq4sYS3qC3Af9FRCzjF73MUcoKDNODGyPKfixiApv0
+4nYwiV1M0TAGaV5mkKYSssRrnrzdFLtA/2KX69cO10//4hppYMLJN0B8J7t8p/6f7zYUkvPEd4n4
+LlP2FaxiDSpCxHcde9jAAcI4QwQfqLoLsjg5L9F+AMt/AFBLBwhY1/UEoAIAAL0EAABQSwECFAAU
+AAgACACqiCo1WNf1BKACAAC9BAAAEAAAAAAAAAAAAAAAAAAAAAAAQmFzZTY0SmF2YS5jbGFzc1BL
+BQYAAAAAAQABAD4AAADeAgAAAAA=
+</filedata></file></object></item>
+<item name='$POID'><datetime>20110729T135953,82-03</datetime></item>
+<item name='$Class'><text>WEBFORMS</text></item>
+<item name='$Flags'><text>sj34Q</text></item></note>
+

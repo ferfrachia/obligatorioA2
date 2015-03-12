@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
+<noteinfo noteid='15e' unid='2BF1819D15BBE2C703256D7F0074E896' sequence='254'>
+<created><datetime>20030811T181657,18-03</datetime></created>
+<modified><datetime>20150311T131026,61-03</datetime></modified>
+<revised><datetime>20150309T094407,13-03</datetime></revised>
+<lastaccessed><datetime>20150311T131026,61-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131026,61-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=IGDOC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name
+>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name
+>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20030923T195130,05+00</datetime><datetime>20040302T181123,04-03</datetime><datetime
+>20040304T142500,00-03</datetime><datetime>20040531T082503,99+03</datetime><datetime
+>20040531T082613,82+03</datetime><datetime>20040531T083046,59+03</datetime><datetime
+>20060328T103805,87-03</datetime><datetime dst='true'>20061101T113024,04-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Bandejas|Bandejas</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIABQAAAAAAAAAAAAAAAAAAAAAA8P8+AEUAAAABAAAAAAABAAEAAAAAAAUAAAAAAAUAAAAA
+AAIAAQAAAAAAAQAAS5wAAAACADcAAgAtAAMAAQDx/0IAEQAAAABAAQEBAAEAAQAAAAAADgAAAAAA
+AQAAS5wAAABCYW5kZWphRW50cmFkYQEA////AAEAAAoBAAAAAAD2/zEAAAAAAAMAAwAPAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAZkJhbmRlamFUcmFiYWpvP/D/PgABAAAAAQAAAAAAAQABAAAAAAAFAAAA
+AAAFAAAAAAABAAIAAAAAAAUAAEucAAAAAwABAAIAMgACADMA8f9CABEAAAAAQAEBAQABAAEAAAAA
+AA4AAAAAAAEAAEucAAAAQmFuZGVqYVRyYWJham8BAP///wABAAAKAQAAAAAA9v8xAAAAAAADAAMA
+DwAAAAAAAAAAAAAAAAAAAAAAAAAAAGZCYW5kZWphRW50cmFkYT/x/0EAEQAAAABAAQEBAAEAAQAA
+AAAADQAAAAAAAQAAS5wAAABCYW5kZWphU2FsaWRhAQD///8AAQAACgEAAAAAAD/2/zAAAAAAAAMA
+AwAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAZkJhbmRlamFTYWxpZGE=
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item></note>
+

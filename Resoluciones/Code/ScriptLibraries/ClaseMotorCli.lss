@@ -1,0 +1,1507 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "FuncionesGenerales"
+Use "ConstantesDBResoluciones"
+Use "Configuracion RD"
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class MotorCli
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+
+'Diseño
+Public Const AGENTE_MOTOR			= "Motor"
+Public Class MotorCli
+	Private db As NotesDatabase 
+	Private usuario As String
+	
+	'******************************************************************************************************************	
+	'******************************************************************************************************************		
+	'Privadas	
+	
+	Private Sub runMotor()
+		On Error GoTo errorHandler
+		Dim agente As NotesAgent
+		
+		Set agente=db.GetAgent(AGENTE_MOTOR)
+		agente.Run
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método RunMotor", ""
+		Exit Sub
+	End Sub	
+	
+	
+	'******************************************************************************************************************	
+	'******************************************************************************************************************	
+	'Publicas
+	
+	Public Sub New(ByVal sUsuario_ As String)
+		On Error GoTo errorHandler
+		Dim conf As ConfigRD
+		Dim path As String
+		Dim server As String
+		
+		Set conf = New ConfigRD
+		server=conf.Servidor(CLAVE_DBMOTOR_RD)
+		path=conf.BasedeDatos(CLAVE_DBMOTOR_RD)
+		usuario = sUsuario_
+		Set db = New NotesDatabase("","")
+		Call db.Open(server,path)
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método New", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	
+	Public Function CreacionSesion(universalID As String) As String
+		On Error GoTo errorHandler
+		Dim idsol As String
+		
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=universalID
+		solicitud.sAccion="acc_crear_sesion"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)=True Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Function
+		End If
+		CreacionSesion=solicitud.GetItemValue("sNroSesion")(0)
+		MsgBox "***** Nro de Sesion: " + solicitud.GetItemValue("sNroSesion")(0)
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método CreacionSesion", ""
+		Exit Function
+	End Function
+	'******************************************************************************************************************
+	Public Function CambiarTipoSesion(universalID As String, tipoSesion As String, numSesion As String, tipoSesionCambiar As String) As String
+		On Error GoTo errorHandler
+		Dim idsol As String
+		
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=universalID
+		solicitud.sAccion="acc_cambiar_tipo_sesion"
+		solicitud.sUsuario = usuario
+		solicitud.tipoSesionActual = tipoSesion
+		solicitud.numSesion = numSesion
+		solicitud.tipoSesionCambiar = tipoSesionCambiar
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Function
+		End If
+		'CreacionSesion=solicitud.GetItemValue("sNroSesion")(0)
+		
+		Exit Function
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método CambiarTipoSesión", ""
+		Exit Function
+	End Function
+
+	'******************************************************************************************************************	
+	Public Sub CreacionPunto(universalID As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=universalID
+		solicitud.sAccion="acc_crear_pto"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método CreacionPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub AgregarPtoASesion(sNroSesion As String,idPunto As String,nro As Long)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_agregar_pto_a_sesion"
+		solicitud.sUsuario = usuario
+		solicitud.sNroSesion = sNroSesion
+		solicitud.NroPto = nro
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AgregarPtoASesion", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub AgregarPtoExtraASesion(sNroSesion As String,idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_agregar_pto_extra_a_sesion"
+		solicitud.sUsuario = usuario
+		solicitud.sNroSesion = sNroSesion
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		
+		runMotor
+		MsgBox "Llegoooooooooooo"
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AgregarPtoExtraASesion", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	Public Sub RetirarPto(sNroSesion As String,idPunto As String,motivo As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_retirar_pto"
+		solicitud.sUsuario = usuario
+		solicitud.sNroSesion = sNroSesion
+		solicitud.motivo = motivo
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método RetirarPto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub QuitarRetirarPto(idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_quitar_retirar_pto"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método QuitarRetirarPto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub RetirarPtoPrevioSesion(idPunto As String,motivo As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_retirar_pto_previo_sesion"
+		solicitud.sUsuario = usuario
+		solicitud.motivo = motivo
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método RetirarPtoPrevioSesion", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub Aplazar(idPunto As String,motivo As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion=ACCION_APLAZAR_PTO
+		solicitud.sUsuario = usuario
+		solicitud.motivo = motivo
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Aplazar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub QuitarAplazar(idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_quitar_aplazar_pto"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método QuitarAplazar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	%REM
+			Author: Ismael Olivet
+			Sub TratarPto pasara el asunto al estaro "Tratado" si este se encuentra en sesion
+			Description: Comments for Sub
+	%END REM
+	Public Sub TratarPto(idPunto As String)
+		On Error GoTo HANDLER
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion= ACCION_TRATAR_PTO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		
+		Exit Sub
+HANDLER:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método TratarPto", ""
+		Exit Sub
+	End Sub
+
+	'******************************************************************************************************************	
+	%REM
+			Author: Ismael Olivet
+			Sub QuitarTratarPto pasara el asunto al estaro "Tratado" si este se encuentra en sesion
+			Description: Comments for Sub
+	%END REM
+	Public Sub QuitarTratarPto(idPunto As String)
+		On Error GoTo HANDLER
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion= ACCION_QUITAR_TRATAR_PTO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		
+		Exit Sub
+HANDLER:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método TratarPto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************
+	Public Sub Aprobar(idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_aprobar_asunto"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método Aprobar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub QuitarAprobar(idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_quitar_aprobar_pto"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método QuitarAprobar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub BorrarPto(idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_borrar_pto"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método QuitarAprobar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub FinalizarSesion(idSesion As String,sNroActa As String,puntos As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idSesion
+		solicitud.sAccion="acc_finalizar_sesion"
+		solicitud.sUsuario = usuario
+		solicitud.sNroActa = sNroActa
+		Call solicitud.replaceItemValue("sPuntosaPublicar",puntos)
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FinalizarSesion", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************
+	Public Sub PublicarResEnBloque(idSesion As String,sNroActa As String,puntos As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idSesion
+		solicitud.sAccion="acc_publicar_res_bloque"
+		solicitud.sUsuario = usuario
+		solicitud.sNroActa = sNroActa
+		Call solicitud.replaceItemValue("sPuntosaPublicar",puntos)
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FinalizarSesion", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	Public Sub PublicarResolucion (idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_publicar_resolucion"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método PublicarResolucion", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub CancelarPublicacionResol (idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_cancelar_publicacion"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método CancelarPublicacionResolucion", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub EditarPunto (idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion="acc_editar_asunto"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método EditarPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub EditarSesion (id As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_EDITAR_SESION
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método EditarSesion", ""
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub PublicarSesion (idSesion As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idSesion
+		solicitud.sAccion="acc_publicar_sesion"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método PublicarSesion", ""
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub RestringirSesion (idSesion As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idSesion
+		solicitud.sAccion="acc_restringir_sesion"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método RestringirSesion", ""
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub ModificarNroPunto (nroSesion As String, nros As Variant)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sNroSesion=nroSesion
+		solicitud.punto = nros
+		solicitud.sAccion="acc_modif_nro_asuntos"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método ModificarNroPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub QuitardeSesion (idPunto As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idPunto
+		solicitud.sAccion="acc_quitar_de_sesion"
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método ModificarNroPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub PasaraEjecucionSesion (idSesion As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion=ACCION_PASAR_A_EJECUCION
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método PasaraEjecucionSesion", ""
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub PasaraDesarrolloSesion (idSesion As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion=ACCION_PASAR_A_DESARROLLO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método PasaraEjecucionSesion", ""
+		Exit Sub
+	End Sub		
+	'******************************************************************************************************************	
+	Public Sub FirmaryEnviarParaFinalizarSesion(idSesion As String,aFirmar As String,Firma As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion=ACCION_FIRMAR_Y_A_FINALIZAR
+		solicitud.aFirmar = aFirmar
+		solicitud.Firma = Firma
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FirmaryEnviarParaFinalizarSesion", ""
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub EnviarParaFinalizarSesion(idSesion As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion=ACCION_ENVIAR_A_FINALIZAR
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método EnviarParaFinalizarSesion", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub NumerarResoluciones(idSesion As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion= ACCION_NUMERAR_RESOLUCIONES
+		solicitud.sUsuario = usuario
+		
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método NumerarResoluciones", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub FirmaryFinalizar(idSesion As String,aFirmar As String,Firma As String,puntos As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion=ACCION_FIRMAR_Y_FINALIZAR
+		solicitud.aFirmar = aFirmar
+		solicitud.Firma = Firma
+		solicitud.sUsuario = usuario
+		Call solicitud.replaceItemValue("sPuntosaPublicar",puntos)
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FirmaryFinalizar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub AprobarEnBloque(idSesion As String,asuntos As Vector)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion=ACCION_APROBAR_BLOQUE
+		solicitud.sUsuario = usuario
+		solicitud.asuntos= asuntos.values
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AprobarBloque", ""
+		Exit Sub
+	End Sub	
+	'******************************************************************************************************************	
+	Public Sub NumerarAsuntosEnBloque(idSesion As String,asuntos As Vector,numSesion As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion = ACCION_NUMERAR_ASUNTOS_BLOQUE
+		solicitud.sUsuario = usuario
+		solicitud.asuntos= asuntos.values
+		solicitud.numSesion= numSesion
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método NumerarAsuntosEnBloque", ""
+		Exit Sub
+	End Sub	
+	
+	'******************************************************************************************************************
+	
+	Public Sub MoverAsuntos(idSesion As String, sActual As String,sNueva As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sID = idSesion
+		solicitud.sAccion = ACCION_MOVER_ASUNTOS
+		solicitud.sUsuario = usuario
+		solicitud.sActual = sActual
+		solicitud.sNueva = sNueva
+
+		
+		'solicitud.numSesion= numSesion
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método NumerarAsuntosEnBloque", ""
+		Exit Sub
+	End Sub	
+	
+	'******************************************************************************************************************
+	Public Sub EnviarARevision (id As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_ENVIAR_A_REVISAR_PTO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método EnviarARevision", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub PasarAFirmar (id As String, firmantes As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_PASAR_A_FIRMAR 
+		solicitud.sUsuario = usuario
+		solicitud.usuariosFirmantes = firmantes
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método PasarAFirmar", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************
+	
+	Public Sub PasarABorrador (id As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_PASAR_A_BORRADOR_PTO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método ModificarNroPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub AnularPunto (id As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_ANULAR_PTO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AnularPunto", ""
+		Exit Sub
+	End Sub
+	
+	'******************************************************************************************************************	
+	Public Sub CambiarPtoAExtra (id As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_CAMBIAR_PTO_A_EXTRA
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AnularPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub AutorizarPunto (id As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_AUTORIZAR_PTO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AutorizarPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub QuitarAutorizarPunto (id As String, razon As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_QUITAR_AUTORIZAR_PTO
+		solicitud.sUsuario = usuario
+		Call solicitud.replaceItemValue("sRazon",razon)
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método QuitarAutorizarPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub FirmarSesion (id As String,aFirmar As String,firma As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_FIRMAR_SESION
+		solicitud.sUsuario = usuario
+		solicitud.aFirmar = aFirmar
+		solicitud.Firma = Firma
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método QuitarAutorizarPunto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub FirmaryAutorizarPto (id As String,aFirmar As String,firma As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_AUTORIZAR_Y_FIRMAR
+		
+		solicitud.sUsuario = usuario
+		solicitud.aFirmar = aFirmar
+		solicitud.Firma = Firma
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FirmaryAutorizarPto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub FirmaryAprobarPto (id As String,aFirmar As String,firma As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_FIRMAR_APROBAR_PTO
+		
+		solicitud.sUsuario = usuario
+		solicitud.aFirmar = aFirmar
+		solicitud.Firma = Firma
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FirmaryAprobarPto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub FirmarResolucion (id As String,aFirmar As String,firma As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_FIRMAR_RESOLUCION
+		
+		solicitud.sUsuario = usuario
+		solicitud.aFirmar = aFirmar
+		solicitud.Firma = Firma
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FirmarResolucion", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub FirmaryEnviaraRevisionPto (id As String,aFirmar As String,firma As String)
+		On Error GoTo errorHandler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_ENVIAR_A_REVISAR_Y_FIRMAR
+		
+		solicitud.sUsuario = usuario
+		solicitud.aFirmar = aFirmar
+		solicitud.Firma = Firma
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método FirmaryAutorizarPto", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************		
+	Public Sub CambiarExtractoPto(id As String, texto As String)
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_CAMBIAR_EXTRACTO_PTO
+		solicitud.sUsuario = usuario
+		solicitud.ExtractoNuevo = texto
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		
+	End Sub
+	'******************************************************************************************************************		
+
+	Public Sub GenerarActa(id As String)	
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion= ACCION_CREAR_ACTA
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			'MsgBox "ErorEnClaseMotorCli"
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método GenerarActa", ""
+		Exit Sub
+		
+		
+		
+		
+	End Sub
+	'******************************************************************************************************************	
+	
+	%REM
+		Author: Ismael Olivet
+		Sub VotarAsunto
+		Description: Comments for Sub
+	%END REM
+	Public Sub VotarAsunto(id As String)
+		
+		On Error GoTo HANDLER
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_VOTAR_ASUNTO
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+HANDLER:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método VotarAsunto", ""
+		Exit Sub
+		
+	End Sub
+	'******************************************************************************************************************
+	%REM
+		Author: Ismael Olivet
+		Function GuardarComentario
+		Description: esta funcion es para guardar los comentarios que se agregan desde 
+la orden del dia en la sesion tambiein agrega a la solicitud un parametro denominado 
+"pComentarioAsunto" para poder levantar el ccomentario desde el motor
+	%END REM
+	Public Function GuardarComentario(id As String, comment As String)As String
+		On Error GoTo handler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		
+		solicitud.sAccion=ACCION_GUARDAR_COMENTARIO
+		solicitud.sUsuario = usuario
+		solicitud.pComentarioAsunto= comment
+		
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			MsgBox "Error"
+			MsgBox solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Error solicitud.GetItemValue("ErrorCode")(0),"No se pudo procesar la solicitud para guardar el comentario. Si el error persiste, comuniquese con el administrador."
+			
+		End If
+		
+		
+		GuardarComentario = |{"error":"| & "001" & |","mensaje":"| & "Comentario guardado exitosamente." &|"}|
+		Exit Function
+handler:
+		
+		'GuardarComentario = "Error. No se pudo procesar, ocurrió un error. Si el error persiste, comuniquese con el administrador"
+		GuardarComentario = |{"error":"| & Err & |","mensaje":"| & Error &|"}|
+		Exit Function
+	End Function
+	'******************************************************************************************************************	
+	%REM
+		sub GuardarPostit
+		Description: 
+	%END REM
+	Public Sub GuardarPostit(id As String,titulo As String,texto As String,color As String,pos As String,esnuevo As String, usuario As String)
+		On Error GoTo handler
+		
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		
+		solicitud.sAccion=ACCION_GUARDAR_POSTIT_ASUNTO
+		solicitud.sUsuario = usuario
+		solicitud.titulo= titulo
+		solicitud.texto= texto
+		solicitud.color= color
+		solicitud.pos= pos
+		solicitud.esnuevo = esnuevo
+		solicitud.usuario = usuario
+		
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			MsgBox "Error"
+			MsgBox solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Error solicitud.GetItemValue("ErrorCode")(0),"No se pudo procesar la solicitud para guardar el postit. Si el error persiste, comuniquese con el administrador."
+			
+		End If
+		
+		
+		Exit Sub
+handler:
+		
+		MsgBox Error
+		Exit Sub
+	End Sub
+	'*****************************************************************************************************************
+	
+	Public Function RealizarAccionAsunto(id As String,accion As String) As String
+		
+		On Error GoTo HANDLER
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=accion
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		MsgBox solicitud.GetItemValue("Error")(0)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Function
+		End If
+		RealizarAccionAsunto = solicitud.GetItemValue("fechaVisto")(0)
+		Exit Function
+HANDLER:
+		MsgBox  "RealizarAccionAsunto - Error: " & Error &" en la linea " & Erl
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método RealizarAccionAsunto", ""
+		Exit Function
+	End Function
+	
+	Public Function QuitarAccionAsunto(id As String,accion As String)
+		On Error GoTo HANDLER
+		MsgBox "ClaseMotorCli - QuitarVistoBuenoAsunto"
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId = id
+		solicitud.sAccion = accion
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Function
+		End If
+
+		Exit Function
+HANDLER:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método QuitarVistoBuenoAsunto", ""
+		Exit Function
+	End Function
+	'******************************************************************************************************************	
+	Public function AgeregarPuntosEnBloque(idSesion As String,notesIds As Vector)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idSesion
+		solicitud.sAccion="acc_agregar_asuntos_bloque"
+		solicitud.sUsuario = usuario
+		'MsgBox "USUARIO CLASEMOTRO " + usuario
+		solicitud.sAsuntos = notesIds.Values
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			MsgBox "Error"
+			MsgBox solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Error solicitud.GetItemValue("ErrorCode")(0),"No se pudo procesar la solicitud para guardar el comentario. Si el error persiste, comuniquese con el administrador."
+			
+		End If
+
+		AgeregarPuntosEnBloque = |{"error":"| & "001" & |","mensaje":"| & "%operacionexitosa%" &|"}|
+		Exit Function
+errorHandler:
+		'RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método AgregarAsuntosBloque", ""
+		AgeregarPuntosEnBloque = |{"error":"| & Err & |","mensaje":"| & Error &|"}|
+		Exit Function
+	End Function	
+	'************************************************************************************
+	
+	Public Sub ProteccionDeDatos (idPunto As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=idPunto
+		solicitud.sAccion= ACCION_PROTECCION_DE_DATOS
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método ProteccionDeDatos", ""
+		Exit Sub
+	End Sub
+	'******************************************************************************************************************	
+	Public Sub LiberarSesion (id As String)
+		On Error GoTo errorHandler
+		Dim idsol As String
+		Dim solicitud As NotesDocument
+		Set solicitud = db.CreateDocument
+		solicitud.sId=id
+		solicitud.sAccion=ACCION_LIBERAR_SESION
+		solicitud.sUsuario = usuario
+		Call solicitud.Save(True,False)
+		idsol= solicitud.UniversalID
+		runMotor
+		Set solicitud = New NotesDocument(db)
+		Set solicitud = db.GetDocumentByUNID(idsol)
+		If solicitud.GetItemValue("Error")(0)="1" Then
+			Error solicitud.GetItemValue("ErrorCode")(0),solicitud.GetItemValue("ErrorMsg")(0)
+			Exit Sub
+		End If
+		Exit Sub
+errorHandler:
+		RegistrarYGenerarError NOMBRE_APLICACION,"Clase MotorCli - Método LiberarSesion", ""
+		Exit Sub
+	End Sub	
+End Class

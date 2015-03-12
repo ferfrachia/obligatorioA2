@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E050058D89B" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1262" sequence="17" unid="82358343C53F24A383257DC8004F7C6B">
+<created><datetime dst="true">20150109T122811,95-02</datetime></created>
+<modified><datetime>20150311T131045,73-03</datetime></modified>
+<revised><datetime>20150309T094424,31-03</datetime></revised>
+<lastaccessed><datetime>20150311T131045,73-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131045,73-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Alejandro Zinemanas/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Nicolas Arsel/O=ISA</name><name>CN=Francisco Alvarez/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name>CN=Administrador iGDoc/O=DDD</name><name>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<revisions><datetime>20060410T152600,34-03</datetime><datetime>20060410T171549,16-03</datetime><datetime>20060410T171920,52-03</datetime><datetime>20060410T180040,28-03</datetime><datetime>20060411T104816,14-03</datetime><datetime>20060412T134606,97-03</datetime><datetime>20060412T134721,89-03</datetime><datetime>20060412T140556,77-03</datetime><datetime>20060412T140730,19-03</datetime><datetime>20060530T120138,96-03</datetime><datetime>20060623T174856,49-03</datetime><datetime>20060623T175057,08-03</datetime><datetime>20060623T180245,50-03</datetime><datetime>20061013T103927,51-03</datetime><datetime dst="true">20061101T113028,46-02</datetime></revisions>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>ClaseActuacion</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+
+
+<item name="$POID"><datetime>20150309T094424,31-03</datetime></item></note>

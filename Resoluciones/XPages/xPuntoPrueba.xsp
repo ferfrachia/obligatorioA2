@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xc="http://www.ibm.com/xsp/custom" dojoTheme="true"
+	dojoParseOnLoad="true">
+	<xp:this.data>
+		<xp:dominoDocument var="document1" formName="FPunto"></xp:dominoDocument>
+
+	</xp:this.data>
+
+
+	<xp:this.resources>
+		<xp:styleSheet href="/punto.css"></xp:styleSheet>
+		<xp:script src="/FuncionesPuntos.js" clientSide="true"></xp:script>
+		<xp:styleSheet href="/pruebaTabla.css"></xp:styleSheet>
+		<xp:styleSheet href="/estiloMenu.css"></xp:styleSheet>
+		<xp:styleSheet href="/menuXpage.css"></xp:styleSheet>
+		<xp:dojoModule name="dijit.Dialog"></xp:dojoModule>
+	</xp:this.resources>
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	<xp:panel style="width:1460.0px;height:535.0px">
+
+		<xp:panel
+			style="width:1444.0px;height:112.0px;background-position:top-right">
+
+			<xp:table style="width:1468.0px" styleClass="menuxPage"
+				cellpadding="0" cellspacing="0">
+				<xp:tr>
+					<xp:td styleClass="menuxPage"
+						style="width:69.0px">
+
+						<xp:this.rendered><![CDATA[#{javascript://document1.getItemValueString("reservadoPor").equals(getComponent("currentUser").getValue()
+@IsNewDoc() | document1.getItemValueString("reservadoPor").equals(getComponent("currentUser").getValue()) && document1.isEditable();}]]></xp:this.rendered>
+						<xp:label id="label13" value="Guardar"
+							styleClass="menuLetras">
+							
+						<xp:eventHandler event="onclick" submit="true"
+							refreshMode="complete">
+							<xp:this.action><![CDATA[#{javascript:
+var elem =session.getHttpURL().split("?"); 
+
+document1.replaceItemValue("Estado","Guardado");
+document1.replaceItemValue("IsSaved","Si");
+document1.save();	
+var unid = "GetRespuestaAccion_Guardar"+java.lang.System.currentTimeMillis();
+var agenteController:NotesAgent= database.getAgent("agentXPuntoPrueba");
+var profDoc:NotesDocument = database.getProfileDocument("GetRespuestaAccion_Guardar", unid);
+
+//var repeat2:com.ibm.xsp.component.xp.XspDataIterator = getComponent("repeat2");
+
+/*var id="noteIdParte";
+var arrayNotesIds:Array=new Array();
+for (i=0;i< repeat2.getRowCount();i++){
+	arrayNotesIds[i]=viewScope.get(id + i);	
+}*/
+
+
+profDoc.replaceItemValue("Usuario", @Name("[CN]",@UserName()));
+profDoc.replaceItemValue("Accion", "Acc_Guardar");
+profDoc.replaceItemValue("replyID", unid);
+//profDoc.replaceItemValue("noteIdsPartes",arrayNotesIds);
+//profDoc.replaceItemValue("etapa",2);
+profDoc.save(true, false);
+
+
+var profDocID = profDoc.getNoteID();
+
+agenteController.runOnServer(profDocID);
+
+profDoc = database.getProfileDocument("GetRespuestaAccion_Guardar", unid);
+
+var resultadoAccion="";
+
+if(profDoc.hasItem("resultado_accion")){
+
+	resultadoAccion=profDoc.getItemValueString("resultado_accion");
+}
+
+//profDoc.remove(false);
+
+if(resultadoAccion!=""){
+// redireccionar a pagina de error
+	var extCont = facesContext.getExternalContext();
+	extCont.redirect("PaginaError?OpenPage&error="+ resultadoAccion +"&accion=Guardar&pagAnterior=/xpgOSE_ConsultaPartesPerforaciones.xsp");
+}else{
+	
+	//document1.replaceItemValue("Estado","Guardado");
+	//document1.replaceItemValue("IsSaved","Si");
+	
+	//document1.save();
+	
+	context.redirectToPage(elem[0]+"/"+database.getFilePath()+"/xPuntoPrueba.xsp?documentId="+document1.getDocument().getUniversalID()+"&action=openDocument");	
+}
+}]]></xp:this.action>
+						</xp:eventHandler></xp:label>
+					</xp:td>
+					<xp:td styleClass="menuxPage"
+						style="width:51.0px">
+						<xp:this.rendered><![CDATA[#{javascript:document1.getItemValueString("IsSaved").equals("Si") && document1.getItemValueString("reservadoPor").equals(getComponent("currentUser").getValue()) && !document1.isEditable()}]]></xp:this.rendered>
+						<xp:label id="label14" value="Editar"
+							styleClass="menuLetras">
+
+
+
+							
+						<xp:eventHandler event="onclick" submit="false">
+							<xp:this.script>
+								<xp:executeClientScript>
+									<xp:this.script><![CDATA[var pathname=location.pathname;  
+var protocolo = document.getElementById("#{id:Protocolo}").value;
+
+var puerto = document.getElementById("#{id:Puerto}").value;
+
+var id = document.getElementById("#{id:universalID}").innerHTML;
+
+var dirAbs = protocolo+'://'+location.hostname+":"+puerto +pathname.substring(0,(pathname.toUpperCase().indexOf('.NSF')+5));
+alert(pathname.substring(0,(pathname.toUpperCase().indexOf('.NSF')+5)));
+window.location=dirAbs + "/agentXPuntoPrueba?openAgent&Accion=Acc_Editar" + "&ID="+id+"&cU="+document.getElementById("#{id:currentUser}").innerHTML;	
+]]></xp:this.script>
+								</xp:executeClientScript>
+							</xp:this.script></xp:eventHandler></xp:label>
+					</xp:td>
+					<xp:td styleClass="menuxPage"
+						style="width:75.0px">
+						<xp:this.rendered><![CDATA[#{javascript:document1.getItemValueString("IsSaved").equals("Si") && document1.getItemValueString("reservadoPor").equals(getComponent("currentUser").getValue())}]]></xp:this.rendered>
+						<xp:label id="label15" value="Comunicar"
+							styleClass="menuLetras">
+							<xp:eventHandler event="onclick"
+								submit="false" id="eventHandler3">
+								<xp:this.script><![CDATA[dijit.byId("#{id:dlgComunicar}").show();]]></xp:this.script>
+							</xp:eventHandler>
+						</xp:label>
+					</xp:td>
+
+					<xp:td style="width:67.0px">
+						<xp:this.rendered><![CDATA[#{javascript:document1.getItemValueString("reservadoPor").equals("") && document1.getItemValueString("IsSaved").equals("Si")}]]></xp:this.rendered>
+						<xp:label id="label17" value="Reservar"
+							styleClass="menuLetras">
+							<xp:eventHandler event="onclick"
+								submit="false">
+								<xp:this.script>
+									<xp:executeClientScript>
+										<xp:this.script><![CDATA[var pathname=location.pathname;  
+var protocolo = document.getElementById("#{id:Protocolo}").value;
+
+var puerto = document.getElementById("#{id:Puerto}").value;
+
+var id = document.getElementById("#{id:universalID}").innerHTML;
+
+var dirAbs = protocolo+'://'+location.hostname+":"+puerto +pathname.substring(0,(pathname.toUpperCase().indexOf('.NSF')+5));
+
+window.location=dirAbs + "/agentXPuntoPrueba?openAgent&Accion=Acc_Reservar" + "&ID="+id+"&cU="+document.getElementById("#{id:currentUser}").innerHTML;]]></xp:this.script>
+									</xp:executeClientScript>
+								</xp:this.script>
+							</xp:eventHandler>
+						</xp:label>
+					</xp:td>
+					<xp:td style="width:1201.0px">
+						<xp:this.rendered><![CDATA[#{javascript:document1.getItemValueString("reservadoPor").equals(getComponent("currentUser").getValue())}]]></xp:this.rendered>
+						<xp:label id="label16" styleClass="menuLetras"
+							value="Liberar">
+							<xp:this.rendered><![CDATA[#{javascript:document1.getItemValueString("reservadoPor").equals(getComponent("currentUser").getValue())}]]></xp:this.rendered>
+							<xp:eventHandler event="onclick"
+								submit="false">
+								<xp:this.script>
+									<xp:executeClientScript>
+										<xp:this.script><![CDATA[var pathname=location.pathname;  
+var protocolo = document.getElementById("#{id:Protocolo}").value;
+
+var puerto = document.getElementById("#{id:Puerto}").value;
+
+var id = document.getElementById("#{id:universalID}").innerHTML;
+
+var dirAbs = protocolo+'://'+location.hostname+":"+puerto +pathname.substring(0,(pathname.toUpperCase().indexOf('.NSF')+5));
+
+window.location=dirAbs + "/agentXPuntoPrueba?openAgent&Accion=Acc_Liberar" + "&ID="+id+"&cU="+document.getElementById("#{id:currentUser}").innerHTML;]]></xp:this.script>
+									</xp:executeClientScript>
+								</xp:this.script>
+							</xp:eventHandler>
+						</xp:label>
+					</xp:td>
+				</xp:tr>
+			</xp:table>
+			<xp:table style="width:1433.0px" cellpadding="0"
+				cellspacing="0">
+				<xp:tr>
+					<xp:td style="width:682.0px;height:105.0px"
+						styleClass="CeldaTituloAct">
+						<xp:table
+							style="width:667.0px;background-repeat:no-repeat">
+							<xp:tr>
+								<xp:td
+									style="background-image:url(docs.gif);background-repeat:no-repeat;width:159.0px;height:99.0px">
+								</xp:td>
+								<xp:td
+									style="width:486.0px;height:99.0px">
+									<xp:table style="width:483.0px">
+										<xp:tr>
+											<xp:td
+												style="width:124.0px">
+												<xp:label id="label6"
+													value="Asunto" styleClass="TituloAct">
+												</xp:label>
+											</xp:td>
+											<xp:td
+												style="width:237.0px">
+											</xp:td>
+											<xp:td
+												style="width:111.0px">
+											</xp:td>
+										</xp:tr>
+										<xp:tr>
+											<xp:td
+												style="width:124.0px">
+												<xp:label id="label7"
+													value="Expediente" styleClass="SubTituloAct">
+												</xp:label>
+											</xp:td>
+											<xp:td
+												style="width:237.0px">
+
+
+												<xp:inputText
+													id="inputText1" value="#{document1.ccEstado}">
+												</xp:inputText>
+											</xp:td>
+											<xp:td
+												style="width:111.0px">
+											</xp:td>
+										</xp:tr>
+										<xp:tr>
+											<xp:td
+												style="width:124.0px">
+											</xp:td>
+											<xp:td
+												style="width:237.0px">
+											</xp:td>
+											<xp:td
+												style="width:111.0px">
+											</xp:td>
+										</xp:tr>
+									</xp:table>
+
+								</xp:td>
+							</xp:tr>
+						</xp:table>
+					</xp:td>
+					<xp:td style="width:260.0px;height:105.0px"
+						styleClass="CeldaTituloAct">
+					</xp:td>
+					<xp:td style="height:105.0px;width:121.0px"
+						styleClass="CeldaTituloAct">
+					</xp:td>
+					<xp:td
+						style="height:105.0px;background-image:url(SeparadorEncAct.jpg);background-repeat:no-repeat;background-position:top right;width:86.0px">
+					</xp:td>
+					<xp:td style="height:105.0px;width:332.0px"
+						styleClass="FondoDatosEncabezadoAct">
+						<xp:table style="width:316.0px">
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:82.0px">
+									<xp:label id="label1"
+										value="Fecha Creacion:" styleClass="LeyendaEncabezadoAct">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:231.0px">
+									<xp:inputText id="fechaCreacion"
+										style="width:124.0px"
+										disabled="#{javascript:!document1.isEditable()}"
+										value="#{document1.fechaPunto}">
+										<xp:dateTimeHelper
+											id="dateTimeHelper1">
+										</xp:dateTimeHelper>
+										<xp:this.converter>
+											<xp:convertDateTime
+												type="date">
+											</xp:convertDateTime>
+										</xp:this.converter>
+									</xp:inputText>
+								</xp:td>
+							</xp:tr>
+							
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:82.0px">
+									<xp:label id="label3"
+										value="Nro Asunto:" styleClass="LeyendaEncabezadoAct">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:231.0px"></xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:82.0px">
+									Reservado por:
+									<xp:this.rendered><![CDATA[#{javascript:!document1.getItemValueString("reservadoPor").equals("");}]]></xp:this.rendered>
+								</xp:td>
+								<xp:td style="width:231.0px">
+									<xp:this.rendered><![CDATA[#{javascript:!document1.getItemValueString("reservadoPor").equals("");}]]></xp:this.rendered>
+									<xp:text escape="true"
+										id="computedField1" value="#{document1.reservadoPor}">
+									</xp:text>
+								</xp:td>
+							</xp:tr>
+							<xp:tr>
+								<xp:td styleClass="LeyendaEncabezadoAct"
+									style="width:82.0px">
+									<xp:label id="label5"
+										styleClass="LeyendaEncabezadoAct" value="Estado:">
+									</xp:label>
+								</xp:td>
+								<xp:td style="width:231.0px">
+									<xp:inputText id="Estado"
+										defaultValue="Borrador" value="#{document1.Estado}">
+									</xp:inputText>
+								</xp:td>
+							</xp:tr>
+						</xp:table>
+					</xp:td>
+				</xp:tr>
+			</xp:table>
+		</xp:panel>
+
+		<xp:table style="width:1450.0px"
+			styleClass="TablaActContenido">
+			<xp:tr>
+				<xp:td styleClass="TablaActEtiqueta"
+					style="width:201.0px">
+					<xp:label id="label8" value="Referencia:"></xp:label>
+				</xp:td>
+				<xp:td style="width:1243.0px"></xp:td>
+			</xp:tr>
+			<xp:tr>
+				<xp:td style="width:201.0px"
+					styleClass="TablaActEtiqueta">
+					<xp:label id="label9" value="Unidad:"></xp:label>
+				</xp:td>
+				<xp:td style="width:1243.0px"></xp:td>
+			</xp:tr>
+			<xp:tr>
+				<xp:td style="width:201.0px"
+					styleClass="TablaActEtiqueta">
+					<xp:label id="label10" value="Tema:"></xp:label>
+				</xp:td>
+				<xp:td style="width:1243.0px"></xp:td>
+			</xp:tr>
+		</xp:table>
+		<xp:tabbedPanel id="tabbedPanel1">
+			<xp:tabPanel id="tabPanel1"
+				label="Proyecto de resolución">
+				<xp:inputRichText id="inputRichText2"
+					style="width:1448.0px;height:253.0px" value="#{document1.texto2}">
+				</xp:inputRichText>
+
+
+				<xp:table style="width:1458.0px"
+					styleClass="TablaActContenedorGrupo">
+					<xp:tr>
+						<xp:td style="width:1454.0px">
+							<xp:label id="label12"
+								value="Anexar Archivos" styleClass="TituloSeccionAct">
+							</xp:label>
+							<xp:br></xp:br>
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+				<xp:table style="width:1464.0px">
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload1"
+								styleClass="TextoFirmaOK" value="#{document1.anexarArchivo1}">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:42.0px">
+
+						</xp:td>
+
+
+						<xp:td style="width:870.0px">
+							<xp:fileUpload id="fileUpload2"
+								styleClass="TextoFirmaOK"
+								style="background-position:center right"
+								value="#{document1.anexarArchivo1}">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:301.0px">
+
+						</xp:td>
+					</xp:tr>
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload3"
+								styleClass="TextoFirmaOK" value="#{document1.anexarArchivo1}">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:56.0px"></xp:td>
+
+
+						<xp:td style="width:870.0px">
+							<xp:fileUpload id="fileUpload4"
+								styleClass="TextoFirmaOK" value="#{document1.anexarArchivo1}">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:301.0px">
+
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+			</xp:tabPanel>
+			<xp:tabPanel id="tabPanel2" label="Resolución"><xp:fileDownload rows="30" id="fileDownload3" displayLastModified="false"></xp:fileDownload>
+
+				<xp:inputRichText id="inputRichText1"
+					style="width:1448.0px;height:253.0px" value="#{document1.texto1}">
+				</xp:inputRichText>
+
+				<xp:table style="width:1451.0px"
+					styleClass="TablaActContenedorGrupo">
+					<xp:tr>
+						<xp:td>
+							<xp:label id="label11"
+								value="Anexar Archivos" styleClass="TituloSeccionAct">
+							</xp:label>
+							<xp:br></xp:br>
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+			
+				<xp:table style="width:1451.0px">
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload5"
+								styleClass="TextoFirmaOK" value="#{document1.anexoArchivo1}">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:42.0px"></xp:td>
+						<xp:td style="width:359.0px">
+
+							<xp:fileUpload id="fileUpload6"
+								styleClass="TextoFirmaOK"
+								style="background-position:center right"
+								value="#{document1.anexoArchivo2}">
+							</xp:fileUpload>
+						</xp:td>
+
+
+						<xp:td style="width:951.0px">
+
+						</xp:td>
+					</xp:tr>
+					<xp:tr>
+						<xp:td style="width:239.0px">
+							<xp:fileUpload id="fileUpload7"
+								styleClass="TextoFirmaOK" value="#{document1.anexoArchivo3}">
+							</xp:fileUpload>
+						</xp:td>
+						<xp:td style="width:42.0px"></xp:td>
+						<xp:td style="width:359.0px">
+							<xp:fileUpload id="fileUpload8"
+								styleClass="TextoFirmaOK" value="#{document1.anexoArchivo4}">
+							</xp:fileUpload>
+						</xp:td>
+
+
+						<xp:td style="width:951.0px">
+
+						</xp:td>
+					</xp:tr>
+				</xp:table>
+				
+				
+				<xp:br></xp:br>
+				
+
+			</xp:tabPanel>
+
+
+		</xp:tabbedPanel>
+
+		<xp:panel id="PanelComunicado">
+			<xp:table style="width:1449.0px" styleClass="TablaActContenedorGrupo">
+				<xp:tr>
+					<xp:td>
+						<xp:label styleClass="TituloSeccionAct"
+							id="labelNew" value="Integrantes Comunicados:">
+						</xp:label>
+					</xp:td>
+				</xp:tr>
+			</xp:table>
+			
+			<xp:table style="width:468.0px" styleClass="TablaActContenido">
+				<xp:tr>
+					<xp:td styleClass="TablaActEtiqueta"
+						style="width:238.0px">
+						Primer comunicado:
+					</xp:td>
+					<xp:td style="width:73.0px"></xp:td>
+					<xp:td style="width:174.0px">
+						<xp:inputText id="inputText2"
+							value="#{document1.Comunicado_0}">
+						</xp:inputText>
+					</xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td styleClass="TablaActEtiqueta"
+						style="width:238.0px">
+						Segundo comunicado:
+					</xp:td>
+					<xp:td style="width:73.0px"></xp:td>
+					<xp:td style="width:174.0px">
+						<xp:inputText id="inputText3"
+							value="#{document1.Comunicado_1}">
+						</xp:inputText>
+					</xp:td>
+				</xp:tr>
+				<xp:tr>
+					<xp:td styleClass="TablaActEtiqueta"
+						style="width:238.0px">
+						Tercer comunicado:
+					</xp:td>
+					<xp:td style="width:73.0px"></xp:td>
+					<xp:td style="width:174.0px">
+						<xp:inputText id="inputText4"
+							value="#{document1.Comunicado_2}">
+						</xp:inputText>
+					</xp:td>
+				</xp:tr>
+			</xp:table>
+		</xp:panel>
+		<xc:JQuery></xc:JQuery>
+		<xp:br></xp:br>
+
+		<xc:CamposOcultosPuntoPrueba></xc:CamposOcultosPuntoPrueba>
+		
+		
+
+		
+		<xp:table style="width:1456.0px" styleClass="TablaActContenido">
+			<xp:tr>
+				<xp:td styleClass="TablaActContenedorGrupo"><xp:label styleClass="TituloSeccionAct" id="label2" value="Archivos Anexados:">
+						</xp:label></xp:td>
+			</xp:tr>
+		</xp:table>
+		<xp:fileDownload rows="30" id="fileDownload2" displayLastModified="false" value="#{document1.anexarArchivo1}" allowDelete="${javascript:document1.isEditable()}"></xp:fileDownload>
+		
+		
+		
+		<xp:panel dojoType="dijit.Dialog" id="dlgComunicar">
+			<xp:checkBoxGroup id="checkBoxGroup1"
+				layout="pageDirection">
+				<xp:selectItem itemLabel="Valentina Da Silva/Isa Ltda"
+					itemValue="Valentina Da Silva/Isa Ltda">
+				</xp:selectItem>
+				<xp:selectItem itemLabel="Ian Coates/Isa Ltda"
+					itemValue="Ian Coates/Isa Ltda">
+				</xp:selectItem>
+				<xp:selectItem itemLabel="Fernando Moller/Isa Ltda"
+					itemValue="Fernando Moller/Isa Ltda">
+				</xp:selectItem>
+			</xp:checkBoxGroup>
+			<xp:br></xp:br>
+			<xp:button value="Comunicar" id="button1">
+				<xp:eventHandler event="onclick" submit="false">
+					<xp:this.script><![CDATA[//document.getElementById("#{id:button2}").click();
+//dijit.byId("#{id:dlgComunicar}").hide();
+var dbs=document.getElementsByName("#{id:checkBoxGroup1}");
+var id = document.getElementById("#{id:universalID}").innerHTML;
+var data= id +"&";
+for (var i = 0 ; i < dbs.length;i++ ){
+
+ if (dbs[i].checked){
+
+   
+	data +=dbs[i].value+"&"
+  
+   //alert(dbs[i].value);
+   dbs[i].checked = false;
+ }
+}
+
+var pathname=location.pathname;  
+var protocolo = document.getElementById("#{id:Protocolo}").value;
+
+var puerto = document.getElementById("#{id:Puerto}").value;
+
+
+
+var dirAbs = protocolo+'://'+location.hostname+":"+puerto +pathname.substring(0,(pathname.toUpperCase().indexOf('.NSF')+5));
+
+var url=dirAbs + "/xComunicarAgent?openAgent&ID="+id;	
+dijit.byId("#{id:dlgComunicar}").hide();
+ $.ajax({
+     type: "POST",
+     	cache: false,
+         url: url,
+         data: data,
+          success : function(data) {
+            //... your other code
+            var pathname=location.pathname;  
+            var protocolo = document.getElementById("#{id:Protocolo}").value;
+            var puerto = document.getElementById("#{id:Puerto}").value;
+            var id = document.getElementById("#{id:universalID}").innerHTML;
+            var dirAbs = protocolo+'://'+location.hostname+":"+puerto +pathname.substring(0,(pathname.toUpperCase().indexOf('.NSF')+5));
+            window.location=dirAbs + "/xPuntoPrueba.xsp?documentId="+id+"&action=openDocument"	
+            
+        }
+       });
+
+
+
+
+]]></xp:this.script>
+
+
+				</xp:eventHandler>
+			</xp:button>
+			<xp:br></xp:br>
+		</xp:panel>
+		<xp:br></xp:br>
+
+
+		<xp:br></xp:br>
+
+	</xp:panel>
+	<xp:eventHandler event="onClientLoad" submit="true"
+		refreshMode="norefresh">
+	</xp:eventHandler>
+</xp:view>

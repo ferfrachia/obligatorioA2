@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A23D7'>
+<noteinfo noteid='146' unid='7D5121FBC79D6C6B83257646005994AA' sequence='114'>
+<created><datetime dst='true'>20091005T141827,62-02</datetime></created>
+<modified><datetime>20150311T132434,66-03</datetime></modified>
+<revised><datetime>20150309T094400,46-03</datetime></revised>
+<lastaccessed><datetime>20150311T132434,66-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T132434,66-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Eduardo Verde/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Oscar Nogueira/O=ISA</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Eduardo Verde/O=ISA</name><name>CN=Juan Funez/O=ISA</name><name
+>CN=Eduardo Verde/O=ISA</name><name>CN=Administrador/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Diego Ricca/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name
+>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>Documentos</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+oAACABAAAgBpZAUAAgBpZAMAAgAYAAYAZXN0YWRvBQAGAGVzdGFkbwMAAgAcAAcAdXN1YXJpbwAF
+AAcAdXN1YXJpbwADAAUALgAqAAUAAgAGAAcACQAEAGlkZXN0YWRvdXN1YXJpbyRDb25mbGljdCRS
+RUYEAAQAAAAeAAUABABmb3JtAQAKAGZEb2N1bWVudG8KAgMABwAKAAQACUwxUw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+BgAAAABE
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAEAAgACAAAAFZDAAACAAAACgAKAFAAAQAACgAAAAAAAAAAAAICAAAAVkMAAAIAAgASAAAAtQAB
+AAAKAAAAAAAAAAAAAgIAAABWQwAABgAGABoAAAAvAAEAAAoAAAAAAAAAAAACAgAAAFZDAAAHAAcA
+HgAAAFAAAQAACgAAAAAAAAAAAAICAAAAJDYKAAAACACSAAMAAQUBAAQAf0Ew/2lkSWQSAAIAEAAC
+AGlkBQACAGlkAwBlc3RhZG9Fc3RhZG8aAAIAGAAGAGVzdGFkbwUABgBlc3RhZG8DAHVzdWFyaW9V
+c3VhcmlvHgACABwABwB1c3VhcmlvAAUABwB1c3VhcmlvAAMAJgABAAAAAQEACQEAAAoBAQ4KAAAB
+AK0rAQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAD//wAAAAAAAAAA
+AAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAFdDAQEA
+CQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAA
+AAAAAAAAAAAEAAAAAAD//wAAAAAAAAAAAAAAAAAAQgAAAAAAAQD///8ABQD///8AAQAAAAAAAAAA
+AAAAAAABAP///wABAP///wAAAAEAAAAAAAEAAAAAAAEAAAAAAAAACAAAAAAAAQA=
+</rawitemdata></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$Flags'><text>PY</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

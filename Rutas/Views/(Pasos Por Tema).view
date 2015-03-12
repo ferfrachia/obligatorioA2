@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='view' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E0500590CD0'>
+<noteinfo noteid='34a' unid='46CCAA811B00DCBC03256D4B00551740' sequence='63'>
+<created><datetime>20030620T122925,12-03</datetime></created>
+<modified><datetime>20150311T131242,74-03</datetime></modified>
+<revised><datetime>20150309T094507,97-03</datetime></revised>
+<lastaccessed><datetime>20150311T131242,74-03</datetime></lastaccessed>
+<addedtofile><datetime>20150311T131242,74-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=iGDocDemos</name><name
+>CN=Ian Coates/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Diego Tolosa/O=ISA</name><name>CN=administrador/O=iGDocTest</name><name
+>CN=Dayan Cazzuli/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
+>CN=Ian Coates/O=ISA</name></updatedby>
+<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<item name='$FormatNote' summary='true' sign='true'>
+<rawitemdata type='4'>
+AQAv9FZ8EenpTvnsbwBAbSUD
+</rawitemdata></item>
+<item name='$FormulaClass' sign='true'><text>1</text></item>
+<item name='$TITLE' sign='true'><text>(Pasos Por Tema)|VPasosTema</text></item>
+<item name='$Index' sign='true'><text/></item>
+<item name='$Formula' summary='true' sign='true'><formula compiled='true'>
+uAACADAAAgAkMQUACQBjY0NvZFRlbWEAVgEFAA0AY2NWZXJzaW9uUnV0YQBWASICAwACACAACQBy
+VGlwb1Bhc28ABQAJAHJUaXBvUGFzbwADAAUAPgA6AAYAAgAEAAsABwAJAAkAJDFuTnJvc1VuaWRh
+ZFBhc29zUHJvY2VkclRpcG9QYXNvJENvbmZsaWN0BAAEAAAAGgAFAAQARm9ybQEABQBGUGFzbwAK
+AgMABwAKAAQACUwxUw==
+</formula></item>
+<item name='$Collation' summary='true'>
+<rawitemdata type='2'>
+GgACAABEiGYHAAACAABmAAIABAAkMW5Ocm8=
+</rawitemdata></item>
+<item name='$ViewFormat' summary='true' sign='true'>
+<rawitemdata type='5'>
+AQAFAAQAigoAAFZDAwACAAAAPgAAAAgABQAACAABAAAAAAAAAAICAAAAVkMBAAQAAwAAAAAAGAAG
+AAAIAAAAAAAAAAAAAgIAAABWQwAACwAGAAAAAAB9AAcAAAgAAAAAAAAAAAACAgAAAFZDAAAHAA0A
+AAAAAOoACAAACAAAAAAAAAAAAAICAAAAVkMAAAkADAAiAAAAYgAJAAAIAAAAAAAAAAAAAgIAAAAk
+MT4AAgAwAAIAJDEFAAkAY2NDb2RUZW1hAFYBBQANAGNjVmVyc2lvblJ1dGEAVgEiAgMABwAMAAUA
+CTBTMEUAbk5yb05yb3NVbmlkYWRQYXNvVW5pZGFkc1Byb2NlZFByb2NlZGltaWVudG9yVGlwb1Bh
+c29UaXBvIGRlIFBhc28iAAIAIAAJAHJUaXBvUGFzbwAFAAkAclRpcG9QYXNvAAMAJgABAAAAAQEA
+CQEAAAoBAQ4KAAAZAK0rCQABAAEAAAAAAAAAAABXQwEBAAkAAAAAAAAAAAAAAAAAAAAAAQAEAAAA
+AAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAA
+AAAAAAAAAFdDAQEACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAABXQwEB
+AAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAV0MBAQAJAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAEIAAAAAAAEA////AAEA4OD/AAEAAAAAAAAA
+AAAAAAAAAQD///8AAQD///8AAAABAAAAAAABAICAgAABAAAAAAAAAAgAAAAAAAEA
+</rawitemdata></item>
+<item name='$Fonts'><textlist><text>5</text><text>38</text><text>Arial</text><text
+>6</text><text>38</text><text>Arial</text><text>7</text><text>38</text><text
+>Arial</text><text>8</text><text>38</text><text>Arial</text><text>9</text><text
+>38</text><text>Arial</text></textlist></item>
+<item name='$Comment' sign='true'><text>Vista embebida en el form FTema y usada en el form FPaso para calcular el número de paso siguiente</text></item>
+<item name='$Flags'><text>Y</text></item>
+<item name='$DesignerVersion' sign='true'><text>7</text></item></note>
+

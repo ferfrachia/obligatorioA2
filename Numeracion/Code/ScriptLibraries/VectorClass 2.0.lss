@@ -1,0 +1,594 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+'********************************************************************************************************
+'*										Actualizaciones
+'********************************************************************************************************
+%REM
+	23/01/2001	Modificado por:	Pablo Andrade
+		1)	Se tomo como requerimiento que los elementos del vector son todos del mismo tipo de datos
+		2)	Se optimizó el código del metodo IsMember
+		3)	Se agregó el método GetIndex que retorna un vector con todas las posiciones
+			en la que ocurre el elemento de parametro
+
+	16/01/2001	Modificado por:	Pablo Andrade
+		1) 	Se corrigio bug: al llamar al constructor con un valor distinto de cero no creaba el vector 
+			correctamente
+		2) 	Se agrego el metodo ToString que retorna un string con los elementos del vector
+			separados por un caracter que se proporciona como parametro
+		3)	Se agrego el metodo ReplaceElement que cambia el elemento de una posicion indicada
+		4)	Se corrigio bug: error 91 - al borrar un elemento, y alguno de los elementos del vector era 
+			un objeto
+
+%END REM
+
+'********************************************************************************************************
+'*								CLASE VECTOR (Class Vector)
+'********************************************************************************************************
+
+'	PROPIEDADES:
+
+'		GET First As Variant			
+'			Retorna el primer elemento del vector
+'		GET Last As Variant		
+'			Retorna el último elemento del vector		
+'		GET cantElem As Long		
+'			Cantidad de elementos del vector
+'		GET Values As Variant
+'			Retorna los elementos que componenen el vector en un array
+'		SET setValues As Variant
+'			Inicializa el vector a partir de un array
+'			Los elementos deben ser todos del mismo tipo de datos.
+'			Inserta hasta que encuentra una posicion en blanco o hasta el final del array
+'
+'	MÉTODOS
+'
+'		New(Byval cantElements As Integer):				
+'			Constructor de la clase. El parametro cantElements indica la 
+'			cantidad de elementos que tendra inicialmente el vector.
+'			Se indica 0 (cero) para que el parametro no se tome en cuenta.
+'
+'		getElement(Byval pos As Integer) As Variant
+'			Retorna el elemento que se encuentra en la posición pos
+'
+'		insertElement(element As Variant, Byval pos As Integer)
+'			Inserta un elemento en el vector, en la posicion indicada
+'
+'		deleteElement(pos As Integer)
+'			Elimina el elemento que se encuentra en la posicion indicada
+'
+'		replaceElement(Byval pos as Integer, element As Variant)
+'			Reemplaza el elemento del vector de la posicion indicada
+'
+'		isMember(Byval element, pos As Integer) As Integer
+'			Retorna True si element pertenece al vector, junto con la posición de la primera
+'			ocurrencia del elemento. En caso contrario retorna False
+'
+'		GetIndex(element As Variant) As Vector
+'			Retorna un vector con las posiciones donde se encuentra el elemento de parametro
+'			Si el elemento no pertenece al vector retorna un vector con cero elementos
+'
+'		sort()
+'			Ordena los elementos del vector de mayor a menor
+'			Este método solo funciona si los elementos son de tipo entero
+'			o se pueden comparar con el operador '>'. Realiza un Insertion Sort (O(n2))
+'
+'		sortAscendent()
+'			Ordena los elementos del vector de menor a mayor
+'			Este método solo funciona si los elementos son de tipo entero
+'			o se pueden comparar con el operador '<'. Realiza un Insertion Sort (O(n2))
+'
+'		Posicion_Ordenado(elemento) As Long
+'			Retorna la posicion ordenada asendentemente donde se debe inserta el elemento 
+'			de parametro
+'
+'		ToString(Byval separador As String) As String
+'			Retorna un string con los elementos del vector separados pos el
+'			caracter separador de parametro.
+'			Si el vector no tiene ningun elemento retorna "" (comillas-comillas).
+'
+'********************************************************************************************************
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class Vector
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+Public Const 	PRIMERAPOS = 1	'Primera posicion del vector. Se debe exportar ya que hay
+						'métodos que retornan posiciones. Para determinar la 
+						'verdadera posicion hay que restarle PRIMERAPOS, 
+						'por lo que este valor debe ser público
+'CONSTANTES DE ERROR
+Public Const	INCORRECTPOS 				= 11001
+Public Const	INCORRECTDIMENSION 			= 11002
+Public Const 	INCORRECT_DATATYPE			= 11003
+Public Const	PARAMETER_PROBLEM			= 11004
+
+Private Const OBJECT_STRING_VALUE			= "<Objeto>"
+Private Const ERROR_STRING_VALUE			= "<Error de Tipo>"
+
+Private Const DATATYPE_NOT_ASIGNED			= -1
+
+
+Private Const V_EMPTY					= 0	
+Private Const V_NULL					= 1
+Private Const V_INTEGER					= 2	
+Private Const V_LONG					= 3	
+Private Const V_SINGLE					= 4	
+Private Const V_DOUBLE					= 5	
+Private Const V_CURRENCY					= 6	
+Private Const V_DATE					= 7	
+Private Const V_STRING					= 8	
+Private Const V_DISPATCH					= 9	
+Private Const V_ERROR					= 10	
+Private Const V_BOOLEAN					= 11	
+Private Const V_VARIANT					= 12	
+Private Const V_IUNKNOWN					= 13	
+Private Const V_LSOBJ					= 34	
+Private Const V_PRODOBJ					= 35	
+
+'********************************************************************************************************
+'********************************************************************************************************
+Public Class Vector
+	
+	Private arreglo() As Variant		'Elementos del vector
+	Private largo As Long			'Cantidad de elementos del vector
+	Private tipo As Integer			'Tipo de datos del vector
+	
+'********************************************************************************************************	
+	Public Sub New(Byval cantElements As Integer)
+	'Constructor de la clase. El parametro cantElements indica la 
+	'cantidad de elementos que tendra inicialmente el vector.
+	'Se indica 0 (cero) para que el parametro no se tome en cuenta.
+		largo = 0	
+		tipo = DATATYPE_NOT_ASIGNED		
+		If cantElements < 0 Then
+			Error INCORRECTDIMENSION,_
+			"No se puede crear el objecto con el valor de dimension " + Cstr(cantElements)
+		Elseif cantElements = 0 Then
+			'Salgo sin inicializar
+			Exit Sub
+		Else
+			Redim arreglo(PRIMERAPOS To PRIMERAPOS + cantElements - 1)
+		End If
+	End Sub
+	
+'********************************************************************************************************
+	
+	Public Property Get Values As Variant
+	'Retorna los valores que componen el vector, en forma de array
+		Dim aux As Variant, i As Integer
+		
+		If largo > 0 Then
+			Redim aux(0 To largo-1)
+			For i = 0 To largo - 1
+				If Isobject(arreglo(PRIMERAPOS + i)) Then
+					Set aux(i) = arreglo(PRIMERAPOS + i)
+				Else
+					aux(i) = arreglo(PRIMERAPOS + i)
+				End If					
+			Next
+		Else
+			Redim aux(0 To 0)
+			aux(0) = ""
+		End If
+		Values = aux
+	End Property
+	
+'********************************************************************************************************
+	
+	Public Property Set Values As Variant
+	'Inicializa el vector a partir de un array
+	'Los elementos deben ser todos del mismo tipo de datos.
+	'Inserta hasta que encuentra una posicion en blanco o hasta el final del array
+		
+		Dim i As Integer, valor As Variant, cantTent As Integer
+		
+		largo = 0		
+		If Not Isarray(Values) Then Exit Property		'Si los valores a insertar no vienen en un array salgo
+		If Not Isnumeric(Values(Lbound(values))) Then Exit Property	'Si el primer elemento del array viene en blanco salgo
+		
+		cantTent = Ubound(Values) - Lbound(Values) + 1		
+		tipo = Datatype(Values(Lbound(Values)))	'Seteo el tipo de datosque va a tener el vector		
+		
+		For i = PRIMERAPOS To PRIMERAPOS + cantTent - 1
+			valor = Values(Lbound(Values) + i - PRIMERAPOS)
+			If Not IsCorrectDataType(valor) Then 'Si hay algun elemento mal borro el vector y salgo
+				Erase arreglo
+				largo = 0
+				Error INCORRECT_DATATYPE, "El tipo de datos " & Typename(valor) & " a insertar no coincide con el del vector: " & TipoToString(tipo)
+			End If
+			If Datatype(valor) <> tipo Then Error INCORRECT_DATATYPE, "No se puede pasar un vector con multiples tipos de datos"
+			If valor = "" Then Exit Property	'Sale de la rutina si encuentra algún elemento del array vacío
+			largo = largo + 1
+			Redim  Preserve arreglo(PRIMERAPOS To PRIMERAPOS + largo)
+			arreglo(i) = valor
+		Next
+		
+	End Property
+	
+'********************************************************************************************************
+	
+	Public Property Get First As Variant
+	'Retorna el primer elemento del vector
+		If Isobject(arreglo(PRIMERAPOS)) Then
+			Set First = arreglo(PRIMERAPOS)
+		Else
+			First = arreglo(PRIMERAPOS)
+		End If
+	End Property
+	
+'********************************************************************************************************	
+	
+	Public Property Get Last As Variant
+	'Retorna el ultimo elemento del vector
+		If Isobject(arreglo(PRIMERAPOS + Me.cantElem - 1)) Then
+			Set Last = arreglo(PRIMERAPOS + Me.cantElem - 1)
+		Else
+			Last = arreglo(PRIMERAPOS + largo - 1)
+		End If
+	End Property
+	
+'****************************************************************************************************************	
+	
+	Private Sub SetValue( Value1 As Variant, Value2 As Variant)
+          'This allows you set value1 to value2's value or object reference
+		
+		If Isobject( Value2) Then
+			Set Value1 = Value2
+		Else
+			Value1 = Value2
+		End If                      
+		
+	End Sub
+	
+'********************************************************************************************************		
+	
+	Private Function EsTipoNumerico(Byval tipo As Integer) As Integer
+	'Retorna true si el tipo de parametro es numerico		
+		Select Case tipo
+		Case V_INTEGER, V_LONG, V_SINGLE, V_DOUBLE: EsTipoNumerico = True
+		Case Else
+			EsTipoNumerico = False
+		End Select
+	End Function
+	
+'********************************************************************************************************			
+	
+	Private Function TipoToString(Byval intTipo As Integer) As String
+	'Dado el valor numerico que retorna la funcion DataType, esta funcion
+	'retorna un string con el nombre del tipo de datos
+		Select Case intTipo
+		Case V_EMPTY:		TipoToString = ""
+		Case V_NULL:		TipoToString = ""
+		Case V_INTEGER:	TipoToString = "INTEGER"
+		Case V_LONG:		TipoToString = "LONG"
+		Case V_SINGLE:		TipoToString = "SINGLE"
+		Case V_DOUBLE:		TipoToString = "DOUBLE"
+		Case V_CURRENCY:	TipoToString = "CURRENCY"
+		Case V_DATE:		TipoToString = "DATE"
+		Case V_STRING:		TipoToString = "STRING"
+		Case V_DISPATCH:	TipoToString = "DISPATCH"
+		Case V_ERROR:		TipoToString = "ERROR"
+		Case V_BOOLEAN:	TipoToString = "BOOLEAN"
+		Case V_VARIANT:	TipoToString = "VARIANT"
+		Case V_IUNKNOWN:	TipoToString = "IUNKNOWN"
+		Case V_LSOBJ:		TipoToString = "LSOBJ"
+		Case V_PRODOBJ:	TipoToString = "PRODOBJ"
+		Case Else
+			Error PARAMETER_PROBLEM,"El valor de parametro tiene un tipo incorrecto: " & Cstr(Datatype(intTipo))
+		End Select		
+	End Function
+	
+'********************************************************************************************************		
+	
+	Private Function AsignarAlTipoDelVector(valor As Variant) As Integer
+		Select Case tipo
+		Case V_EMPTY:
+		Case V_NULL:
+		Case V_INTEGER:	valor = Cint(valor)
+		Case V_LONG:		valor = Clng(valor)
+		Case V_SINGLE:		valor = Csng(valor)
+		Case V_DOUBLE:		valor = Cdbl(valor)
+		Case V_CURRENCY:	valor = Ccur(valor)
+		Case V_DATE:		valor = Cdat(valor)
+		Case V_STRING:		valor = Cstr(valor)
+		Case V_DISPATCH:
+		Case V_ERROR:
+		Case V_BOOLEAN:
+		Case V_VARIANT:
+		Case V_IUNKNOWN:
+		Case V_LSOBJ:
+		Case V_PRODOBJ:
+		Case Else
+			Error PARAMETER_PROBLEM,"El valor de parametro tiene un tipo incorrecto: " & Cstr(Datatype(tipo))
+		End Select
+	End Function
+	
+'********************************************************************************************************	
+	
+	Private Function IsCorrectDataType(valor As Variant) As Integer	
+	'Retorna true si el valor de parametro es el correcto tipo de datos
+	'para insertar en el vector.
+	'Convierte el valor de parametro al tipo del vector. Generalmente se usa
+	'cuando el valor del vector por ejemplo es un Double, y se esta insertando un
+	'Integer.
+	'Retorna true si la conversion fue exitosa, false en caso contrario
+		Dim tipoACheckear As Integer
+		
+		On Error Goto HANDLER
+		IsCorrectDataType = False
+		
+		tipoACheckear = Datatype(valor)
+		If EsTipoNumerico(tipo) And EsTipoNumerico(tipoACheckear) Then
+			If tipoACheckear >= V_INTEGER And tipoACheckear < tipo Then
+				AsignarAlTipoDelVector valor
+			End If
+		Elseif tipo <> tipoACheckear Then	'Tipo incorrectos
+			Exit Function
+		End If
+		
+		IsCorrectDataType = True
+		Exit Function
+		
+HANDLER:
+		Exit Function		
+	End Function
+	
+'********************************************************************************************************		
+	
+	Public Property Get cantElem As Long
+	'Retorna la cantidad de elementos que componen el objeto vector
+		cantElem = largo
+	End Property
+	
+'********************************************************************************************************
+	
+	Public Function getElement(Byval pos As Long) As Variant
+	'Retorna el elemento del vector que se encuentra en la posicion POS	
+		If pos < PRIMERAPOS Or pos > largo Then
+			Error INCORRECTPOS,"Posición incorrecta."
+		Else
+			If Isobject(arreglo(pos)) Then
+				Set getElement = arreglo(pos)
+			Else
+				getElement = arreglo(pos)
+			End If
+		End If
+	End Function	
+	
+'********************************************************************************************************
+	
+	Public Sub insertElement(element As Variant, Byval pos As Long)
+	'Inserta el elemento 'element' en la posicion pos
+		Dim i As Integer, tipoAInsertar As Integer
+		
+		If pos < PRIMERAPOS Or pos > PRIMERAPOS + largo Then Error INCORRECTPOS,"Posición incorrecta."
+		If tipo = DATATYPE_NOT_ASIGNED Then	'En la primera insercion guardo
+			tipo = Datatype(element)			'el tipo de datos del vector
+		Else
+			If Not IsCorrectDataType(element) Then Error INCORRECT_DATATYPE, _
+			"El tipo de datos " & Typename(element) & " a insertar no coincide con el del vector: " & TipoToString(tipo)
+		End If
+		
+		largo = largo + 1
+		Redim Preserve arreglo(PRIMERAPOS To PRIMERAPOS + largo)
+		
+		'muevo los elementos de la posicon pos en adelante un lugar
+		For i = PRIMERAPOS + largo - 1 To pos + 1 Step -1
+			If Isobject(arreglo(i-1)) Then
+				Set arreglo(i) = arreglo(i - 1)
+			Else
+				arreglo(i) = arreglo(i - 1)
+			End If
+		Next
+		
+		setValue arreglo(pos),element 'Inserto el nuevo elemento
+	End Sub
+	
+'********************************************************************************************************	
+	
+	Public Sub deleteElement(Byval pos As Long)
+	'Elimina el elemento de la posicion pos del vector
+		Dim i As Integer
+		If pos < PRIMERAPOS Or pos > largo + PRIMERAPOS - 1 Then
+			Error INCORRECTPOS,"Posición incorrecta."
+		Else
+		'Muevo todos los elementos desde pos para adelante un lugar hacia atras
+		' actualizando 'largo' a un valor menor
+			largo = largo - 1
+			If largo=0 Then 'Si estoy borrando el último...	
+				Redim arreglo(PRIMERAPOS To PRIMERAPOS)	'...no dejo nada en arreglo,
+			Else		'pero si todavía van a quedar elementos...				
+				For i = pos To PRIMERAPOS + largo - 1
+					If Isobject(arreglo(i+1)) Then '...corro todos los elementos uno atrás apartir de pos...
+						Set arreglo(i) = arreglo(i+1)	
+					Else
+						arreglo(i) = arreglo(i+1)	
+					End If
+				Next
+				Redim Preserve arreglo(PRIMERAPOS To largo) '...y saco un elemento del vector.
+			End If
+		End If
+	End Sub
+	
+'********************************************************************************************************	
+	
+	Public Sub replaceElement(Byval pos As Long, element As Variant)
+	'Reemplaza el elemento del vector de la posicion indicada
+		If pos < PRIMERAPOS Or pos > largo + PRIMERAPOS - 1 Then Error INCORRECTPOS,"VectorClass: Posición a borrar incorrecta: " & Cstr(pos)
+		If Not IsCorrectDataType(element) Then Error INCORRECT_DATATYPE, _
+		"El tipo de datos " & Typename(element) & " a insertar no coincide con el del vector: " & TipoToString(tipo)
+		
+		If Isobject(element) Then
+			Set arreglo(pos) = element
+		Else
+			arreglo(pos) = element
+		End If
+	End Sub
+	
+'********************************************************************************************************
+	
+	Public Function isMember(element As Variant, pos As Long) As Integer
+	'Retorna true si el elemento pertenece al vector, junto con la posición de la primera
+	'ocurrencia del elemento.
+		isMember = False
+		If Not IsCorrectDataType(element) Then Exit Function
+		pos = PRIMERAPOS - 1
+		Dim i As Integer
+		If Isobject(element) Then	'Es un vector de objetos
+			For i = PRIMERAPOS To largo
+				If arreglo(i) Is element Then
+					isMember = True
+					pos = i
+					Exit Function
+				End If	'Fin los punteros apuntan a lo mismo
+			Next	'Siguiente posicion a comparar
+		Else	'Si no son objetos utilizo la funcion de LotusScript Arraygetindex, que se supone mas eficiente que recoirrer el vector
+			Dim res As Variant
+			res = Arraygetindex(arreglo, element,1)
+			If Not Isnull(res) Then
+				isMember = True
+				pos = res
+			End If
+		End If	
+	End Function
+	
+'********************************************************************************************************
+	
+	Public Function GetIndex(element As Variant) As Vector
+	'Retorna un vector con las posiciones donde se encuentra el elemento de parametro
+	'Si el elemento no pertenece al vector retorna un vector con cero elementos
+		On Error Goto handler
+		
+		Dim i As Integer
+		Set GetIndex = New Vector(0)
+		If Isobject(element) Then	'Es un vector de objetos
+			For i = PRIMERAPOS To largo
+				If arreglo(i) Is element Then
+					GetIndex.InsertElement i,PRIMERAPOS + GetIndex.CantElem
+				End If	'Fin los punteros apuntan a lo mismo
+			Next	'Siguiente posicion a comparar
+		Else
+			For i = PRIMERAPOS To largo
+				If arreglo(i) = element Then
+					GetIndex.InsertElement i,PRIMERAPOS + GetIndex.CantElem
+				End If	'Fin los punteros apuntan a lo mismo
+			Next	'Siguiente posicion a comparar
+		End If
+		
+		Exit Function
+		
+handler:	'Si hay algun error salgo callado con el vector resultado como este
+		Exit Function
+	End Function
+	
+'********************************************************************************************************
+	
+	Public Sub sort()
+		'Ordena los elementos del vector de menor a mayor
+		'Este método solo funciona si los elementos son de tipo entero
+		'o se pueden comparar con el operador '>'
+		Dim i As Integer, j As Integer, max As Variant
+		
+		For i = PRIMERAPOS To largo
+			max = i
+			For j = i To largo
+				If arreglo(j) > arreglo(max) Then
+					max = j	'Guardo la posicion del mayor
+				End If
+			Next
+			'Intercambio la posicion actual con la del mayor
+			change max,i
+		Next
+	End Sub
+	
+'********************************************************************************************************
+	
+	Public Sub sortAscendent()
+		'Ordena los elementos del vector de menor a mayor
+		'Este método solo funciona si los elementos son de tipo entero
+		'o se pueden comparar con el operador '<'
+		Dim i As Integer, j As Integer, max As Variant
+		
+		For i = PRIMERAPOS To largo
+			max = i
+			For j = i To largo
+				If arreglo(j) < arreglo(max) Then
+					max = j	'Guardo la posicion del menor
+				End If
+			Next
+			'Intercambio la posicion actual con la del menor
+			change max,i
+		Next
+	End Sub
+	
+'********************************************************************************************************
+	
+	Private Sub change(Byval pos1 As Long, Byval pos2 As Long)
+		Dim aux As Variant
+		aux = arreglo(pos1)
+		arreglo(pos1) = arreglo(pos2)
+		arreglo(pos2) = aux
+	End Sub
+	
+'********************************************************************************************************
+	
+	Public Function Posicion_Ordenado(elem As Variant) As Long
+	'Retorna la posicion ordenada asendentemente donde se debe inserta el elemento 
+	'de parametro
+		
+		Dim cont As Integer
+		
+		Posicion_Ordenado = PRIMERAPOS
+		If largo = 0 Then Exit Function
+		cont = PRIMERAPOS
+		While cont < PRIMERAPOS + largo-1 And arreglo(cont) < elem
+			cont = cont+1
+		Wend
+		
+		If arreglo(cont) < elem Then
+			Posicion_Ordenado = cont+1
+		Else			
+			Posicion_Ordenado = cont
+		End If
+		
+	End Function
+	
+'********************************************************************************************************	
+	
+	Public Function ToString(Byval separador As String) As String
+	'Retorna un string con los elementos del vector separados pos el
+	'caracter separador de parametro.
+	'Si el vector no tiene ningun elemento retorna "" (comillas-comillas)
+		Dim pos As Integer, cadena As String, valor As Variant
+		
+		If cantElem = 0 Then 
+			ToString = ""
+		Else
+			On Error Goto RECORRIDA
+			For pos = PRIMERAPOS To PRIMERAPOS + largo - 1
+				If Isobject(arreglo(pos)) Then	'Si es objeto el elemento actual
+					valor = OBJECT_STRING_VALUE	'pongo una contaste que indica un obtego en el stirng
+				Else
+					valor = Cstr(arreglo(pos))
+				End If
+SIGUIENTE:				
+				cadena = cadena & separador & valor
+			Next
+			On Error Goto 0
+		End If
+		ToString = Right(cadena,Len(cadena)-Len(separador))	'Le saco el primer separador a la cadena
+		
+		Exit Function
+		
+RECORRIDA:
+		valor = ERROR_STRING_VALUE	'Si da error la conversion de tipos para algun elemento
+		Resume SIGUIENTE			'cargo una constante de error de tipo en el stinrg
+	End Function
+	
+'********************************************************************************************************		
+	
+End Class
+'********************************************************************************************************
+'********************************************************************************************************

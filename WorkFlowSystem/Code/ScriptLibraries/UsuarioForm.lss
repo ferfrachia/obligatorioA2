@@ -1,0 +1,181 @@
+'++LotusScript Development Environment:2:5:(Options):0:74
+Option Declare
+
+Use "VectorClass 2.05"
+Use "FuncionesGenerales"
+Use "Configuracion Formularios"
+Use "Roles Class"
+'***************************	CLASE USUARIOFORM	************************************************
+'*	INTERFASE
+'*
+'*		New(byval nombre as string, c As  ConfigSistema)
+'*			Constructor de la clase
+'*
+'*	PROPIEDADES
+'*	
+'*		Get Unidades () as vector
+'*			Dada una clave retorna las unidades del usuario. 
+'*
+'*		Get Roles(Byval unidad As String) As vector
+'*			Dada un unidad retorna un vector con lo roles del usuario. 
+'*			
+'*		Get  NombreUsuario()as string
+'*			Retorna el nombre del usuario
+'*
+'*
+'****************************************************************************************************************** 
+
+'++LotusScript Development Environment:2:5:(Forward):0:1
+Declare Public Class UsuarioForm
+
+'++LotusScript Development Environment:2:5:(Declarations):0:10
+
+'CONSTANTES PRIVADAS
+'**************************************************************************************************************************
+'BASES
+Private Const CLAVE_ORGAN ="ORGAN"
+
+'ROLES
+Private Const ROL_CREADOR									= "RolCreador"
+Private Const ROL_RECEPTOR									= "RolReceptor"
+Private Const ROL_EDITOR										= "RolEditor"
+Private Const ROL_FIRMANTE						 			= "RolFirmante"
+Private Const ROL_PASE										= "RolPase"
+Private Const ROL_GESTION									= "RolGestion"
+Private Const ROL_AMPLIARPLAZO								= "RolAmpliarPlazo"
+Private Const ROL_MANEJARCONF									= "RolManejarConf"
+
+'VISTAS
+Private Const VISTA_ORGANIZACION_BUSQUEDAPERSONAS					= "VBusqPersTodos"
+Private Const VISTA_ORGANIZACION_BUSQUEDAUNIDADES					= "VBusqUni"
+Private Const VISTA_ORGANIZACION_BUSQUEDASUPLENCIAS				= "VBusSupAct"
+Private Const VISTA_ORGANIZACION_MIEMBROSCREADORESFORM				= "MiembrosFormxCreadorUni"
+
+'CAMPOS
+Private Const CAMPO_ORGANIZACION_NRO_UNIDAD						= "sNroUnidad"
+Private Const CAMPO_ORGROL_CREADOR								= "RolCreador"
+Private Const CAMPO_ORGROL_RECEPTOR							= "RolReceptor"
+Private Const CAMPO_ORGROL_EDITOR								= "RolEditor"
+Private Const CAMPO_ORGROL_FIRMANTE							= "RolFirmante"
+Private Const CAMPO_ORGROL_PASE								= "RolPase"
+Private Const CAMPO_ORGROL_GESTION								= "RolGestion"
+Private Const CAMPO_ORGROL_AMPLIARPLAZO							= "RolAmpliarPlazo"
+Private Const CAMPO_ORGROL_MANEJARCONF							= "RolManejarConf"
+
+'**************************************************************************************************************************
+
+Public Class UsuarioForm
+	
+	
+'VARIABLES PRIVADAS
+'**************************************************************************************************************************
+	Private sNombre As String
+	Private conf As ConfigForms
+	Private dbOrg As NotesDatabase
+	Private rolesUsuario As RolesManager
+'**************************************************************************************************************************
+	
+	
+'CONSTRUCTOR
+'**************************************************************************************************************************
+	Public Sub new(Byval nombre As String)
+		On Error Goto HANDLER
+		Set conf= New ConfigForms()
+		sNombre = nombre
+		
+		
+		Set dbOrg = conf.ReferenciarBaseDeDatos(CLAVE_ORGAN)
+		
+		'If dbOrg Is Nothing Then _
+		'Error ERROR_DB_NOT_OPEN, MSG_ERROR_DB_NOT_OPEN + " " + CLAVE_ORGAN
+		
+		Exit Sub
+HANDLER:
+		Call RegistraryGenerarError(NOMBRE_APLICACION,"Clase UsuarioForm - Constructor","")
+		Exit Sub
+	End Sub	
+	
+'**************************************************************************************************************************
+	
+'**************************************************************************************************************************	
+	'PROPERTIES
+'**************************************************************************************************************************
+	'Retorna el nombre del usuario
+	Public Property Get NombreUsuario() As String
+		
+		On Error Goto HANDLER
+		
+		NombreUsuario = sNombre
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error, NOMBRE_APLICACION,"Clase UsuarioForm - Property NombreUsuario","","")
+		Exit Property
+		
+	End Property
+	
+'**************************************************************************************************************************
+	Public Property Get Unidades() As vector
+		'CON EL NOMBRE del usuario obtener de la aplicación Estructura organizacional las
+		'unidades a las que pertenece el usuario el resultado lo caRgo en el vector		
+		
+		On Error Goto HANDLER
+		
+		Dim vistaOrg As NotesView, dc As notesdocumentcollection
+		Dim unidad As String, pos As Long, i As Integer
+		Dim docUnidad As NotesDocument
+		
+		Set Unidades = New Vector(0)				
+		
+		Set vistaOrg = dbOrg.GetView(VISTA_ORGANIZACION_BUSQUEDAPERSONAS)
+		If vistaOrg Is Nothing Then _
+		Error ERROR_VIEW_NOT_FOUND,MSG_ERROR_VIEW_NOT_FOUND+" "+VISTA_ORGANIZACION_BUSQUEDAPERSONAS 
+		
+		Set dc = vistaOrg.GetAllDocumentsByKey(sNombre, True)
+		
+		For i = 1 To dc.count
+			Set docUnidad = dc.GetnthDocument(i)
+			Call Unidades.insertElement(docUnidad.GetItemValue(CAMPO_ORGANIZACION_NRO_UNIDAD)(0),Unidades.CantElem + 1)
+		Next
+		
+		Exit Property		
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error, NOMBRE_APLICACION,"Clase UsuarioForm - Property Unidades","","")
+		Exit Property
+		
+	End Property
+	
+'**************************************************************************************************************************	
+	'Devuelve True si el usuario tiene el Rol pasado por parámetro para el formulario 
+	'también pasado por parámetro
+	Public Property Get TieneRolForm(codigoFormulario As String, nroUnidad As String, nombreRol As String)As Boolean
+		On Error Goto HANDLER
+		
+		Set rolesUsuario = New RolesManager(sNombre, nroUnidad,codigoFormulario)
+		TieneRolForm= rolesUsuario.tieneRolUsuarioForm(nombreRol, nroUnidad, codigoFormulario)
+		
+		'		Dim vMiembrosFormxUniForm As NotesView
+'		Dim doc As NotesDocument		
+'		Dim lista As New Vector(0)
+'		Dim retorno As Boolean
+'		Dim i As Long
+'		
+'		Set vMiembrosFormxUniForm= dbOrg.GetView("MiembrosFormxUniForm")
+'		Set doc =vMiembrosFormxUniForm.GetDocumentByKey( nroUnidad +"##"+ codigoFormulario, True)
+'		
+'		If doc Is Nothing Then
+'			retorno = False
+'		Else
+'			lista.values=doc.GetItemValue(nombreRol)
+'			retorno= lista.isMember(Me.NombreUsuario, i, False)		
+'		End If
+		
+		
+		Exit Property	
+HANDLER:
+		Call RegistraryGenerarError2(Err,Error, NOMBRE_APLICACION,"Clase UsuarioForm - Property TieneRolForm","","")		
+		Exit Property	
+	End Property
+	
+'**************************************************************************************************************************
+End Class
