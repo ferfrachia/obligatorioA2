@@ -363,7 +363,8 @@ Private Const CAMPO_TIEMPO_BANDEJAS 																= "nTiempoBandejas"
 
 Public Const CAMPO_COMP_SEDE_JUDICIAL 														= "cCompSedeJudicial"
 Public Const CAMPO_SERVICIO_O_TITULAR 														= "cServicioOTitular"
-
+'Campo habilitar motivo de pase
+Public Const CAMPO_HABILITAR_MOTIVO_PASE									= "cMotivoDePase"
 Private Const CAMPO_TIEMPO_RECEP_AUTO 															= "nTiempoRecepAuto"
 Private Const CAMPO_NRO_DOCS_BUSQ																	= "nNroDocs"
 Private Const CAMPO_NRO_MAX_RESUL																	= "nNroMaxRes"
@@ -3117,6 +3118,36 @@ HANDLER:
 		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get PostitEnable","")
 		Exit Property
 	End Property
+	'******************************************************************************************************************
+	
+	Public Property Set MotivosDePase As Boolean
+		On Error GoTo handler
+		If MotivosDePase=True Then
+			docConfiguracion.ReplaceItemValue CAMPO_HABILITAR_MOTIVO_PASE, "1"
+		Else
+			docConfiguracion.ReplaceItemValue CAMPO_HABILITAR_MOTIVO_PASE, ""
+		End If
+		Exit Property
+handler:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Método Set MotivosDePase","")
+		Exit Property
+	End Property
+	'******************************************************************************************************************
+	Public Property Get MotivosDePase As Boolean
+		On Error GoTo HANDLER
+		'PostitEnable = (docConfiguracion.GetItemValue(CAMPO_HABILITAR_POSTIT) = POSTIT_YES)
+		
+		If docConfiguracion.getItemValue(CAMPO_HABILITAR_MOTIVO_PASE)(0)= "1" Then
+			MotivosDePase = True
+		Else 
+			MotivosDePase = False
+		End If
+		Exit Property
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase ConfEE 1.0 - Propiedad Get MotivosDePase","")
+		Exit Property
+	End Property	
+	
 '******************************************************************************************************************	
 	Public Property Set NumeracionUnica As Boolean
 		On Error Goto handler
