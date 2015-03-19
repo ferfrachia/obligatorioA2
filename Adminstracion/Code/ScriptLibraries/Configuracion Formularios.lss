@@ -185,11 +185,6 @@ HANDLER:
 		Exit Function
 	End Function
 	
-
-	
-
-
-	
 '******************************************************************************************************************			
 	
 	Public Property Get NotificacionEnviar As Boolean
@@ -507,6 +502,7 @@ HANDLER:
 		Description: Comments for Sub
 	%END REM
 	Public Sub save()
+		On Error GoTo handler
 		Dim i As Integer
 		Dim clave As String
 		Dim db As NotesDatabase
@@ -528,6 +524,10 @@ HANDLER:
 			End If
 		End If
 		Next
+		Exit Sub
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Formularios - Método save","")
+		Exit Sub
 	End Sub
 	
 	Public Function ReferenciarBaseDeDatos(Byval clave As String) As NotesDatabase
@@ -554,6 +554,7 @@ HANDLER:
 		'Inserta en forma ordenada segun la clave si nColOrdenar<>0
 		'nColOrdenar es la columna por la cual ordenar
 		'Si nColOrdenar=0 inserta al final
+		On Error GoTo handler
 		Dim posIns As Long
 		
 		If nColOrdenar<>0 Then
@@ -580,6 +581,10 @@ HANDLER:
 		Set me.Hosts = vHost
 		Set me.Rutas = vFilePath
 		
+		Exit Function
+HANDLER:
+		Call RegistrarYGenerarError(NOMBRE_APLICACION,"Clase Configuracion Sistema - Método insertLineaInteroperabilidad","")
+		Exit Function		
 	End Function
 	
 	'*****************************************************************************************************************
