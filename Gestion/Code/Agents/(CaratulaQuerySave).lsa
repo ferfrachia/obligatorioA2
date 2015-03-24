@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
-<noteinfo noteid='f0e' unid='66403F8EC66A915E83257DC8004F6593' sequence='12'>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E070052A1C4'>
+<noteinfo noteid='d6e' unid='66403F8EC66A915E83257DC8004F6593' sequence='4'>
 <created><datetime dst='true'>20150109T122713,47-02</datetime></created>
-<modified><datetime>20150311T131043,95-03</datetime></modified>
-<revised><datetime>20150309T145307,46-03</datetime></revised>
-<lastaccessed><datetime>20150311T131043,95-03</datetime></lastaccessed>
-<addedtofile><datetime>20150311T131043,95-03</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Ian Coates/O=ISA</name></updatedby>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<modified><datetime>20150324T160651,41-03</datetime></modified>
+<revised><datetime>20150324T160651,40-03</datetime></revised>
+<lastaccessed><datetime>20150324T160651,41-03</datetime></lastaccessed>
+<addedtofile><datetime>20150313T120317,89-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Fabian Alvariza/O=ISA</name></updatedby>
+<wassignedby><name>CN=Fabian Alvariza/O=ISA</name></wassignedby>
 <item name='$TITLE' sign='true'><text>(CaratulaQuerySave)</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
 <item name='$AssistLastRun' sign='true'>
@@ -32,7 +32,7 @@ gQYAAAAA
 <item name='$DesignerVersion'><text>8.5.3</text></item>
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
-BgAAAgAACAAKDwAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+BgAAAgAACAAOEAAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAA8chjABl8JYM4vmQAe3slgwAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq

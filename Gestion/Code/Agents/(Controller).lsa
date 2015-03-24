@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E050058D89B'>
-<noteinfo noteid='f1e' unid='D01CF38F7B45620683257DC8004F6595' sequence='14'>
+<note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E070052A1C4'>
+<noteinfo noteid='d5e' unid='D01CF38F7B45620683257DC8004F6595' sequence='6'>
 <created><datetime dst='true'>20150109T122713,49-02</datetime></created>
-<modified><datetime>20150313T153343,58-03</datetime></modified>
-<revised><datetime>20150313T153343,57-03</datetime></revised>
-<lastaccessed><datetime>20150313T153343,58-03</datetime></lastaccessed>
-<addedtofile><datetime>20150311T131043,99-03</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Ian Coates/O=ISA</name></updatedby>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<modified><datetime>20150324T160651,33-03</datetime></modified>
+<revised><datetime>20150324T160651,32-03</datetime></revised>
+<lastaccessed><datetime>20150324T160651,33-03</datetime></lastaccessed>
+<addedtofile><datetime>20150313T120317,73-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Fabian Alvariza/O=ISA</name></updatedby>
+<wassignedby><name>CN=Fabian Alvariza/O=ISA</name></wassignedby>
 <item name='$POID'><datetime dst='true'>20150115T114712,19-02</datetime></item>
 <item name='$TITLE' sign='true'><text>(Controller)</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
@@ -33,7 +33,7 @@ gQYAAAAA
 <item name='$DesignerVersion'><text>8.5.3</text></item>
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
-BgABAAAACAC2FAAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+BgABAAAACAAGEAAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAy/ZlAAd+JYOb2FgABX4lgwAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
