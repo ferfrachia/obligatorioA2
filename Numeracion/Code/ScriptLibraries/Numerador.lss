@@ -30,7 +30,53 @@ Use "ErrorHandlerClass 1.1"
 Declare Public Class Numerador
 
 '++LotusScript Development Environment:2:5:(Declarations):0:10
-%INCLUDE "c:\lotus\notes\bibliotecas\numeracion\constantes.lss"
+Const CONFIGURATION_DATABASE							=	"NUMERACI.NSF"
+Const ERROR_NUMCLIENT_DATABASE_NOT_FOUND				=	16011
+Const ERROR_NUMCLIENT_VIEW_NOT_FOUND					=	16012
+Const ERROR_NUMCLIENT_NUMERATOR_NOT_FOUND				=	16013
+Const ERROR_NUMCLIENT_SOLNUM_NOT_FOUND					=	16014
+Const ERROR_NUMCLIENT_ERROR_NUMBER_NOT_ASIGNED			=	16015
+Const ERROR_NUMCLIENT_NUMERATOR_INTERNAL_ERROR			=	16016
+Const ERROR_NUMCLIENT_NUMERATOR_RETURNED_FAIL			=	16017
+Const ERROR_NUMCLIENT_PARAMETER_PROBLEM					=	16018
+Const ERROR_NUMCLIENT_SOLNUM_SAVE_FAILED				=	16019
+Const ERROR_NUMCLIENT_AGENT_NOT_FOUND					=	16020
+Const ERROR_NUMCLIENT_NUMERATOR_SAVE_FAILED				=	16021
+Const ERROR_NUMCLIENT_CODE_LOCK_FAILED					=	16022
+Const ERROR_NUMSERVER_ERROR_NO_ERROR					=	16101
+Const PROTOCOL_REQUEST_NUMBER							=	"S"
+Const PROTOCOL_RETURN_NUMBER							=	"R"
+Const NUMBER_NOT_ASIGNED								=	0
+Const EMPTY_NUMBER										=	-1
+Const RETURNED_SUCCESS									=	"1"
+Const NOT_RETURNED										=	"0"
+Const SOLNUMERO_CAMPO_NUMERO							=	"Numero"
+Const SOLNUMERO_CAMPO_NUMERADOR							=	"Numerator"
+Const SOLNUMERO_CAMPO_OPERACION							=	"Operation"
+Const SOLNUMERO_CAMPO_DEVUELTO							=	"Returned"
+Const SOLNUMERO_CAMPO_USUARIO							=	"User"
+Const SOLNUMERO_CAMPO_AUTORES							=	"Autores"
+Const SOLNUMERO_CAMPO_CHECKEDOUT						=	"Retired"
+Const SOLNUMERO_CAMPO_CANT_INTENTOS						=	"NroIntentos"
+Const SOLNUMERO_CAMPO_ERROR_NRO							=	"ErrNro"
+Const SOLNUMERO_CAMPO_ERROR_DESC						=	"ErrDesc"
+Const SOLNUMERO_CAMPO_ERROR_FLAG						=	"ErrFlag"
+Const SOLNUMERO_CAMPO_ERROR_FECHA						=	"ErrFecha"
+Const NUMERADOR_CAMPO_NOMBRE							=	"Name"
+Const NUMERADOR_CAMPO_NUMERO							=	"LastAssigned"
+Const NUMERADOR_CAMPO_COLA								=	"Queue"
+Const NUMERADOR_CAMPO_LASTQUEUED						=	"LastQueued"
+Const NUMERADOR_CAMPO_LARGO_COLA						=	"QueueLen"
+Const ERROR_LOG_CAMPO_NUMERO							=	"ErrNro"
+Const ERROR_LOG_CAMPO_DESC								=	"ErrDesc"
+Const ERROR_LOG_CAMPO_FECHA								=	"ErrFecha"
+Const ERROR_LOG_CAMPO_USUARIO							=	"ErrUsuario"
+Const VISTA_NUMERADORES									=	"Numeradores"
+Const NOMBRE_FORM_SOLNUM								=	"SolicitudNumero"
+Const AGENTE_NUMERADOR									=	"NumeracionInterior"
+Const VISTA_SOLICITUDES									=	"SolDate"
+Const FORM_ERROR										=	"ErrLog"
+Const AUTHORS											=	1076
 
 '***************************************************************************************************************
 Public Class Numerador
