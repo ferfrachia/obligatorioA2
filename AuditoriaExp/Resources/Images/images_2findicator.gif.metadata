@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E440073A0FA" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="206" sequence="17" unid="B36428D5C4047BC4032574A20066DA8B">
+<created><datetime>20080811T154326,19-03</datetime></created>
+<modified><datetime>20150513T180307,42-03</datetime></modified>
+<revised><datetime>20150512T151810,81-03</datetime></revised>
+<lastaccessed><datetime>20150513T180307,42-03</datetime></lastaccessed>
+<addedtofile><datetime>20150513T180307,42-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Jake Howlett/O=ROCKALL</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Administrador/O=IMA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=IMA</name></updatedby>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/gif</text></item>
+<item name="$FileModDT" sign="true"><datetime dst="true">20060217T060910,00+01</datetime></item>
+<item name="$ImageNames" sign="true"><text>indicator.gif</text></item>
+<item name="$TITLE" sign="true"><text>images/indicator.gif</text></item>
+<item name="$DesignerVersion" sign="true"><text>6.5</text></item></note>
