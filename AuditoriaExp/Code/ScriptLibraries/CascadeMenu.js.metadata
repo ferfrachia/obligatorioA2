@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E440073A0FA" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="146" sequence="23" unid="AD9C54CA87107BF943256DBA00308D06">
+<created><datetime>20031009T115018,30+03</datetime></created>
+<modified><datetime>20150513T180302,55-03</datetime></modified>
+<revised><datetime>20150512T151809,83-03</datetime></revised>
+<lastaccessed><datetime>20150513T180302,55-03</datetime></lastaccessed>
+<addedtofile><datetime>20150513T180302,55-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=IAN COATES/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Administrador/O=IMA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=IMA</name></updatedby>
+<revisions><datetime>20031009T115020,29+03</datetime></revisions>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>CascadeMenu.js</text></item>
+<item name="$Flags"><text>h534Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+
+<item name="$POID"><datetime>20150512T151809,83-03</datetime></item></note>
