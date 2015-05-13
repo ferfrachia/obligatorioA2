@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="filter" replicaid="83257E440073A0FA" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="126" sequence="25" unid="2AE8FEF0BAEBBA6A03256D65006F02CB">
+<created><datetime>20030716T171232,11-03</datetime></created>
+<modified><datetime>20150513T180527,64-03</datetime></modified>
+<revised><datetime>20150513T180527,63-03</datetime></revised>
+<lastaccessed><datetime>20150513T180527,64-03</datetime></lastaccessed>
+<addedtofile><datetime>20150513T180301,59-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=1871</name><name>CN=Pablo Andrade/O=ISA</name><name>CN=Sandra Sayanes/O=ISA</name><name>CN=Diego Celery/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Administrador/O=IMA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=IMA</name></updatedby>
+<revisions><datetime>20030716T171232,50-03</datetime></revisions>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
+<item name="$TITLE" sign="true"><text>NumeradorClient</text></item>
+<item name="$Flags"><text>s34Q</text></item>
+<item name="$PublicAccess" sign="true"><text>1</text></item>
+<item name="$POID"><datetime>20150512T151809,71-03</datetime></item>
+
+</note>

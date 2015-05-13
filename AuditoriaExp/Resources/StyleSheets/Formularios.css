@@ -1,0 +1,35 @@
+.DefFormsLetraTitulo
+{
+font-family: Arial,  Verdana ; 
+font-size: 10pt;
+font-weight: bold;
+color : #2E7BBD
+}
+.DefFormsLetraDato
+{
+font-family: Arial,  Verdana ; 
+font-size: 10pt;
+color : black
+}
+.DefFormsLetraDatoOvr
+{
+font-family: Arial,  Verdana ; 
+font-size: 10pt;
+color : orange;
+cursor: pointer;
+}
+.DefFormsCampoTransparenteDato    {
+font-family: Arial, Verdana , Helvetica, sans-serif;
+font-size: 11px;
+color:#000000;
+background-color: #F8F7FC;
+}
+
+.frmTituloTablaTemas{
+font-family: Arial, Verdana , Helvetica, sans-serif;
+font-size: 10pt;
+color:#000000;
+background-color: #aaaaaa;
+}
+
+

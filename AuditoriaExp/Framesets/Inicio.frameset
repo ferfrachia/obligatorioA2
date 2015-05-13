@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='form' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E440073A0FA'>
+<noteinfo noteid='182' unid='9617C137D533052103256D6D004F5E20' sequence='63'>
+<created><datetime>20030724T112654,40-03</datetime></created>
+<modified><datetime>20150513T180303,48-03</datetime></modified>
+<revised><datetime>20150512T151810,13-03</datetime></revised>
+<lastaccessed><datetime>20150513T180303,48-03</datetime></lastaccessed>
+<addedtofile><datetime>20150513T180303,48-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Diego Celery/O=ISA</name><name>CN=Martin Cabrera/O=ISA</name><name
+>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name
+>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
+>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name
+>CN=Administrador/O=IMA</name><name>CN=Administrador Domino/O=IMC</name><name
+>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=IMA</name></updatedby>
+<revisions><datetime>20030724T115557,56-03</datetime><datetime>20031008T184044,94+03</datetime><datetime
+>20031008T184045,03+03</datetime><datetime>20031009T113018,80+03</datetime><datetime
+>20031009T113018,87+03</datetime></revisions>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
+<item name='$TITLE' sign='true'><text>Inicio</text></item>
+<item name='$Comment' sign='true'><text/></item>
+<item name='$FrameSet' sign='true'>
+<rawitemdata type='1'>
+7/8YAAIAAwAAAAAAAAAAAAAAAAAAAAAA8P8+AEUAAAAAAAAAAAACAAIAAAAAAAUAAAAAAAUAAAAA
+AAEAAgAAAAAAAQD///8AAAADAAEAAgAUAAIATQDx/z0AAQAAAABAAAADAAEAAQAAAAAACQAAAAAA
+AQD///8AAABOYXZlZ2Fkb3IBAP///wABAAAJAQD///8AP/b/KwAAAAAAAwAHAAkAAAAAAAAAAAAA
+AAAAAAAAAAAAAABOYXZlZ2Fkb3I/8f86AAEAAAAAQAAAAwABAAEAAAAAAAYAAAAAAAEA////AAAA
+VmlzdGFzAQD///8AAQAACQEA////APb/NgAAAAAAAwACABQAAAAAAAAAAAAAAAAAAAAAAAAAAABW
+T3BlcmFjaW9uZXNQb3JGZWNoYQ==
+</rawitemdata></item>
+<item name='$Flags'><text>#34CQ</text></item>
+<item name='$DesignerVersion' sign='true'><text>6</text></item></note>
+

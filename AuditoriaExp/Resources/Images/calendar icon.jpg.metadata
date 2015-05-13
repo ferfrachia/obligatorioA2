@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" replicaid="83257E440073A0FA" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="1a6" sequence="23" unid="66624A18AAACFE010325708B006EB14F">
+<created><datetime>20050929T170903,51-03</datetime></created>
+<modified><datetime>20150513T180304,28-03</datetime></modified>
+<revised><datetime>20150512T151810,29-03</datetime></revised>
+<lastaccessed><datetime>20150513T180304,28-03</datetime></lastaccessed>
+<addedtofile><datetime>20150513T180304,28-03</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Pablo Andrade/O=ISA</name><name>CN=Diego Celery/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=Testing</name><name>CN=Administrador/O=IMA</name><name>CN=Administrador Domino/O=IMC</name><name>CN=Administrador/O=MEC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Administrador/O=IMA</name></updatedby>
+<revisions><datetime>20050929T170904,44-03</datetime></revisions>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
+<item name="$TITLE"><text>calendar icon.jpg</text></item>
+<item name="$Flags"><text>34CiQ</text></item>
+<item name="$FlagsExt" sign="true"><text>D</text></item>
+<item name="$ImagesWide" sign="true"><number>1</number></item>
+<item name="$ImagesHigh" sign="true"><number>1</number></item>
+<item name="$ImagesColorize" sign="true"><number>0</number></item>
+
+
+<item name="$MimeType" sign="true"><text>image/jpeg</text></item>
+<item name="$FileModDT" sign="true"><datetime>20050708T173747,45-03</datetime></item>
+<item name="$ImageNames" sign="true"><text>calendar icon.jpg</text></item>
+<item name="$DesignerVersion" sign="true"><text>6.5</text></item></note>
