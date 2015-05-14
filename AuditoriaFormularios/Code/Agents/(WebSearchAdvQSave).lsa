@@ -1,16 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF8003FC722'>
-<noteinfo noteid='1fe' unid='73E38C288E7DBCB50325744200743FF7' sequence='45'>
+<noteinfo noteid='1fe' unid='73E38C288E7DBCB50325744200743FF7' sequence='47'>
 <created><datetime>20080507T180945,51-03</datetime></created>
-<modified><datetime>20150309T094336,59-03</datetime></modified>
-<revised><datetime>20150309T094336,58-03</datetime></revised>
-<lastaccessed><datetime>20150309T094336,59-03</datetime></lastaccessed>
+<modified><datetime>20150514T124909,74-03</datetime></modified>
+<revised><datetime>20150514T124909,73-03</datetime></revised>
+<lastaccessed><datetime>20150514T124909,74-03</datetime></lastaccessed>
 <addedtofile><datetime dst='true'>20150226T093638,69-02</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
->CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
->CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
->CN=Ian Coates/O=ISA</name></updatedby>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<updatedby><name>CN=Administrador/O=IMA</name></updatedby>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
 <item name='$POID'><datetime>20051205T110409,58-03</datetime></item>
 <item name='$TITLE' sign='true'><text>(WebSearchAdvQSave)</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
@@ -36,7 +33,7 @@ gQYAAAAA
 <item name='$DesignerVersion'><text>8.5.3</text></item>
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
-BgAAAgAACAD6AQAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAABAAAAAA
+BgAAAgAACACSAgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAAAABAAAAAA
 AAAAIjN1AFJ6JYMAAAAAZTF1AFJ6JYOz518A3HclgwAAAAAAAAAAAAAAAAAAAAAAAAAAU3RhcnRl
 ZCBydW5uaW5nIGFnZW50ICdXZWJTZWFyY2hBZHZRU2F2ZScgb24gMDYvMDgvMjAxMiAwNjoyMDow
 NyBQTQ0KUnVubmluZyBvbiBhbGwgZG9jdW1lbnRzIGluIGRhdGFiYXNlOiAwIHRvdGFsDQpGb3Vu
