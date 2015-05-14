@@ -1,18 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257DF8003FC722'>
-<noteinfo noteid='212' unid='A2F18EAA881176C803257448004F7B47' sequence='56'>
+<noteinfo noteid='212' unid='A2F18EAA881176C803257448004F7B47' sequence='58'>
 <created><datetime>20080513T112809,03-03</datetime></created>
-<modified><datetime>20150309T094336,67-03</datetime></modified>
-<revised><datetime>20150309T094336,66-03</datetime></revised>
-<lastaccessed><datetime>20150309T094336,67-03</datetime></lastaccessed>
+<modified><datetime>20150514T124909,78-03</datetime></modified>
+<revised><datetime>20150514T124909,77-03</datetime></revised>
+<lastaccessed><datetime>20150514T124909,78-03</datetime></lastaccessed>
 <addedtofile><datetime dst='true'>20150226T093638,77-02</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Alejandro Goñi/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
->CN=Administrador/O=Testing</name><name>CN=Rodrigo Aratti/O=ISA</name><name
->CN=Administrador/O=IGDOC</name><name>CN=Martin Duran/O=ISA</name><name>CN=Guillermo Zana/O=ISA</name><name
->CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Dayan Cazzuli/O=ISA</name><name
->CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
->CN=Ian Coates/O=ISA</name></updatedby>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<updatedby><name>CN=Administrador/O=IMA</name></updatedby>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
 <item name='$TITLE' sign='true'><text>(FDetalleRegistroQO)</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
 <item name='$AssistLastRun' sign='true'>
@@ -258,7 +253,7 @@ GAAAAAAA//8BAAMABgAAAAoAPAAMALQHfwAKAAAA
 <item name='$DesignerVersion' sign='true'><text>7</text></item>
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
-BgAAAgAACAAOAgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAApgAAAAAAAAAAAAAAAAAAABAAAAAA
+BgAAAgAACACWAgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAApgAAAAAAAAAAAAAAAAAAABAAAAAA
 AAAA/35YAEp0JQMAAAAAsDFYAEp0JQMUKG0ARHQlAwAAAAAAAAAAAAAAAAAAAAAAAAAAU3RhcnRl
 ZCBydW5uaW5nIGFnZW50ICdGRGV0YWxsZVJlZ2lzdHJvUU8nIG9uIDE1LzA1LzIwMDggMDE6MDY6
 MzYgcC5tLg0KUmFuIExvdHVzU2NyaXB0IGNvZGUNCkRvbmUgcnVubmluZyBhZ2VudCAnRkRldGFs
