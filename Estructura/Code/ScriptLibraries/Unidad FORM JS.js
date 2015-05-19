@@ -12,11 +12,7 @@ function abrirForm(id) {
 function borrarFormularios(codigo) {
 	if (confirm("¿Está seguro que desea quitar el formulario seleccionado?")) {
 		var unidad = document.getElementById("sNroUnidad").value;
-		alert("codigo: " + codigo);
-		alert("unidad: " + unidad);
-		alert("dirABS: " + DirABS());
 		var loc = DirABS() + "FormController?OpenAgent&unidad=" + unidad + "&codigo=" + codigo;
-		alert("loc: " + loc);
-		location.replace(loc);
+		location.replace(loc); 
 	}
 }
