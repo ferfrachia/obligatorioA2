@@ -1,15 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A499A'>
-<noteinfo noteid='24a' unid='09D41F296C2F398383257BA40063BB75' sequence='46'>
+<noteinfo noteid='24a' unid='09D41F296C2F398383257BA40063BB75' sequence='48'>
 <created><datetime>20130710T150920,53-03</datetime></created>
-<modified><datetime>20150311T132612,40-03</datetime></modified>
-<revised><datetime>20150309T094335,86-03</datetime></revised>
-<lastaccessed><datetime>20150311T132612,40-03</datetime></lastaccessed>
+<modified><datetime>20150514T170931,15-03</datetime></modified>
+<revised><datetime>20150514T170931,14-03</datetime></revised>
+<lastaccessed><datetime>20150514T170931,15-03</datetime></lastaccessed>
 <addedtofile><datetime>20150311T132612,40-03</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
->CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
->CN=Ian Coates/O=ISA</name></updatedby>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<updatedby><name>CN=Administrador/O=IMA</name></updatedby>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
 <item name='$TITLE' sign='true'><text>(WebSearchAdvQSave2)</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
 <item name='$AssistLastRun' sign='true'>
@@ -34,7 +32,7 @@ gQYAAAAA
 <item name='$DesignerVersion'><text>8.5.3</text></item>
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
-BgAAAgAACABGAgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAA/QAAAAAAAAAAAAAAAAAAABAAAAAA
+BgAAAgAACAB2AgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAA/QAAAAAAAAAAAAAAAAAAABAAAAAA
 AAAAgE5xAPV8JYMAAAAARU1xAPV8JYPo+FIA9HwlgwAAAAAAAAAAAAAAAAAAAAAAAAAAU3RhcnRl
 ZCBydW5uaW5nIGFnZW50ICdXZWJTZWFyY2hBZHZRU2F2ZTInIG9uIDEyLzA2LzIwMTQgMTc6Mzc6
 MzYNClJ1bm5pbmcgb24gYWxsIGRvY3VtZW50cyBpbiBkYXRhYmFzZTogNjUgdG90YWwNCkZvdW5k

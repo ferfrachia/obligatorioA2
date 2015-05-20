@@ -1,23 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A499A'>
-<noteinfo noteid='12e' unid='2B3D375E2EF4EB5503256D6C004FD2EC' sequence='25'>
+<noteinfo noteid='12e' unid='2B3D375E2EF4EB5503256D6C004FD2EC' sequence='27'>
 <created><datetime>20030723T113153,40-03</datetime></created>
-<modified><datetime>20150311T132611,04-03</datetime></modified>
-<revised><datetime>20150309T094334,44-03</datetime></revised>
-<lastaccessed><datetime>20150311T132611,04-03</datetime></lastaccessed>
+<modified><datetime>20150514T170931,23-03</datetime></modified>
+<revised><datetime>20150514T170931,22-03</datetime></revised>
+<lastaccessed><datetime>20150514T170931,23-03</datetime></lastaccessed>
 <addedtofile><datetime>20150311T132611,04-03</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Martin Cabrera/O=ISA</name><name>CN=Diego Celery/O=ISA</name><name
->CN=Administrador/O=ANP</name><name>CN=IAN COATES/O=ISA</name><name>CN=Administrador/O=ANP</name><name
->CN=IAN COATES/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=ANP</name><name
->CN=Rodrigo Aratti/O=ISA</name><name>CN=Administrador/O=MEC</name><name>CN=Rodrigo Aratti/O=ISA</name><name
->CN=Administrador Domino/O=IMC</name><name>CN=Ian Coates/O=ISA</name><name
->CN=Rodrigo Aratti/O=ISA</name><name>CN=Martin Duran/O=ISA</name><name>CN=Melissa Vidal/O=ISA</name><name
->CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
->CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
->CN=Ian Coates/O=ISA</name></updatedby>
-<revisions><datetime>20030723T113154,63-03</datetime><datetime>20051205T110406,79-03</datetime><datetime
->20060529T174441,33-03</datetime></revisions>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<updatedby><name>CN=Administrador/O=IMA</name></updatedby>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
 <item name='$TITLE' sign='true'><text>(Borro Perfiles) | aBorroPerfiles</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
 <item name='$AssistLastRun' sign='true'>
@@ -60,7 +50,7 @@ IFRydWUKCU5leHQKCQpFbmQgU3ViAAA=
 <item name='$DesignerVersion' sign='true'><text>5</text></item>
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
-BgAAAgAACAAqAQAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAZgEAAAAAAAAAAAAAAAAAABAAAAAA
+BgAAAgAACAB+AgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAZgEAAAAAAAAAAAAAAAAAABAAAAAA
 AAAAnHd2AGxtJQMAAAAAaNNPAGxtJQOQvUAASm0lAwAAAAAAAAAAAAAAAAAAAAAAAAAASW5pY2lh
 ZGEgbGEgZWplY3VjaaJuIGRlbCBhZ2VudGUgKEJvcnJvIFBlcmZpbGVzKSB8IGFCb3Jyb1BlcmZp
 bGVzIGVsIGShYSAyMy8wNy8yMDAzIDA2OjMzOjU4IHAubS4NClNlIGhhIGFwbGljYWRvIGEgbG9z

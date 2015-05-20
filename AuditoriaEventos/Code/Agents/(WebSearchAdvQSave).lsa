@@ -1,25 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note class='filter' xmlns='http://www.lotus.com/dxl' version='9.0' replicaid='83257E05005A499A'>
-<noteinfo noteid='196' unid='4C3C36E9CD41797A0325708A0060D726' sequence='194'>
+<noteinfo noteid='196' unid='4C3C36E9CD41797A0325708A0060D726' sequence='196'>
 <created><datetime>20050928T143745,34-03</datetime></created>
-<modified><datetime>20150311T132611,52-03</datetime></modified>
-<revised><datetime>20150309T094334,98-03</datetime></revised>
-<lastaccessed><datetime>20150311T132611,52-03</datetime></lastaccessed>
+<modified><datetime>20150514T170931,19-03</datetime></modified>
+<revised><datetime>20150514T170931,18-03</datetime></revised>
+<lastaccessed><datetime>20150514T170931,19-03</datetime></lastaccessed>
 <addedtofile><datetime>20150311T132611,52-03</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Ismael Olivet/O=ISA</name><name>CN=Juan Ignacio Pommerenck/O=ISA</name><name
->CN=Catalina Seoane/O=ISA</name><name>CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name
->CN=Ian Coates/O=ISA</name></updatedby>
-<revisions><datetime>20060512T154917,36-03</datetime><datetime>20060529T174441,57-03</datetime><datetime
->20060529T174835,87-03</datetime><datetime>20060529T175115,55-03</datetime><datetime
->20060529T175159,92-03</datetime><datetime>20060529T175208,57-03</datetime><datetime
->20060529T175321,54-03</datetime><datetime>20060529T175540,08-03</datetime><datetime
->20060529T175653,21-03</datetime><datetime>20060529T175805,75-03</datetime><datetime
->20061003T123543,60-03</datetime><datetime>20061003T132558,21-03</datetime><datetime
->20061012T164744,03-03</datetime><datetime>20061012T164930,84-03</datetime><datetime
->20061012T170310,02-03</datetime><datetime>20061012T170347,87-03</datetime><datetime
->20061012T170542,10-03</datetime><datetime>20061012T171044,42-03</datetime><datetime
->20061012T171457,80-03</datetime></revisions>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
+<updatedby><name>CN=Administrador/O=IMA</name></updatedby>
+<wassignedby><name>CN=Administrador/O=IMA</name></wassignedby>
 <item name='$TITLE' sign='true'><text>(WebSearchAdvQSave)</text></item>
 <item name='$AssistType' sign='true'><number>65413</number></item>
 <item name='$AssistLastRun' sign='true'>
@@ -44,7 +32,7 @@ gQYAAAAA
 <item name='$DesignerVersion'><text>8.5.3</text></item>
 <item name='$AssistRunInfo' summary='true'>
 <rawitemdata type='3'>
-BgAAAgAACACSAQAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+BgAAAgAACAB6AgAAAAAAAAUAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAADiVGAPV8JYPo+FIA9HwlgwAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
 qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
