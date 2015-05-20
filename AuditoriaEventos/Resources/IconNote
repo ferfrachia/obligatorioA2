@@ -1,23 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <note default='true' class='icon' xmlns='http://www.lotus.com/dxl' version='9.0'
  replicaid='83257E05005A499A'>
-<noteinfo noteid='11a' unid='6AFB80117356934403256D4A003F9D6A' sequence='152'>
+<noteinfo noteid='11a' unid='6AFB80117356934403256D4A003F9D6A' sequence='156'>
 <created><datetime>20030619T083450,66-03</datetime></created>
-<modified><datetime>20150311T132612,50-03</datetime></modified>
-<revised><datetime>20150311T132612,49-03</datetime></revised>
-<lastaccessed><datetime>20150311T132612,50-03</datetime></lastaccessed>
+<modified><datetime>20150514T170941,55-03</datetime></modified>
+<revised><datetime>20150514T170941,54-03</datetime></revised>
+<lastaccessed><datetime>20150514T170941,55-03</datetime></lastaccessed>
 <addedtofile><datetime>20150311T132610,96-03</datetime></addedtofile></noteinfo>
-<updatedby><name>CN=Ian Coates/O=ISA</name><name>CN=Rodrigo Aratti/O=ISA</name><name
->CN=Martin Duran/O=ISA</name><name>CN=Desarrollo2/O=DesarrolloISA</name><name
->CN=Diego Tolosa/O=ISA</name><name>CN=Melissa Vidal/O=ISA</name><name>CN=Ismael Olivet/O=ISA</name><name
->CN=Juan Ignacio Pommerenck/O=ISA</name><name>CN=Catalina Seoane/O=ISA</name><name
->CN=Ian Coates/O=ISA</name><name>CN=Administrador/O=IMA</name><name>CN=Ian Coates/O=ISA</name></updatedby>
-<revisions><datetime>20070418T122926,77-03</datetime><datetime>20070418T122926,81-03</datetime></revisions>
-<wassignedby><name>CN=Ian Coates/O=ISA</name></wassignedby>
-<item name='$DefaultFrameset' sign='true'><text>Inicio</text></item>
-<item name='$DefaultWebFrameset' sign='true'><text>Inicio</text></item>
-<item name='$FlagsNoRefresh' sign='true'><text/></item>
-<item name='$Flags'><text>JSFR</text></item>
+<updatedby><name>CN=Administrador/O=IMA</name></updatedby>
 <item name='$PIRCRefreshModTime'><datetime>20140612T172946,22-03</datetime></item>
 <item name='$TemplateModTime'><datetime>20140612T172922,43-03</datetime></item>
 <item name='$TemplateServerName'><text>CN=Ismael Olivet/O=ISA</text></item>
@@ -38,5 +28,9 @@ M4jxYWJiYmJiL6ozMzMzMzM0CPZmFhYWIvpDMzMzMzMzM0oIBmFhYW6kMzMzMzMzMzMzRADu7uAK
 QzMzMzMzMzMzMzNEREREQzMzMw==
 </rawitemdata></item>
 <item name='$Daos'><text>0</text></item>
-<item name='$TITLE'><text>Current AuditoriaEventos</text></item></note>
+<item name='$DefaultFrameset'><text>Inicio</text></item>
+<item name='$DefaultWebFrameset'><text>Inicio</text></item>
+<item name='$TITLE'><text>Current AuditoriaEventos</text></item>
+<item name='$Flags'><text>JFS</text></item>
+<item name='$FlagsNoRefresh'><text>rv</text></item></note>
 
