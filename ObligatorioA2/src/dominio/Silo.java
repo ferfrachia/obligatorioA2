@@ -1,10 +1,8 @@
 package dominio;
 
-public class Silo {
+public class Silo extends Punto {
 
 	String nombre;
-	double coordX;
-	double coorY;
 	int capacidad;
 
 
@@ -12,7 +10,7 @@ public class Silo {
 
 		this.nombre=nombre;
 		this.coordX=coordX;
-		this.coorY=coordY;
+		this.coordY=coordY;
 		this.capacidad=capacidad;
 	}
 
@@ -27,18 +25,7 @@ public class Silo {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public double getCoordX() {
-		return coordX;
-	}
-	public void setCoordX(double coordX) {
-		this.coordX = coordX;
-	}
-	public double getCoorY() {
-		return coorY;
-	}
-	public void setCoorY(double coorY) {
-		this.coorY = coorY;
-	}
+
 	public int getCapacidad() {
 		return capacidad;
 	}
@@ -47,7 +34,17 @@ public class Silo {
 	}
 
 
-
+	public String listadoDeSilos() {
+		String ret="";
+		
+		
+		
+		return ret;
+		
+		
+	}
+	
+	
 
 
 }

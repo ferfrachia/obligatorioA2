@@ -115,9 +115,12 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno listadoDeSilos() {
 		Retorno ret = new Retorno();
+		Silo sil = new Silo();
 		
-		ret.resultado = Resultado.NO_IMPLEMENTADA;
 		
+		//ret.resultado = Resultado.NO_IMPLEMENTADA;
+		ret.valorString=sil.listadoDeSilos();
+		ret.resultado = Resultado.OK;
 		return ret;
 	}
 

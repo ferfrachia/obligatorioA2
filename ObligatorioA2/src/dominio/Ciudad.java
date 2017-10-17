@@ -1,10 +1,8 @@
 package dominio;
 
-public class Ciudad {
+public class Ciudad extends Punto{
 
 	String nombre;
-	double coordX;
-	double coordY;
 	
 	
 	public Ciudad(String nombre, Double coordX, Double coordY) {
@@ -22,21 +20,7 @@ public class Ciudad {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-	public double getCoordX() {
-		return coordX;
-	}
-	public void setCoordX(double coordX) {
-		this.coordX = coordX;
-	}
-	public double getCoordY() {
-		return coordY;
-	}
-	public void setCoordY(double coordY) {
-		this.coordY = coordY;
-	}
-	
-	
+	}	
 	
 	
 }

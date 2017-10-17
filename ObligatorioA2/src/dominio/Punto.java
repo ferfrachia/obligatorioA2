@@ -1,23 +1,9 @@
 package dominio;
 
-public class Punto {
+public abstract class Punto {
 
-	enum TipoPunto {
-		Silo, Ciudad, Plantacion
-	};
 	double coordX;
 	double coordY;
-	TipoPunto tipoPunto;
-	
-	public Punto(double coordX, double coordY, TipoPunto tipo) {
-		this.coordX=coordX;
-		this.coordY=coordY;
-		this.tipoPunto=tipo;
-	}
-	
-	public Punto() {
-		
-	}
 	
 	public double getCoordX() {
 		return coordX;
@@ -32,13 +18,6 @@ public class Punto {
 		this.coordY = coordY;
 	}
 
-	public TipoPunto getTipoPunto() {
-		return tipoPunto;
-	}
-
-	public void setTipoPunto(TipoPunto tipoPunto) {
-		this.tipoPunto = tipoPunto;
-	}
 	
 	
 	

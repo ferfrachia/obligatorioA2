@@ -1,11 +1,9 @@
 package dominio;
 
-public class Plantacion {
+public class Plantacion extends Punto{
 
 	
 	String nombre;
-	double coordX;
-	double coordY;
 	String cedula_productor;
 	int capacidad;
 	
@@ -31,18 +29,7 @@ public class Plantacion {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public double getCoordX() {
-		return coordX;
-	}
-	public void setCoordX(double coordX) {
-		this.coordX = coordX;
-	}
-	public double getCoordY() {
-		return coordY;
-	}
-	public void setCoordY(double coordY) {
-		this.coordY = coordY;
-	}
+
 	public String getCedula_productor() {
 		return cedula_productor;
 	}
