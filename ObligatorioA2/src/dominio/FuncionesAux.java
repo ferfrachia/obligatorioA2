@@ -38,22 +38,34 @@ public class FuncionesAux {
 		}
 		
 	}
-
-	public boolean validarCedula(String ci) {
-		/*
+	
+	public Retorno validarCelular (String celular) {
+		Retorno ret = new Retorno();
+		return ret;
+		
+		
+	}
+	
+	public Retorno validarCedula(String ci) {
+		Retorno ret = new Retorno();
+		
 		if(ci.length() != 7 && ci.length() != 8){ 
-			return false; 
+			ret.resultado=Resultado.ERROR_1;
+			ret.valorString="El largo de la cédula no es correcto.";
+			return ret; 
 		}else{ 
 			try{ 
 				Integer.parseInt(ci); 
-			}catch (NumberFormatException e){ 
-				return false; 
+			}catch (NumberFormatException e){
+				ret.resultado=Resultado.ERROR_2;
+				ret.valorString="El número de cédula no es correcto.";
+				return ret; 
 			} 
 		} 
 
 		int digVerificador = Integer.parseInt((ci.charAt(ci.length() - 1)) + "" ) ; 
 		int[] factores; 
-		if(ci.length() == 7){ // CI viejas 
+		if(ci.length() == 7){ // Cedulas viejas 
 			factores = new int[]{9, 8, 7, 6, 3, 4}; 
 		}else{ 
 			factores = new int[]{2, 9, 8, 7, 6, 3, 4}; 
@@ -70,12 +82,20 @@ public class FuncionesAux {
 		int checkdigit = 10 - resto; 
 
 		if(checkdigit == 10){ 
-			return (digVerificador == 0); 
+			if(digVerificador == 0) {
+				ret.resultado=Resultado.ERROR_3;
+				ret.valorString="El dígito verificador de la cédula no es correcto.";
+				return ret;
+			}
 		}else { 
-			return (checkdigit == digVerificador) ; 
+			if(checkdigit == digVerificador) {
+				ret.resultado=Resultado.ERROR_4;
+				ret.valorString="El número de cédula no es correcto.";
+				return ret;
+			} 
 		} 
-		*/
-		return false;
+		
+		return ret;
 	} 
 
 }
