@@ -5,12 +5,13 @@ import dominio.Retorno.Resultado;
 public class Sistema implements ISistema {
 	
 	ControladoraProductor ctrlProductor;
+	
 	@Override
 	public Retorno inicializarSistema(int cantPuntos) {
 		Retorno ret = new Retorno();
 		ctrlProductor = ControladoraProductor.getInstacia();
 		
-		ret.resultado = Resultado.NO_IMPLEMENTADA;
+		//ret.resultado = Resultado.NO_IMPLEMENTADA;
 
 		return ret;
 	}
@@ -28,7 +29,7 @@ public class Sistema implements ISistema {
 	public Retorno registrarProductor(String cedula, String nombre, String direccion, String email, String celular) {
 		Retorno ret = new Retorno();
 		FuncionesAux faux = new FuncionesAux();
-
+		
 		ret =faux.validarEmail(email); 
 
 		if (ret.resultado==Resultado.OK) {
@@ -133,11 +134,8 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno listadoDeSilos() {
 		Retorno ret = new Retorno();
-		Silo sil = new Silo();
-
-
 		//ret.resultado = Resultado.NO_IMPLEMENTADA;
-		ret.valorString=sil.listadoDeSilos();
+		
 		ret.resultado = Resultado.OK;
 		return ret;
 	}
@@ -145,9 +143,14 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno listadoProductores() {
 		Retorno ret = new Retorno();
-
-		ret.resultado = Resultado.NO_IMPLEMENTADA;
-
+		ret.valorString=ctrlProductor.listarProductores();
+		
+		if (ret.valorString!="") {
+			ret.resultado = Resultado.OK;
+		}else{
+			ret.valorString="No existen Productores en el sistema";
+			ret.resultado=Resultado.ERROR_1;
+		}
 		return ret;
 	}
 

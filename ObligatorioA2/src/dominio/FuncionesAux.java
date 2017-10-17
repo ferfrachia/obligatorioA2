@@ -41,6 +41,7 @@ public class FuncionesAux {
 	
 	public Retorno validarCelular (String celular) {
 		Retorno ret = new Retorno();
+		ret.resultado=Resultado.OK;
 		return ret;
 		
 		
@@ -94,7 +95,7 @@ public class FuncionesAux {
 				return ret;
 			} 
 		} 
-		
+		ret.resultado=Resultado.OK;
 		return ret;
 	} 
 

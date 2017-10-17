@@ -53,7 +53,9 @@ public class Productor {
 		this.celular = celular;
 	}
 	
-	
+	public String toString () {
+		return this.cedula + ";" + this.nombre + ";" + this.celular;
+	}
 	
 
 }

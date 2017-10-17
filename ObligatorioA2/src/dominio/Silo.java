@@ -4,7 +4,7 @@ public class Silo extends Punto {
 
 	String nombre;
 	int capacidad;
-
+	int remanente;
 
 	public Silo(String nombre, Double coordX, Double coordY, int capacidad) {
 
@@ -33,15 +33,9 @@ public class Silo extends Punto {
 		this.capacidad = capacidad;
 	}
 
-
-	public String listadoDeSilos() {
-		String ret="";
-		
-		
-		
-		return ret;
-		
-		
+	
+	public String toString () {
+		return this.coordX + ";" + this.coordY+ ";" + this.capacidad + ";" + "falta capacidad remanente";
 	}
 	
 	
