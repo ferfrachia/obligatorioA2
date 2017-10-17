@@ -9,9 +9,9 @@ public class InicioPrueba {
 		
 		s.inicializarSistema(2);
 		
-		r=s.registrarProductor("1234567", "tincho", "aaaaa", "sdadsad.com", "4343434");
+		r=s.registrarProductor("4392858", "Martin D", "aaaaa", "prueba@mdv.com", "4343434");
 		System.out.println(r.valorString);
-		r=s.registrarProductor("12345678", "tincho2", "vbbbbbb", "s3323dad@sad.com", "4123434");
+		r=s.registrarProductor("3908919", "Fernando F", "vbbbbbb", "hola@gmail.com", "4123434");
 		r=s.listadoProductores();
 		System.out.println(r.valorString);
 	}
