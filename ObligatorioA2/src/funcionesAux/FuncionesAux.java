@@ -1,9 +1,9 @@
-package dominio;
+package funcionesAux;
 
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import dominio.Retorno;
 import dominio.Retorno.Resultado;
 
 public class FuncionesAux {

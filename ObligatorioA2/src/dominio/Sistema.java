@@ -1,6 +1,7 @@
 package dominio;
 import controladoras.ControladoraProductor;
 import dominio.Retorno.Resultado;
+import funcionesAux.FuncionesAux;
 
 public class Sistema implements ISistema {
 	
