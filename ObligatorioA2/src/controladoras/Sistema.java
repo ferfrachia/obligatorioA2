@@ -1,5 +1,5 @@
-package dominio;
-import controladoras.ControladoraProductor;
+package controladoras;
+import dominio.Retorno;
 import dominio.Retorno.Resultado;
 import funcionesAux.FuncionesAux;
 

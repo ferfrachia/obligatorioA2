@@ -1,12 +1,13 @@
 package controladoras;
 
+import arboles.ABB;
 import dominio.Productor;
-import listas.Lista;
-import listas.ListaSE;
+import funcionesAux.ComparatorProductor;
+
 
 public class ControladoraProductor {
 
-	Lista <Productor> productores = new ListaSE<Productor>();
+	ABB<Productor> productores = new ABB<Productor>(new ComparatorProductor<Productor>());
 
 	private static ControladoraProductor instancia;
 
@@ -18,15 +19,14 @@ public class ControladoraProductor {
 
 	public boolean registrarProductor(String cedula, String nombre, String direccion, String email, String celular) {
 		boolean ret = false;
-		
-		if(productores.largo()>0) {
-			if(!buscarProductor(cedula)) {
-				productores.insertar(new Productor(cedula, nombre, direccion, email, celular));
-				ret = true;
-			}
-		}else {
-			productores.insertar(new Productor(cedula, nombre, direccion, email, celular));
+
+		Productor p = new Productor(cedula, nombre, direccion, email, celular);
+		if(!productores.pertenece(p)) {
+			productores.insertar(p);
 			ret = true;
+
+		}else {
+
 		}
 
 		return ret;

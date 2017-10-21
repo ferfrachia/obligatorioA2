@@ -2,6 +2,8 @@ package listas;
 
 import java.util.Arrays;
 
+import funcionesAux.ComparatorProductor;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -20,7 +22,7 @@ public class Main {
 //		System.out.println(Arrays.toString(vec));
 //		System.out.println(minimoElemento(vec));
 		
-		Lista<Integer> miLista = new ListaOrd<Integer>(new ComparatorInteger<Integer>());
+		Lista<Integer> miLista = new ListaOrd<Integer>(new ComparatorProductor<Integer>());
 //		Lista<Integer> miLista = new ListaSE<Integer>();
 		miLista.insertar(5);
 		miLista.insertar(1);

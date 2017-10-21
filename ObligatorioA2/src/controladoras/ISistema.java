@@ -1,4 +1,6 @@
-package dominio;
+package controladoras;
+
+import dominio.Retorno;
 
 public interface ISistema {
 

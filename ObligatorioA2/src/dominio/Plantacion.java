@@ -2,21 +2,24 @@ package dominio;
 
 public class Plantacion extends Punto{
 
-	
+	public enum Tipo {
+		SOJA, TRIGO, ARROZ
+	};
 	String nombre;
-	String cedula_productor;
+	Productor productor;
 	int capacidad;
+	Tipo tipo;
 	
 	
-	public Plantacion(String nombre, Double coordX, Double coordY, String cedula_productor,
+	public Plantacion(String nombre, Double coordX, Double coordY, Productor productor, Tipo tipo,
 			int capacidad) {
 		
 		this.nombre=nombre;
 		this.coordX=coordX;
 		this.coordY=coordY;
-		this.cedula_productor=cedula_productor;
+		this.productor=productor;
 		this.capacidad=capacidad;
-		
+		this.tipo = tipo;
 	}
 	
 	public Plantacion() {
@@ -30,12 +33,7 @@ public class Plantacion extends Punto{
 		this.nombre = nombre;
 	}
 
-	public String getCedula_productor() {
-		return cedula_productor;
-	}
-	public void setCedula_productor(String cedula_productor) {
-		this.cedula_productor = cedula_productor;
-	}
+	
 	public int getCapacidad() {
 		return capacidad;
 	}
