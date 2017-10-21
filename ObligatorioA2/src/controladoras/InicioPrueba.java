@@ -11,10 +11,11 @@ public class InicioPrueba {
 		
 		s.inicializarSistema(2);
 		
-		r=s.registrarProductor("4392858", "Martin D", "aaaaa", "prueba@mdv.com", "4343434");
-		r=s.registrarProductor("3908919", "Fernando F", "vbbbbbb", "hola@gmail.com", "4123434");
-		r=s.listadoProductores();
+		r=s.registrarProductor("4392858", "Martin D", "aaaaa", "prueba@mdv.com", "099087657");
+		r=s.registrarProductor("4392858", "Fernando F", "vbbbbbb", "hola@gmail.com", "09987263");
 		System.out.println(r.valorString);
+		r=s.listadoProductores();
+		//System.out.println(r.valorString);
 	}
 
 }

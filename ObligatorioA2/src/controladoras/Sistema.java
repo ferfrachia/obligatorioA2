@@ -144,14 +144,15 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno listadoProductores() {
 		Retorno ret = new Retorno();
-		ret.valorString=ctrlProductor.listarProductores();
-		
+		//ret.valorString=ctrlProductor.listarProductores();
+		ctrlProductor.listarProductores();
+		/*
 		if (ret.valorString!="") {
 			ret.resultado = Resultado.OK;
 		}else{
 			ret.valorString="No existen Productores en el sistema";
 			ret.resultado=Resultado.ERROR_1;
-		}
+		}*/
 		return ret;
 	}
 

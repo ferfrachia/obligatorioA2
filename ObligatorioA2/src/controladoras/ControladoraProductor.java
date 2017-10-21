@@ -45,7 +45,7 @@ public class ControladoraProductor {
 
 	}
 
-	public String listarProductores() {
-		return productores.toString();
+	public void listarProductores() {
+		 productores.listarDescendente();
 	}
 }
