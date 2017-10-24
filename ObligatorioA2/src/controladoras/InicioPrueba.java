@@ -11,8 +11,9 @@ public class InicioPrueba {
 		
 		s.inicializarSistema(2);
 		
-		r=s.registrarProductor("4392858", "Martin D", "aaaaa", "prueba@mdv.com", "099087657");
-		r=s.registrarProductor("4392858", "Fernando F", "vbbbbbb", "hola@gmail.com", "09987263");
+		r=s.registrarProductor("39089194", "Martin D", "aaaaa", "prueba@mdv.com", "049290995");
+		System.out.println(r.valorString);
+		r=s.registrarProductor("4392858", "Fernando F", "vbbbbbb", "hola@gmail.com", "099872334");
 		System.out.println(r.valorString);
 		r=s.listadoProductores();
 		//System.out.println(r.valorString);
